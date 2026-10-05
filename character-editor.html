@@ -544,7 +544,7 @@
                         </tr>
                     </thead>
                     <tbody id="skillsList">
-                        <!-- Изначально пусто -->
+                        <!-- На старте пустая таблица -->
                     </tbody>
                 </table>
                 <button class="add-skill-btn" onclick="addNewSkillRow()">+ ДОБАВИТЬ НАВЫК</button>
@@ -562,44 +562,61 @@
         intellect: 0, charm: 0, cunning: 0, tenacity: 0
     };
 
-    // Базовый справочник навыков Through the Breach и их аспекты по умолчанию
+    // Справочник навыков строго по таблице (null = выбор вручную игроком)
     const skillBook = {
-        "Artifacting": "intellect",
-        "Appraise": "cunning",
-        "Athletics": "speed",
-        "Barter": "charm",
-        "Bureaucracy": "intellect",
+        "Acrobatics": "grace",
+        "Alchemistry": "intellect",
+        "Archery": "grace",
+        "Art": "cunning",
+        "Artefacting": "intellect",
+        "Athletics": "might",
+        "Barter": "tenacity",
+        "Bewitch": "charm",
+        "Blacksmithing": "intellect",
+        "Bureaucracy": "cunning",
+        "Carouse": "resilience",
         "Centering": "tenacity",
-        "Convince": "charm",
-        "Deceive": "charm",
+        "Convince": "intellect",
+        "Counter-Spelling": "tenacity",
+        "Culinary": "charm",
+        "Deceive": "cunning",
         "Doctor": "intellect",
+        "Enchanting": null,       // Выбирается вручную (Charm или Cunning)
         "Engineering": "intellect",
         "Evade": "speed",
-        "Forgery": "intellect",
-        "Gamble": "cunning",
+        "Explosives": "intellect",
+        "Flexible": "grace",
+        "Forgery": "cunning",
+        "Gambling": "cunning",
+        "Grappling": "speed",
+        "Heavy Guns": "might",
         "Heavy Melee": "might",
         "History": "intellect",
         "Homesteading": "tenacity",
-        "Husbandry": "cunning",
-        "Intimidation": "might",
-        "Labor": "might",
+        "Husbandry": "charm",
+        "Intimidate": "tenacity",
+        "Leadership": "charm",
         "Literacy": "intellect",
         "Lockpicking": "grace",
-        "Long Arms": "grace",
+        "Long Arms": "intellect",
+        "Martial Arts": "speed",
+        "Mathematics": "intellect",
         "Melee": "might",
         "Music": "charm",
-        "Navigation": "cunning",
+        "Necromancy": null,       // Выбирается вручную (Charm или Tenacity)
         "Notice": "cunning",
-        "Perform": "charm",
-        "Pickpocket": "grace",
+        "Pick Pocket": "speed",
         "Pistol": "grace",
+        "Pneumatic": "might",
+        "Prestidigitation": null, // Выбирается вручную (Intellect или Cunning)
+        "Printing": "intellect",
         "Pugilism": "might",
         "Scrutiny": "cunning",
         "Shotgun": "grace",
-        "Sorcery": "tenacity",
+        "Sorcery": null,          // Выбирается вручную (Intellect или Tenacity)
         "Stealth": "cunning",
-        "Stitching": "grace",
-        "Tinkering": "intellect",
+        "Stitching": "tenacity",
+        "Thrown": "grace",
         "Toughness": "resilience",
         "Track": "cunning",
         "Wilderness": "cunning"
@@ -625,7 +642,7 @@
         return 0;
     }
 
-    // Точный расчет Derived Aspects по правилам
+    // Точный расчет Derived Aspects по книге правил
     function updateDerived() {
         const evade = getSkillRank("Evade");
         const centering = getSkillRank("Centering");
@@ -637,7 +654,7 @@
         const baseDef = 2 + defBonus;
         document.getElementById("defenseBase").value = baseDef;
 
-        // Итоговый Defense с учетом надетой брони
+        // Итоговый Defense с учетом штрафа от брони
         const armor = parseInt(document.getElementById("armor").value) || 0;
         const armorPenalty = armor > 0 ? 1 : 0;
         document.getElementById("defenseTotal").value = Math.max(1, baseDef - armorPenalty);
@@ -665,7 +682,7 @@
         document.getElementById("charge").value = Math.max(rawCharge, walkVal);
     }
 
-    // Обработчик ручного изменения брони
+    // Изменение брони вручную
     function updateArmorPenalty() {
         const baseDef = parseInt(document.getElementById("defenseBase").value) || 2;
         const armor = parseInt(document.getElementById("armor").value) || 0;
@@ -673,7 +690,7 @@
         document.getElementById("defenseTotal").value = Math.max(1, baseDef - armorPenalty);
     }
 
-    // Добавление строки навыка (начинается пустой)
+    // Добавление строки навыка
     function addNewSkillRow() {
         const tbody = document.getElementById("skillsList");
         const tr = document.createElement("tr");
@@ -719,6 +736,7 @@
         const skillName = tr.querySelector(".skill-select").value;
         const aspectSelect = tr.querySelector(".skill-aspect");
 
+        // Если для навыка задан базовый аспект — подставляем, иначе ставим прочерк
         if (skillName && skillBook[skillName]) {
             aspectSelect.value = skillBook[skillName];
         } else {
@@ -726,7 +744,7 @@
         }
 
         updateRowAV(tr);
-        updateDerived(); // Если выбрали Evade/Centering/Notice/Toughness
+        updateDerived();
     }
 
     function onRatingChange(tr) {
@@ -754,13 +772,13 @@
         avCell.textContent = totalAV;
     }
 
-    // Обновление всех AV
+    // Обновление всех строк навыков
     function updateAllSkillAVs() {
         const rows = document.querySelectorAll("#skillsList tr");
         rows.forEach(tr => updateRowAV(tr));
     }
 
-    // Стартовая инициализация
+    // Стартовая инициализация параметров
     updateDerived();
 </script>
 
