@@ -660,10 +660,16 @@
         </div>
     </div>
 
-    <!-- ВКЛАДКА 2: GENERAL TALENTS (АККОРДЕОН С ФИЛЬТРОМ) -->
+<!-- ВКЛАДКА 2: GENERAL TALENTS (АККОРДЕОН С ФИЛЬТРОМ) -->
     <div id="tab-talents" class="tab-content">
         <div class="box">
-            <div class="box-header">GENERAL TALENTS</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #33271a; padding-bottom: 6px; margin-bottom: 15px;">
+                <div class="box-header" style="border-bottom: none; margin: 0; padding: 0;">GENERAL TALENTS</div>
+                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #a99e8d; cursor: pointer; user-select: none;">
+                    <input type="checkbox" id="showAllTalentsToggle" onchange="refreshAllTalentSelects()" style="width: 16px; height: 16px; cursor: pointer; accent-color: #c59a5b;">
+                    Показать все таланты (Destiny / игнорировать требования)
+                </label>
+            </div>
             
             <div id="talentsContainer">
                 <!-- Карточки будут появляться тут -->
@@ -834,16 +840,20 @@ function switchTab(tabKey) {
         return true;
     }
 
-// ЛОГИКА ТАЛАНТОВ (АККОРДЕОН С АВТОФИЛЬТРОМ И ГРУППИРОВКОЙ ПО КНИГАМ)
+// ЛОГИКА ТАЛАНТОВ (С ЧЕКБОКСОМ ДЛЯ DESTINY STEPS)
     function getTalentOptionsHtml(selectedVal = "") {
-        let html = `<option value="">-- Выбери подходящий талант --</option>`;
+        let html = `<option value="">-- Выбери талант --</option>`;
         html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' : ''}>★ Свой талант (Custom)</option>`;
         
         if (typeof GENERAL_TALENTS !== 'undefined') {
-            // 1. Фильтруем подходящие по требованиям таланты
-            const availableTalents = GENERAL_TALENTS.filter(t => checkTalentRequirements(t) || t.name === selectedVal);
+            const showAll = document.getElementById("showAllTalentsToggle")?.checked || false;
 
-            // 2. Группируем подходящие таланты по названию книги
+            // 1. Фильтруем таланты: если стоит галка showAll — берем вообще все таланты из базы
+            const availableTalents = GENERAL_TALENTS.filter(t => 
+                showAll || checkTalentRequirements(t) || t.name === selectedVal
+            );
+
+            // 2. Группируем по книгам
             const grouped = {};
             availableTalents.forEach(t => {
                 const bookName = t.book && t.book.trim() ? t.book.trim() : "Other / Core";
@@ -853,11 +863,10 @@ function switchTab(tabKey) {
                 grouped[bookName].push(t);
             });
 
-            // 3. Выводим группы с заголовками <optgroup>, сортируя книги и таланты по алфавиту
+            // 3. Выводим группы с заголовками <optgroup>
             Object.keys(grouped).sort().forEach(book => {
                 html += `<optgroup label="📖 ${book}">`;
                 
-                // Внутри каждой книги сортируем таланты по алфавиту (A-Z)
                 grouped[book].sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
                     const sel = (t.name === selectedVal) ? 'selected' : '';
                     html += `<option value="${t.name}" ${sel}>${t.name}</option>`;
