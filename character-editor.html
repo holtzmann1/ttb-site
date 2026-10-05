@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <script src="talents-data.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Создание персонажа — Through the Breach</title>
+    <!-- ПОДКЛЮЧАЕМ БАЗУ ТАЛАНТОВ -->
+    <script src="talents-data.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -44,7 +45,6 @@
             letter-spacing: 2px;
         }
 
-        /* НАВИГАЦИОННЫЕ ВКЛАДКИ */
         .tab-bar {
             max-width: 1200px;
             margin: 20px auto 0 auto;
@@ -91,7 +91,6 @@
             display: block;
         }
 
-        /* Общие стили полей ввода */
         input[type="text"], input[type="number"], select, textarea {
             background: #14110e;
             border: 1px solid #4a3825;
@@ -127,7 +126,7 @@
             margin-bottom: 25px;
         }
 
-        .box-er {
+        .box-header {
             margin: 0 0 15px 0;
             color: #c59a5b;
             font-size: 20px;
@@ -138,7 +137,6 @@
             padding-bottom: 6px;
         }
 
-        /* ШАПКА */
         .top-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -162,14 +160,12 @@
             text-transform: uppercase;
         }
 
-        /* ОСНОВНОЙ МАКЕТ PURSUIT */
         .sheet-body {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 25px;
         }
 
-        /* АСПЕКТЫ */
         .aspects-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -226,7 +222,6 @@
             font-weight: bold;
         }
 
-        /* DERIVED ASPECTS */
         .derived-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -269,7 +264,6 @@
             font-weight: bold;
         }
 
-        /* АТАКИ */
         .attack-card {
             border: 1px solid #382b1d;
             background: rgba(16, 14, 11, 0.85);
@@ -308,7 +302,6 @@
             font-size: 13px;
         }
 
-        /* ТАБЛИЦА НАВЫКОВ */
         .skills-table {
             width: 100%;
             border-collapse: collapse;
@@ -380,37 +373,63 @@
             background: rgba(184, 138, 74, 0.15);
         }
 
-        /* СТРАНИЦА GENERAL TALENTS */
-        .talents-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 8px;
+        /* АККОРДЕОН ТАЛАНТОВ */
+        .talent-card {
+            border: 1px solid #3d2f21;
+            background: rgba(18, 15, 12, 0.85);
+            margin-bottom: 10px;
         }
 
-        .talents-table th {
-            text-align: left;
+        .talent-header-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             padding: 8px 10px;
+        }
+
+        .toggle-btn {
+            background: transparent;
+            border: 1px solid #4a3825;
             color: #c59a5b;
-            font-size: 14px;
-            letter-spacing: 2px;
-            border-bottom: 1px solid #4a3825;
+            cursor: pointer;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
         }
 
-        .talents-table td {
-            padding: 0 4px;
-            vertical-align: top;
+        .toggle-btn:hover {
+            border-color: #b88a4a;
+            background: rgba(184, 138, 74, 0.15);
         }
 
-        .talent-input-name {
-            font-weight: bold;
-            color: #e8dfd0;
+        .talent-body {
+            display: none;
+            padding: 12px 14px 14px 14px;
+            border-top: 1px solid #2a2015;
+            background: rgba(12, 10, 8, 0.6);
         }
 
-        .talent-input-desc {
-            resize: vertical;
-            min-height: 40px;
-            height: 40px;
+        .talent-meta-info {
+            font-size: 13px;
+            color: #a99e8d;
+            margin-bottom: 8px;
             line-height: 1.4;
+        }
+
+        .talent-meta-info span {
+            color: #c59a5b;
+            font-weight: bold;
+        }
+
+        .talent-desc-area {
+            min-height: 70px;
+            resize: vertical;
+            line-height: 1.5;
+            font-size: 14px;
         }
 
         @media (max-width: 900px) {
@@ -427,7 +446,6 @@
     <div class="sheet-title">CHARACTER SHEET</div>
 </header>
 
-<!-- ВКЛАДКИ -->
 <div class="tab-bar">
     <button class="tab-btn active" onclick="switchTab('pursuit')">PURSUIT</button>
     <button class="tab-btn" onclick="switchTab('talents')">GENERAL TALENTS</button>
@@ -435,10 +453,8 @@
 
 <main>
 
-    <!-- ВКЛАДКА 1: PURSUIT (ОСНОВНОЙ ЛИСТ) -->
+    <!-- ВКЛАДКА 1: PURSUIT -->
     <div id="tab-pursuit" class="tab-content active">
-
-        <!-- ШАПКА ЛИСТА -->
         <div class="top-grid">
             <div class="box">
                 <div class="field-group">
@@ -465,17 +481,11 @@
             </div>
         </div>
 
-        <!-- ТЕЛО ЛИСТА -->
         <div class="sheet-body">
-
-            <!-- ЛЕВАЯ КОЛОНКА -->
             <div>
-                <!-- АСПЕКТЫ -->
                 <div class="box">
                     <div class="box-header">ASPECTS</div>
-
                     <div class="aspects-grid">
-                        <!-- Physical -->
                         <div class="aspect-subgroup">
                             <h4>Physical</h4>
                             <div class="aspect-row">
@@ -512,7 +522,6 @@
                             </div>
                         </div>
 
-                        <!-- Mental -->
                         <div class="aspect-subgroup">
                             <h4>Mental</h4>
                             <div class="aspect-row">
@@ -551,16 +560,15 @@
                     </div>
                 </div>
 
-                <!-- DERIVED ASPECTS -->
                 <div class="box">
                     <div class="box-header">DERIVED ASPECTS</div>
                     <div class="derived-grid">
                         <div class="derived-cell">
                             <span>Defense</span>
                             <div class="defense-container">
-                                <input type="number" id="defenseTotal" value="2" title="Итоговый Defense (со штрафом брони/бафами)">
+                                <input type="number" id="defenseTotal" value="2">
                                 <span>(</span>
-                                <input type="number" id="defenseBase" value="2" title="Базовый Defense без брони">
+                                <input type="number" id="defenseBase" value="2">
                                 <span>)</span>
                             </div>
                         </div>
@@ -568,7 +576,6 @@
                             <span>Walk</span>
                             <input type="number" id="walk" value="4">
                         </div>
-
                         <div class="derived-cell">
                             <span>Armor</span>
                             <input type="number" id="armor" value="0" onchange="updateArmorPenalty()">
@@ -577,7 +584,6 @@
                             <span>Charge</span>
                             <input type="number" id="charge" value="4">
                         </div>
-
                         <div class="derived-cell">
                             <span>Willpower</span>
                             <input type="number" id="willpower" value="2">
@@ -586,7 +592,6 @@
                             <span>Initiative</span>
                             <input type="number" id="initiative" value="0">
                         </div>
-
                         <div class="derived-cell">
                             <span>Wounds</span>
                             <input type="number" id="wounds" value="4">
@@ -598,10 +603,8 @@
                     </div>
                 </div>
 
-                <!-- ATTACKS -->
                 <div class="box">
                     <div class="box-header">ATTACKS</div>
-                    
                     <div class="attack-card">
                         <div class="attack-row-1">
                             <input type="text" placeholder="Attack Name (Оружие)">
@@ -636,7 +639,6 @@
                 </div>
             </div>
 
-            <!-- ПРАВАЯ КОЛОНКА: SKILLS -->
             <div>
                 <div class="box">
                     <div class="box-header">SKILLS</div>
@@ -650,54 +652,30 @@
                                 <th style="width: 35px;"></th>
                             </tr>
                         </thead>
-                        <tbody id="skillsList">
-                            <!-- Пусто при старте -->
-                        </tbody>
+                        <tbody id="skillsList"></tbody>
                     </table>
                     <button class="add-row-btn" onclick="addNewSkillRow()">+ ДОБАВИТЬ НАВЫК</button>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <!-- ВКЛАДКА 2: GENERAL TALENTS -->
+    <!-- ВКЛАДКА 2: GENERAL TALENTS (АККОРДЕОН) -->
     <div id="tab-talents" class="tab-content">
         <div class="box">
-            <div class="box-header">TALENTS</div>
+            <div class="box-header">GENERAL TALENTS</div>
             
-            <table class="talents-table">
-                <thead>
-                    <tr>
-                        <th style="width: 250px;">GENERAL TALENTS</th>
-                        <th>DESCRIPTION</th>
-                        <th style="width: 40px;"></th>
-                    </tr>
-                </thead>
-                <tbody id="talentsList">
-                    <!-- Ровно 1 строка на старте -->
-                    <tr>
-                        <td>
-                            <input type="text" class="talent-input-name" placeholder="Название таланта">
-                        </td>
-                        <td>
-                            <textarea class="talent-input-desc" placeholder="Описание эффекта или правил таланта"></textarea>
-                        </td>
-                        <td>
-                            <button class="del-btn" onclick="deleteTalentRow(this.closest('tr'))" title="Удалить">✕</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div id="talentsContainer">
+                <!-- Карточки будут появляться тут -->
+            </div>
 
-            <button class="add-row-btn" onclick="addNewTalentRow()">+ ДОБАВИТЬ ТАЛАНТ</button>
+            <button class="add-row-btn" onclick="addNewTalentCard()">+ ДОБАВИТЬ ТАЛАНТ</button>
         </div>
     </div>
 
 </main>
 
 <script>
-    // ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК
     function switchTab(tabKey) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
@@ -711,35 +689,89 @@
         }
     }
 
-    // ТАЛАНТЫ: функции добавления и удаления
-    function addNewTalentRow() {
-        const tbody = document.getElementById("talentsList");
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>
-                <input type="text" class="talent-input-name" placeholder="Название таланта">
-            </td>
-            <td>
-                <textarea class="talent-input-desc" placeholder="Описание эффекта или правил таланта"></textarea>
-            </td>
-            <td>
-                <button class="del-btn" onclick="deleteTalentRow(this.closest('tr'))" title="Удалить">✕</button>
-            </td>
+    // ЛОГИКА ТАЛАНТОВ (АККОРДЕОН)
+    function getTalentOptionsHtml() {
+        let html = `<option value="">-- Выбери талант из списка --</option>`;
+        html += `<option value="__custom__">★ Свой талант (Custom)</option>`;
+        if (typeof GENERAL_TALENTS !== 'undefined') {
+            GENERAL_TALENTS.forEach(t => {
+                html += `<option value="${t.name}">${t.name}</option>`;
+            });
+        }
+        return html;
+    }
+
+    function addNewTalentCard() {
+        const container = document.getElementById("talentsContainer");
+        const card = document.createElement("div");
+        card.className = "talent-card";
+
+        card.innerHTML = `
+            <div class="talent-header-row">
+                <button type="button" class="toggle-btn" onclick="toggleTalentAccordion(this)" title="Развернуть/Свернуть">▼</button>
+                <select class="talent-select" onchange="onTalentSelectChange(this)" style="flex: 1;">
+                    ${getTalentOptionsHtml()}
+                </select>
+                <input type="text" class="custom-name-input" placeholder="Название своего таланта" style="display: none; flex: 1;">
+                <button type="button" class="del-btn" onclick="deleteTalentCard(this)" title="Удалить">✕</button>
+            </div>
+            <div class="talent-body">
+                <div class="talent-meta-info">
+                    Требования: <span class="talent-req">—</span> | Книга: <span class="talent-book">—</span>
+                </div>
+                <textarea class="talent-desc-area" placeholder="Описание правил или эффекта..."></textarea>
+            </div>
         `;
-        tbody.appendChild(tr);
+        container.appendChild(card);
     }
 
-    function deleteTalentRow(tr) {
-        tr.remove();
+    function toggleTalentAccordion(btn) {
+        const card = btn.closest(".talent-card");
+        const body = card.querySelector(".talent-body");
+        const isOpen = body.style.display === "block";
+        body.style.display = isOpen ? "none" : "block";
+        btn.textContent = isOpen ? "▼" : "▲";
     }
 
-    // АСПЕКТЫ
+    function onTalentSelectChange(select) {
+        const card = select.closest(".talent-card");
+        const customInput = card.querySelector(".custom-name-input");
+        const reqSpan = card.querySelector(".talent-req");
+        const bookSpan = card.querySelector(".talent-book");
+        const descArea = card.querySelector(".talent-desc-area");
+        const val = select.value;
+
+        if (val === "__custom__") {
+            select.style.display = "none";
+            customInput.style.display = "block";
+            customInput.focus();
+            reqSpan.textContent = "Любые";
+            bookSpan.textContent = "Custom";
+            descArea.value = "";
+        } else if (val && typeof GENERAL_TALENTS !== 'undefined') {
+            const found = GENERAL_TALENTS.find(t => t.name === val);
+            if (found) {
+                reqSpan.textContent = found.req || "None";
+                bookSpan.textContent = found.book || "—";
+                descArea.value = found.desc || "";
+            }
+        } else {
+            reqSpan.textContent = "—";
+            bookSpan.textContent = "—";
+            descArea.value = "";
+        }
+    }
+
+    function deleteTalentCard(btn) {
+        btn.closest(".talent-card").remove();
+    }
+
+    // АСПЕКТЫ И ДАННЫЕ ЛИСТА
     const aspects = {
         might: 0, grace: 0, speed: 0, resilience: 0,
         intellect: 0, charm: 0, cunning: 0, tenacity: 0
     };
 
-    // Навыки по 8 категориям
     const skillCategories = {
         "Academic": {
             "Bureaucracy": "cunning",
@@ -993,6 +1025,7 @@
     }
 
     updateDerived();
+    addNewTalentCard();
 </script>
 
 </body>
