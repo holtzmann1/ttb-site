@@ -83,7 +83,7 @@
             padding-bottom: 6px;
         }
 
-        /* 1. ШАПКА ЛИСТА (HEADER) */
+        /* ШАПКА */
         .top-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -107,14 +107,14 @@
             text-transform: uppercase;
         }
 
-        /* 2. ДВУХКОЛОНОЧНЫЙ МАКЕТ (КАК В ОРИГИНАЛЕ) */
+        /* ОСНОВНОЙ МАКЕТ */
         .sheet-body {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 25px;
         }
 
-        /* Аспекты Physical / Mental */
+        /* АСПЕКТЫ */
         .aspects-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -171,24 +171,7 @@
             font-weight: bold;
         }
 
-        /* Кнопка генерации */
-        .gen-btn {
-            width: 100%;
-            padding: 10px;
-            background: transparent;
-            border: 1px dashed #b88a4a;
-            color: #c59a5b;
-            cursor: pointer;
-            letter-spacing: 1px;
-            font-family: Georgia, serif;
-            margin-bottom: 15px;
-        }
-
-        .gen-btn:hover {
-            background: rgba(184, 138, 74, 0.15);
-        }
-
-        /* Derived Aspects */
+        /* DERIVED ASPECTS */
         .derived-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -201,21 +184,37 @@
             align-items: center;
             background: rgba(20, 17, 14, 0.8);
             border: 1px solid #382b1d;
-            padding: 8px 12px;
+            padding: 6px 10px;
         }
 
         .derived-cell span:first-child {
             color: #a99e8d;
-            font-size: 14px;
+            font-size: 13px;
         }
 
-        .derived-val {
-            font-size: 18px;
+        .derived-cell input {
+            width: 65px;
+            text-align: center;
+            padding: 4px;
+            font-size: 16px;
             font-weight: bold;
-            color: #fff;
         }
 
-        /* Справка по атакам */
+        .defense-container {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .defense-container input {
+            width: 44px;
+            text-align: center;
+            padding: 4px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        /* АТАКИ */
         .attack-card {
             border: 1px solid #382b1d;
             background: rgba(16, 14, 11, 0.85);
@@ -254,7 +253,7 @@
             font-size: 13px;
         }
 
-        /* Таблица навыков (правая колонка) */
+        /* ТАБЛИЦА НАВЫКОВ */
         .skills-table {
             width: 100%;
             border-collapse: collapse;
@@ -283,19 +282,34 @@
             width: 45px;
         }
 
-        .add-skill-btn {
-            margin-top: 10px;
-            padding: 8px;
+        .del-btn {
             background: transparent;
             border: 1px solid #4a3825;
+            color: #8f8679;
+            cursor: pointer;
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        .del-btn:hover {
+            color: #e57373;
+            border-color: #e57373;
+        }
+
+        .add-skill-btn {
+            margin-top: 15px;
+            padding: 10px;
+            background: transparent;
+            border: 1px dashed #b88a4a;
             color: #c59a5b;
             cursor: pointer;
             font-family: Georgia, serif;
+            letter-spacing: 1px;
             width: 100%;
         }
 
         .add-skill-btn:hover {
-            border-color: #b88a4a;
+            background: rgba(184, 138, 74, 0.15);
         }
 
         @media (max-width: 900px) {
@@ -308,23 +322,23 @@
 <body>
 
 <header>
-    <a href="characters.html" class="back-button">← НАЗАД К СПИСКУ</a>
+    <a href="characters.html" class="back-button">← НАЗАД К ПЕРСОНАЖАМ</a>
     <div class="sheet-title">CHARACTER SHEET</div>
 </header>
 
 <main>
 
-    <!-- 1. ШАПКА ЛИСТА ПЕРСОНАЖА -->
+    <!-- ШАПКА ЛИСТА -->
     <div class="top-grid">
         <div class="box">
             <div class="field-group">
                 <label>Fated Name</label>
-                <input type="text" id="charName" placeholder="Имя персонажа">
+                <input type="text" id="charName" placeholder="И что ты придумал на этот раз?">
             </div>
             <div class="label-row">
                 <div class="field-group">
                     <label>Player Name</label>
-                    <input type="text" id="playerName" placeholder="Имя игрока">
+                    <input type="text" id="playerName" placeholder="Напиши здесь свое красивое имя">
                 </div>
                 <div class="field-group">
                     <label>Species</label>
@@ -336,24 +350,19 @@
         <div class="box">
             <div class="field-group">
                 <label>Current Pursuits</label>
-                <input type="text" id="pursuit" placeholder="Текущая профессия">
-            </div>
-            <div class="field-group" style="margin-top: 10px;">
-                <label>Characteristics</label>
-                <input type="text" id="characteristics" placeholder="Особенности / Дескрипторы">
+                <input type="text" id="pursuit" placeholder="Пиши сюда свой класс">
             </div>
         </div>
     </div>
 
-    <!-- 2. ОСНОВНОЕ ТЕЛО ЛИСТА -->
+    <!-- ТЕЛО ЛИСТА -->
     <div class="sheet-body">
 
-        <!-- ЛЕВАЯ КОЛОНКА: АСПЕКТЫ, ПРОИЗВОДНЫЕ И АТАКИ -->
+        <!-- ЛЕВАЯ КОЛОНКА -->
         <div>
-            <!-- Аспекты -->
+            <!-- АСПЕКТЫ -->
             <div class="box">
                 <div class="box-header">ASPECTS</div>
-                <button class="gen-btn" onclick="randomizeStats()">🎲 Сгенерировать статы (Fate Draw)</button>
 
                 <div class="aspects-grid">
                     <!-- Physical -->
@@ -432,49 +441,55 @@
                 </div>
             </div>
 
-            <!-- Производные характеристики -->
+            <!-- DERIVED ASPECTS -->
             <div class="box">
                 <div class="box-header">DERIVED ASPECTS</div>
                 <div class="derived-grid">
+                    <!-- Defense с двумя изменяемыми полями -->
                     <div class="derived-cell">
                         <span>Defense</span>
-                        <span class="derived-val" id="defense">2</span>
+                        <div class="defense-container">
+                            <input type="number" id="defenseTotal" value="2" title="Итоговый Defense (со штрафом брони/бафами)">
+                            <span>(</span>
+                            <input type="number" id="defenseBase" value="2" title="Базовый Defense без брони">
+                            <span>)</span>
+                        </div>
                     </div>
                     <div class="derived-cell">
                         <span>Walk</span>
-                        <span class="derived-val" id="walk">4</span>
+                        <input type="number" id="walk" value="4">
                     </div>
 
                     <div class="derived-cell">
                         <span>Armor</span>
-                        <input type="number" id="armor" value="0" style="width: 50px; text-align: center; padding: 2px;">
+                        <input type="number" id="armor" value="0" onchange="updateArmorPenalty()">
                     </div>
                     <div class="derived-cell">
                         <span>Charge</span>
-                        <span class="derived-val" id="charge">4</span>
+                        <input type="number" id="charge" value="4">
                     </div>
 
                     <div class="derived-cell">
                         <span>Willpower</span>
-                        <span class="derived-val" id="willpower">3</span>
+                        <input type="number" id="willpower" value="2">
                     </div>
                     <div class="derived-cell">
                         <span>Initiative</span>
-                        <span class="derived-val" id="initiative">0</span>
+                        <input type="number" id="initiative" value="0">
                     </div>
 
                     <div class="derived-cell">
                         <span>Wounds</span>
-                        <span class="derived-val" id="wounds">6</span>
+                        <input type="number" id="wounds" value="4">
                     </div>
                     <div class="derived-cell">
                         <span>Height</span>
-                        <input type="number" id="height" value="2" style="width: 50px; text-align: center; padding: 2px;">
+                        <input type="number" id="height" value="2">
                     </div>
                 </div>
             </div>
 
-            <!-- Атаки и оружие -->
+            <!-- ATTACKS -->
             <div class="box">
                 <div class="box-header">ATTACKS</div>
                 
@@ -492,7 +507,7 @@
                         <div><label>Reload</label><input type="text" placeholder="-"></div>
                         <div><label>TN</label><input type="text" placeholder="-"></div>
                     </div>
-                    <input type="text" placeholder="Triggers (например: Tome: Critical Strike)">
+                    <input type="text" placeholder="Triggers (например: Ram: Critical Strike)">
                 </div>
 
                 <!-- Атака 2 -->
@@ -509,12 +524,12 @@
                         <div><label>Reload</label><input type="text" placeholder="1"></div>
                         <div><label>TN</label><input type="text" placeholder="-"></div>
                     </div>
-                    <input type="text" placeholder="Triggers">
+                    <input type="text" placeholder="Triggers (например: Ram: Critical Strike)">
                 </div>
             </div>
         </div>
 
-        <!-- ПРАВАЯ КОЛОНКА: ТАБЛИЦА НАВЫКОВ -->
+        <!-- ПРАВАЯ КОЛОНКА: SKILLS -->
         <div>
             <div class="box">
                 <div class="box-header">SKILLS</div>
@@ -522,16 +537,17 @@
                     <thead>
                         <tr>
                             <th>SKILL</th>
-                            <th style="width: 55px; text-align: center;">AV</th>
+                            <th style="width: 50px; text-align: center;">AV</th>
                             <th style="width: 65px; text-align: center;">RATING</th>
-                            <th style="width: 110px;">ASPECT</th>
+                            <th style="width: 115px;">ASPECT</th>
+                            <th style="width: 35px;"></th>
                         </tr>
                     </thead>
                     <tbody id="skillsList">
-                        <!-- Навыки генерируются и пересчитываются через JS -->
+                        <!-- Изначально пусто -->
                     </tbody>
                 </table>
-                <button class="add-skill-btn" onclick="addNewSkillRow('', 0, 'might')">+ ДОБАВИТЬ НАВЫК</button>
+                <button class="add-skill-btn" onclick="addNewSkillRow()">+ ДОБАВИТЬ НАВЫК</button>
             </div>
         </div>
 
@@ -540,31 +556,56 @@
 </main>
 
 <script>
-    // 1. Состояние аспектов
+    // 1. Аспекты
     const aspects = {
         might: 0, grace: 0, speed: 0, resilience: 0,
         intellect: 0, charm: 0, cunning: 0, tenacity: 0
     };
 
-    // Стартовый базовый список навыков Through the Breach
-    const defaultSkills = [
-        { name: "Melee", rating: 1, aspect: "might" },
-        { name: "Pugilism", rating: 0, aspect: "might" },
-        { name: "Heavy Melee", rating: 0, aspect: "might" },
-        { name: "Pistol", rating: 1, aspect: "grace" },
-        { name: "Long Arms", rating: 0, aspect: "grace" },
-        { name: "Evade", rating: 1, aspect: "speed" },
-        { name: "Athletics", rating: 0, aspect: "speed" },
-        { name: "Toughness", rating: 0, aspect: "resilience" },
-        { name: "Notice", rating: 1, aspect: "cunning" },
-        { name: "Stealth", rating: 0, aspect: "cunning" },
-        { name: "Convince", rating: 0, aspect: "charm" },
-        { name: "Deceive", rating: 0, aspect: "charm" },
-        { name: "Doctor", rating: 0, aspect: "intellect" },
-        { name: "Centering", rating: 1, aspect: "tenacity" }
-    ];
+    // Базовый справочник навыков Through the Breach и их аспекты по умолчанию
+    const skillBook = {
+        "Artifacting": "intellect",
+        "Appraise": "cunning",
+        "Athletics": "speed",
+        "Barter": "charm",
+        "Bureaucracy": "intellect",
+        "Centering": "tenacity",
+        "Convince": "charm",
+        "Deceive": "charm",
+        "Doctor": "intellect",
+        "Engineering": "intellect",
+        "Evade": "speed",
+        "Forgery": "intellect",
+        "Gamble": "cunning",
+        "Heavy Melee": "might",
+        "History": "intellect",
+        "Homesteading": "tenacity",
+        "Husbandry": "cunning",
+        "Intimidation": "might",
+        "Labor": "might",
+        "Literacy": "intellect",
+        "Lockpicking": "grace",
+        "Long Arms": "grace",
+        "Melee": "might",
+        "Music": "charm",
+        "Navigation": "cunning",
+        "Notice": "cunning",
+        "Perform": "charm",
+        "Pickpocket": "grace",
+        "Pistol": "grace",
+        "Pugilism": "might",
+        "Scrutiny": "cunning",
+        "Shotgun": "grace",
+        "Sorcery": "tenacity",
+        "Stealth": "cunning",
+        "Stitching": "grace",
+        "Tinkering": "intellect",
+        "Toughness": "resilience",
+        "Track": "cunning",
+        "Wilderness": "cunning"
+    };
 
-    // Ручное изменение аспекта через кнопки + / -
+    // Изменение аспекта вручную (+/-)
     function modAspect(stat, delta) {
         aspects[stat] += delta;
         document.getElementById(stat).textContent = aspects[stat];
@@ -572,82 +613,154 @@
         updateAllSkillAVs();
     }
 
-    // Генерация статов (симуляция расклада Fate Deck)
-    function randomizeStats() {
-        // Официальный балансировочный пул очков TTB (от сильных сторон к слабым)
-        const spread = [2, 1, 1, 0, 0, 0, -1, -1];
-        
-        // Случайно перемешиваем значения
-        for (let i = spread.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [spread[i], spread[j]] = [spread[j], spread[i]];
+    // Вспомогательная: получить ранг конкретного навыка
+    function getSkillRank(skillName) {
+        const rows = document.querySelectorAll("#skillsList tr");
+        for (let tr of rows) {
+            const select = tr.querySelector(".skill-select");
+            if (select && select.value.toLowerCase() === skillName.toLowerCase()) {
+                return parseInt(tr.querySelector(".skill-rating").value) || 0;
+            }
         }
-
-        const keys = Object.keys(aspects);
-        keys.forEach((key, index) => {
-            aspects[key] = spread[index];
-            document.getElementById(key).textContent = aspects[key];
-        });
-
-        updateDerived();
-        updateAllSkillAVs();
+        return 0;
     }
 
-    // Расчет производных характеристик
+    // Точный расчет Derived Aspects по правилам
     function updateDerived() {
-        document.getElementById("defense").textContent = 2 + aspects.speed;
-        document.getElementById("walk").textContent = 4 + aspects.speed;
-        document.getElementById("charge").textContent = 4 + aspects.speed;
-        document.getElementById("initiative").textContent = aspects.speed;
-        document.getElementById("willpower").textContent = 3 + aspects.tenacity;
-        document.getElementById("wounds").textContent = 6 + aspects.resilience;
+        const evade = getSkillRank("Evade");
+        const centering = getSkillRank("Centering");
+        const notice = getSkillRank("Notice");
+        const toughness = getSkillRank("Toughness");
+
+        // 1. Defense: 2 + max(0, Evade, Speed)
+        const defBonus = Math.max(0, evade, aspects.speed);
+        const baseDef = 2 + defBonus;
+        document.getElementById("defenseBase").value = baseDef;
+
+        // Итоговый Defense с учетом надетой брони
+        const armor = parseInt(document.getElementById("armor").value) || 0;
+        const armorPenalty = armor > 0 ? 1 : 0;
+        document.getElementById("defenseTotal").value = Math.max(1, baseDef - armorPenalty);
+
+        // 2. Willpower: 2 + max(0, Centering, Tenacity)
+        const wpBonus = Math.max(0, centering, aspects.tenacity);
+        document.getElementById("willpower").value = 2 + wpBonus;
+
+        // 3. Initiative: Speed + Notice
+        document.getElementById("initiative").value = aspects.speed + notice;
+
+        // 4. Wounds: 4 + Toughness + (Resilience > 0 ? ceil(Resilience / 2) : 0)
+        let resBonus = 0;
+        if (aspects.resilience > 0) {
+            resBonus = Math.ceil(aspects.resilience / 2);
+        }
+        document.getElementById("wounds").value = 4 + toughness + resBonus;
+
+        // 5. Walk: 4 + Speed / 2 (округление вверх)
+        const walkVal = 4 + Math.ceil(aspects.speed / 2);
+        document.getElementById("walk").value = walkVal;
+
+        // 6. Charge: 4 + Speed (не меньше Walk)
+        const rawCharge = 4 + aspects.speed;
+        document.getElementById("charge").value = Math.max(rawCharge, walkVal);
     }
 
-    // Добавление строки навыка
-    function addNewSkillRow(name = "", rating = 0, aspect = "might") {
+    // Обработчик ручного изменения брони
+    function updateArmorPenalty() {
+        const baseDef = parseInt(document.getElementById("defenseBase").value) || 2;
+        const armor = parseInt(document.getElementById("armor").value) || 0;
+        const armorPenalty = armor > 0 ? 1 : 0;
+        document.getElementById("defenseTotal").value = Math.max(1, baseDef - armorPenalty);
+    }
+
+    // Добавление строки навыка (начинается пустой)
+    function addNewSkillRow() {
         const tbody = document.getElementById("skillsList");
         const tr = document.createElement("tr");
 
+        let options = `<option value="">-- Выбери навык --</option>`;
+        for (let sk of Object.keys(skillBook).sort()) {
+            options += `<option value="${sk}">${sk}</option>`;
+        }
+
         tr.innerHTML = `
-            <td><input type="text" value="${name}" placeholder="Название навыка"></td>
-            <td class="av-val">0</td>
-            <td><input type="number" class="skill-rating" value="${rating}" min="0" max="5" onchange="updateRowAV(this.closest('tr'))"></td>
+            <td>
+                <select class="skill-select" onchange="onSkillSelectChange(this.closest('tr'))">
+                    ${options}
+                </select>
+            </td>
+            <td class="av-val">—</td>
+            <td>
+                <input type="number" class="skill-rating" value="0" min="0" max="5" onchange="onRatingChange(this.closest('tr'))">
+            </td>
             <td>
                 <select class="skill-aspect" onchange="updateRowAV(this.closest('tr'))">
-                    <option value="might" ${aspect === 'might' ? 'selected' : ''}>Might</option>
-                    <option value="grace" ${aspect === 'grace' ? 'selected' : ''}>Grace</option>
-                    <option value="speed" ${aspect === 'speed' ? 'selected' : ''}>Speed</option>
-                    <option value="resilience" ${aspect === 'resilience' ? 'selected' : ''}>Resilience</option>
-                    <option value="intellect" ${aspect === 'intellect' ? 'selected' : ''}>Intellect</option>
-                    <option value="charm" ${aspect === 'charm' ? 'selected' : ''}>Charm</option>
-                    <option value="cunning" ${aspect === 'cunning' ? 'selected' : ''}>Cunning</option>
-                    <option value="tenacity" ${aspect === 'tenacity' ? 'selected' : ''}>Tenacity</option>
+                    <option value="">—</option>
+                    <option value="might">Might</option>
+                    <option value="grace">Grace</option>
+                    <option value="speed">Speed</option>
+                    <option value="resilience">Resilience</option>
+                    <option value="intellect">Intellect</option>
+                    <option value="charm">Charm</option>
+                    <option value="cunning">Cunning</option>
+                    <option value="tenacity">Tenacity</option>
                 </select>
+            </td>
+            <td>
+                <button class="del-btn" onclick="deleteSkillRow(this.closest('tr'))" title="Удалить">✕</button>
             </td>
         `;
 
         tbody.appendChild(tr);
-        updateRowAV(tr);
     }
 
-    // Подсчет AV для конкретной строки: AV = Rating + выбранный Аспект
+    // При выборе навыка из выпадающего списка
+    function onSkillSelectChange(tr) {
+        const skillName = tr.querySelector(".skill-select").value;
+        const aspectSelect = tr.querySelector(".skill-aspect");
+
+        if (skillName && skillBook[skillName]) {
+            aspectSelect.value = skillBook[skillName];
+        } else {
+            aspectSelect.value = "";
+        }
+
+        updateRowAV(tr);
+        updateDerived(); // Если выбрали Evade/Centering/Notice/Toughness
+    }
+
+    function onRatingChange(tr) {
+        updateRowAV(tr);
+        updateDerived();
+    }
+
+    function deleteSkillRow(tr) {
+        tr.remove();
+        updateDerived();
+    }
+
+    // Расчет AV строки: AV = Rating + Аспект
     function updateRowAV(tr) {
         const rating = parseInt(tr.querySelector(".skill-rating").value) || 0;
         const aspectKey = tr.querySelector(".skill-aspect").value;
         const avCell = tr.querySelector(".av-val");
-        
+
+        if (!aspectKey) {
+            avCell.textContent = "—";
+            return;
+        }
+
         const totalAV = rating + (aspects[aspectKey] || 0);
         avCell.textContent = totalAV;
     }
 
-    // Пересчет AV сразу во всей таблице навыков
+    // Обновление всех AV
     function updateAllSkillAVs() {
         const rows = document.querySelectorAll("#skillsList tr");
         rows.forEach(tr => updateRowAV(tr));
     }
 
-    // Инициализация при старте
-    defaultSkills.forEach(s => addNewSkillRow(s.name, s.rating, s.aspect));
+    // Стартовая инициализация
     updateDerived();
 </script>
 
