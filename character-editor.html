@@ -65,6 +65,19 @@
             border-color: #b88a4a;
         }
 
+        optgroup {
+            background: #1e1914;
+            color: #c59a5b;
+            font-style: normal;
+            font-weight: bold;
+        }
+
+        option {
+            background: #14110e;
+            color: #e8dfd0;
+            font-weight: normal;
+        }
+
         .box {
             border: 1px solid #4a3825;
             background: rgba(10, 9, 8, 0.6);
@@ -544,7 +557,7 @@
                         </tr>
                     </thead>
                     <tbody id="skillsList">
-                        <!-- На старте пустая таблица -->
+                        <!-- На старте пусто -->
                     </tbody>
                 </table>
                 <button class="add-skill-btn" onclick="addNewSkillRow()">+ ДОБАВИТЬ НАВЫК</button>
@@ -562,65 +575,104 @@
         intellect: 0, charm: 0, cunning: 0, tenacity: 0
     };
 
-    // Справочник навыков строго по таблице (null = выбор вручную игроком)
-    const skillBook = {
-        "Acrobatics": "grace",
-        "Alchemistry": "intellect",
-        "Archery": "grace",
-        "Art": "cunning",
-        "Artefacting": "intellect",
-        "Athletics": "might",
-        "Barter": "tenacity",
-        "Bewitch": "charm",
-        "Blacksmithing": "intellect",
-        "Bureaucracy": "cunning",
-        "Carouse": "resilience",
-        "Centering": "tenacity",
-        "Convince": "intellect",
-        "Counter-Spelling": "tenacity",
-        "Culinary": "charm",
-        "Deceive": "cunning",
-        "Doctor": "intellect",
-        "Enchanting": null,       // Выбирается вручную (Charm или Cunning)
-        "Engineering": "intellect",
-        "Evade": "speed",
-        "Explosives": "intellect",
-        "Flexible": "grace",
-        "Forgery": "cunning",
-        "Gambling": "cunning",
-        "Grappling": "speed",
-        "Heavy Guns": "might",
-        "Heavy Melee": "might",
-        "History": "intellect",
-        "Homesteading": "tenacity",
-        "Husbandry": "charm",
-        "Intimidate": "tenacity",
-        "Leadership": "charm",
-        "Literacy": "intellect",
-        "Lockpicking": "grace",
-        "Long Arms": "intellect",
-        "Martial Arts": "speed",
-        "Mathematics": "intellect",
-        "Melee": "might",
-        "Music": "charm",
-        "Necromancy": null,       // Выбирается вручную (Charm или Tenacity)
-        "Notice": "cunning",
-        "Pick Pocket": "speed",
-        "Pistol": "grace",
-        "Pneumatic": "might",
-        "Prestidigitation": null, // Выбирается вручную (Intellect или Cunning)
-        "Printing": "intellect",
-        "Pugilism": "might",
-        "Scrutiny": "cunning",
-        "Shotgun": "grace",
-        "Sorcery": null,          // Выбирается вручную (Intellect или Tenacity)
-        "Stealth": "cunning",
-        "Stitching": "tenacity",
-        "Thrown": "grace",
-        "Toughness": "resilience",
-        "Track": "cunning",
-        "Wilderness": "cunning"
+    // Навыки, разбитые по 8 категориям
+    const skillCategories = {
+        "Academic": {
+            "Bureaucracy": "cunning",
+            "Engineering": "intellect",
+            "History": "intellect",
+            "Literacy": "intellect",
+            "Mathematics": "intellect",
+            "Music": "charm"
+        },
+        "Close Combat": {
+            "Flexible": "grace",
+            "Grappling": "speed",
+            "Heavy Melee": "might",
+            "Martial Arts": "speed",
+            "Melee": "might",
+            "Pneumatic": "might",
+            "Pugilism": "might"
+        },
+        "Crafting": {
+            "Alchemistry": "intellect",
+            "Art": "cunning",
+            "Artefacting": "intellect",
+            "Blacksmithing": "intellect",
+            "Culinary": "charm",
+            "Explosives": "intellect",
+            "Homesteading": "tenacity",
+            "Printing": "intellect",
+            "Stitching": "tenacity"
+        },
+        "Expertise": {
+            "Doctor": "intellect",
+            "Forgery": "cunning",
+            "Gambling": "cunning",
+            "Husbandry": "charm",
+            "Lockpicking": "grace",
+            "Notice": "cunning",
+            "Track": "cunning",
+            "Wilderness": "cunning"
+        },
+        "Magical": {
+            "Counter-Spelling": "tenacity",
+            "Enchanting": ["charm", "cunning"],
+            "Necromancy": ["charm", "tenacity"],
+            "Prestidigitation": ["intellect", "cunning"],
+            "Sorcery": ["intellect", "tenacity"]
+        },
+        "Ranged Combat": {
+            "Archery": "grace",
+            "Heavy Guns": "might",
+            "Long Arms": "intellect",
+            "Pistol": "grace",
+            "Shotgun": "grace",
+            "Thrown": "grace"
+        },
+        "Social": {
+            "Barter": "tenacity",
+            "Bewitch": "charm",
+            "Convince": "intellect",
+            "Deceive": "cunning",
+            "Intimidate": "tenacity",
+            "Leadership": "charm",
+            "Scrutiny": "cunning"
+        },
+        "Training": {
+            "Acrobatics": "grace",
+            "Athletics": "might",
+            "Carouse": "resilience",
+            "Centering": "tenacity",
+            "Evade": "speed",
+            "Pick Pocket": "speed",
+            "Stealth": "cunning",
+            "Toughness": "resilience"
+        }
     };
+
+    // Найти конфигурацию аспекта по имени навыка
+    function findSkillAspectDef(name) {
+        for (let cat in skillCategories) {
+            if (skillCategories[cat][name] !== undefined) {
+                return skillCategories[cat][name];
+            }
+        }
+        return "";
+    }
+
+    // Генерация HTML для optgroup выпадающего списка
+    function getSkillOptionsHtml() {
+        let html = `<option value="">-- Выбери навык --</option>`;
+        for (let cat in skillCategories) {
+            html += `<optgroup label="${cat}">`;
+            for (let sk of Object.keys(skillCategories[cat]).sort()) {
+                html += `<option value="${sk}">${sk}</option>`;
+            }
+            html += `</optgroup>`;
+        }
+        return html;
+    }
 
     // Изменение аспекта вручную (+/-)
     function modAspect(stat, delta) {
@@ -630,19 +682,21 @@
         updateAllSkillAVs();
     }
 
-    // Вспомогательная: получить ранг конкретного навыка
+    // Вспомогательная: получить максимальный ранг навыка по имени
     function getSkillRank(skillName) {
         const rows = document.querySelectorAll("#skillsList tr");
+        let maxRank = 0;
         for (let tr of rows) {
             const select = tr.querySelector(".skill-select");
             if (select && select.value.toLowerCase() === skillName.toLowerCase()) {
-                return parseInt(tr.querySelector(".skill-rating").value) || 0;
+                const rank = parseInt(tr.querySelector(".skill-rating").value) || 0;
+                if (rank > maxRank) maxRank = rank;
             }
         }
-        return 0;
+        return maxRank;
     }
 
-    // Точный расчет Derived Aspects по книге правил
+    // Точный расчет Derived Aspects по правилам
     function updateDerived() {
         const evade = getSkillRank("Evade");
         const centering = getSkillRank("Centering");
@@ -654,7 +708,7 @@
         const baseDef = 2 + defBonus;
         document.getElementById("defenseBase").value = baseDef;
 
-        // Итоговый Defense с учетом штрафа от брони
+        // Итоговый Defense с учетом брони
         const armor = parseInt(document.getElementById("armor").value) || 0;
         const armorPenalty = armor > 0 ? 1 : 0;
         document.getElementById("defenseTotal").value = Math.max(1, baseDef - armorPenalty);
@@ -682,7 +736,6 @@
         document.getElementById("charge").value = Math.max(rawCharge, walkVal);
     }
 
-    // Изменение брони вручную
     function updateArmorPenalty() {
         const baseDef = parseInt(document.getElementById("defenseBase").value) || 2;
         const armor = parseInt(document.getElementById("armor").value) || 0;
@@ -690,25 +743,22 @@
         document.getElementById("defenseTotal").value = Math.max(1, baseDef - armorPenalty);
     }
 
-    // Добавление строки навыка
-    function addNewSkillRow() {
-        const tbody = document.getElementById("skillsList");
+    // Создание шаблона строки навыка
+    function createRowElement(groupId = null) {
         const tr = document.createElement("tr");
-
-        let options = `<option value="">-- Выбери навык --</option>`;
-        for (let sk of Object.keys(skillBook).sort()) {
-            options += `<option value="${sk}">${sk}</option>`;
+        if (groupId) {
+            tr.setAttribute("data-group", groupId);
         }
 
         tr.innerHTML = `
             <td>
                 <select class="skill-select" onchange="onSkillSelectChange(this.closest('tr'))">
-                    ${options}
+                    ${getSkillOptionsHtml()}
                 </select>
             </td>
             <td class="av-val">—</td>
             <td>
-                <input type="number" class="skill-rating" value="0" min="0" max="5" onchange="onRatingChange(this.closest('tr'))">
+                <input type="number" class="skill-rating" value="0" min="0" max="5" oninput="onRatingChange(this.closest('tr'))">
             </td>
             <td>
                 <select class="skill-aspect" onchange="updateRowAV(this.closest('tr'))">
@@ -727,37 +777,79 @@
                 <button class="del-btn" onclick="deleteSkillRow(this.closest('tr'))" title="Удалить">✕</button>
             </td>
         `;
+        return tr;
+    }
 
+    // Кнопка "+ Добавить навык"
+    function addNewSkillRow() {
+        const tbody = document.getElementById("skillsList");
+        const tr = createRowElement();
         tbody.appendChild(tr);
     }
 
-    // При выборе навыка из выпадающего списка
+    // При смене выбранного навыка в строке
     function onSkillSelectChange(tr) {
         const skillName = tr.querySelector(".skill-select").value;
-        const aspectSelect = tr.querySelector(".skill-aspect");
+        const aspectDef = findSkillAspectDef(skillName);
 
-        // Если для навыка задан базовый аспект — подставляем, иначе ставим прочерк
-        if (skillName && skillBook[skillName]) {
-            aspectSelect.value = skillBook[skillName];
+        // Если это двойной магический навык (массив из 2 аспектов)
+        if (Array.isArray(aspectDef)) {
+            const groupId = "grp_" + Date.now();
+            
+            // Настраиваем текущую первую строку
+            tr.setAttribute("data-group", groupId);
+            tr.querySelector(".skill-aspect").value = aspectDef[0];
+            updateRowAV(tr);
+
+            // Создаем и вставляем вторую связанную строку сразу под ней
+            const tr2 = createRowElement(groupId);
+            tr2.querySelector(".skill-select").value = skillName;
+            tr2.querySelector(".skill-aspect").value = aspectDef[1];
+            tr2.querySelector(".skill-rating").value = tr.querySelector(".skill-rating").value;
+            
+            tr.parentNode.insertBefore(tr2, tr.nextSibling);
+            updateRowAV(tr2);
         } else {
-            aspectSelect.value = "";
+            // Обычный навык
+            tr.removeAttribute("data-group");
+            tr.querySelector(".skill-aspect").value = aspectDef || "";
+            updateRowAV(tr);
         }
 
-        updateRowAV(tr);
         updateDerived();
     }
 
+    // Синхронизация рейтинга для связанных двойных строк
     function onRatingChange(tr) {
-        updateRowAV(tr);
+        const groupId = tr.getAttribute("data-group");
+        const val = tr.querySelector(".skill-rating").value;
+
+        if (groupId) {
+            const linkedRows = document.querySelectorAll(`tr[data-group="${groupId}"]`);
+            linkedRows.forEach(row => {
+                row.querySelector(".skill-rating").value = val;
+                updateRowAV(row);
+            });
+        } else {
+            updateRowAV(tr);
+        }
+
         updateDerived();
     }
 
+    // Удаление строки (если связана со второй, удаляет сразу обе)
     function deleteSkillRow(tr) {
-        tr.remove();
+        const groupId = tr.getAttribute("data-group");
+        if (groupId) {
+            const linkedRows = document.querySelectorAll(`tr[data-group="${groupId}"]`);
+            linkedRows.forEach(row => row.remove());
+        } else {
+            tr.remove();
+        }
         updateDerived();
     }
 
-    // Расчет AV строки: AV = Rating + Аспект
+    // Пересчет AV конкретной строки
     function updateRowAV(tr) {
         const rating = parseInt(tr.querySelector(".skill-rating").value) || 0;
         const aspectKey = tr.querySelector(".skill-aspect").value;
@@ -772,13 +864,12 @@
         avCell.textContent = totalAV;
     }
 
-    // Обновление всех строк навыков
     function updateAllSkillAVs() {
         const rows = document.querySelectorAll("#skillsList tr");
         rows.forEach(tr => updateRowAV(tr));
     }
 
-    // Стартовая инициализация параметров
+    // Стартовая инициализация
     updateDerived();
 </script>
 
