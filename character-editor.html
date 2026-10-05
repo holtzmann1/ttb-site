@@ -676,16 +676,27 @@
 </main>
 
 <script>
-    function switchTab(tabKey) {
+function switchTab(tabKey) {
+        // 1. Снимаем активность со всех кнопок и вкладок
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+            content.style.display = 'none'; // принудительно скрываем
+        });
 
-        if (tabKey === 'pursuit') {
-            document.querySelectorAll('.tab-btn')[0].classList.add('active');
-            document.ElementById('tab-pursuit').classList.add('active');
-        } else if (tabKey === 'talents') {
-            document.querySelectorAll('.tab-btn')[1].classList.add('active');
-            document.getElementById('tab-talents').classList.add('active');
+        // 2. Активируем нужную вкладку и соответствующую кнопку
+        const targetTab = document.getElementById('tab-' + tabKey);
+        if (targetTab) {
+            targetTab.classList.add('active');
+            targetTab.style.display = 'block'; // гарантированно показываем блок
+        }
+
+        // Подсвечиваем активную кнопку
+        const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => 
+            b.getAttribute('onclick') && b.getAttribute('onclick').includes(tabKey)
+        );
+        if (activeBtn) {
+            activeBtn.classList.add('active');
         }
     }
 
