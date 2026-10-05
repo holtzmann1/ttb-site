@@ -689,7 +689,7 @@
         }
     }
 
-    // === ПРОВЕРКА ТРЕБОВАНИЙ ТАЛАНТОВ ===
+// === ОБНОВЛЕННАЯ УМНАЯ ПРОВЕРКА ТРЕБОВАНИЙ ТАЛАНТОВ ===
     function checkTalentRequirements(talent) {
         const reqStr = talent.req ? talent.req.trim() : "None";
         if (!reqStr || reqStr.toLowerCase() === "none") return true;
@@ -698,58 +698,68 @@
         const speciesVal = (document.getElementById("species")?.value || "Human").toLowerCase();
 
         for (let part of parts) {
-            // 1. Аспекты: Aspect: Tenacity 2 or higher / Speed -1 or lower / Might -1 / etc.
-            const aspectMatch = part.match(/Aspect:\s*([A-Za-z]+)\s*(-?\d+)\s*(or higher|or lower|or less|\+)?/i);
-            if (aspectMatch) {
-                const aspKey = aspectMatch[1].toLowerCase();
-                const targetVal = parseInt(aspectMatch[2], 10);
-                const condition = (aspectMatch[3] || "or higher").toLowerCase();
-                const currentVal = aspects[aspKey] !== undefined ? aspects[aspKey] : 0;
+            // Игнорируем сюжетные/нарративные требования, чтобы они не ломали фильтр
+            if (/^Destiny:/i.test(part) || /^Book/i.test(part)) continue;
 
-                if ((condition.includes("higher") || condition === "+") && currentVal < targetVal) return false;
-                if ((condition.includes("lower") || condition.includes("less")) && currentVal > targetVal) return false;
+            // 1. Аспекты: поддержка минусов, диапазонов и связки OR (например, "Charm -2 or Tenacity -2")
+            if (/Aspect:/i.test(part) || /(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)\s*(-?\d+)/i.test(part)) {
+                // Особые общие условия
+                if (/Two Aspects -3 or less/i.test(part)) {
+                    if (Object.values(aspects).filter(v => v <= -3).length < 2) return false;
+                    continue;
+                }
+                if (/No Aspects higher than 1/i.test(part)) {
+                    if (Object.values(aspects).some(v => v > 1)) return false;
+                    continue;
+                }
+                if (/Physical Aspect\s*(\d+)\s*or higher/i.test(part)) {
+                    const target = parseInt(part.match(/Physical Aspect\s*(\d+)\s*or higher/i)[1], 10);
+                    if (![aspects.might, aspects.grace, aspects.speed, aspects.resilience].some(v => v >= target)) return false;
+                    continue;
+                }
+                if (/Mental Aspect\s*(-?\d+)\s*(or less|or lower)/i.test(part)) {
+                    const target = parseInt(part.match(/Mental Aspect\s*(-?\d+)\s*(or less|or lower)/i)[1], 10);
+                    if (![aspects.intellect, aspects.charm, aspects.cunning, aspects.tenacity].some(v => v <= target)) return false;
+                    continue;
+                }
+                if (/Mental Aspect\s*(\d+)\s*or higher/i.test(part)) {
+                    const target = parseInt(part.match(/Mental Aspect\s*(\d+)\s*or higher/i)[1], 10);
+                    if (![aspects.intellect, aspects.charm, aspects.cunning, aspects.tenacity].some(v => v >= target)) return false;
+                    continue;
+                }
+
+                // Обработка стандартных аспектов: "Aspect: Tenacity -2 or lower" или "Tenacity -2 or Charm -2"
+                const subClauses = part.replace(/^Aspect:\s*/i, "").split(/\s+or\s+/i);
+                
+                // Проверяем каждое подусловие через ИЛИ (если хотя бы одно верно — пропускаем)
+                let orPassed = false;
+                for (let sub of subClauses) {
+                    const match = sub.match(/(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)\s*(-?\d+)\s*(or higher|or lower|or less|\+)?/i);
+                    if (match) {
+                        const aspKey = match[1].toLowerCase();
+                        const targetVal = parseInt(match[2], 10);
+                        const cond = (match[3] || (targetVal < 0 ? "or lower" : "or higher")).toLowerCase();
+                        const currentVal = aspects[aspKey] !== undefined ? aspects[aspKey] : 0;
+
+                        if ((cond.includes("lower") || cond.includes("less")) && currentVal <= targetVal) {
+                            orPassed = true;
+                            break;
+                        } else if ((cond.includes("higher") || cond === "+") && currentVal >= targetVal) {
+                            orPassed = true;
+                            break;
+                        } else if (currentVal === targetVal) {
+                            orPassed = true;
+                            break;
+                        }
+                    }
+                }
+                if (!orPassed && subClauses.some(s => /(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)/i.test(s))) {
+                    return false;
+                }
                 continue;
             }
 
-            // Особый случай: Two Aspects -3 or less
-            if (/Two Aspects -3 or less/i.test(part)) {
-                let count = Object.values(aspects).filter(v => v <= -3).length;
-                if (count < 2) return false;
-                continue;
-            }
-
-            // Особый случай: No Aspects higher than 1
-            if (/No Aspects higher than 1/i.test(part)) {
-                let hasHigher = Object.values(aspects).some(v => v > 1);
-                if (hasHigher) return false;
-                continue;
-            }
-
-            // Особый случай: Physical Aspect 2 or higher
-            if (/Physical Aspect\s*(\d+)\s*or higher/i.test(part)) {
-                const target = parseInt(part.match(/Physical Aspect\s*(\d+)\s*or higher/i)[1], 10);
-                const physValues = [aspects.might, aspects.grace, aspects.speed, aspects.resilience];
-                if (!physValues.some(v => v >= target)) return false;
-                continue;
-            }
-
-            // Особый случай: At least one Mental Aspect -1 or less
-            if (/At least one Mental Aspect\s*(-?\d+)\s*or less/i.test(part)) {
-                const target = parseInt(part.match(/At least one Mental Aspect\s*(-?\d+)\s*or less/i)[1], 10);
-                const mentValues = [aspects.intellect, aspects.charm, aspects.cunning, aspects.tenacity];
-                if (!mentValues.some(v => v <= target)) return false;
-                continue;
-            }
-
-            // Особый случай: Skill: Mental Aspect 4 or higher (Grounded)
-            if (/Mental Aspect\s*(\d+)\s*or higher/i.test(part)) {
-                const target = parseInt(part.match(/Mental Aspect\s*(\d+)\s*or higher/i)[1], 10);
-                const mentValues = [aspects.intellect, aspects.charm, aspects.cunning, aspects.tenacity];
-                if (!mentValues.some(v => v >= target)) return false;
-                continue;
-            }
-
-            // 2. Проверка Типа: Type: Fated / Kin / Invested / Stitched / Non-Kin
+            // 2. Тип персонажа (Species)
             const typeMatch = part.match(/Type:\s*([A-Za-z\-]+)/i);
             if (typeMatch) {
                 const reqType = typeMatch[1].toLowerCase();
@@ -761,13 +771,18 @@
                 continue;
             }
 
-            // 3. Навыки: Skill: Leadership 3 or higher / Chosen Skill Rank 5 / etc.
+            // 3. Навыки (Skills)
             const skillMatch = part.match(/Skill:\s*([A-Za-z\s\-]+?)\s*(\d+)/i);
             if (skillMatch) {
-                const skillName = skillMatch[1].trim();
+                let skillName = skillMatch[1].trim().toLowerCase();
                 const targetRank = parseInt(skillMatch[2], 10);
 
-                if (skillName.toLowerCase().includes("chosen skill") || skillName.toLowerCase().includes("close combat or ranged")) {
+                // Окончания s (например Pistol / Pistols)
+                if (skillName.endsWith("s") && skillName !== "flexible") {
+                    skillName = skillName.slice(0, -1);
+                }
+
+                if (skillName.includes("chosen skill") || skillName.includes("close combat") || skillName.includes("ranged combat")) {
                     let hasEligible = false;
                     const rows = document.querySelectorAll("#skillsList tr");
                     for (let tr of rows) {
@@ -775,19 +790,28 @@
                         if (rank >= targetRank) { hasEligible = true; break; }
                     }
                     if (!hasEligible) return false;
-                } else if (skillName.toLowerCase().includes("magical")) {
+                } else if (skillName.includes("magical")) {
                     let hasMagical = false;
                     for (let magSkill of Object.keys(skillCategories["Magical"])) {
                         if (getSkillRank(magSkill) >= targetRank) { hasMagical = true; break; }
                     }
                     if (!hasMagical) return false;
                 } else {
-                    if (getSkillRank(skillName) < targetRank) return false;
+                    // Ищем ранг навыка с нестрогим сопоставлением
+                    let foundRank = 0;
+                    const rows = document.querySelectorAll("#skillsList tr");
+                    for (let tr of rows) {
+                        const sel = tr.querySelector(".skill-select")?.value.toLowerCase() || "";
+                        if (sel.includes(skillName) || skillName.includes(sel)) {
+                            foundRank = Math.max(foundRank, parseInt(tr.querySelector(".skill-rating")?.value) || 0);
+                        }
+                    }
+                    if (foundRank < targetRank) return false;
                 }
                 continue;
             }
 
-            // 4. Требование другого таланта: Other: ... Talent
+            // 4. Зависимость от другого таланта
             const otherTalentMatch = part.match(/Other:.*?\b([A-Za-z\s]+)\s+Talent/i);
             if (otherTalentMatch) {
                 const reqTalentName = otherTalentMatch[1].trim().toLowerCase();
