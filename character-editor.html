@@ -49,7 +49,6 @@
             padding: 40px 20px;
         }
 
-        /* Общие стили полей ввода */
         input[type="text"], input[type="number"], select, textarea {
             background: #14110e;
             border: 1px solid #4a3825;
@@ -283,16 +282,30 @@
 
         .skills-table td {
             padding: 4px;
+            vertical-align: middle;
         }
 
-        .skills-table td.av-val {
+        /* Стили для сдвоенных ячеек AV и Aspect */
+        .dual-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .av-box {
             text-align: center;
             font-weight: bold;
             color: #c59a5b;
             font-size: 16px;
             background: #14110e;
             border: 1px solid #2a2015;
+            padding: 6px 0;
             width: 45px;
+            min-height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
         }
 
         .del-btn {
@@ -458,7 +471,6 @@
             <div class="box">
                 <div class="box-header">DERIVED ASPECTS</div>
                 <div class="derived-grid">
-                    <!-- Defense с двумя изменяемыми полями -->
                     <div class="derived-cell">
                         <span>Defense</span>
                         <div class="defense-container">
@@ -506,7 +518,6 @@
             <div class="box">
                 <div class="box-header">ATTACKS</div>
                 
-                <!-- Атака 1 -->
                 <div class="attack-card">
                     <div class="attack-row-1">
                         <input type="text" placeholder="Attack Name (Оружие)">
@@ -523,7 +534,6 @@
                     <input type="text" placeholder="Triggers (например: Ram: Critical Strike)">
                 </div>
 
-                <!-- Атака 2 -->
                 <div class="attack-card">
                     <div class="attack-row-1">
                         <input type="text" placeholder="Attack Name (Второе оружие)">
@@ -550,14 +560,14 @@
                     <thead>
                         <tr>
                             <th>SKILL</th>
-                            <th style="width: 50px; text-align: center;">AV</th>
+                            <th style="width: 55px; text-align: center;">AV</th>
                             <th style="width: 65px; text-align: center;">RATING</th>
-                            <th style="width: 115px;">ASPECT</th>
+                            <th style="width: 125px;">ASPECT</th>
                             <th style="width: 35px;"></th>
                         </tr>
                     </thead>
                     <tbody id="skillsList">
-                        <!-- На старте пусто -->
+                        <!-- Пусто при старте -->
                     </tbody>
                 </table>
                 <button class="add-skill-btn" onclick="addNewSkillRow()">+ ДОБАВИТЬ НАВЫК</button>
@@ -651,7 +661,6 @@
         }
     };
 
-    // Найти конфигурацию аспекта по имени навыка
     function findSkillAspectDef(name) {
         for (let cat in skillCategories) {
             if (skillCategories[cat][name] !== undefined) {
@@ -661,7 +670,6 @@
         return "";
     }
 
-    // Генерация HTML для optgroup выпадающего списка
     function getSkillOptionsHtml() {
         let html = `<option value="">-- Выбери навык --</option>`;
         for (let cat in skillCategories) {
@@ -671,6 +679,19 @@
             }
             html += `</optgroup>`;
         }
+        return html;
+    }
+
+    function getAspectSelectHtml(defaultVal = "") {
+        const list = ["might", "grace", "speed", "resilience", "intellect", "charm", "cunning", "tenacity"];
+        let html = `<select class="skill-aspect" onchange="updateRowAV(this.closest('tr'))">`;
+        html += `<option value="">—</option>`;
+        list.forEach(asp => {
+            const cap = asp.charAt(0).toUpperCase() + asp.slice(1);
+            const sel = asp === defaultVal ? "selected" : "";
+            html += `<option value="${asp}" ${sel}>${cap}</option>`;
+        });
+        html += `</select>`;
         return html;
     }
 
@@ -743,12 +764,10 @@
         document.getElementById("defenseTotal").value = Math.max(1, baseDef - armorPenalty);
     }
 
-    // Создание шаблона строки навыка
-    function createRowElement(groupId = null) {
+    // Добавление новой строки навыка
+    function addNewSkillRow() {
+        const tbody = document.getElementById("skillsList");
         const tr = document.createElement("tr");
-        if (groupId) {
-            tr.setAttribute("data-group", groupId);
-        }
 
         tr.innerHTML = `
             <td>
@@ -756,112 +775,77 @@
                     ${getSkillOptionsHtml()}
                 </select>
             </td>
-            <td class="av-val">—</td>
+            <td class="av-container">
+                <div class="av-box av-val">—</div>
+            </td>
             <td>
                 <input type="number" class="skill-rating" value="0" min="0" max="5" oninput="onRatingChange(this.closest('tr'))">
             </td>
-            <td>
-                <select class="skill-aspect" onchange="updateRowAV(this.closest('tr'))">
-                    <option value="">—</option>
-                    <option value="might">Might</option>
-                    <option value="grace">Grace</option>
-                    <option value="speed">Speed</option>
-                    <option value="resilience">Resilience</option>
-                    <option value="intellect">Intellect</option>
-                    <option value="charm">Charm</option>
-                    <option value="cunning">Cunning</option>
-                    <option value="tenacity">Tenacity</option>
-                </select>
+            <td class="aspect-container">
+                ${getAspectSelectHtml("")}
             </td>
             <td>
                 <button class="del-btn" onclick="deleteSkillRow(this.closest('tr'))" title="Удалить">✕</button>
             </td>
         `;
-        return tr;
-    }
-
-    // Кнопка "+ Добавить навык"
-    function addNewSkillRow() {
-        const tbody = document.getElementById("skillsList");
-        const tr = createRowElement();
         tbody.appendChild(tr);
     }
 
-    // При смене выбранного навыка в строке
+    // При выборе навыка из выпадающего списка
     function onSkillSelectChange(tr) {
         const skillName = tr.querySelector(".skill-select").value;
         const aspectDef = findSkillAspectDef(skillName);
+        const avContainer = tr.querySelector(".av-container");
+        const aspectContainer = tr.querySelector(".aspect-container");
 
-        // Если это двойной магический навык (массив из 2 аспектов)
+        // Двойной аспект (магия) — строим два этажа внутри одной строки
         if (Array.isArray(aspectDef)) {
-            const groupId = "grp_" + Date.now();
-            
-            // Настраиваем текущую первую строку
-            tr.setAttribute("data-group", groupId);
-            tr.querySelector(".skill-aspect").value = aspectDef[0];
-            updateRowAV(tr);
-
-            // Создаем и вставляем вторую связанную строку сразу под ней
-            const tr2 = createRowElement(groupId);
-            tr2.querySelector(".skill-select").value = skillName;
-            tr2.querySelector(".skill-aspect").value = aspectDef[1];
-            tr2.querySelector(".skill-rating").value = tr.querySelector(".skill-rating").value;
-            
-            tr.parentNode.insertBefore(tr2, tr.nextSibling);
-            updateRowAV(tr2);
+            avContainer.innerHTML = `
+                <div class="dual-stack">
+                    <div class="av-box av-val">—</div>
+                    <div class="av-box av-val">—</div>
+                </div>
+            `;
+            aspectContainer.innerHTML = `
+                <div class="dual-stack">
+                    ${getAspectSelectHtml(aspectDef[0])}
+                    ${getAspectSelectHtml(aspectDef[1])}
+                </div>
+            `;
         } else {
-            // Обычный навык
-            tr.removeAttribute("data-group");
-            tr.querySelector(".skill-aspect").value = aspectDef || "";
-            updateRowAV(tr);
+            // Одинарный навык
+            avContainer.innerHTML = `<div class="av-box av-val">—</div>`;
+            aspectContainer.innerHTML = getAspectSelectHtml(aspectDef || "");
         }
 
+        updateRowAV(tr);
         updateDerived();
     }
 
-    // Синхронизация рейтинга для связанных двойных строк
     function onRatingChange(tr) {
-        const groupId = tr.getAttribute("data-group");
-        const val = tr.querySelector(".skill-rating").value;
-
-        if (groupId) {
-            const linkedRows = document.querySelectorAll(`tr[data-group="${groupId}"]`);
-            linkedRows.forEach(row => {
-                row.querySelector(".skill-rating").value = val;
-                updateRowAV(row);
-            });
-        } else {
-            updateRowAV(tr);
-        }
-
+        updateRowAV(tr);
         updateDerived();
     }
 
-    // Удаление строки (если связана со второй, удаляет сразу обе)
     function deleteSkillRow(tr) {
-        const groupId = tr.getAttribute("data-group");
-        if (groupId) {
-            const linkedRows = document.querySelectorAll(`tr[data-group="${groupId}"]`);
-            linkedRows.forEach(row => row.remove());
-        } else {
-            tr.remove();
-        }
+        tr.remove();
         updateDerived();
     }
 
-    // Пересчет AV конкретной строки
+    // Пересчет AV для строки
     function updateRowAV(tr) {
         const rating = parseInt(tr.querySelector(".skill-rating").value) || 0;
-        const aspectKey = tr.querySelector(".skill-aspect").value;
-        const avCell = tr.querySelector(".av-val");
+        const avCells = tr.querySelectorAll(".av-val");
+        const aspectSelects = tr.querySelectorAll(".skill-aspect");
 
-        if (!aspectKey) {
-            avCell.textContent = "—";
-            return;
-        }
-
-        const totalAV = rating + (aspects[aspectKey] || 0);
-        avCell.textContent = totalAV;
+        aspectSelects.forEach((sel, idx) => {
+            const aspectKey = sel.value;
+            if (!aspectKey) {
+                avCells[idx].textContent = "—";
+            } else {
+                avCells[idx].textContent = rating + (aspects[aspectKey] || 0);
+            }
+        });
     }
 
     function updateAllSkillAVs() {
@@ -869,7 +853,6 @@
         rows.forEach(tr => updateRowAV(tr));
     }
 
-    // Стартовая инициализация
     updateDerived();
 </script>
 
