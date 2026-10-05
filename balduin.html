@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Balduin Dazzling — Очередная Ролевка Марселя</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            background:
+                radial-gradient(circle at 50% 20%, #30251b 0%, #17130f 45%, #0b0a09 100%);
+
+            color: #e8dfd0;
+            font-family: Georgia, serif;
+        }
+
+        header {
+            padding: 20px 50px;
+
+            border-bottom: 1px solid #4a3825;
+
+            background: rgba(10, 9, 8, 0.7);
+        }
+
+        .back-button {
+            color: #8f8679;
+            text-decoration: none;
+
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .back-button:hover {
+            color: #c59a5b;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 30px;
+        }
+
+        .character-name {
+            padding: 18px 25px;
+
+            border: 1px solid #4a3825;
+
+            background: rgba(10, 9, 8, 0.7);
+
+            font-size: 36px;
+            font-weight: normal;
+        }
+
+        .subtitle {
+            margin-top: 8px;
+
+            color: #a99e8d;
+
+            font-size: 18px;
+        }
+
+        .character-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+
+            margin-top: 30px;
+        }
+
+        .block {
+            padding: 25px;
+
+            border: 1px solid #4a3825;
+
+            background: rgba(10, 9, 8, 0.55);
+        }
+
+        h2 {
+            margin-top: 0;
+
+            color: #c59a5b;
+
+            font-size: 24px;
+            font-weight: normal;
+        }
+
+        h3 {
+            margin-bottom: 8px;
+
+            color: #c59a5b;
+
+            font-size: 19px;
+        }
+
+        p {
+            line-height: 1.5;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 1px;
+
+            margin-top: 20px;
+
+            border: 1px solid #4a3825;
+        }
+
+        .stat {
+            padding: 15px;
+
+            text-align: center;
+
+            border: 1px solid #4a3825;
+
+            background: rgba(20, 17, 14, 0.8);
+        }
+
+        .stat-name {
+            color: #a99e8d;
+
+            font-size: 14px;
+        }
+
+        .stat-value {
+            margin-top: 6px;
+
+            font-size: 24px;
+        }
+
+        .skills {
+            line-height: 1.7;
+        }
+
+        .portrait {
+            width: 100%;
+            max-width: 400px;
+
+            display: block;
+
+            margin: 20px auto 0;
+
+            border: 1px solid #4a3825;
+        }
+
+        details {
+            margin-bottom: 10px;
+
+            border: 1px solid #4a3825;
+
+            background: rgba(20, 17, 14, 0.7);
+        }
+
+        summary {
+            padding: 14px;
+
+            color: #e8dfd0;
+
+            cursor: pointer;
+
+            font-size: 17px;
+        }
+
+        summary:hover {
+            color: #c59a5b;
+        }
+
+        .talent-text {
+            padding: 0 15px 15px;
+
+            color: #a99e8d;
+
+            line-height: 1.5;
+        }
+
+        .full-width {
+            margin-top: 30px;
+        }
+
+        @media (max-width: 800px) {
+
+            .character-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            main {
+                padding: 30px 15px;
+            }
+
+            header {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <a href="characters.html" class="back-button">
+            ← НАЗАД К ПЕРСОНАЖАМ
+        </a>
+
+    </header>
+
+
+    <main>
+
+        <div class="character-name">
+            Balduin Dazzling
+        </div>
+
+        <div class="subtitle">
+            Sawbones
+        </div>
+
+
+        <div class="character-layout">
+
+
+            <!-- ЛЕВАЯ ЧАСТЬ -->
+
+            <div>
+
+                <section class="block">
+
+                    <h2>Характеристики</h2>
+
+                    <div class="stats">
+
+                        <div class="stat">
+                            <div class="stat-name">Might</div>
+                            <div class="stat-value">1</div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-name">Grace</div>
+                            <div class="stat-value">-2</div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-name">Speed</div>
+                            <div class="stat-value">-1</div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-name">Resilience</div>
+                            <div class="stat-value">2</div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-name">Intellect</div>
+                            <div class="stat-value">3</div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-name">Charm</div>
+                            <div class="stat-value">-2</div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-name">Cunning</div>
+                            <div class="stat-value">-1</div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-name">Tenacity</div>
+                            <div class="stat-value">0</div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-name">Defense</div>
+                            <div class="stat-value">4 (3)</div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-name">Walk</div>
+                            <div class="stat-value">4</div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-name">Height</div>
+                            <div class="stat-value">2</div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-name">Initiative</div>
+                            <div class="stat-value">-1</div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-name">Willpower</div>
+                            <div class="stat-value">5</div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-name">Charge</div>
+                            <div class="stat-value">4</div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="stat-name">Wounds</div>
+                            <div class="stat-value">8</div>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <section class="block full-width">
+
+                    <h2>Skills</h2>
+
+                    <p class="skills">
+                        Doctor 3, Melee 3, Centering 3, Evade 2,
+                        Toughness 2, History 1, Literacy 1,
+                        Convince 1, Athletics 1, Artifact 1,
+                        Engineering 1, Long Arms 2
+                    </p>
+
+                    <h3>Special</h3>
+
+                    <p>
+                        Slow 1st, Nothing 2nd, Focus 3rd — every turn
+                    </p>
+
+                </section>
+
+
+                <section class="block full-width">
+
+                    <h2>Skill Triggers</h2>
+
+                    <h3>Doctor</h3>
+
+                    <p>
+                        <strong>(Tome) Lots of Bandages:</strong>
+                        After succeeding, if you are performing First Aid,
+                        make another First Aid attempt on the same target.
+                    </p>
+
+                    <h3>Melee</h3>
+
+                    <p>
+                        <strong>(Tome) Impromptu Parry:</strong>
+                        After failing, gain +1 Defense against Close Combat
+                        attacks made by the target until the start of your next turn.
+                    </p>
+
+                </section>
+
+
+                <section class="block full-width">
+
+                    <h2>Equipment</h2>
+
+                    <p>
+                        Blade 2/3/4 (range 2)
+                    </p>
+
+                    <p>
+                        Howles Patt. 3/5/6 (range 24, reload 1, cap. 1.)
+                    </p>
+
+                    <img
+                        class="portrait"
+                        src="balduin.jpg"
+                        alt="Balduin Dazzling"
+                    >
+
+                </section>
+
+            </div>
+
+
+            <!-- ПРАВАЯ ЧАСТЬ -->
+
+            <div>
+
+                <section class="block">
+
+                    <h2>Talents</h2>
+
+
+                    <details>
+
+                        <summary>
+                            Step 0 — Under My Care
+                        </summary>
+
+                        <div class="talent-text">
+
+                            This character may spend five minutes performing
+                            a medical check-up on a target Living character.
+                            The target gains the Under My Care Condition.
+
+                        </div>
+
+                    </details>
+
+
+                    <details>
+
+                        <summary>
+                            Step 1 — Patient Files
+                        </summary>
+
+                        <div class="talent-text">
+
+                            Charting the long term health of her patients
+                            is very important to the character.
+
+                        </div>
+
+                    </details>
+
+
+                    <details>
+
+                        <summary>
+                            Step 2 — Armour Training
+                        </summary>
+
+                        <div class="talent-text">
+
+                            General Talent — Armour Training.
+
+                        </div>
+
+                    </details>
+
+
+                    <details>
+
+                        <summary>
+                            Step 3 — Battlefield Surgery
+                        </summary>
+
+                        <div class="talent-text">
+
+                            This character's Surgery Duels now take
+                            5 minutes for each negative Wound her patient
+                            has suffered rather than 1 hour per negative Wound.
+
+                        </div>
+
+                    </details>
+
+
+                    <details>
+
+                        <summary>
+                            Step 4 — Calm and Collected
+                        </summary>
+
+                        <div class="talent-text">
+
+                            General Talent — Calm and Collected.
+
+                        </div>
+
+                    </details>
+
+                </section>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>
