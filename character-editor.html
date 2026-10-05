@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Создание персонажа — Through the Breach</title>
-    <!-- ПОДКЛЮЧАЕМ БАЗУ ТАЛАНТОВ -->
-    <script src="talents-data.js"></script>
+    <!-- ПОДКЛЮЧАЕМ БАЗУ ТАЛАНТОВ (с версионированием для мобильного кэша) -->
+    <script src="talents-data.js?v=2"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -468,7 +468,7 @@
                     </div>
                     <div class="field-group">
                         <label>Species</label>
-                        <input type="text" id="species" value="Human">
+                        <input type="text" id="species" value="Human" oninput="refreshAllTalentSelects()">
                     </div>
                 </div>
             </div>
@@ -660,7 +660,7 @@
         </div>
     </div>
 
-    <!-- ВКЛАДКА 2: GENERAL TALENTS (АККОРДЕОН) -->
+    <!-- ВКЛАДКА 2: GENERAL TALENTS (АККОРДЕОН С ФИЛЬТРОМ) -->
     <div id="tab-talents" class="tab-content">
         <div class="box">
             <div class="box-header">GENERAL TALENTS</div>
@@ -689,16 +689,142 @@
         }
     }
 
-    // ЛОГИКА ТАЛАНТОВ (АККОРДЕОН)
-    function getTalentOptionsHtml() {
-        let html = `<option value="">-- Выбери талант из списка --</option>`;
-        html += `<option value="__custom__">★ Свой талант (Custom)</option>`;
+    // === ПРОВЕРКА ТРЕБОВАНИЙ ТАЛАНТОВ ===
+    function checkTalentRequirements(talent) {
+        const reqStr = talent.req ? talent.req.trim() : "None";
+        if (!reqStr || reqStr.toLowerCase() === "none") return true;
+
+        const parts = reqStr.split(",").map(p => p.trim());
+        const speciesVal = (document.getElementById("species")?.value || "Human").toLowerCase();
+
+        for (let part of parts) {
+            // 1. Аспекты: Aspect: Tenacity 2 or higher / Speed -1 or lower / Might -1 / etc.
+            const aspectMatch = part.match(/Aspect:\s*([A-Za-z]+)\s*(-?\d+)\s*(or higher|or lower|or less|\+)?/i);
+            if (aspectMatch) {
+                const aspKey = aspectMatch[1].toLowerCase();
+                const targetVal = parseInt(aspectMatch[2], 10);
+                const condition = (aspectMatch[3] || "or higher").toLowerCase();
+                const currentVal = aspects[aspKey] !== undefined ? aspects[aspKey] : 0;
+
+                if ((condition.includes("higher") || condition === "+") && currentVal < targetVal) return false;
+                if ((condition.includes("lower") || condition.includes("less")) && currentVal > targetVal) return false;
+                continue;
+            }
+
+            // Особый случай: Two Aspects -3 or less
+            if (/Two Aspects -3 or less/i.test(part)) {
+                let count = Object.values(aspects).filter(v => v <= -3).length;
+                if (count < 2) return false;
+                continue;
+            }
+
+            // Особый случай: No Aspects higher than 1
+            if (/No Aspects higher than 1/i.test(part)) {
+                let hasHigher = Object.values(aspects).some(v => v > 1);
+                if (hasHigher) return false;
+                continue;
+            }
+
+            // Особый случай: Physical Aspect 2 or higher
+            if (/Physical Aspect\s*(\d+)\s*or higher/i.test(part)) {
+                const target = parseInt(part.match(/Physical Aspect\s*(\d+)\s*or higher/i)[1], 10);
+                const physValues = [aspects.might, aspects.grace, aspects.speed, aspects.resilience];
+                if (!physValues.some(v => v >= target)) return false;
+                continue;
+            }
+
+            // Особый случай: At least one Mental Aspect -1 or less
+            if (/At least one Mental Aspect\s*(-?\d+)\s*or less/i.test(part)) {
+                const target = parseInt(part.match(/At least one Mental Aspect\s*(-?\d+)\s*or less/i)[1], 10);
+                const mentValues = [aspects.intellect, aspects.charm, aspects.cunning, aspects.tenacity];
+                if (!mentValues.some(v => v <= target)) return false;
+                continue;
+            }
+
+            // Особый случай: Skill: Mental Aspect 4 or higher (Grounded)
+            if (/Mental Aspect\s*(\d+)\s*or higher/i.test(part)) {
+                const target = parseInt(part.match(/Mental Aspect\s*(\d+)\s*or higher/i)[1], 10);
+                const mentValues = [aspects.intellect, aspects.charm, aspects.cunning, aspects.tenacity];
+                if (!mentValues.some(v => v >= target)) return false;
+                continue;
+            }
+
+            // 2. Проверка Типа: Type: Fated / Kin / Invested / Stitched / Non-Kin
+            const typeMatch = part.match(/Type:\s*([A-Za-z\-]+)/i);
+            if (typeMatch) {
+                const reqType = typeMatch[1].toLowerCase();
+                if (reqType === "fated" && (speciesVal.includes("construct") || speciesVal.includes("stitched"))) return false;
+                if (reqType === "kin" && !speciesVal.includes("gremlin") && !speciesVal.includes("kin")) return false;
+                if (reqType === "non-kin" && (speciesVal.includes("gremlin") || speciesVal.includes("kin"))) return false;
+                if (reqType === "invested" && !speciesVal.includes("invested") && !speciesVal.includes("construct")) return false;
+                if (reqType === "stitched" && !speciesVal.includes("stitched") && !speciesVal.includes("undead")) return false;
+                continue;
+            }
+
+            // 3. Навыки: Skill: Leadership 3 or higher / Chosen Skill Rank 5 / etc.
+            const skillMatch = part.match(/Skill:\s*([A-Za-z\s\-]+?)\s*(\d+)/i);
+            if (skillMatch) {
+                const skillName = skillMatch[1].trim();
+                const targetRank = parseInt(skillMatch[2], 10);
+
+                if (skillName.toLowerCase().includes("chosen skill") || skillName.toLowerCase().includes("close combat or ranged")) {
+                    let hasEligible = false;
+                    const rows = document.querySelectorAll("#skillsList tr");
+                    for (let tr of rows) {
+                        const rank = parseInt(tr.querySelector(".skill-rating")?.value) || 0;
+                        if (rank >= targetRank) { hasEligible = true; break; }
+                    }
+                    if (!hasEligible) return false;
+                } else if (skillName.toLowerCase().includes("magical")) {
+                    let hasMagical = false;
+                    for (let magSkill of Object.keys(skillCategories["Magical"])) {
+                        if (getSkillRank(magSkill) >= targetRank) { hasMagical = true; break; }
+                    }
+                    if (!hasMagical) return false;
+                } else {
+                    if (getSkillRank(skillName) < targetRank) return false;
+                }
+                continue;
+            }
+
+            // 4. Требование другого таланта: Other: ... Talent
+            const otherTalentMatch = part.match(/Other:.*?\b([A-Za-z\s]+)\s+Talent/i);
+            if (otherTalentMatch) {
+                const reqTalentName = otherTalentMatch[1].trim().toLowerCase();
+                const hasTalent = Array.from(document.querySelectorAll(".talent-select")).some(s => s.value.toLowerCase().includes(reqTalentName));
+                if (!hasTalent) return false;
+                continue;
+            }
+        }
+        return true;
+    }
+
+    // ЛОГИКА ТАЛАНТОВ (АККОРДЕОН С АВТОФИЛЬТРОМ)
+    function getTalentOptionsHtml(selectedVal = "") {
+        let html = `<option value="">-- Выбери подходящий талант --</option>`;
+        html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' : ''}>★ Свой талант (Custom)</option>`;
+        
         if (typeof GENERAL_TALENTS !== 'undefined') {
             GENERAL_TALENTS.forEach(t => {
-                html += `<option value="${t.name}">${t.name}</option>`;
+                const fits = checkTalentRequirements(t);
+                if (fits || t.name === selectedVal) {
+                    const sel = (t.name === selectedVal) ? 'selected' : '';
+                    html += `<option value="${t.name}" ${sel}>${t.name}</option>`;
+                }
             });
         }
         return html;
+    }
+
+    function refreshAllTalentSelects() {
+        document.querySelectorAll(".talent-card").forEach(card => {
+            const select = card.querySelector(".talent-select");
+            const customInput = card.querySelector(".custom-name-input");
+            if (select && customInput.style.display !== "block") {
+                const currentVal = select.value;
+                select.innerHTML = getTalentOptionsHtml(currentVal);
+            }
+        });
     }
 
     function addNewTalentCard() {
@@ -760,10 +886,12 @@
             bookSpan.textContent = "—";
             descArea.value = "";
         }
+        refreshAllTalentSelects();
     }
 
     function deleteTalentCard(btn) {
         btn.closest(".talent-card").remove();
+        refreshAllTalentSelects();
     }
 
     // АСПЕКТЫ И ДАННЫЕ ЛИСТА
@@ -886,6 +1014,7 @@
         document.getElementById(stat).textContent = aspects[stat];
         updateDerived();
         updateAllSkillAVs();
+        refreshAllTalentSelects();
     }
 
     function getSkillRank(skillName) {
@@ -992,16 +1121,19 @@
 
         updateRowAV(tr);
         updateDerived();
+        refreshAllTalentSelects();
     }
 
     function onRatingChange(tr) {
         updateRowAV(tr);
         updateDerived();
+        refreshAllTalentSelects();
     }
 
     function deleteSkillRow(tr) {
         tr.remove();
         updateDerived();
+        refreshAllTalentSelects();
     }
 
     function updateRowAV(tr) {
@@ -1024,6 +1156,7 @@
         rows.forEach(tr => updateRowAV(tr));
     }
 
+    // Инициализация при старте
     updateDerived();
     addNewTalentCard();
 </script>
