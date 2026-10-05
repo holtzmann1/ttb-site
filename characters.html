@@ -132,6 +132,20 @@
             font-size: 22px;
             font-weight: normal;
         }
+        .characters {
+    display: none;
+
+    margin-top: 20px;
+    padding-top: 15px;
+
+    border-top: 1px solid #4a3825;
+}
+
+.characters p {
+    margin: 10px 0;
+
+    color: #a99e8d;
+}
 
         .empty {
             color: #8f8679;
@@ -223,6 +237,17 @@
             document.getElementById(sectionName).classList.add('active');
 
         }
+        function showCharacters(companyName) {
+
+    const characters = document.getElementById(companyName);
+
+    if (characters.style.display === 'block') {
+        characters.style.display = 'none';
+    } else {
+        characters.style.display = 'block';
+    }
+
+}
 
     </script>
 
