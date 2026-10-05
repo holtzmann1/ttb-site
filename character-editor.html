@@ -682,7 +682,7 @@
 
         if (tabKey === 'pursuit') {
             document.querySelectorAll('.tab-btn')[0].classList.add('active');
-            document.getElementById('tab-pursuit').classList.add('active');
+            document.ElementById('tab-pursuit').classList.add('active');
         } else if (tabKey === 'talents') {
             document.querySelectorAll('.tab-btn')[1].classList.add('active');
             document.getElementById('tab-talents').classList.add('active');
@@ -823,18 +823,36 @@
         return true;
     }
 
-    // ЛОГИКА ТАЛАНТОВ (АККОРДЕОН С АВТОФИЛЬТРОМ)
+// ЛОГИКА ТАЛАНТОВ (АККОРДЕОН С АВТОФИЛЬТРОМ И ГРУППИРОВКОЙ ПО КНИГАМ)
     function getTalentOptionsHtml(selectedVal = "") {
         let html = `<option value="">-- Выбери подходящий талант --</option>`;
         html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' : ''}>★ Свой талант (Custom)</option>`;
         
         if (typeof GENERAL_TALENTS !== 'undefined') {
-            GENERAL_TALENTS.forEach(t => {
-                const fits = checkTalentRequirements(t);
-                if (fits || t.name === selectedVal) {
+            // 1. Фильтруем подходящие по требованиям таланты
+            const availableTalents = GENERAL_TALENTS.filter(t => checkTalentRequirements(t) || t.name === selectedVal);
+
+            // 2. Группируем подходящие таланты по названию книги
+            const grouped = {};
+            availableTalents.forEach(t => {
+                const bookName = t.book && t.book.trim() ? t.book.trim() : "Other / Core";
+                if (!grouped[bookName]) {
+                    grouped[bookName] = [];
+                }
+                grouped[bookName].push(t);
+            });
+
+            // 3. Выводим группы с заголовками <optgroup>, сортируя книги и таланты по алфавиту
+            Object.keys(grouped).sort().forEach(book => {
+                html += `<optgroup label="📖 ${book}">`;
+                
+                // Внутри каждой книги сортируем таланты по алфавиту (A-Z)
+                grouped[book].sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
                     const sel = (t.name === selectedVal) ? 'selected' : '';
                     html += `<option value="${t.name}" ${sel}>${t.name}</option>`;
-                }
+                });
+
+                html += `</optgroup>`;
             });
         }
         return html;
