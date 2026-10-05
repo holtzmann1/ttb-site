@@ -43,12 +43,54 @@
             letter-spacing: 2px;
         }
 
+        /* НАВИГАЦИОННЫЕ ВКЛАДКИ */
+        .tab-bar {
+            max-width: 1200px;
+            margin: 20px auto 0 auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .tab-btn {
+            background: rgba(14, 11, 9, 0.85);
+            border: 1px solid #4a3825;
+            color: #8f8679;
+            padding: 10px 24px;
+            font-family: Georgia, serif;
+            font-size: 13px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: #e8dfd0;
+            border-color: #b88a4a;
+        }
+
+        .tab-btn.active {
+            color: #c59a5b;
+            border-color: #c59a5b;
+            background: rgba(45, 33, 21, 0.6);
+            box-shadow: inset 0 0 10px rgba(197, 154, 91, 0.2);
+        }
+
         main {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 25px 20px 40px 20px;
         }
 
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Общие стили полей ввода */
         input[type="text"], input[type="number"], select, textarea {
             background: #14110e;
             border: 1px solid #4a3825;
@@ -119,7 +161,7 @@
             text-transform: uppercase;
         }
 
-        /* ОСНОВНОЙ МАКЕТ */
+        /* ОСНОВНОЙ МАКЕТ PURSUIT */
         .sheet-body {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -285,7 +327,6 @@
             vertical-align: middle;
         }
 
-        /* Стили для сдвоенных ячеек AV и Aspect */
         .dual-stack {
             display: flex;
             flex-direction: column;
@@ -322,7 +363,7 @@
             border-color: #e57373;
         }
 
-        .add-skill-btn {
+        .add-row-btn {
             margin-top: 15px;
             padding: 10px;
             background: transparent;
@@ -334,8 +375,41 @@
             width: 100%;
         }
 
-        .add-skill-btn:hover {
+        .add-row-btn:hover {
             background: rgba(184, 138, 74, 0.15);
+        }
+
+        /* СТРАНИЦА GENERAL TALENTS */
+        .talents-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+        }
+
+        .talents-table th {
+            text-align: left;
+            padding: 8px 10px;
+            color: #c59a5b;
+            font-size: 14px;
+            letter-spacing: 2px;
+            border-bottom: 1px solid #4a3825;
+        }
+
+        .talents-table td {
+            padding: 0 4px;
+            vertical-align: top;
+        }
+
+        .talent-input-name {
+            font-weight: bold;
+            color: #e8dfd0;
+        }
+
+        .talent-input-desc {
+            resize: vertical;
+            min-height: 40px;
+            height: 40px;
+            line-height: 1.4;
         }
 
         @media (max-width: 900px) {
@@ -352,240 +426,319 @@
     <div class="sheet-title">CHARACTER SHEET</div>
 </header>
 
+<!-- ВКЛАДКИ -->
+<div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('pursuit')">PURSUIT</button>
+    <button class="tab-btn" onclick="switchTab('talents')">GENERAL TALENTS</button>
+</div>
+
 <main>
 
-    <!-- ШАПКА ЛИСТА -->
-    <div class="top-grid">
-        <div class="box">
-            <div class="field-group">
-                <label>Fated Name</label>
-                <input type="text" id="charName" placeholder="И что ты придумал на этот раз?">
-            </div>
-            <div class="label-row">
+    <!-- ВКЛАДКА 1: PURSUIT (ОСНОВНОЙ ЛИСТ) -->
+    <div id="tab-pursuit" class="tab-content active">
+
+        <!-- ШАПКА ЛИСТА -->
+        <div class="top-grid">
+            <div class="box">
                 <div class="field-group">
-                    <label>Player Name</label>
-                    <input type="text" id="playerName" placeholder="Напиши здесь свое красивое имя">
+                    <label>Fated Name</label>
+                    <input type="text" id="charName" placeholder="И что ты придумал на этот раз?">
                 </div>
+                <div class="label-row">
+                    <div class="field-group">
+                        <label>Player Name</label>
+                        <input type="text" id="playerName" placeholder="Напиши здесь свое красивое имя">
+                    </div>
+                    <div class="field-group">
+                        <label>Species</label>
+                        <input type="text" id="species" value="Human">
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
                 <div class="field-group">
-                    <label>Species</label>
-                    <input type="text" id="species" value="Human">
+                    <label>Current Pursuits</label>
+                    <input type="text" id="pursuit" placeholder="Пиши сюда свой класс">
                 </div>
             </div>
         </div>
 
-        <div class="box">
-            <div class="field-group">
-                <label>Current Pursuits</label>
-                <input type="text" id="pursuit" placeholder="Пиши сюда свой класс">
+        <!-- ТЕЛО ЛИСТА -->
+        <div class="sheet-body">
+
+            <!-- ЛЕВАЯ КОЛОНКА -->
+            <div>
+                <!-- АСПЕКТЫ -->
+                <div class="box">
+                    <div class="box-header">ASPECTS</div>
+
+                    <div class="aspects-grid">
+                        <!-- Physical -->
+                        <div class="aspect-subgroup">
+                            <h4>Physical</h4>
+                            <div class="aspect-row">
+                                <span class="aspect-name">Might</span>
+                                <div class="counter">
+                                    <button onclick="modAspect('might', -1)">-</button>
+                                    <span id="might">0</span>
+                                    <button onclick="modAspect('might', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="aspect-row">
+                                <span class="aspect-name">Grace</span>
+                                <div class="counter">
+                                    <button onclick="modAspect('grace', -1)">-</button>
+                                    <span id="grace">0</span>
+                                    <button onclick="modAspect('grace', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="aspect-row">
+                                <span class="aspect-name">Speed</span>
+                                <div class="counter">
+                                    <button onclick="modAspect('speed', -1)">-</button>
+                                    <span id="speed">0</span>
+                                    <button onclick="modAspect('speed', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="aspect-row">
+                                <span class="aspect-name">Resilience</span>
+                                <div class="counter">
+                                    <button onclick="modAspect('resilience', -1)">-</button>
+                                    <span id="resilience">0</span>
+                                    <button onclick="modAspect('resilience', 1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mental -->
+                        <div class="aspect-subgroup">
+                            <h4>Mental</h4>
+                            <div class="aspect-row">
+                                <span class="aspect-name">Intellect</span>
+                                <div class="counter">
+                                    <button onclick="modAspect('intellect', -1)">-</button>
+                                    <span id="intellect">0</span>
+                                    <button onclick="modAspect('intellect', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="aspect-row">
+                                <span class="aspect-name">Charm</span>
+                                <div class="counter">
+                                    <button onclick="modAspect('charm', -1)">-</button>
+                                    <span id="charm">0</span>
+                                    <button onclick="modAspect('charm', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="aspect-row">
+                                <span class="aspect-name">Cunning</span>
+                                <div class="counter">
+                                    <button onclick="modAspect('cunning', -1)">-</button>
+                                    <span id="cunning">0</span>
+                                    <button onclick="modAspect('cunning', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="aspect-row">
+                                <span class="aspect-name">Tenacity</span>
+                                <div class="counter">
+                                    <button onclick="modAspect('tenacity', -1)">-</button>
+                                    <span id="tenacity">0</span>
+                                    <button onclick="modAspect('tenacity', 1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DERIVED ASPECTS -->
+                <div class="box">
+                    <div class="box-header">DERIVED ASPECTS</div>
+                    <div class="derived-grid">
+                        <div class="derived-cell">
+                            <span>Defense</span>
+                            <div class="defense-container">
+                                <input type="number" id="defenseTotal" value="2" title="Итоговый Defense (со штрафом брони/бафами)">
+                                <span>(</span>
+                                <input type="number" id="defenseBase" value="2" title="Базовый Defense без брони">
+                                <span>)</span>
+                            </div>
+                        </div>
+                        <div class="derived-cell">
+                            <span>Walk</span>
+                            <input type="number" id="walk" value="4">
+                        </div>
+
+                        <div class="derived-cell">
+                            <span>Armor</span>
+                            <input type="number" id="armor" value="0" onchange="updateArmorPenalty()">
+                        </div>
+                        <div class="derived-cell">
+                            <span>Charge</span>
+                            <input type="number" id="charge" value="4">
+                        </div>
+
+                        <div class="derived-cell">
+                            <span>Willpower</span>
+                            <input type="number" id="willpower" value="2">
+                        </div>
+                        <div class="derived-cell">
+                            <span>Initiative</span>
+                            <input type="number" id="initiative" value="0">
+                        </div>
+
+                        <div class="derived-cell">
+                            <span>Wounds</span>
+                            <input type="number" id="wounds" value="4">
+                        </div>
+                        <div class="derived-cell">
+                            <span>Height</span>
+                            <input type="number" id="height" value="2">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ATTACKS -->
+                <div class="box">
+                    <div class="box-header">ATTACKS</div>
+                    
+                    <div class="attack-card">
+                        <div class="attack-row-1">
+                            <input type="text" placeholder="Attack Name (Оружие)">
+                            <input type="text" placeholder="Special (Свойства)">
+                        </div>
+                        <div class="attack-stats-grid">
+                            <div><label>AV</label><input type="text" placeholder="4"></div>
+                            <div><label>Range</label><input type="text" placeholder="1"></div>
+                            <div><label>Damage</label><input type="text" placeholder="2/3/4"></div>
+                            <div><label>Capacity</label><input type="text" placeholder="-"></div>
+                            <div><label>Reload</label><input type="text" placeholder="-"></div>
+                            <div><label>TN</label><input type="text" placeholder="-"></div>
+                        </div>
+                        <input type="text" placeholder="Triggers (например: Ram: Critical Strike)">
+                    </div>
+
+                    <div class="attack-card">
+                        <div class="attack-row-1">
+                            <input type="text" placeholder="Attack Name (Второе оружие)">
+                            <input type="text" placeholder="Special (Свойства)">
+                        </div>
+                        <div class="attack-stats-grid">
+                            <div><label>AV</label><input type="text" placeholder="5"></div>
+                            <div><label>Range</label><input type="text" placeholder="12"></div>
+                            <div><label>Damage</label><input type="text" placeholder="2/4/5"></div>
+                            <div><label>Capacity</label><input type="text" placeholder="6"></div>
+                            <div><label>Reload</label><input type="text" placeholder="1"></div>
+                            <div><label>TN</label><input type="text" placeholder="-"></div>
+                        </div>
+                        <input type="text" placeholder="Triggers (например: Ram: Critical Strike)">
+                    </div>
+                </div>
             </div>
+
+            <!-- ПРАВАЯ КОЛОНКА: SKILLS -->
+            <div>
+                <div class="box">
+                    <div class="box-header">SKILLS</div>
+                    <table class="skills-table">
+                        <thead>
+                            <tr>
+                                <th>SKILL</th>
+                                <th style="width: 55px; text-align: center;">AV</th>
+                                <th style="width: 65px; text-align: center;">RATING</th>
+                                <th style="width: 125px;">ASPECT</th>
+                                <th style="width: 35px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="skillsList">
+                            <!-- Пусто при старте -->
+                        </tbody>
+                    </table>
+                    <button class="add-row-btn" onclick="addNewSkillRow()">+ ДОБАВИТЬ НАВЫК</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <!-- ТЕЛО ЛИСТА -->
-    <div class="sheet-body">
+    <!-- ВКЛАДКА 2: GENERAL TALENTS -->
+    <div id="tab-talents" class="tab-content">
+        <div class="box">
+            <div class="box-header">TALENTS</div>
+            
+            <table class="talents-table">
+                <thead>
+                    <tr>
+                        <th style="width: 250px;">GENERAL TALENTS</th>
+                        <th>DESCRIPTION</th>
+                        <th style="width: 40px;"></th>
+                    </tr>
+                </thead>
+                <tbody id="talentsList">
+                    <!-- Ровно 1 строка на старте -->
+                    <tr>
+                        <td>
+                            <input type="text" class="talent-input-name" placeholder="Название таланта">
+                        </td>
+                        <td>
+                            <textarea class="talent-input-desc" placeholder="Описание эффекта или правил таланта"></textarea>
+                        </td>
+                        <td>
+                            <button class="del-btn" onclick="deleteTalentRow(this.closest('tr'))" title="Удалить">✕</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-        <!-- ЛЕВАЯ КОЛОНКА -->
-        <div>
-            <!-- АСПЕКТЫ -->
-            <div class="box">
-                <div class="box-header">ASPECTS</div>
-
-                <div class="aspects-grid">
-                    <!-- Physical -->
-                    <div class="aspect-subgroup">
-                        <h4>Physical</h4>
-                        <div class="aspect-row">
-                            <span class="aspect-name">Might</span>
-                            <div class="counter">
-                                <button onclick="modAspect('might', -1)">-</button>
-                                <span id="might">0</span>
-                                <button onclick="modAspect('might', 1)">+</button>
-                            </div>
-                        </div>
-                        <div class="aspect-row">
-                            <span class="aspect-name">Grace</span>
-                            <div class="counter">
-                                <button onclick="modAspect('grace', -1)">-</button>
-                                <span id="grace">0</span>
-                                <button onclick="modAspect('grace', 1)">+</button>
-                            </div>
-                        </div>
-                        <div class="aspect-row">
-                            <span class="aspect-name">Speed</span>
-                            <div class="counter">
-                                <button onclick="modAspect('speed', -1)">-</button>
-                                <span id="speed">0</span>
-                                <button onclick="modAspect('speed', 1)">+</button>
-                            </div>
-                        </div>
-                        <div class="aspect-row">
-                            <span class="aspect-name">Resilience</span>
-                            <div class="counter">
-                                <button onclick="modAspect('resilience', -1)">-</button>
-                                <span id="resilience">0</span>
-                                <button onclick="modAspect('resilience', 1)">+</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Mental -->
-                    <div class="aspect-subgroup">
-                        <h4>Mental</h4>
-                        <div class="aspect-row">
-                            <span class="aspect-name">Intellect</span>
-                            <div class="counter">
-                                <button onclick="modAspect('intellect', -1)">-</button>
-                                <span id="intellect">0</span>
-                                <button onclick="modAspect('intellect', 1)">+</button>
-                            </div>
-                        </div>
-                        <div class="aspect-row">
-                            <span class="aspect-name">Charm</span>
-                            <div class="counter">
-                                <button onclick="modAspect('charm', -1)">-</button>
-                                <span id="charm">0</span>
-                                <button onclick="modAspect('charm', 1)">+</button>
-                            </div>
-                        </div>
-                        <div class="aspect-row">
-                            <span class="aspect-name">Cunning</span>
-                            <div class="counter">
-                                <button onclick="modAspect('cunning', -1)">-</button>
-                                <span id="cunning">0</span>
-                                <button onclick="modAspect('cunning', 1)">+</button>
-                            </div>
-                        </div>
-                        <div class="aspect-row">
-                            <span class="aspect-name">Tenacity</span>
-                            <div class="counter">
-                                <button onclick="modAspect('tenacity', -1)">-</button>
-                                <span id="tenacity">0</span>
-                                <button onclick="modAspect('tenacity', 1)">+</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- DERIVED ASPECTS -->
-            <div class="box">
-                <div class="box-header">DERIVED ASPECTS</div>
-                <div class="derived-grid">
-                    <div class="derived-cell">
-                        <span>Defense</span>
-                        <div class="defense-container">
-                            <input type="number" id="defenseTotal" value="2" title="Итоговый Defense (со штрафом брони/бафами)">
-                            <span>(</span>
-                            <input type="number" id="defenseBase" value="2" title="Базовый Defense без брони">
-                            <span>)</span>
-                        </div>
-                    </div>
-                    <div class="derived-cell">
-                        <span>Walk</span>
-                        <input type="number" id="walk" value="4">
-                    </div>
-
-                    <div class="derived-cell">
-                        <span>Armor</span>
-                        <input type="number" id="armor" value="0" onchange="updateArmorPenalty()">
-                    </div>
-                    <div class="derived-cell">
-                        <span>Charge</span>
-                        <input type="number" id="charge" value="4">
-                    </div>
-
-                    <div class="derived-cell">
-                        <span>Willpower</span>
-                        <input type="number" id="willpower" value="2">
-                    </div>
-                    <div class="derived-cell">
-                        <span>Initiative</span>
-                        <input type="number" id="initiative" value="0">
-                    </div>
-
-                    <div class="derived-cell">
-                        <span>Wounds</span>
-                        <input type="number" id="wounds" value="4">
-                    </div>
-                    <div class="derived-cell">
-                        <span>Height</span>
-                        <input type="number" id="height" value="2">
-                    </div>
-                </div>
-            </div>
-
-            <!-- ATTACKS -->
-            <div class="box">
-                <div class="box-header">ATTACKS</div>
-                
-                <div class="attack-card">
-                    <div class="attack-row-1">
-                        <input type="text" placeholder="Attack Name (Оружие)">
-                        <input type="text" placeholder="Special (Свойства)">
-                    </div>
-                    <div class="attack-stats-grid">
-                        <div><label>AV</label><input type="text" placeholder="4"></div>
-                        <div><label>Range</label><input type="text" placeholder="1"></div>
-                        <div><label>Damage</label><input type="text" placeholder="2/3/4"></div>
-                        <div><label>Capacity</label><input type="text" placeholder="-"></div>
-                        <div><label>Reload</label><input type="text" placeholder="-"></div>
-                        <div><label>TN</label><input type="text" placeholder="-"></div>
-                    </div>
-                    <input type="text" placeholder="Triggers (например: Ram: Critical Strike)">
-                </div>
-
-                <div class="attack-card">
-                    <div class="attack-row-1">
-                        <input type="text" placeholder="Attack Name (Второе оружие)">
-                        <input type="text" placeholder="Special (Свойства)">
-                    </div>
-                    <div class="attack-stats-grid">
-                        <div><label>AV</label><input type="text" placeholder="5"></div>
-                        <div><label>Range</label><input type="text" placeholder="12"></div>
-                        <div><label>Damage</label><input type="text" placeholder="2/4/5"></div>
-                        <div><label>Capacity</label><input type="text" placeholder="6"></div>
-                        <div><label>Reload</label><input type="text" placeholder="1"></div>
-                        <div><label>TN</label><input type="text" placeholder="-"></div>
-                    </div>
-                    <input type="text" placeholder="Triggers (например: Ram: Critical Strike)">
-                </div>
-            </div>
+            <button class="add-row-btn" onclick="addNewTalentRow()">+ ДОБАВИТЬ ТАЛАНТ</button>
         </div>
-
-        <!-- ПРАВАЯ КОЛОНКА: SKILLS -->
-        <div>
-            <div class="box">
-                <div class="box-header">SKILLS</div>
-                <table class="skills-table">
-                    <thead>
-                        <tr>
-                            <th>SKILL</th>
-                            <th style="width: 55px; text-align: center;">AV</th>
-                            <th style="width: 65px; text-align: center;">RATING</th>
-                            <th style="width: 125px;">ASPECT</th>
-                            <th style="width: 35px;"></th>
-                        </tr>
-                    </thead>
-                    <tbody id="skillsList">
-                        <!-- Пусто при старте -->
-                    </tbody>
-                </table>
-                <button class="add-skill-btn" onclick="addNewSkillRow()">+ ДОБАВИТЬ НАВЫК</button>
-            </div>
-        </div>
-
     </div>
 
 </main>
 
 <script>
-    // 1. Аспекты
+    // ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК
+    function switchTab(tabKey) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+        if (tabKey === 'pursuit') {
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            document.getElementById('tab-pursuit').classList.add('active');
+        } else if (tabKey === 'talents') {
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            document.getElementById('tab-talents').classList.add('active');
+        }
+    }
+
+    // ТАЛАНТЫ: функции добавления и удаления
+    function addNewTalentRow() {
+        const tbody = document.getElementById("talentsList");
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>
+                <input type="text" class="talent-input-name" placeholder="Название таланта">
+            </td>
+            <td>
+                <textarea class="talent-input-desc" placeholder="Описание эффекта или правил таланта"></textarea>
+            </td>
+            <td>
+                <button class="del-btn" onclick="deleteTalentRow(this.closest('tr'))" title="Удалить">✕</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    }
+
+    function deleteTalentRow(tr) {
+        tr.remove();
+    }
+
+    // АСПЕКТЫ
     const aspects = {
         might: 0, grace: 0, speed: 0, resilience: 0,
         intellect: 0, charm: 0, cunning: 0, tenacity: 0
     };
 
-    // Навыки, разбитые по 8 категориям
+    // Навыки по 8 категориям
     const skillCategories = {
         "Academic": {
             "Bureaucracy": "cunning",
@@ -695,7 +848,6 @@
         return html;
     }
 
-    // Изменение аспекта вручную (+/-)
     function modAspect(stat, delta) {
         aspects[stat] += delta;
         document.getElementById(stat).textContent = aspects[stat];
@@ -703,7 +855,6 @@
         updateAllSkillAVs();
     }
 
-    // Вспомогательная: получить максимальный ранг навыка по имени
     function getSkillRank(skillName) {
         const rows = document.querySelectorAll("#skillsList tr");
         let maxRank = 0;
@@ -717,42 +868,34 @@
         return maxRank;
     }
 
-    // Точный расчет Derived Aspects по правилам
     function updateDerived() {
         const evade = getSkillRank("Evade");
         const centering = getSkillRank("Centering");
         const notice = getSkillRank("Notice");
         const toughness = getSkillRank("Toughness");
 
-        // 1. Defense: 2 + max(0, Evade, Speed)
         const defBonus = Math.max(0, evade, aspects.speed);
         const baseDef = 2 + defBonus;
         document.getElementById("defenseBase").value = baseDef;
 
-        // Итоговый Defense с учетом брони
         const armor = parseInt(document.getElementById("armor").value) || 0;
         const armorPenalty = armor > 0 ? 1 : 0;
         document.getElementById("defenseTotal").value = Math.max(1, baseDef - armorPenalty);
 
-        // 2. Willpower: 2 + max(0, Centering, Tenacity)
         const wpBonus = Math.max(0, centering, aspects.tenacity);
         document.getElementById("willpower").value = 2 + wpBonus;
 
-        // 3. Initiative: Speed + Notice
         document.getElementById("initiative").value = aspects.speed + notice;
 
-        // 4. Wounds: 4 + Toughness + (Resilience > 0 ? ceil(Resilience / 2) : 0)
         let resBonus = 0;
         if (aspects.resilience > 0) {
             resBonus = Math.ceil(aspects.resilience / 2);
         }
         document.getElementById("wounds").value = 4 + toughness + resBonus;
 
-        // 5. Walk: 4 + Speed / 2 (округление вверх)
         const walkVal = 4 + Math.ceil(aspects.speed / 2);
         document.getElementById("walk").value = walkVal;
 
-        // 6. Charge: 4 + Speed (не меньше Walk)
         const rawCharge = 4 + aspects.speed;
         document.getElementById("charge").value = Math.max(rawCharge, walkVal);
     }
@@ -764,7 +907,6 @@
         document.getElementById("defenseTotal").value = Math.max(1, baseDef - armorPenalty);
     }
 
-    // Добавление новой строки навыка
     function addNewSkillRow() {
         const tbody = document.getElementById("skillsList");
         const tr = document.createElement("tr");
@@ -791,14 +933,12 @@
         tbody.appendChild(tr);
     }
 
-    // При выборе навыка из выпадающего списка
     function onSkillSelectChange(tr) {
         const skillName = tr.querySelector(".skill-select").value;
         const aspectDef = findSkillAspectDef(skillName);
         const avContainer = tr.querySelector(".av-container");
         const aspectContainer = tr.querySelector(".aspect-container");
 
-        // Двойной аспект (магия) — строим два этажа внутри одной строки
         if (Array.isArray(aspectDef)) {
             avContainer.innerHTML = `
                 <div class="dual-stack">
@@ -813,7 +953,6 @@
                 </div>
             `;
         } else {
-            // Одинарный навык
             avContainer.innerHTML = `<div class="av-box av-val">—</div>`;
             aspectContainer.innerHTML = getAspectSelectHtml(aspectDef || "");
         }
@@ -832,7 +971,6 @@
         updateDerived();
     }
 
-    // Пересчет AV для строки
     function updateRowAV(tr) {
         const rating = parseInt(tr.querySelector(".skill-rating").value) || 0;
         const avCells = tr.querySelectorAll(".av-val");
