@@ -567,13 +567,6 @@ const GENERAL_TALENTS = [
     "notes": ""
   },
   {
-    "name": "Channel Destiny",
-    "desc": "When this character performs a duel, she may suffer 2 damage before flipping any cards to add a suit of her choice to her final duel total. If this damage causes the character to suffer a Critical Effect or Toughness check to remain conscious, resolve the initial duel before checking for either.",
-    "req": "None",
-    "book": "Into the Steam",
-    "notes": ""
-  },
-  {
     "name": "Cheating So and So",
     "desc": "The character gains the following Trigger on all Expertise Challenges:\n\nMASKS Stack the Deck: After resolving, you may look at the top card of the Fate deck and then choose whether or not to put it on the bottom of the deck.",
     "req": "Skill: Gambling 3 or higher",
@@ -752,13 +745,6 @@ const GENERAL_TALENTS = [
     "name": "C-C-C-Combo!!!!",
     "desc": "The character gains the following Trigger on her Martial Arts Close Combat attacks:\n\nMASKS Combo!: This character may take this attack again against the same target. This second attack may not declare Triggers.",
     "req": "Skill: Martial Arts 3 or higher",
-    "book": "Into the Steam",
-    "notes": ""
-  },
-  {
-    "name": "Channel Destiny",
-    "desc": "When this character performs a duel, she may suffer 2 damage before flipping any cards to add a suit of her choice to her final duel total. If this damage causes the character to suffer a Critical Effect or Toughness check to remain conscious, resolve the initial duel before checking for either.",
-    "req": "None",
     "book": "Into the Steam",
     "notes": ""
   },
