@@ -438,21 +438,27 @@
             }
         }
 /* СТИЛИ ДЛЯ ПЕЧАТИ И ЭКСПОРТА В PDF — 1 В 1 КАК НА САЙТЕ */
+/* КОМПАКТНЫЙ ОФИЦИАЛЬНЫЙ ЛИСТ A4 */
         @page {
-            size: A4 landscape; /* Альбомный лист, чтобы влезли обе колонки как на мониторе */
-            margin: 8mm 10mm;
+            size: A4 portrait;
+            margin: 6mm 8mm;
         }
 
         @media print {
+            * {
+                box-sizing: border-box !important;
+            }
+
             body {
                 background: #ffffff !important;
-                color: #111111 !important;
+                color: #000000 !important;
                 font-family: 'Cinzel', Georgia, serif;
+                font-size: 11px !important;
+                line-height: 1.1 !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
 
-            /* Скрываем кнопки шапки и сервисные элементы */
             header, .tab-bar, .add-row-btn, .del-btn, .toggle-btn, .counter button {
                 display: none !important;
             }
@@ -464,60 +470,80 @@
                 margin: 0 !important;
             }
 
-            /* Принудительно сохраняем сетку из 2 колонок, как на сайте */
+            /* Шапка персонажа */
             .top-grid {
                 display: grid !important;
                 grid-template-columns: 2fr 1fr !important;
-                gap: 10px !important;
-                margin-bottom: 10px !important;
+                gap: 6px !important;
+                margin-bottom: 6px !important;
             }
 
+            /* Две колонки как в оригинальном бланке: слева статы и атаки, справа навыки */
             .sheet-body {
                 display: grid !important;
                 grid-template-columns: 1fr 1fr !important;
-                gap: 15px !important;
+                gap: 8px !important;
+                align-items: start !important;
             }
 
-            /* Каждая вкладка печатается на своем отдельном листе A4 */
-            .tab-content {
-                display: block !important;
-            }
-
-            #tab-general {
-                page-break-before: always; /* Вторая вкладка начинается со следующего листа */
-                margin-top: 15px;
-            }
-
-            /* Блоки и карточки */
-            .box, .attack-card, .talent-card, .aspect-row, .derived-cell {
+            /* Запрещаем разрывать блоки между страницами */
+            .box, .attack-card, .talent-card {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
                 background: #ffffff !important;
-                border: 1px solid #555555 !important;
-                color: #000000 !important;
+                border: 1px solid #222222 !important;
+                padding: 6px !important;
+                margin-bottom: 6px !important;
                 box-shadow: none !important;
             }
 
             .box-header {
                 color: #000000 !important;
-                border-bottom: 1px solid #333333 !important;
+                font-size: 11px !important;
+                font-weight: bold !important;
+                border-bottom: 1px solid #222222 !important;
+                padding-bottom: 2px !important;
+                margin-bottom: 4px !important;
             }
 
+            /* Компактные поля ввода */
             input, select, textarea {
                 background: #ffffff !important;
                 color: #000000 !important;
-                border: 1px solid #999999 !important;
+                border: 1px solid #777777 !important;
+                padding: 1px 3px !important;
+                font-size: 10px !important;
+                height: 20px !important;
                 box-shadow: none !important;
             }
 
-            .talent-body {
-                display: block !important;
-                background: #ffffff !important;
-                border-top: 1px solid #777777 !important;
+            .aspect-row, .derived-cell {
+                padding: 2px 4px !important;
+                margin-bottom: 2px !important;
+                border: 1px solid #888888 !important;
             }
 
             .av-box {
                 background: #f0f0f0 !important;
                 color: #000000 !important;
-                border: 1px solid #666666 !important;
+                border: 1px solid #555555 !important;
+                font-size: 10px !important;
+                padding: 1px 3px !important;
+            }
+
+            /* Вторая вкладка с талантами уходит на 2-й отдельный лист */
+            #tab-general {
+                page-break-before: always !important;
+                break-before: page !important;
+                margin-top: 0 !important;
+            }
+
+            .talent-body {
+                display: block !important;
+                background: #ffffff !important;
+                border-top: 1px solid #666666 !important;
+                font-size: 10px !important;
+                padding: 4px !important;
             }
         }
     </style>
