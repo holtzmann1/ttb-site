@@ -3,261 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Through the Breach — Character Sheet</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <title>Создание персонажа — Through the Breach</title>
+    <!-- ПОДКЛЮЧАЕМ БАЗУ ТАЛАНТОВ (с версионированием для мобильного кэша) -->
+    <script src="talents-data.js?v=2"></script>
     <style>
-        :root {
-            --bg-color: #0b0907;
-            --panel-bg: #14110e;
-            --box-bg: #1c1813;
-            --border-color: #3d3122;
-            --border-highlight: #6e583b;
-            --text-color: #e5d8c5;
-            --text-muted: #8c7e6d;
-            --accent-gold: #c59a5b;
-            --accent-glow: #e2b774;
-            --danger: #8a2424;
-            --input-bg: #0f0d0a;
-            --font-title: 'Cinzel', serif;
-            --font-body: 'Crimson Pro', serif;
-        }
-
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
 
         body {
-            background-color: var(--bg-color);
-            background-image: 
-                radial-gradient(circle at 50% 0%, #2a2015 0%, transparent 75%),
-                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 100% 100%, 30px 30px, 30px 30px;
-            color: var(--text-color);
-            font-family: var(--font-body);
-            font-size: 16px;
+            margin: 0;
             min-height: 100vh;
-            padding-bottom: 60px;
+            background: radial-gradient(circle at 50% 20%, #30251b 0%, #17130f 45%, #0b0a09 100%);
+            color: #e8dfd0;
+            font-family: Georgia, serif;
         }
 
         header {
-            background: linear-gradient(180deg, rgba(16,13,10,0.95) 0%, rgba(11,9,7,0.8) 100%);
-            border-bottom: 2px solid var(--border-color);
-            padding: 15px 30px;
+            padding: 20px 50px;
+            border-bottom: 1px solid #4a3825;
+            background: rgba(10, 9, 8, 0.7);
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            align-items: center;
         }
 
         .back-button {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--accent-gold);
-            font-family: var(--font-title);
-            font-size: 12px;
-            padding: 8px 16px;
-            cursor: pointer;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
+            color: #8f8679;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 14px;
+            letter-spacing: 1px;
         }
 
         .back-button:hover {
-            border-color: var(--accent-gold);
-            box-shadow: 0 0 10px rgba(197, 154, 91, 0.2);
-            color: #fff;
+            color: #c59a5b;
         }
 
         .sheet-title {
-            font-family: var(--font-title);
-            color: var(--accent-gold);
+            color: #c59a5b;
             font-size: 20px;
-            letter-spacing: 3px;
-            text-align: center;
-        }
-
-        .main-container {
-            max-width: 1400px;
-            margin: 30px auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: 340px 1fr;
-            gap: 25px;
-        }
-
-        .box {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            padding: 20px;
-            position: relative;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-            margin-bottom: 25px;
-        }
-
-        .box-header {
-            font-family: var(--font-title);
-            font-size: 14px;
-            color: var(--accent-gold);
             letter-spacing: 2px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
-            margin-bottom: 15px;
+        }
+
+        .tab-bar {
+            max-width: 1200px;
+            margin: 20px auto 0 auto;
+            padding: 0 20px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .input-group {
-            margin-bottom: 15px;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 12px;
-            color: var(--text-muted);
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-        }
-
-        .input-group input, .input-group select {
-            width: 100%;
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 8px 12px;
-            font-family: var(--font-body);
-            font-size: 15px;
-            outline: none;
-            transition: border-color 0.3s ease;
-        }
-
-        .input-group input:focus, .input-group select:focus {
-            border-color: var(--accent-gold);
-        }
-
-        .aspects-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .aspect-card {
-            background: var(--box-bg);
-            border: 1px solid var(--border-color);
-            padding: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .aspect-name {
-            font-size: 13px;
-            color: var(--text-muted);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .aspect-controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .aspect-btn {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            color: var(--accent-gold);
-            width: 22px;
-            height: 22px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            line-height: 1;
-        }
-
-        .aspect-btn:hover {
-            border-color: var(--accent-gold);
-            color: #fff;
-        }
-
-        .aspect-val {
-            font-family: var(--font-title);
-            font-size: 16px;
-            width: 24px;
-            text-align: center;
-            color: #fff;
-        }
-
-        .derived-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .derived-card {
-            background: var(--box-bg);
-            border: 1px solid var(--border-color);
-            padding: 10px 5px;
-            text-align: center;
-        }
-
-        .derived-label {
-            font-size: 11px;
-            color: var(--text-muted);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-
-        .derived-val {
-            font-family: var(--font-title);
-            font-size: 18px;
-            color: var(--accent-gold);
-        }
-
-        .tabs-header {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
+            gap: 15px;
         }
 
         .tab-btn {
-            background: var(--box-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-muted);
-            font-family: var(--font-title);
+            background: rgba(14, 11, 9, 0.85);
+            border: 1px solid #4a3825;
+            color: #8f8679;
+            padding: 10px 24px;
+            font-family: Georgia, serif;
             font-size: 13px;
-            padding: 8px 20px;
+            letter-spacing: 2px;
             cursor: pointer;
-            letter-spacing: 1.5px;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: #e8dfd0;
+            border-color: #b88a4a;
         }
 
         .tab-btn.active {
-            background: var(--panel-bg);
-            border-color: var(--accent-gold);
-            color: var(--accent-gold);
-            box-shadow: 0 0 10px rgba(197, 154, 91, 0.15);
+            color: #c59a5b;
+            border-color: #c59a5b;
+            background: rgba(45, 33, 21, 0.6);
+            box-shadow: inset 0 0 10px rgba(197, 154, 91, 0.2);
         }
 
-        .tab-btn:hover:not(.active) {
-            border-color: var(--border-highlight);
-            color: var(--text-color);
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 25px 20px 40px 20px;
         }
 
         .tab-content {
@@ -268,1040 +91,1345 @@
             display: block;
         }
 
-        .sheet-table {
+        input[type="text"], input[type="number"], select, textarea {
+            background: #14110e;
+            border: 1px solid #4a3825;
+            color: #e8dfd0;
+            font-family: Georgia, serif;
+            font-size: 15px;
+            padding: 8px 10px;
+            outline: none;
             width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 15px;
         }
 
-        .sheet-table th {
-            font-size: 11px;
-            color: var(--text-muted);
+        input:focus, select:focus, textarea:focus {
+            border-color: #b88a4a;
+        }
+
+        optgroup {
+            background: #1e1914;
+            color: #c59a5b;
+            font-style: normal;
+            font-weight: bold;
+        }
+
+        option {
+            background: #14110e;
+            color: #e8dfd0;
+            font-weight: normal;
+        }
+
+        .box {
+            border: 1px solid #4a3825;
+            background: rgba(10, 9, 8, 0.6);
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+
+        .box-header {
+            margin: 0 0 15px 0;
+            color: #c59a5b;
+            font-size: 20px;
+            font-weight: normal;
             letter-spacing: 1.5px;
-            text-align: left;
-            padding: 8px;
-            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            border-bottom: 1px solid #33271a;
+            padding-bottom: 6px;
+        }
+
+        .top-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .label-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .field-group label {
+            display: block;
+            font-size: 12px;
+            color: #a99e8d;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
             text-transform: uppercase;
         }
 
-        .sheet-table td {
-            padding: 8px;
-            border-bottom: 1px solid rgba(61, 49, 34, 0.3);
+        .sheet-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
         }
 
-        .sheet-table input, .sheet-table select {
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 6px 8px;
-            font-family: var(--font-body);
-            font-size: 14px;
-            width: 100%;
-            outline: none;
-        }
-
-        .sheet-table input:focus, .sheet-table select:focus {
-            border-color: var(--accent-gold);
-        }
-
-        .del-btn {
-            background: transparent;
-            border: none;
-            color: var(--danger);
-            cursor: pointer;
-            font-size: 16px;
-            padding: 2px 6px;
-        }
-
-        .del-btn:hover {
-            color: #ff4d4d;
-        }
-
-        .add-row-btn {
-            background: transparent;
-            border: 1px dashed var(--border-color);
-            color: var(--text-muted);
-            font-family: var(--font-title);
-            font-size: 11px;
-            padding: 8px 16px;
-            cursor: pointer;
-            width: 100%;
-            letter-spacing: 1.5px;
-            transition: all 0.3s ease;
-        }
-
-        .add-row-btn:hover {
-            border-color: var(--accent-gold);
-            color: var(--accent-gold);
-        }
-
-        .talent-card {
-            background: var(--box-bg);
-            border: 1px solid var(--border-color);
-            margin-bottom: 15px;
-            transition: border-color 0.3s ease;
-        }
-
-        .talent-card-header {
-            padding: 10px 15px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: rgba(0,0,0,0.2);
-            cursor: pointer;
-        }
-
-        .talent-toggle-btn {
-            background: transparent;
-            border: none;
-            color: var(--accent-gold);
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .talent-select {
-            flex-grow: 1;
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            color: var(--accent-gold);
-            font-family: var(--font-title);
-            font-size: 14px;
-            padding: 6px 10px;
-            outline: none;
-        }
-
-        .custom-name-input {
-            flex-grow: 1;
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            color: #fff;
-            font-family: var(--font-title);
-            font-size: 14px;
-            padding: 6px 10px;
-            outline: none;
-            display: none;
-        }
-
-        .talent-card-body {
-            padding: 15px;
-            border-top: 1px solid var(--border-color);
+        .aspects-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
 
-        .talent-desc-area {
-            grid-column: 1 / -1;
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            font-family: var(--font-body);
+        .aspect-subgroup h4 {
+            margin: 0 0 10px 0;
+            text-align: center;
+            color: #a99e8d;
             font-size: 14px;
-            padding: 10px;
-            min-height: 80px;
-            resize: vertical;
-            outline: none;
-            line-height: 1.4;
+            letter-spacing: 1px;
         }
 
-        .talent-meta-item {
+        .aspect-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(20, 17, 14, 0.8);
+            border: 1px solid #382b1d;
+            padding: 6px 10px;
+            margin-bottom: 8px;
+        }
+
+        .aspect-name {
+            font-size: 15px;
+        }
+
+        .counter {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .counter button {
+            width: 26px;
+            height: 26px;
+            background: #14110e;
+            border: 1px solid #4a3825;
+            color: #c59a5b;
+            cursor: pointer;
+            font-family: monospace;
+        }
+
+        .counter button:hover {
+            background: #b88a4a;
+            color: #000;
+        }
+
+        .counter span {
+            min-width: 25px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .derived-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .derived-cell {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(20, 17, 14, 0.8);
+            border: 1px solid #382b1d;
+            padding: 6px 10px;
+        }
+
+        .derived-cell span:first-child {
+            color: #a99e8d;
             font-size: 13px;
         }
 
-        .talent-meta-label {
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-size: 11px;
-            letter-spacing: 1px;
-            display: block;
-            margin-bottom: 3px;
+        .derived-cell input {
+            width: 65px;
+            text-align: center;
+            padding: 4px;
+            font-size: 16px;
+            font-weight: bold;
         }
 
-        .talent-meta-val {
-            color: #fff;
+        .defense-container {
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
-        .attacks-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 15px;
-            margin-bottom: 15px;
+        .defense-container input {
+            width: 44px;
+            text-align: center;
+            padding: 4px;
+            font-size: 15px;
+            font-weight: bold;
         }
 
         .attack-card {
-            background: var(--box-bg);
-            border: 1px solid var(--border-color);
-            padding: 15px;
+            border: 1px solid #382b1d;
+            background: rgba(16, 14, 11, 0.85);
+            padding: 10px;
+            margin-bottom: 12px;
         }
 
-        .attack-field-row {
+        .attack-row-1 {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1.5fr 1fr;
             gap: 10px;
             margin-bottom: 8px;
         }
 
-        .attack-field-row.full {
-            grid-template-columns: 1fr;
+        .attack-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+            margin-bottom: 8px;
         }
 
-        .attack-field-row label {
-            font-size: 11px;
-            color: var(--text-muted);
+        .attack-stats-grid div {
+            text-align: center;
+        }
+
+        .attack-stats-grid label {
             display: block;
-            margin-bottom: 2px;
-            text-transform: uppercase;
+            font-size: 10px;
+            color: #8f8679;
+            margin-bottom: 3px;
         }
 
-        .attack-field-row input {
+        .attack-stats-grid input {
+            text-align: center;
+            padding: 4px;
+            font-size: 13px;
+        }
+
+        .skills-table {
             width: 100%;
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 5px 8px;
-            font-family: var(--font-body);
-            font-size: 14px;
-            outline: none;
+            border-collapse: collapse;
         }
 
-        .attack-field-row input:focus {
-            border-color: var(--accent-gold);
+        .skills-table th {
+            text-align: left;
+            padding: 6px;
+            color: #a99e8d;
+            font-size: 13px;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #4a3825;
+        }
+
+        .skills-table td {
+            padding: 4px;
+            vertical-align: middle;
+        }
+
+        .dual-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .av-box {
+            text-align: center;
+            font-weight: bold;
+            color: #c59a5b;
+            font-size: 16px;
+            background: #14110e;
+            border: 1px solid #2a2015;
+            padding: 6px 0;
+            width: 45px;
+            min-height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        .del-btn {
+            background: transparent;
+            border: 1px solid #4a3825;
+            color: #8f8679;
+            cursor: pointer;
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        .del-btn:hover {
+            color: #e57373;
+            border-color: #e57373;
+        }
+
+        .add-row-btn {
+            margin-top: 15px;
+            padding: 10px;
+            background: transparent;
+            border: 1px dashed #b88a4a;
+            color: #c59a5b;
+            cursor: pointer;
+            font-family: Georgia, serif;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+
+        .add-row-btn:hover {
+            background: rgba(184, 138, 74, 0.15);
+        }
+
+        /* АККОРДЕОН ТАЛАНТОВ */
+        .talent-card {
+            border: 1px solid #3d2f21;
+            background: rgba(18, 15, 12, 0.85);
+            margin-bottom: 10px;
+        }
+
+        .talent-header-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+        }
+
+        .toggle-btn {
+            background: transparent;
+            border: 1px solid #4a3825;
+            color: #c59a5b;
+            cursor: pointer;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .toggle-btn:hover {
+            border-color: #b88a4a;
+            background: rgba(184, 138, 74, 0.15);
+        }
+
+        .talent-body {
+            display: none;
+            padding: 12px 14px 14px 14px;
+            border-top: 1px solid #2a2015;
+            background: rgba(12, 10, 8, 0.6);
+        }
+
+        .talent-meta-info {
+            font-size: 13px;
+            color: #a99e8d;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .talent-meta-info span {
+            color: #c59a5b;
+            font-weight: bold;
+        }
+
+        .talent-desc-area {
+            min-height: 70px;
+            resize: vertical;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        @media (max-width: 900px) {
+            .top-grid, .sheet-body {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- ВЕРХНЯЯ ШАПКА -->
-    <header>
-        <a href="characters.html" class="back-button">← НАЗАД К ПЕРСОНАЖАМ</a>
-        <div class="sheet-title">CHARACTER SHEET</div>
-        <div style="display: flex; gap: 10px;">
-            <button type="button" class="tab-btn" onclick="saveCharacter()" style="padding: 6px 14px; font-size: 11px;">💾 СОХРАНИТЬ</button>
-            <button type="button" class="tab-btn" onclick="exportCharacterJSON()" style="padding: 6px 14px; font-size: 11px;">⬇ СКАЧАТЬ JSON</button>
-            <button type="button" class="tab-btn" onclick="document.getElementById('importFile').click()" style="padding: 6px 14px; font-size: 11px;">⬆ ЗАГРУЗИТЬ</button>
-            <input type="file" id="importFile" style="display: none;" onchange="importCharacterJSON(event)" accept=".json">
-        </div>
-    </header>
+<header>
+    <a href="characters.html" class="back-button">← НАЗАД К ПЕРСОНАЖАМ</a>
+    <div class="sheet-title">CHARACTER SHEET</div>
+    <div style="display: flex; gap: 10px;">
+        <button type="button" class="tab-btn" onclick="saveCharacter()" style="padding: 6px 14px; font-size: 11px;">💾 СОХРАНИТЬ</button>
+        <button type="button" class="tab-btn" onclick="exportCharacterJSON()" style="padding: 6px 14px; font-size: 11px;">⬇ СКАЧАТЬ JSON</button>
+        <button type="button" class="tab-btn" onclick="document.getElementById('importFile').click()" style="padding: 6px 14px; font-size: 11px;">⬆ ЗАГРУЗИТЬ</button>
+        <input type="file" id="importFile" style="display: none;" onchange="importCharacterJSON(event)" accept=".json">
+    </div>
+</header>
 
-    <div class="main-container">
-        <!-- ЛЕВАЯ КОЛОНКА: БАЗОВАЯ ИНФОРМАЦИЯ И АСПЕКТЫ -->
-        <div class="sidebar">
+<div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('pursuit')">PURSUIT</button>
+    <button class="tab-btn" onclick="switchTab('talents')">GENERAL TALENTS</button>
+</div>
+
+<main>
+
+    <!-- ВКЛАДКА 1: PURSUIT -->
+    <div id="tab-pursuit" class="tab-content active">
+        <div class="top-grid">
             <div class="box">
-                <div class="box-header">IDENTITY</div>
-                <div class="input-group">
-                    <label>Character Name</label>
-                    <input type="text" id="charName" placeholder="Имя персонажа">
+                <div class="field-group">
+                    <label>Fated Name</label>
+                    <input type="text" id="charName" placeholder="И что ты придумал на этот раз?">
                 </div>
-                <div class="input-group">
-                    <label>Player Name</label>
-                    <input type="text" id="playerName" placeholder="Игрок">
-                </div>
-                <div class="input-group">
-                    <label>Species / Chassis</label>
-                    <input type="text" id="species" placeholder="Раса / Шасси">
-                </div>
-                <div class="input-group">
-                    <label>Current Pursuit</label>
-                    <input type="text" id="pursuit" placeholder="Текущий Pursuit">
+                <div class="label-row">
+                    <div class="field-group">
+                        <label>Player Name</label>
+                        <input type="text" id="playerName" placeholder="Напиши здесь свое красивое имя">
+                    </div>
+                    <div class="field-group">
+                        <label>Species</label>
+                        <input type="text" id="species" value="Human" oninput="refreshAllTalentSelects()">
+                    </div>
                 </div>
             </div>
 
             <div class="box">
-                <div class="box-header">PHYSICAL ASPECTS</div>
-                <div class="aspects-grid">
-                    <div class="aspect-card">
-                        <div class="aspect-name">Might</div>
-                        <div class="aspect-controls">
-                            <button class="aspect-btn" onclick="changeAspect('might', -1)">-</button>
-                            <span class="aspect-val" id="might">0</span>
-                            <button class="aspect-btn" onclick="changeAspect('might', 1)">+</button>
-                        </div>
-                    </div>
-                    <div class="aspect-card">
-                        <div class="aspect-name">Grace</div>
-                        <div class="aspect-controls">
-                            <button class="aspect-btn" onclick="changeAspect('grace', -1)">-</button>
-                            <span class="aspect-val" id="grace">0</span>
-                            <button class="aspect-btn" onclick="changeAspect('grace', 1)">+</button>
-                        </div>
-                    </div>
-                    <div class="aspect-card">
-                        <div class="aspect-name">Speed</div>
-                        <div class="aspect-controls">
-                            <button class="aspect-btn" onclick="changeAspect('speed', -1)">-</button>
-                            <span class="aspect-val" id="speed">0</span>
-                            <button class="aspect-btn" onclick="changeAspect('speed', 1)">+</button>
-                        </div>
-                    </div>
-                    <div class="aspect-card">
-                        <div class="aspect-name">Resilience</div>
-                        <div class="aspect-controls">
-                            <button class="aspect-btn" onclick="changeAspect('resilience', -1)">-</button>
-                            <span class="aspect-val" id="resilience">0</span>
-                            <button class="aspect-btn" onclick="changeAspect('resilience', 1)">+</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="box-header" style="margin-top: 20px;">MENTAL ASPECTS</div>
-                <div class="aspects-grid">
-                    <div class="aspect-card">
-                        <div class="aspect-name">Intellect</div>
-                        <div class="aspect-controls">
-                            <button class="aspect-btn" onclick="changeAspect('intellect', -1)">-</button>
-                            <span class="aspect-val" id="intellect">0</span>
-                            <button class="aspect-btn" onclick="changeAspect('intellect', 1)">+</button>
-                        </div>
-                    </div>
-                    <div class="aspect-card">
-                        <div class="aspect-name">Charm</div>
-                        <div class="aspect-controls">
-                            <button class="aspect-btn" onclick="changeAspect('charm', -1)">-</button>
-                            <span class="aspect-val" id="charm">0</span>
-                            <button class="aspect-btn" onclick="changeAspect('charm', 1)">+</button>
-                        </div>
-                    </div>
-                    <div class="aspect-card">
-                        <div class="aspect-name">Cunning</div>
-                        <div class="aspect-controls">
-                            <button class="aspect-btn" onclick="changeAspect('cunning', -1)">-</button>
-                            <span class="aspect-val" id="cunning">0</span>
-                            <button class="aspect-btn" onclick="changeAspect('cunning', 1)">+</button>
-                        </div>
-                    </div>
-                    <div class="aspect-card">
-                        <div class="aspect-name">Tenacity</div>
-                        <div class="aspect-controls">
-                            <button class="aspect-btn" onclick="changeAspect('tenacity', -1)">-</button>
-                            <span class="aspect-val" id="tenacity">0</span>
-                            <button class="aspect-btn" onclick="changeAspect('tenacity', 1)">+</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="box-header" style="margin-top: 20px;">DERIVED ASPECTS</div>
-                <div class="derived-grid">
-                    <div class="derived-card">
-                        <div class="derived-label">Defense</div>
-                        <div class="derived-val" id="derived-df">0</div>
-                    </div>
-                    <div class="derived-card">
-                        <div class="derived-label">Willpower</div>
-                        <div class="derived-val" id="derived-wp">0</div>
-                    </div>
-                    <div class="derived-card">
-                        <div class="derived-label">Wounds</div>
-                        <div class="derived-val" id="derived-wounds">0</div>
-                    </div>
-                    <div class="derived-card">
-                        <div class="derived-label">Walk / Charge</div>
-                        <div class="derived-val" id="derived-movement">0 / 0</div>
-                    </div>
-                </div>
-
-                <div class="input-group" style="margin-top: 15px;">
-                    <label>Armor Rating</label>
-                    <input type="number" id="armor" value="0" min="0" oninput="updateDerived()">
+                <div class="field-group">
+                    <label>Current Pursuits</label>
+                    <input type="text" id="pursuit" placeholder="Пиши сюда свой класс">
                 </div>
             </div>
         </div>
 
-        <!-- ПРАВАЯ КОЛОНКА: ВКЛАДКИ -->
-        <div class="content-area">
-            <div class="tabs-header">
-                <button type="button" class="tab-btn active" onclick="switchTab('pursuit')">PURSUIT</button>
-                <button type="button" class="tab-btn" onclick="switchTab('talents')">GENERAL TALENTS</button>
+        <div class="sheet-body">
+            <div>
+                <div class="box">
+                    <div class="box-header">ASPECTS</div>
+                    <div class="aspects-grid">
+                        <div class="aspect-subgroup">
+                            <h4>Physical</h4>
+                            <div class="aspect-row">
+                                <span class="aspect-name">Might</span>
+                                <div class="counter">
+                                    <button onclick="modAspect('might', -1)">-</button>
+                                    <span id="might">0</span>
+                                    <button onclick="modAspect('might', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="aspect-row">
+                                <span class="aspect-name">Grace</span>
+                                <div class="counter">
+                                    <button onclick="modAspect('grace', -1)">-</button>
+                                    <span id="grace">0</span>
+                                    <button onclick="modAspect('grace', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="aspect-row">
+                                <span class="aspect-name">Speed</span>
+                                <div class="counter">
+                                    <button onclick="modAspect('speed', -1)">-</button>
+                                    <span id="speed">0</span>
+                                    <button onclick="modAspect('speed', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="aspect-row">
+                                <span class="aspect-name">Resilience</span>
+                                <div class="counter">
+                                    <button onclick="modAspect('resilience', -1)">-</button>
+                                    <span id="resilience">0</span>
+                                    <button onclick="modAspect('resilience', 1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="aspect-subgroup">
+                            <h4>Mental</h4>
+                            <div class="aspect-row">
+                                <span class="aspect-name">Intellect</span>
+                                <div class="counter">
+                                    <button onclick="modAspect('intellect', -1)">-</button>
+                                    <span id="intellect">0</span>
+                                    <button onclick="modAspect('intellect', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="aspect-row">
+                                <span class="aspect-name">Charm</span>
+                                <div class="counter">
+                                    <button onclick="modAspect('charm', -1)">-</button>
+                                    <span id="charm">0</span>
+                                    <button onclick="modAspect('charm', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="aspect-row">
+                                <span class="aspect-name">Cunning</span>
+                                <div class="counter">
+                                    <button onclick="modAspect('cunning', -1)">-</button>
+                                    <span id="cunning">0</span>
+                                    <button onclick="modAspect('cunning', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="aspect-row">
+                                <span class="aspect-name">Tenacity</span>
+                                <div class="counter">
+                                    <button onclick="modAspect('tenacity', -1)">-</button>
+                                    <span id="tenacity">0</span>
+                                    <button onclick="modAspect('tenacity', 1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box">
+                    <div class="box-header">DERIVED ASPECTS</div>
+                    <div class="derived-grid">
+                        <div class="derived-cell">
+                            <span>Defense</span>
+                            <div class="defense-container">
+                                <input type="number" id="defenseTotal" value="2">
+                                <span>(</span>
+                                <input type="number" id="defenseBase" value="2">
+                                <span>)</span>
+                            </div>
+                        </div>
+                        <div class="derived-cell">
+                            <span>Walk</span>
+                            <input type="number" id="walk" value="4">
+                        </div>
+                        <div class="derived-cell">
+                            <span>Armor</span>
+                            <input type="number" id="armor" value="0" onchange="updateArmorPenalty()">
+                        </div>
+                        <div class="derived-cell">
+                            <span>Charge</span>
+                            <input type="number" id="charge" value="4">
+                        </div>
+                        <div class="derived-cell">
+                            <span>Willpower</span>
+                            <input type="number" id="willpower" value="2">
+                        </div>
+                        <div class="derived-cell">
+                            <span>Initiative</span>
+                            <input type="number" id="initiative" value="0">
+                        </div>
+                        <div class="derived-cell">
+                            <span>Wounds</span>
+                            <input type="number" id="wounds" value="4">
+                        </div>
+                        <div class="derived-cell">
+                            <span>Height</span>
+                            <input type="number" id="height" value="2">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box">
+                    <div class="box-header">ATTACKS</div>
+                    <div class="attack-card">
+                        <div class="attack-row-1">
+                            <input type="text" placeholder="Attack Name (Оружие)">
+                            <input type="text" placeholder="Special (Свойства)">
+                        </div>
+                        <div class="attack-stats-grid">
+                            <div><label>AV</label><input type="text" placeholder="4"></div>
+                            <div><label>Range</label><input type="text" placeholder="1"></div>
+                            <div><label>Damage</label><input type="text" placeholder="2/3/4"></div>
+                            <div><label>Capacity</label><input type="text" placeholder="-"></div>
+                            <div><label>Reload</label><input type="text" placeholder="-"></div>
+                            <div><label>TN</label><input type="text" placeholder="-"></div>
+                        </div>
+                        <input type="text" placeholder="Triggers (например: Ram: Critical Strike)">
+                    </div>
+
+                    <div class="attack-card">
+                        <div class="attack-row-1">
+                            <input type="text" placeholder="Attack Name (Второе оружие)">
+                            <input type="text" placeholder="Special (Свойства)">
+                        </div>
+                        <div class="attack-stats-grid">
+                            <div><label>AV</label><input type="text" placeholder="5"></div>
+                            <div><label>Range</label><input type="text" placeholder="12"></div>
+                            <div><label>Damage</label><input type="text" placeholder="2/4/5"></div>
+                            <div><label>Capacity</label><input type="text" placeholder="6"></div>
+                            <div><label>Reload</label><input type="text" placeholder="1"></div>
+                            <div><label>TN</label><input type="text" placeholder="-"></div>
+                        </div>
+                        <input type="text" placeholder="Triggers (например: Ram: Critical Strike)">
+                    </div>
+                </div>
             </div>
 
-            <!-- ВКЛАДКА 1: PURSUIT & НАВЫКИ & ОРУЖИЕ -->
-            <div id="tab-pursuit" class="tab-content active">
+            <div>
                 <div class="box">
                     <div class="box-header">SKILLS</div>
-                    <table class="sheet-table">
+                    <table class="skills-table">
                         <thead>
                             <tr>
-                                <th style="width: 35%;">Skill Name</th>
-                                <th style="width: 15%;">Rating</th>
-                                <th style="width: 30%;">Aspects</th>
-                                <th style="width: 10%;">AV</th>
-                                <th style="width: 10%;"></th>
+                                <th>SKILL</th>
+                                <th style="width: 55px; text-align: center;">AV</th>
+                                <th style="width: 65px; text-align: center;">RATING</th>
+                                <th style="width: 125px;">ASPECT</th>
+                                <th style="width: 35px;"></th>
                             </tr>
                         </thead>
-                        <tbody id="skillsList">
-                            <!-- Строки навыков добавляются через JS -->
-                        </tbody>
+                        <tbody id="skillsList"></tbody>
                     </table>
                     <button class="add-row-btn" onclick="addNewSkillRow()">+ ДОБАВИТЬ НАВЫК</button>
-                </div>
-
-                <div class="box">
-                    <div class="box-header">WEAPONS & ATTACKS</div>
-                    <div class="attacks-grid" id="attacksList">
-                        <!-- Пример 2 пустых слотов атак -->
-                        <div class="attack-card">
-                            <div class="attack-field-row">
-                                <div><label>Name</label><input type="text" placeholder="Weapon / Spell"></div>
-                                <div><label>Special</label><input type="text" placeholder="Traits"></div>
-                            </div>
-                            <div class="attack-field-row">
-                                <div><label>AV</label><input type="text" placeholder="e.g. 5r"></div>
-                                <div><label>Range</label><input type="text" placeholder="e.g. y2, 8"></div>
-                            </div>
-                            <div class="attack-field-row">
-                                <div><label>Damage</label><input type="text" placeholder="2/3/4"></div>
-                                <div><label>Capacity / Reload</label><input type="text" placeholder="6 / (1)"></div>
-                            </div>
-                            <div class="attack-field-row full">
-                                <div><label>Triggers</label><input type="text" placeholder="Special Triggers"></div>
-                            </div>
-                        </div>
-
-                        <div class="attack-card">
-                            <div class="attack-field-row">
-                                <div><label>Name</label><input type="text" placeholder="Weapon / Spell"></div>
-                                <div><label>Special</label><input type="text" placeholder="Traits"></div>
-                            </div>
-                            <div class="attack-field-row">
-                                <div><label>AV</label><input type="text" placeholder="e.g. 5r"></div>
-                                <div><label>Range</label><input type="text" placeholder="e.g. y2, 8"></div>
-                            </div>
-                            <div class="attack-field-row">
-                                <div><label>Damage</label><input type="text" placeholder="2/3/4"></div>
-                                <div><label>Capacity / Reload</label><input type="text" placeholder="6 / (1)"></div>
-                            </div>
-                            <div class="attack-field-row full">
-                                <div><label>Triggers</label><input type="text" placeholder="Special Triggers"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ВКЛАДКА 2: GENERAL TALENTS (С ЧЕКБОКСОМ DESTINY) -->
-            <div id="tab-talents" class="tab-content">
-                <div class="box">
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #33271a; padding-bottom: 6px; margin-bottom: 15px;">
-                        <div class="box-header" style="border-bottom: none; margin: 0; padding: 0;">GENERAL TALENTS</div>
-                        <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #a99e8d; cursor: pointer; user-select: none;">
-                            <input type="checkbox" id="showAllTalentsToggle" onchange="refreshAllTalentSelects()" style="width: 16px; height: 16px; cursor: pointer; accent-color: #c59a5b;">
-                            Показать все таланты (Destiny / игнорировать требования)
-                        </label>
-                    </div>
-
-                    <div id="talentsContainer">
-                        <!-- Карточки талантов добавляются через JS -->
-                    </div>
-
-                    <button class="add-row-btn" onclick="addNewTalentCard()">+ ДОБАВИТЬ ТАЛАНТ</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ПОДКЛЮЧЕНИЕ БАЗ ДАННЫХ -->
-    <script src="skills-data.js"></script>
-    <script src="talents-data.js"></script>
-
-    <!-- ОСНОВНАЯ ЛОГИКА -->
-    <script>
-        const aspects = {
-            might: 0,
-            grace: 0,
-            speed: 0,
-            resilience: 0,
-            intellect: 0,
-            charm: 0,
-            cunning: 0,
-            tenacity: 0
-        };
-
-        function changeAspect(aspectName, delta) {
-            aspects[aspectName] += delta;
-            document.getElementById(aspectName).textContent = aspects[aspectName];
-            updateDerived();
-            updateAllSkillsAV();
-            refreshAllTalentSelects();
-        }
-
-        function updateDerived() {
-            const df = 4 + aspects.speed;
-            const wp = 4 + aspects.tenacity;
-            const wounds = 4 + aspects.resilience;
-            const walk = 4 + aspects.speed;
-            const charge = 4 + aspects.speed;
-
-            document.getElementById('derived-df').textContent = df;
-            document.getElementById('derived-wp').textContent = wp;
-            document.getElementById('derived-wounds').textContent = wounds;
-            document.getElementById('derived-movement').textContent = `${walk} / ${charge}`;
-        }
-
-        // ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК
-        function switchTab(tabKey) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-                content.style.display = 'none';
-            });
-
-            const targetTab = document.getElementById('tab-' + tabKey);
-            if (targetTab) {
-                targetTab.classList.add('active');
-                targetTab.style.display = 'block';
-            }
-
-            const activeBtn = Array.from(document.querySelectorAll('.tabs-header .tab-btn')).find(b => 
-                b.getAttribute('onclick') && b.getAttribute('onclick').includes(tabKey)
-            );
-            if (activeBtn) {
-                activeBtn.classList.add('active');
-            }
-        }
-
-        // ЛОГИКА НАВЫКОВ
-        function getSkillOptionsHtml() {
-            let html = `<option value="">-- Выбери навык --</option>`;
-            if (typeof SKILLS_DATA !== 'undefined') {
-                for (const category in SKILLS_DATA) {
-                    html += `<optgroup label="${category}">`;
-                    SKILLS_DATA[category].forEach(s => {
-                        html += `<option value="${s.name}">${s.name}</option>`;
-                    });
-                    html += `</optgroup>`;
-                }
-            }
-            return html;
-        }
-
-        function addNewSkillRow() {
-            const tbody = document.getElementById('skillsList');
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>
-                    <select class="skill-select" onchange="onSkillSelectChange(this.closest('tr'))">
-                        ${getSkillOptionsHtml()}
-                    </select>
-                </td>
-                <td>
-                    <input type="number" class="skill-rating" value="0" min="0" max="5" oninput="updateRowAV(this.closest('tr'))">
-                </td>
-                <td class="skill-aspects-cell">
-                    <span style="color: var(--text-muted); font-size: 13px;">—</span>
-                </td>
-                <td class="skill-av" style="font-family: var(--font-title); color: var(--accent-gold); font-size: 15px;">
-                    0
-                </td>
-                <td style="text-align: center;">
-                    <button class="del-btn" onclick="this.closest('tr').remove(); refreshAllTalentSelects();">✕</button>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        }
-
-        function findSkillData(name) {
-            if (typeof SKILLS_DATA === 'undefined') return null;
-            for (const category in SKILLS_DATA) {
-                const found = SKILLS_DATA[category].find(s => s.name === name);
-                if (found) return found;
-            }
-            return null;
-        }
-
-        function onSkillSelectChange(tr) {
-            const select = tr.querySelector('.skill-select');
-            const aspectsCell = tr.querySelector('.skill-aspects-cell');
-            const skillName = select.value;
-            const skill = findSkillData(skillName);
-
-            if (!skill) {
-                aspectsCell.innerHTML = `<span style="color: var(--text-muted); font-size: 13px;">—</span>`;
-                updateRowAV(tr);
-                refreshAllTalentSelects();
-                return;
-            }
-
-            if (skill.aspects.length === 1) {
-                aspectsCell.innerHTML = `
-                    <span style="font-size: 14px; text-transform: capitalize;">${skill.aspects[0]}</span>
-                    <input type="hidden" class="skill-aspect" value="${skill.aspects[0]}">
-                `;
-            } else {
-                let optionsHtml = skill.aspects.map(a => `<option value="${a}">${a.charAt(0).toUpperCase() + a.slice(1)}</option>`).join('');
-                aspectsCell.innerHTML = `
-                    <select class="skill-aspect" onchange="updateRowAV(this.closest('tr'))">
-                        ${optionsHtml}
-                    </select>
-                `;
-            }
-
-            updateRowAV(tr);
-            refreshAllTalentSelects();
-        }
-
-        function updateRowAV(tr) {
-            const ratingInput = tr.querySelector('.skill-rating');
-            const rating = parseInt(ratingInput?.value, 10) || 0;
-            const aspectSelect = tr.querySelector('.skill-aspect');
-            const aspectName = aspectSelect?.value?.toLowerCase();
-            const aspectVal = (aspectName && aspects[aspectName] !== undefined) ? aspects[aspectName] : 0;
-            const avCell = tr.querySelector('.skill-av');
-            if (avCell) {
-                avCell.textContent = rating + aspectVal;
-            }
-        }
-
-        function updateAllSkillsAV() {
-            document.querySelectorAll('#skillsList tr').forEach(tr => updateRowAV(tr));
-        }
-
-        // ЛОГИКА ТАЛАНТОВ
-        function getSkillRank(skillName) {
-            let maxRank = 0;
-            document.querySelectorAll("#skillsList tr").forEach(tr => {
-                const sel = tr.querySelector(".skill-select");
-                if (sel && sel.value.toLowerCase().trim() === skillName.toLowerCase().trim()) {
-                    const r = parseInt(tr.querySelector(".skill-rating")?.value, 10) || 0;
-                    if (r > maxRank) maxRank = r;
-                }
-            });
-            return maxRank;
-        }
-
-        function hasAnySkillWithRank(minRank, categoryFilter = null) {
-            let found = false;
-            document.querySelectorAll("#skillsList tr").forEach(tr => {
-                const sel = tr.querySelector(".skill-select");
-                const r = parseInt(tr.querySelector(".skill-rating")?.value, 10) || 0;
-                if (sel && sel.value && r >= minRank) {
-                    if (!categoryFilter) {
-                        found = true;
-                    } else {
-                        const sData = findSkillData(sel.value);
-                        if (sData && categoryFilter.includes(sData.category)) {
-                            found = true;
-                        }
-                    }
-                }
-            });
-            return found;
-        }
-
-        function checkAspectCondition(str) {
-            const clean = str.trim().toLowerCase();
-            if (clean.includes("two aspects -3") || clean.includes("two aspects -3 or less")) {
-                const count = Object.values(aspects).filter(v => v <= -3).length;
-                return count >= 2;
-            }
-            if (clean.includes("at least one mental aspect -1") || clean.includes("at least one mental aspect -1 or less")) {
-                return (aspects.intellect <= -1 || aspects.charm <= -1 || aspects.cunning <= -1 || aspects.tenacity <= -1);
-            }
-            if (clean.includes("no aspects higher than 1")) {
-                return Object.values(aspects).every(v => v <= 1);
-            }
-            if (clean.includes("physical aspect 2 or higher")) {
-                return (aspects.might >= 2 || aspects.grace >= 2 || aspects.speed >= 2 || aspects.resilience >= 2);
-            }
-
-            const m = clean.match(/([a-z]+)\s*(-?\d+)\s*(or higher|\+|or lower|or less)?/i);
-            if (!m) return true;
-
-            const asp = m[1];
-            const val = parseInt(m[2], 10);
-            const op = m[3] ? m[3].trim() : (val < 0 ? "or lower" : "or higher");
-
-            if (aspects[asp] !== undefined) {
-                if (op === "or higher" || op === "+") return aspects[asp] >= val;
-                if (op === "or lower" || op === "or less") return aspects[asp] <= val;
-            }
-            return true;
-        }
-
-        function checkSingleReqClause(clause) {
-            const c = clause.trim();
-            if (!c || c.toLowerCase() === "none") return true;
-
-            if (c.toLowerCase().startsWith("aspect:")) {
-                const sub = c.substring(7).trim();
-                const orParts = sub.split(/\s+or\s+/i);
-                return orParts.some(p => checkAspectCondition(p));
-            }
-
-            if (c.toLowerCase().startsWith("skill:")) {
-                const sub = c.substring(6).trim();
-                if (sub.toLowerCase().includes("chosen skill") || sub.toLowerCase().includes("chosen skill rank")) {
-                    const m = sub.match(/\d+/);
-                    const reqVal = m ? parseInt(m[0], 10) : 1;
-                    return hasAnySkillWithRank(reqVal);
-                }
-                if (sub.toLowerCase().includes("close combat or ranged combat")) {
-                    const m = sub.match(/\d+/);
-                    const reqVal = m ? parseInt(m[0], 10) : 3;
-                    return hasAnySkillWithRank(reqVal, ["Close Combat", "Ranged Combat"]);
-                }
-                if (sub.toLowerCase().includes("magical or ranged combat")) {
-                    const m = sub.match(/\d+/);
-                    const reqVal = m ? parseInt(m[0], 10) : 2;
-                    return hasAnySkillWithRank(reqVal, ["Magical", "Ranged Combat"]);
-                }
-                if (sub.toLowerCase().includes("one magical skill")) {
-                    const m = sub.match(/\d+/);
-                    const reqVal = m ? parseInt(m[0], 10) : 4;
-                    return hasAnySkillWithRank(reqVal, ["Magical"]);
-                }
-                if (sub.toLowerCase().includes("mental aspect 4")) {
-                    return (aspects.intellect >= 4 || aspects.charm >= 4 || aspects.cunning >= 4 || aspects.tenacity >= 4);
-                }
-
-                const m = sub.match(/^([a-zA-Z\s-]+?)\s+(\d+)\s*(or higher|\+|or more)?$/i);
-                if (m) {
-                    let sName = m[1].trim();
-                    const reqVal = parseInt(m[2], 10);
-                    if (sName.toLowerCase() === "pistols") sName = "Pistol";
-                    if (sName.toLowerCase() === "shotguns") sName = "Shotgun";
-                    if (sName.toLowerCase() === "heavy guns") sName = "Heavy Weapons";
-                    return getSkillRank(sName) >= reqVal;
-                }
-            }
-
-            // Игнорируем сюжетные заглушки
-            return true;
-        }
-
-        function checkTalentRequirements(talent) {
-            if (!talent.req || talent.req.trim().toLowerCase() === "none") return true;
-            const parts = talent.req.split(/,\s*(?=[A-Z][a-zA-Z\s]*:)/);
-            return parts.every(p => checkSingleReqClause(p));
-        }
-
-        function getTalentOptionsHtml(selectedVal = "") {
-            let html = `<option value="">-- Выбери талант --</option>`;
-            html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' : ''}>★ Свой талант (Custom)</option>`;
+    <!-- ВКЛАДКА 2: GENERAL TALENTS (АККОРДЕОН С ФИЛЬТРОМ) -->
+    <div id="tab-talents" class="tab-content">
+        <div class="box">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #33271a; padding-bottom: 6px; margin-bottom: 15px;">
+                <div class="box-header" style="border-bottom: none; margin: 0; padding: 0;">GENERAL TALENTS</div>
+                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #a99e8d; cursor: pointer; user-select: none;">
+                    <input type="checkbox" id="showAllTalentsToggle" onchange="refreshAllTalentSelects()" style="width: 16px; height: 16px; cursor: pointer; accent-color: #c59a5b;">
+                    Показать все таланты (Destiny / игнорировать требования)
+                </label>
+            </div>
             
-            if (typeof GENERAL_TALENTS !== 'undefined') {
-                const showAll = document.getElementById("showAllTalentsToggle")?.checked || false;
+            <div id="talentsContainer">
+                <!-- Карточки будут появляться тут -->
+            </div>
 
-                const availableTalents = GENERAL_TALENTS.filter(t => 
-                    showAll || checkTalentRequirements(t) || t.name === selectedVal
-                );
+            <button class="add-row-btn" onclick="addNewTalentCard()">+ ДОБАВИТЬ ТАЛАНТ</button>
+        </div>
+    </div>
 
-                const grouped = {};
-                availableTalents.forEach(t => {
-                    const bookName = t.book && t.book.trim() ? t.book.trim() : "Other / Core";
-                    if (!grouped[bookName]) grouped[bookName] = [];
-                    grouped[bookName].push(t);
-                });
+</main>
 
-                Object.keys(grouped).sort().forEach(book => {
-                    html += `<optgroup label="📖 ${book}">`;
-                    grouped[book].sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
-                        const fits = checkTalentRequirements(t);
-                        const sel = (t.name === selectedVal) ? 'selected' : '';
+<script>
+    function switchTab(tabKey) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+            content.style.display = 'none';
+        });
 
-                        if (showAll) {
-                            if (fits) {
-                                html += `<option value="${t.name}" ${sel} style="color: #66bb6a; background: #14110e;">✓ ${t.name}</option>`;
-                            } else {
-                                html += `<option value="${t.name}" ${sel} style="color: #ef5350; background: #14110e;">✕ ${t.name}</option>`;
-                            }
-                        } else {
-                            html += `<option value="${t.name}" ${sel}>${t.name}</option>`;
-                        }
-                    });
-                    html += `</optgroup>`;
-                });
-            }
-            return html;
+        const targetTab = document.getElementById('tab-' + tabKey);
+        if (targetTab) {
+            targetTab.classList.add('active');
+            targetTab.style.display = 'block';
         }
 
-        function addNewTalentCard() {
-            const container = document.getElementById('talentsContainer');
-            const card = document.createElement('div');
-            card.className = 'talent-card';
-            card.innerHTML = `
-                <div class="talent-card-header" onclick="toggleTalentAccordion(this, event)">
-                    <button type="button" class="talent-toggle-btn">▲</button>
-                    <select class="talent-select" onchange="onTalentSelectChange(this)">
-                        ${getTalentOptionsHtml()}
-                    </select>
-                    <input type="text" class="custom-name-input" placeholder="Название своего таланта" oninput="saveCharacterStateDebounced()">
-                    <button type="button" class="del-btn" onclick="this.closest('.talent-card').remove();">✕</button>
+        const activeBtn = Array.from(document.querySelectorAll('.tab-bar .tab-btn')).find(b => 
+            b.getAttribute('onclick') && b.getAttribute('onclick').includes(tabKey)
+        );
+        if (activeBtn) {
+            activeBtn.classList.add('active');
+        }
+    }
+
+    // === ОБНОВЛЕННАЯ УМНАЯ ПРОВЕРКА ТРЕБОВАНИЙ ТАЛАНТОВ ===
+    function checkTalentRequirements(talent) {
+        const reqStr = talent.req ? talent.req.trim() : "None";
+        if (!reqStr || reqStr.toLowerCase() === "none") return true;
+
+        const parts = reqStr.split(",").map(p => p.trim());
+        const speciesVal = (document.getElementById("species")?.value || "Human").toLowerCase();
+
+        for (let part of parts) {
+            if (/^Destiny:/i.test(part) || /^Book/i.test(part)) continue;
+
+            if (/Aspect:/i.test(part) || /(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)\s*(-?\d+)/i.test(part)) {
+                if (/Two Aspects -3 or less/i.test(part)) {
+                    if (Object.values(aspects).filter(v => v <= -3).length < 2) return false;
+                    continue;
+                }
+                if (/No Aspects higher than 1/i.test(part)) {
+                    if (Object.values(aspects).some(v => v > 1)) return false;
+                    continue;
+                }
+                if (/Physical Aspect\s*(\d+)\s*or higher/i.test(part)) {
+                    const target = parseInt(part.match(/Physical Aspect\s*(\d+)\s*or higher/i)[1], 10);
+                    if (![aspects.might, aspects.grace, aspects.speed, aspects.resilience].some(v => v >= target)) return false;
+                    continue;
+                }
+                if (/Mental Aspect\s*(-?\d+)\s*(or less|or lower)/i.test(part)) {
+                    const target = parseInt(part.match(/Mental Aspect\s*(-?\d+)\s*(or less|or lower)/i)[1], 10);
+                    if (![aspects.intellect, aspects.charm, aspects.cunning, aspects.tenacity].some(v => v <= target)) return false;
+                    continue;
+                }
+                if (/Mental Aspect\s*(\d+)\s*or higher/i.test(part)) {
+                    const target = parseInt(part.match(/Mental Aspect\s*(\d+)\s*or higher/i)[1], 10);
+                    if (![aspects.intellect, aspects.charm, aspects.cunning, aspects.tenacity].some(v => v >= target)) return false;
+                    continue;
+                }
+
+                const subClauses = part.replace(/^Aspect:\s*/i, "").split(/\s+or\s+/i);
+                let orPassed = false;
+                for (let sub of subClauses) {
+                    const match = sub.match(/(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)\s*(-?\d+)\s*(or higher|or lower|or less|\+)?/i);
+                    if (match) {
+                        const aspKey = match[1].toLowerCase();
+                        const targetVal = parseInt(match[2], 10);
+                        const cond = (match[3] || (targetVal < 0 ? "or lower" : "or higher")).toLowerCase();
+                        const currentVal = aspects[aspKey] !== undefined ? aspects[aspKey] : 0;
+
+                        if ((cond.includes("lower") || cond.includes("less")) && currentVal <= targetVal) {
+                            orPassed = true;
+                            break;
+                        } else if ((cond.includes("higher") || cond === "+") && currentVal >= targetVal) {
+                            orPassed = true;
+                            break;
+                        } else if (currentVal === targetVal) {
+                            orPassed = true;
+                            break;
+                        }
+                    }
+                }
+                if (!orPassed && subClauses.some(s => /(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)/i.test(s))) {
+                    return false;
+                }
+                continue;
+            }
+
+            const typeMatch = part.match(/Type:\s*([A-Za-z\-]+)/i);
+            if (typeMatch) {
+                const reqType = typeMatch[1].toLowerCase();
+                if (reqType === "fated" && (speciesVal.includes("construct") || speciesVal.includes("stitched"))) return false;
+                if (reqType === "kin" && !speciesVal.includes("gremlin") && !speciesVal.includes("kin")) return false;
+                if (reqType === "non-kin" && (speciesVal.includes("gremlin") || speciesVal.includes("kin"))) return false;
+                if (reqType === "invested" && !speciesVal.includes("invested") && !speciesVal.includes("construct")) return false;
+                if (reqType === "stitched" && !speciesVal.includes("stitched") && !speciesVal.includes("undead")) return false;
+                continue;
+            }
+
+            const skillMatch = part.match(/Skill:\s*([A-Za-z\s\-]+?)\s*(\d+)/i);
+            if (skillMatch) {
+                let skillName = skillMatch[1].trim().toLowerCase();
+                const targetRank = parseInt(skillMatch[2], 10);
+
+                if (skillName.endsWith("s") && skillName !== "flexible") {
+                    skillName = skillName.slice(0, -1);
+                }
+
+                if (skillName.includes("chosen skill") || skillName.includes("close combat") || skillName.includes("ranged combat")) {
+                    let hasEligible = false;
+                    const rows = document.querySelectorAll("#skillsList tr");
+                    for (let tr of rows) {
+                        const rank = parseInt(tr.querySelector(".skill-rating")?.value) || 0;
+                        if (rank >= targetRank) { hasEligible = true; break; }
+                    }
+                    if (!hasEligible) return false;
+                } else if (skillName.includes("magical")) {
+                    let hasMagical = false;
+                    for (let magSkill of Object.keys(skillCategories["Magical"])) {
+                        if (getSkillRank(magSkill) >= targetRank) { hasMagical = true; break; }
+                    }
+                    if (!hasMagical) return false;
+                } else {
+                    let foundRank = 0;
+                    const rows = document.querySelectorAll("#skillsList tr");
+                    for (let tr of rows) {
+                        const sel = tr.querySelector(".skill-select")?.value.toLowerCase() || "";
+                        if (sel.includes(skillName) || skillName.includes(sel)) {
+                            foundRank = Math.max(foundRank, parseInt(tr.querySelector(".skill-rating")?.value) || 0);
+                        }
+                    }
+                    if (foundRank < targetRank) return false;
+                }
+                continue;
+            }
+
+            const otherTalentMatch = part.match(/Other:.*?\b([A-Za-z\s]+)\s+Talent/i);
+            if (otherTalentMatch) {
+                const reqTalentName = otherTalentMatch[1].trim().toLowerCase();
+                const hasTalent = Array.from(document.querySelectorAll(".talent-select")).some(s => s.value.toLowerCase().includes(reqTalentName));
+                if (!hasTalent) return false;
+                continue;
+            }
+        }
+        return true;
+    }
+
+    // ЛОГИКА ТАЛАНТОВ (С ЦВЕТНОЙ ПОДСВЕТКОЙ ПРИ ВКЛЮЧЕННОЙ ГАЛОЧКЕ)
+    function getTalentOptionsHtml(selectedVal = "") {
+        let html = `<option value="">-- Выбери талант --</option>`;
+        html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' : ''}>★ Свой талант (Custom)</option>`;
+        
+        if (typeof GENERAL_TALENTS !== 'undefined') {
+            const showAll = document.getElementById("showAllTalentsToggle")?.checked || false;
+
+            const availableTalents = GENERAL_TALENTS.filter(t => 
+                showAll || checkTalentRequirements(t) || t.name === selectedVal
+            );
+
+            const grouped = {};
+            availableTalents.forEach(t => {
+                const bookName = t.book && t.book.trim() ? t.book.trim() : "Other / Core";
+                if (!grouped[bookName]) {
+                    grouped[bookName] = [];
+                }
+                grouped[bookName].push(t);
+            });
+
+            Object.keys(grouped).sort().forEach(book => {
+                html += `<optgroup label="📖 ${book}">`;
+                
+                grouped[book].sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
+                    const fits = checkTalentRequirements(t);
+                    const sel = (t.name === selectedVal) ? 'selected' : '';
+
+                    if (showAll) {
+                        if (fits) {
+                            html += `<option value="${t.name}" ${sel} style="color: #66bb6a; background: #14110e;">✓ ${t.name}</option>`;
+                        } else {
+                            html += `<option value="${t.name}" ${sel} style="color: #ef5350; background: #14110e;">✕ ${t.name}</option>`;
+                        }
+                    } else {
+                        html += `<option value="${t.name}" ${sel}>${t.name}</option>`;
+                    }
+                });
+
+                html += `</optgroup>`;
+            });
+        }
+        return html;
+    }
+
+    function refreshAllTalentSelects() {
+        document.querySelectorAll(".talent-card").forEach(card => {
+            const select = card.querySelector(".talent-select");
+            const customInput = card.querySelector(".custom-name-input");
+            if (select && customInput.style.display !== "block") {
+                const currentVal = select.value;
+                select.innerHTML = getTalentOptionsHtml(currentVal);
+                select.value = currentVal;
+            }
+        });
+    }
+
+    function addNewTalentCard() {
+        const container = document.getElementById("talentsContainer");
+        const card = document.createElement("div");
+        card.className = "talent-card";
+
+        card.innerHTML = `
+            <div class="talent-header-row">
+                <button type="button" class="toggle-btn" onclick="toggleTalentAccordion(this)" title="Развернуть/Свернуть">▼</button>
+                <select class="talent-select" onchange="onTalentSelectChange(this)" style="flex: 1;">
+                    ${getTalentOptionsHtml()}
+                </select>
+                <input type="text" class="custom-name-input" placeholder="Название своего таланта" style="display: none; flex: 1;">
+                <button type="button" class="del-btn" onclick="deleteTalentCard(this)" title="Удалить">✕</button>
+            </div>
+            <div class="talent-body">
+                <div class="talent-meta-info">
+                    Требования: <span class="talent-req">—</span> | Книга: <span class="talent-book">—</span>
                 </div>
-                <div class="talent-card-body">
-                    <div class="talent-meta-item">
-                        <span class="talent-meta-label">Requirements</span>
-                        <span class="talent-meta-val talent-req">—</span>
-                    </div>
-                    <div class="talent-meta-item">
-                        <span class="talent-meta-label">Book / Source</span>
-                        <span class="talent-meta-val talent-book">—</span>
-                    </div>
-                    <textarea class="talent-desc-area" placeholder="Описание таланта..."></textarea>
+                <textarea class="talent-desc-area" placeholder="Описание правил или эффекта..."></textarea>
+            </div>
+        `;
+        container.appendChild(card);
+    }
+
+    function toggleTalentAccordion(btn) {
+        const card = btn.closest(".talent-card");
+        const body = card.querySelector(".talent-body");
+        const isOpen = body.style.display === "block";
+        body.style.display = isOpen ? "none" : "block";
+        btn.textContent = isOpen ? "▼" : "▲";
+    }
+
+    function onTalentSelectChange(select) {
+        const card = select.closest(".talent-card");
+        const customInput = card.querySelector(".custom-name-input");
+        const reqSpan = card.querySelector(".talent-req");
+        const bookSpan = card.querySelector(".talent-book");
+        const descArea = card.querySelector(".talent-desc-area");
+        const val = select.value;
+
+        if (val === "__custom__") {
+            select.style.display = "none";
+            customInput.style.display = "block";
+            customInput.focus();
+            reqSpan.textContent = "Любые";
+            bookSpan.textContent = "Custom";
+            descArea.value = "";
+        } else if (val && typeof GENERAL_TALENTS !== 'undefined') {
+            const found = GENERAL_TALENTS.find(t => t.name === val);
+            if (found) {
+                reqSpan.textContent = found.req || "None";
+                bookSpan.textContent = found.book || "—";
+                descArea.value = found.desc || "";
+            }
+        } else {
+            reqSpan.textContent = "—";
+            bookSpan.textContent = "—";
+            descArea.value = "";
+        }
+        refreshAllTalentSelects();
+    }
+
+    function deleteTalentCard(btn) {
+        btn.closest(".talent-card").remove();
+        refreshAllTalentSelects();
+    }
+
+    // АСПЕКТЫ И ДАННЫЕ ЛИСТА
+    const aspects = {
+        might: 0, grace: 0, speed: 0, resilience: 0,
+        intellect: 0, charm: 0, cunning: 0, tenacity: 0
+    };
+
+    const skillCategories = {
+        "Academic": {
+            "Bureaucracy": "cunning",
+            "Engineering": "intellect",
+            "History": "intellect",
+            "Literacy": "intellect",
+            "Mathematics": "intellect",
+            "Music": "charm"
+        },
+        "Close Combat": {
+            "Flexible": "grace",
+            "Grappling": "speed",
+            "Heavy Melee": "might",
+            "Martial Arts": "speed",
+            "Melee": "might",
+            "Pneumatic": "might",
+            "Pugilism": "might"
+        },
+        "Crafting": {
+            "Alchemistry": "intellect",
+            "Art": "cunning",
+            "Artefacting": "intellect",
+            "Blacksmithing": "intellect",
+            "Culinary": "charm",
+            "Explosives": "intellect",
+            "Homesteading": "tenacity",
+            "Printing": "intellect",
+            "Stitching": "tenacity"
+        },
+        "Expertise": {
+            "Doctor": "intellect",
+            "Forgery": "cunning",
+            "Gambling": "cunning",
+            "Husbandry": "charm",
+            "Lockpicking": "grace",
+            "Notice": "cunning",
+            "Track": "cunning",
+            "Wilderness": "cunning"
+        },
+        "Magical": {
+            "Counter-Spelling": "tenacity",
+            "Enchanting": ["charm", "cunning"],
+            "Necromancy": ["charm", "tenacity"],
+            "Prestidigitation": ["intellect", "cunning"],
+            "Sorcery": ["intellect", "tenacity"]
+        },
+        "Ranged Combat": {
+            "Archery": "grace",
+            "Heavy Guns": "might",
+            "Long Arms": "intellect",
+            "Pistol": "grace",
+            "Shotgun": "grace",
+            "Thrown": "grace"
+        },
+        "Social": {
+            "Barter": "tenacity",
+            "Bewitch": "charm",
+            "Convince": "intellect",
+            "Deceive": "cunning",
+            "Intimidate": "tenacity",
+            "Leadership": "charm",
+            "Scrutiny": "cunning"
+        },
+        "Training": {
+            "Acrobatics": "grace",
+            "Athletics": "might",
+            "Carouse": "resilience",
+            "Centering": "tenacity",
+            "Evade": "speed",
+            "Pick Pocket": "speed",
+            "Stealth": "cunning",
+            "Toughness": "resilience"
+        }
+    };
+
+    function findSkillAspectDef(name) {
+        for (let cat in skillCategories) {
+            if (skillCategories[cat][name] !== undefined) {
+                return skillCategories[cat][name];
+            }
+        }
+        return "";
+    }
+
+    function getSkillOptionsHtml() {
+        let html = `<option value="">-- Выбери навык --</option>`;
+        for (let cat in skillCategories) {
+            html += `<optgroup label="${cat}">`;
+            for (let sk of Object.keys(skillCategories[cat]).sort()) {
+                html += `<option value="${sk}">${sk}</option>`;
+            }
+            html += `</optgroup>`;
+        }
+        return html;
+    }
+
+    function getAspectSelectHtml(defaultVal = "") {
+        const list = ["might", "grace", "speed", "resilience", "intellect", "charm", "cunning", "tenacity"];
+        let html = `<select class="skill-aspect" onchange="updateRowAV(this.closest('tr'))">`;
+        html += `<option value="">—</option>`;
+        list.forEach(asp => {
+            const cap = asp.charAt(0).toUpperCase() + asp.slice(1);
+            const sel = asp === defaultVal ? "selected" : "";
+            html += `<option value="${asp}" ${sel}>${cap}</option>`;
+        });
+        html += `</select>`;
+        return html;
+    }
+
+    function modAspect(stat, delta) {
+        aspects[stat] += delta;
+        document.getElementById(stat).textContent = aspects[stat];
+        updateDerived();
+        updateAllSkillAVs();
+        refreshAllTalentSelects();
+    }
+
+    function getSkillRank(skillName) {
+        const rows = document.querySelectorAll("#skillsList tr");
+        let maxRank = 0;
+        for (let tr of rows) {
+            const select = tr.querySelector(".skill-select");
+            if (select && select.value.toLowerCase() === skillName.toLowerCase()) {
+                const rank = parseInt(tr.querySelector(".skill-rating").value) || 0;
+                if (rank > maxRank) maxRank = rank;
+            }
+        }
+        return maxRank;
+    }
+
+    function updateDerived() {
+        const evade = getSkillRank("Evade");
+        const centering = getSkillRank("Centering");
+        const notice = getSkillRank("Notice");
+        const toughness = getSkillRank("Toughness");
+
+        const defBonus = Math.max(0, evade, aspects.speed);
+        const baseDef = 2 + defBonus;
+        const defBaseEl = document.getElementById("defenseBase");
+        if (defBaseEl) defBaseEl.value = baseDef;
+
+        const armor = parseInt(document.getElementById("armor")?.value) || 0;
+        const armorPenalty = armor > 0 ? 1 : 0;
+        const defTotEl = document.getElementById("defenseTotal");
+        if (defTotEl) defTotEl.value = Math.max(1, baseDef - armorPenalty);
+
+        const wpBonus = Math.max(0, centering, aspects.tenacity);
+        const wpEl = document.getElementById("willpower");
+        if (wpEl) wpEl.value = 2 + wpBonus;
+
+        const initEl = document.getElementById("initiative");
+        if (initEl) initEl.value = aspects.speed + notice;
+
+        let resBonus = 0;
+        if (aspects.resilience > 0) {
+            resBonus = Math.ceil(aspects.resilience / 2);
+        }
+        const wEl = document.getElementById("wounds");
+        if (wEl) wEl.value = 4 + toughness + resBonus;
+
+        const walkVal = 4 + Math.ceil(aspects.speed / 2);
+        const walkEl = document.getElementById("walk");
+        if (walkEl) walkEl.value = walkVal;
+
+        const rawCharge = 4 + aspects.speed;
+        const chEl = document.getElementById("charge");
+        if (chEl) chEl.value = Math.max(rawCharge, walkVal);
+    }
+
+    function updateArmorPenalty() {
+        const baseDef = parseInt(document.getElementById("defenseBase")?.value) || 2;
+        const armor = parseInt(document.getElementById("armor")?.value) || 0;
+        const armorPenalty = armor > 0 ? 1 : 0;
+        const defTotEl = document.getElementById("defenseTotal");
+        if (defTotEl) defTotEl.value = Math.max(1, baseDef - armorPenalty);
+    }
+
+    function addNewSkillRow() {
+        const tbody = document.getElementById("skillsList");
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>
+                <select class="skill-select" onchange="onSkillSelectChange(this.closest('tr'))">
+                    ${getSkillOptionsHtml()}
+                </select>
+            </td>
+            <td class="av-container">
+                <div class="av-box av-val">—</div>
+            </td>
+            <td>
+                <input type="number" class="skill-rating" value="0" min="0" max="5" oninput="onRatingChange(this.closest('tr'))">
+            </td>
+            <td class="aspect-container">
+                ${getAspectSelectHtml("")}
+            </td>
+            <td>
+                <button class="del-btn" onclick="deleteSkillRow(this.closest('tr'))" title="Удалить">✕</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    }
+
+    function onSkillSelectChange(tr) {
+        const skillName = tr.querySelector(".skill-select").value;
+        const aspectDef = findSkillAspectDef(skillName);
+        const avContainer = tr.querySelector(".av-container");
+        const aspectContainer = tr.querySelector(".aspect-container");
+
+        if (Array.isArray(aspectDef)) {
+            avContainer.innerHTML = `
+                <div class="dual-stack">
+                    <div class="av-box av-val">—</div>
+                    <div class="av-box av-val">—</div>
                 </div>
             `;
-            container.appendChild(card);
+            aspectContainer.innerHTML = `
+                <div class="dual-stack">
+                    ${getAspectSelectHtml(aspectDef[0])}
+                    ${getAspectSelectHtml(aspectDef[1])}
+                </div>
+            `;
+        } else {
+            avContainer.innerHTML = `<div class="av-box av-val">—</div>`;
+            aspectContainer.innerHTML = getAspectSelectHtml(aspectDef || "");
         }
 
-        function toggleTalentAccordion(header, event) {
-            if (event.target.tagName === 'SELECT' || event.target.tagName === 'INPUT' || event.target.classList.contains('del-btn')) {
-                return;
-            }
-            const card = header.closest('.talent-card');
-            const body = card.querySelector('.talent-card-body');
-            const btn = card.querySelector('.talent-toggle-btn');
-            if (body.style.display === 'none') {
-                body.style.display = 'grid';
-                btn.textContent = '▲';
+        updateRowAV(tr);
+        updateDerived();
+        refreshAllTalentSelects();
+    }
+
+    function onRatingChange(tr) {
+        updateRowAV(tr);
+        updateDerived();
+        refreshAllTalentSelects();
+    }
+
+    function deleteSkillRow(tr) {
+        tr.remove();
+        updateDerived();
+        refreshAllTalentSelects();
+    }
+
+    function updateRowAV(tr) {
+        const rating = parseInt(tr.querySelector(".skill-rating")?.value) || 0;
+        const avCells = tr.querySelectorAll(".av-val");
+        const aspectSelects = tr.querySelectorAll(".skill-aspect");
+
+        aspectSelects.forEach((sel, idx) => {
+            const aspectKey = sel.value;
+            if (!aspectKey) {
+                if (avCells[idx]) avCells[idx].textContent = "—";
             } else {
-                body.style.display = 'none';
-                btn.textContent = '▼';
+                if (avCells[idx]) avCells[idx].textContent = rating + (aspects[aspectKey] || 0);
+            }
+        });
+    }
+
+    function updateAllSkillAVs() {
+        const rows = document.querySelectorAll("#skillsList tr");
+        rows.forEach(tr => updateRowAV(tr));
+    }
+
+    // === БЕЗОПАСНЫЙ СБОР ДАННЫХ ПЕРСОНАЖА ===
+    function getCharacterData() {
+        const skills = [];
+        document.querySelectorAll("#skillsList tr").forEach(tr => {
+            const skillName = tr.querySelector(".skill-select")?.value || "";
+            const rating = parseInt(tr.querySelector(".skill-rating")?.value, 10) || 0;
+            const aspectSelects = Array.from(tr.querySelectorAll(".skill-aspect")).map(s => s.value);
+            if (skillName) {
+                skills.push({ skillName, rating, aspects: aspectSelects });
+            }
+        });
+
+        const talents = [];
+        document.querySelectorAll(".talent-card").forEach(card => {
+            const select = card.querySelector(".talent-select");
+            const customInput = card.querySelector(".custom-name-input");
+            const isCustom = customInput && customInput.style.display === "block";
+            const name = isCustom ? (customInput.value || "") : (select?.value || "");
+            const req = card.querySelector(".talent-req")?.textContent || "";
+            const book = card.querySelector(".talent-book")?.textContent || "";
+            const desc = card.querySelector(".talent-desc-area")?.value || "";
+            if (name) {
+                talents.push({ name, isCustom, req, book, desc });
+            }
+        });
+
+        const attacks = [];
+        document.querySelectorAll(".attack-card").forEach(card => {
+            const inputs = card.querySelectorAll("input");
+            if (inputs.length > 0) {
+                attacks.push(Array.from(inputs).map(inp => inp.value));
+            }
+        });
+
+        return {
+            charName: document.getElementById("charName")?.value || "",
+            playerName: document.getElementById("playerName")?.value || "",
+            species: document.getElementById("species")?.value || "",
+            pursuit: document.getElementById("pursuit")?.value || "",
+            aspects: { ...aspects },
+            armor: document.getElementById("armor")?.value || 0,
+            height: document.getElementById("height")?.value || 2,
+            skills,
+            talents,
+            attacks
+        };
+    }
+
+    // === ВОССТАНОВЛЕНИЕ ПЕРСОНАЖА ИЗ ДАННЫХ ===
+    function loadCharacterData(data) {
+        if (!data) return;
+
+        if (data.charName !== undefined) document.getElementById("charName").value = data.charName;
+        if (data.playerName !== undefined) document.getElementById("playerName").value = data.playerName;
+        if (data.species !== undefined) document.getElementById("species").value = data.species;
+        if (data.pursuit !== undefined) document.getElementById("pursuit").value = data.pursuit;
+        if (data.armor !== undefined) document.getElementById("armor").value = data.armor;
+        if (data.height !== undefined && document.getElementById("height")) document.getElementById("height").value = data.height;
+
+        if (data.aspects) {
+            for (let k in data.aspects) {
+                aspects[k] = data.aspects[k];
+                const span = document.getElementById(k);
+                if (span) span.textContent = aspects[k];
             }
         }
 
-        function onTalentSelectChange(select) {
-            const card = select.closest('.talent-card');
-            const customInput = card.querySelector('.custom-name-input');
-            const reqSpan = card.querySelector('.talent-req');
-            const bookSpan = card.querySelector('.talent-book');
-            const descArea = card.querySelector('.talent-desc-area');
+        const tbody = document.getElementById("skillsList");
+        tbody.innerHTML = "";
+        if (data.skills && data.skills.length > 0) {
+            data.skills.forEach(sk => {
+                addNewSkillRow();
+                const lastRow = tbody.lastElementChild;
+                const sel = lastRow.querySelector(".skill-select");
+                if (sel) {
+                    sel.value = sk.skillName;
+                    onSkillSelectChange(lastRow);
+                }
+                const ratingInput = lastRow.querySelector(".skill-rating");
+                if (ratingInput) ratingInput.value = sk.rating;
 
-            if (select.value === '__custom__') {
-                select.style.display = 'none';
-                customInput.style.display = 'block';
-                customInput.focus();
-                reqSpan.textContent = 'Custom';
-                bookSpan.textContent = 'Homebrew';
-                descArea.value = '';
-                return;
-            }
+                const aspSelects = lastRow.querySelectorAll(".skill-aspect");
+                if (sk.aspects && aspSelects.length > 0) {
+                    aspSelects.forEach((s, idx) => {
+                        if (sk.aspects[idx]) s.value = sk.aspects[idx];
+                    });
+                }
+                updateRowAV(lastRow);
+            });
+        }
 
-            if (typeof GENERAL_TALENTS !== 'undefined') {
-                const talent = GENERAL_TALENTS.find(t => t.name === select.value);
-                if (talent) {
-                    reqSpan.textContent = talent.req || 'None';
-                    bookSpan.textContent = talent.book || '—';
-                    descArea.value = talent.desc || '';
+        if (data.attacks && data.attacks.length > 0) {
+            const attackCards = document.querySelectorAll(".attack-card");
+            data.attacks.forEach((atkValues, idx) => {
+                if (attackCards[idx]) {
+                    const inputs = attackCards[idx].querySelectorAll("input");
+                    inputs.forEach((inp, i) => {
+                        if (atkValues[i] !== undefined) inp.value = atkValues[i];
+                    });
+                }
+            });
+        }
+
+        updateDerived();
+
+        const tContainer = document.getElementById("talentsContainer");
+        tContainer.innerHTML = "";
+        if (data.talents && data.talents.length > 0) {
+            data.talents.forEach(t => {
+                addNewTalentCard();
+                const lastCard = tContainer.lastElementChild;
+                const select = lastCard.querySelector(".talent-select");
+                const customInput = lastCard.querySelector(".custom-name-input");
+                const reqSpan = lastCard.querySelector(".talent-req");
+                const bookSpan = lastCard.querySelector(".talent-book");
+                const descArea = lastCard.querySelector(".talent-desc-area");
+
+                if (t.isCustom) {
+                    select.style.display = "none";
+                    customInput.style.display = "block";
+                    customInput.value = t.name;
                 } else {
-                    reqSpan.textContent = '—';
-                    bookSpan.textContent = '—';
-                    descArea.value = '';
+                    select.value = t.name;
                 }
-            }
+                reqSpan.textContent = t.req || "—";
+                bookSpan.textContent = t.book || "—";
+                descArea.value = t.desc || "";
+            });
+        } else {
+            addNewTalentCard();
         }
+        refreshAllTalentSelects();
+    }
 
-        function refreshAllTalentSelects() {
-            document.querySelectorAll('.talent-card').forEach(card => {
-                const select = card.querySelector('.talent-select');
-                const customInput = card.querySelector('.custom-name-input');
-                if (customInput.style.display !== 'block') {
-                    const currentVal = select.value;
-                    select.innerHTML = getTalentOptionsHtml(currentVal);
-                    select.value = currentVal;
-                }
-            });
+    // === СОХРАНЕНИЕ В localStorage ===
+    function saveCharacter() {
+        try {
+            const data = getCharacterData();
+            localStorage.setItem("ttb_saved_character", JSON.stringify(data));
+            alert("Персонаж успешно сохранен!");
+        } catch (e) {
+            alert("Ошибка сохранения: " + e.message);
+            console.error(e);
         }
+    }
 
-        // === БЕЗОПАСНЫЙ СБОР ДАННЫХ ПЕРСОНАЖА В ОБЪЕКТ ===
-        function getCharacterData() {
-            const skills = [];
-            document.querySelectorAll("#skillsList tr").forEach(tr => {
-                const skillName = tr.querySelector(".skill-select")?.value || "";
-                const rating = parseInt(tr.querySelector(".skill-rating")?.value, 10) || 0;
-                const aspectSelects = Array.from(tr.querySelectorAll(".skill-aspect")).map(s => s.value);
-                if (skillName) {
-                    skills.push({ skillName, rating, aspects: aspectSelects });
-                }
-            });
-
-            const talents = [];
-            document.querySelectorAll(".talent-card").forEach(card => {
-                const select = card.querySelector(".talent-select");
-                const customInput = card.querySelector(".custom-name-input");
-                const isCustom = customInput && customInput.style.display === "block";
-                const name = isCustom ? (customInput?.value || "") : (select?.value || "");
-                const req = card.querySelector(".talent-req")?.textContent || "";
-                const book = card.querySelector(".talent-book")?.textContent || "";
-                const desc = card.querySelector(".talent-desc-area")?.value || "";
-                if (name) {
-                    talents.push({ name, isCustom, req, book, desc });
-                }
-            });
-
-            const attacks = [];
-            const attackRows = document.querySelectorAll(".attack-card, #attacksList tr");
-            attackRows.forEach(row => {
-                const inputs = row.querySelectorAll("input");
-                if (inputs.length > 0) {
-                    attacks.push(Array.from(inputs).map(inp => inp.value));
-                }
-            });
-
-            return {
-                charName: document.getElementById("charName")?.value || "",
-                playerName: document.getElementById("playerName")?.value || "",
-                species: document.getElementById("species")?.value || "",
-                pursuit: document.getElementById("pursuit")?.value || "",
-                aspects: { ...aspects },
-                armor: document.getElementById("armor")?.value || 0,
-                skills,
-                talents,
-                attacks
-            };
+    // === ЭКСПОРТ В JSON ===
+    function exportCharacterJSON() {
+        try {
+            const data = getCharacterData();
+            const jsonStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            const filename = (data.charName || "character").trim().replace(/\s+/g, "_") + ".json";
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        } catch (e) {
+            alert("Ошибка скачивания: " + e.message);
         }
+    }
 
-        // === ВОССТАНОВЛЕНИЕ ПЕРСОНАЖА ИЗ ДАННЫХ ===
-        function loadCharacterData(data) {
-            if (!data) return;
-
-            if (data.charName !== undefined) document.getElementById("charName").value = data.charName;
-            if (data.playerName !== undefined) document.getElementById("playerName").value = data.playerName;
-            if (data.species !== undefined) document.getElementById("species").value = data.species;
-            if (data.pursuit !== undefined) document.getElementById("pursuit").value = data.pursuit;
-            if (data.armor !== undefined) document.getElementById("armor").value = data.armor;
-
-            if (data.aspects) {
-                for (let k in data.aspects) {
-                    aspects[k] = data.aspects[k];
-                    const span = document.getElementById(k);
-                    if (span) span.textContent = aspects[k];
-                }
+    // === ИМПОРТ ИЗ JSON ===
+    function importCharacterJSON(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                loadCharacterData(data);
+                alert("Персонаж успешно загружен из файла!");
+            } catch (err) {
+                alert("Ошибка чтения файла JSON: " + err.message);
             }
+        };
+        reader.readAsText(file);
+    }
 
-            const tbody = document.getElementById("skillsList");
-            tbody.innerHTML = "";
-            if (data.skills && data.skills.length > 0) {
-                data.skills.forEach(sk => {
-                    addNewSkillRow();
-                    const lastRow = tbody.lastElementChild;
-                    const sel = lastRow.querySelector(".skill-select");
-                    if (sel) {
-                        sel.value = sk.skillName;
-                        onSkillSelectChange(lastRow);
-                    }
-                    const ratingInput = lastRow.querySelector(".skill-rating");
-                    if (ratingInput) ratingInput.value = sk.rating;
-
-                    const aspSelects = lastRow.querySelectorAll(".skill-aspect");
-                    if (sk.aspects && aspSelects.length > 0) {
-                        aspSelects.forEach((s, idx) => {
-                            if (sk.aspects[idx]) s.value = sk.aspects[idx];
-                        });
-                    }
-                    updateRowAV(lastRow);
-                });
-            }
-
-            if (data.attacks && data.attacks.length > 0) {
-                const attackCards = document.querySelectorAll(".attack-card");
-                data.attacks.forEach((atkValues, idx) => {
-                    if (attackCards[idx]) {
-                        const inputs = attackCards[idx].querySelectorAll("input");
-                        inputs.forEach((inp, i) => {
-                            if (atkValues[i] !== undefined) inp.value = atkValues[i];
-                        });
-                    }
-                });
-            }
-
-            updateDerived();
-
-            const tContainer = document.getElementById("talentsContainer");
-            tContainer.innerHTML = "";
-            if (data.talents && data.talents.length > 0) {
-                data.talents.forEach(t => {
-                    addNewTalentCard();
-                    const lastCard = tContainer.lastElementChild;
-                    const select = lastCard.querySelector(".talent-select");
-                    const customInput = lastCard.querySelector(".custom-name-input");
-                    const reqSpan = lastCard.querySelector(".talent-req");
-                    const bookSpan = lastCard.querySelector(".talent-book");
-                    const descArea = lastCard.querySelector(".talent-desc-area");
-
-                    if (t.isCustom) {
-                        select.style.display = "none";
-                        customInput.style.display = "block";
-                        customInput.value = t.name;
-                    } else {
-                        select.value = t.name;
-                    }
-                    reqSpan.textContent = t.req || "—";
-                    bookSpan.textContent = t.book || "—";
-                    descArea.value = t.desc || "";
-                });
-            } else {
+    // === ИНИЦИАЛИЗАЦИЯ И СТАРТ ===
+    window.addEventListener("DOMContentLoaded", () => {
+        updateDerived();
+        const saved = localStorage.getItem("ttb_saved_character");
+        if (saved) {
+            try {
+                loadCharacterData(JSON.parse(saved));
+            } catch(e) {
+                console.error("Не удалось восстановить сохранение:", e);
                 addNewTalentCard();
             }
-            refreshAllTalentSelects();
+        } else {
+            addNewTalentCard();
         }
+    });
 
-        // === СОХРАНЕНИЕ В ПАМЯТЬ BROWSER (localStorage) ===
-        function saveCharacter() {
-            try {
-                const data = getCharacterData();
-                localStorage.setItem("ttb_saved_character", JSON.stringify(data));
-                alert("Персонаж успешно сохранен!");
-            } catch (e) {
-                alert("Ошибка сохранения: " + e.message);
-                console.error(e);
-            }
-        }
+    window.addEventListener("beforeunload", () => {
+        try {
+            const data = getCharacterData();
+            localStorage.setItem("ttb_saved_character", JSON.stringify(data));
+        } catch(e) {}
+    });
+</script>
 
-        // === ЭКСПОРТ В JSON ===
-        function exportCharacterJSON() {
-            try {
-                const data = getCharacterData();
-                const jsonStr = JSON.stringify(data, null, 2);
-                const blob = new Blob([jsonStr], { type: "application/json" });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                const filename = (data.charName || "character").trim().replace(/\s+/g, "_") + ".json";
-                a.href = url;
-                a.download = filename;
-                a.click();
-                URL.revokeObjectURL(url);
-            } catch (e) {
-                alert("Ошибка скачивания: " + e.message);
-            }
-        }
-
-        // === ИМПОРТ ИЗ JSON ===
-        function importCharacterJSON(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    loadCharacterData(data);
-                    alert("Персонаж успешно загружен из файла!");
-                } catch (err) {
-                    alert("Ошибка чтения файла JSON: " + err.message);
-                }
-            };
-            reader.readAsText(file);
-        }
-
-        // === ИНИЦИАЛИЗАЦИЯ И АВТОЗАГРУЗКА ===
-        window.addEventListener("DOMContentLoaded", () => {
-            updateDerived();
-            const saved = localStorage.getItem("ttb_saved_character");
-            if (saved) {
-                try {
-                    loadCharacterData(JSON.parse(saved));
-                } catch(e) {
-                    console.error("Не удалось восстановить сохранение:", e);
-                    addNewTalentCard();
-                }
-            } else {
-                addNewTalentCard();
-            }
-        });
-
-        window.addEventListener("beforeunload", () => {
-            try {
-                const data = getCharacterData();
-                localStorage.setItem("ttb_saved_character", JSON.stringify(data));
-            } catch(e) {}
-        });
-    </script>
 </body>
 </html>
