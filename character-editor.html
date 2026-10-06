@@ -528,8 +528,64 @@
             font-size: 14px;
         }
 
-        @media (max-width: 900px) {
+@media (max-width: 900px) {
+            header {
+                padding: 12px 15px;
+                flex-direction: column;
+                gap: 12px;
+                align-items: stretch;
+            }
+
+            header > div:last-child {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 6px !important;
+            }
+
+            header > div:last-child .tab-btn {
+                flex: 1 1 calc(50% - 6px);
+                text-align: center;
+                padding: 8px 6px !important;
+                font-size: 11px !important;
+            }
+
+            .sheet-title {
+                text-align: center;
+            }
+
+            main {
+                padding: 15px 10px 40px 10px;
+            }
+
+            .tab-bar {
+                padding: 0 10px;
+            }
+
             .top-grid, .sheet-body {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .aspects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .attack-stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .label-row, .destiny-row {
+                grid-template-columns: 1fr;
+            }
+
+            .derived-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .attack-row-1 {
                 grid-template-columns: 1fr;
             }
         }
