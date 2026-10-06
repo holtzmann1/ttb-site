@@ -126,7 +126,7 @@
             margin-bottom: 25px;
         }
 
-        .box-header {
+        .box- {
             margin: 0 0 15px 0;
             color: #c59a5b;
             font-size: 20px;
@@ -380,7 +380,7 @@
             margin-bottom: 10px;
         }
 
-        .talent-header-row {
+        .talent--row {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -444,6 +444,12 @@
 <header>
     <a href="characters.html" class="back-button">← НАЗАД К ПЕРСОНАЖАМ</a>
     <div class="sheet-title">CHARACTER SHEET</div>
+    <div style="display: flex; gap: 10px;">
+        <button type="button" class="tab-btn" onclick="saveCharacter()" style="padding: 6px 14px; font-size: 11px;">💾 СОХРАНИТЬ</button>
+        <button type="button" class="tab-btn" onclick="exportCharacterJSON()" style="padding: 6px 14px; font-size: 11px;">⬇ СКАЧАТЬ JSON</button>
+        <button type="button" class="tab-btn" onclick="document.getElementById('importFile').click()" style="padding: 6px 14px; font-size: 11px;">⬆ ЗАГРУЗИТЬ</button>
+        <input type="file" id="importFile" style="display: none;" onchange="importCharacterJSON(event)" accept=".json">
+    </div>
 </header>
 
 <div class="tab-bar">
@@ -1233,6 +1239,59 @@ function switchTab(tabKey) {
     // Инициализация при старте
     updateDerived();
     addNewTalentCard();
+    // === СБОР ДАННЫХ ПЕРСОНАЖА В ОБЪЕКТ ===
+    function getCharacterData() {
+        // 1. Собираем навыки
+        const skills = [];
+        document.querySelectorAll("#skillsList tr").forEach(tr => {
+            const skillName = tr.querySelector(".skill-select")?.value || "";
+            const rating = parseInt(tr.querySelector(".skill-rating")?.value) || 0;
+            const aspectSelects = Array.from(tr.querySelectorAll(".skill-aspect")).map(s => s.value);
+            skills.push({ skillName, rating, aspects: aspectSelects });
+        });
+
+        // 2. Собираем таланты
+        const talents = [];
+        document.querySelectorAll(".talent-card").forEach(card => {
+            const select = card.querySelector(".talent-select");
+            const customInput = card.querySelector(".custom-name-input");
+            const isCustom = customInput.style.display === "block";
+            const name = isCustom ? customInput.value : select.value;
+            const req = card.querySelector(".talent-req")?.textContent || "";
+            const book = card.querySelector(".talent-book")?.textContent || "";
+            const desc = card.querySelector(".talent-desc-area")?.value || "";
+            talents.push({ name, isCustom, req, book, desc });
+        });
+
+        // 3. Собираем атаки/оружие
+        const attacks = [];
+        document.querySelectorAll(".attack-card").forEach(card => {
+            const inputs = card.querySelectorAll("input");
+            attacks.push({
+                name: inputs[0]?.value || "",
+                special: inputs[1]?.value || "",
+                av: inputs[2]?.value || "",
+                range: inputs[3]?.value || "",
+                damage: inputs[4]?.value || "",
+                capacity: inputs[5]?.value || "",
+                reload: inputs[6]?.value || "",
+                tn: inputs[7]?.value || "",
+                triggers: inputs[8]?.value || ""
+            });
+        });
+
+        return {
+            charName: document.getElementById("charName")?.value || "",
+            playerName: document.getElementById("playerName")?.value || "",
+            species: document.getElementById("species")?.value || "",
+            pursuit: document.getElementById("pursuit")?.value || "",
+            aspects: { ...aspects },
+            armor: document.getElementById("armor")?.value || 0,
+            skills,
+            talents,
+            attacks
+        };
+    }
 </script>
 
 </body>
