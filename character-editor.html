@@ -589,65 +589,52 @@
                 grid-template-columns: 1fr;
             }
 
-            /* Адаптация блока навыков в карточный вид */
-            .skills-table thead {
-                display: none; /* Прячем слипшиеся заголовки */
-            }
-
-            .skills-table, .skills-table tbody, .skills-table tr {
-                display: block;
+            /* Таблица навыков строго в одну аккуратную строку */
+            .skills-table {
                 width: 100%;
+                table-layout: fixed;
             }
 
-            .skills-table tr {
-                display: grid;
-                grid-template-columns: 1fr auto;
-                gap: 6px;
-                background: rgba(20, 17, 14, 0.7);
-                border: 1px solid #382b1d;
-                padding: 8px;
-                margin-bottom: 8px;
+            .skills-table th {
+                font-size: 9px !important;
+                letter-spacing: 0 !important;
+                padding: 4px 1px !important;
             }
 
             .skills-table td {
-                display: block;
-                padding: 0;
+                padding: 2px 1px !important;
             }
 
-            /* Название навыка на всю верхнюю строку */
-            .skills-table td:first-child {
-                grid-column: 1 / 2;
+            .skills-table td select, 
+            .skills-table td input {
+                font-size: 11px !important;
+                padding: 2px 2px !important;
+                height: 26px !important;
             }
 
-            /* Кнопка удаления в правом верхнем углу */
-            .skills-table td:last-child {
-                grid-column: 2 / 3;
-                width: 28px;
+            .skills-table input[type="number"] {
+                padding: 0 !important;
             }
 
-            /* Контейнер нижнего ряда: AV, Rating, Aspect */
-            .skills-table td.av-container {
-                grid-column: 1 / 3;
-                display: grid;
-                grid-template-columns: 2fr 1fr 1fr;
-                gap: 6px;
-                align-items: center;
+            .av-box {
+                font-size: 12px !important;
+                height: 26px !important;
             }
 
-            /* Переставляем ячейки порядка: Aspect, Rating, AV */
-            .skills-table td.aspect-container {
-                grid-column: 1 / 2;
-                grid-row: 2;
+            .del-btn {
+                padding: 0 !important;
+                height: 26px !important;
+                font-size: 11px !important;
             }
 
-            .skills-table td:nth-child(3) {
-                grid-column: 2 / 3;
-                grid-row: 2;
+            /* Убираем лишние стрелочки у числового инпута, чтобы цифра не сжималась */
+            .skill-rating::-webkit-outer-spin-button,
+            .skill-rating::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
             }
-
-            .skills-table td.av-container {
-                grid-column: 3 / 4;
-                grid-row: 2;
+            .skill-rating[type=number] {
+                -moz-appearance: textfield;
             }
         }
 
