@@ -1241,6 +1241,102 @@ function switchTab(tabKey) {
     addNewTalentCard();
     // === СБОР ДАННЫХ ПЕРСОНАЖА В ОБЪЕКТ ===
     function getCharacterData() {
+        // === ВОССТАНОВЛЕНИЕ ПЕРСОНАЖА ИЗ ДАННЫХ ===
+    function loadCharacterData(data) {
+        if (!data) return;
+
+        // Поля ввода
+        if (data.charName !== undefined) document.getElementById("charName").value = data.charName;
+        if (data.playerName !== undefined) document.getElementById("playerName").value = data.playerName;
+        if (data.species !== undefined) document.getElementById("species").value = data.species;
+        if (data.pursuit !== undefined) document.getElementById("pursuit").value = data.pursuit;
+        if (data.armor !== undefined) document.getElementById("armor").value = data.armor;
+
+        // Аспекты
+        if (data.aspects) {
+            for (let k in data.aspects) {
+                aspects[k] = data.aspects[k];
+                const span = document.getElementById(k);
+                if (span) span.textContent = aspects[k];
+            }
+        }
+
+        // Навыки
+        const tbody = document.getElementById("skillsList");
+        tbody.innerHTML = "";
+        if (data.skills && data.skills.length > 0) {
+            data.skills.forEach(sk => {
+                addNewSkillRow();
+                const lastRow = tbody.lastElementChild;
+                const sel = lastRow.querySelector(".skill-select");
+                if (sel) {
+                    sel.value = sk.skillName;
+                    onSkillSelectChange(lastRow);
+                }
+                const ratingInput = lastRow.querySelector(".skill-rating");
+                if (ratingInput) ratingInput.value = sk.rating;
+
+                const aspSelects = lastRow.querySelectorAll(".skill-aspect");
+                if (sk.aspects && aspSelects.length > 0) {
+                    aspSelects.forEach((s, idx) => {
+                        if (sk.aspects[idx]) s.value = sk.aspects[idx];
+                    });
+                }
+                updateRowAV(lastRow);
+            });
+        }
+
+        // Атаки
+        if (data.attacks && data.attacks.length > 0) {
+            const attackCards = document.querySelectorAll(".attack-card");
+            data.attacks.forEach((atk, idx) => {
+                if (attackCards[idx]) {
+                    const inputs = attackCards[idx].querySelectorAll("input");
+                    if (inputs[0]) inputs[0].value = atk.name;
+                    if (inputs[1]) inputs[1].value = atk.special;
+                    if (inputs[2]) inputs[2].value = atk.av;
+                    if (inputs[3]) inputs[3].value = atk.range;
+                    if (inputs[4]) inputs[4].value = atk.damage;
+                    if (inputs[5]) inputs[5].value = atk.capacity;
+                    if (inputs[6]) inputs[6].value = atk.reload;
+                    if (inputs[7]) inputs[7].value = atk.tn;
+                    if (inputs[8]) inputs[8].value = atk.triggers;
+                }
+            });
+        }
+
+        // Обновляем производные параметры
+        updateDerived();
+
+        // Таланты
+        const tContainer = document.getElementById("talentsContainer");
+        tContainer.innerHTML = "";
+        if (data.talents && data.talents.length > 0) {
+            data.talents.forEach(t => {
+                addNewTalentCard();
+                const lastCard = tContainer.lastElementChild;
+                const select = lastCard.querySelector(".talent-select");
+                const customInput = lastCard.querySelector(".custom-name-input");
+                const reqSpan = lastCard.querySelector(".talent-req");
+                const bookSpan = lastCard.querySelector(".talent-book");
+                const descArea = lastCard.querySelector(".talent-desc-area");
+
+                if (t.isCustom) {
+                    select.style.display = "none";
+                    customInput.style.display = "block";
+                    customInput.value = t.name;
+                } else {
+                    select.value = t.name;
+                }
+                reqSpan.textContent = t.req || "—";
+                bookSpan.textContent = t.book || "—";
+                descArea.value = t.desc || "";
+            });
+        } else {
+            addNewTalentCard();
+        }
+        refreshAllTalentSelects();
+    }
         // 1. Собираем навыки
         const skills = [];
         document.querySelectorAll("#skillsList tr").forEach(tr => {
