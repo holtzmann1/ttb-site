@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Создание персонажа — Through the Breach</title>
-    <!-- ПОДКЛЮЧАЕМ БАЗУ ТАЛАНТОВ (с версионированием для мобильного кэша) -->
+    <!-- ПОДКЛЮЧАЕМ БАЗУ ТАЛАНТОВ -->
     <script src="talents-data.js?v=2"></script>
     <style>
         * {
@@ -160,10 +160,76 @@
             text-transform: uppercase;
         }
 
+        /* DESTINY & EXP */
+        .destiny-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .destiny-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .destiny-field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .destiny-label {
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #a99e8d;
+            text-transform: uppercase;
+        }
+
+        .destiny-steps {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            height: 38px;
+        }
+
+        .step-circle {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border: 2px solid #8b7355;
+            border-radius: 50%;
+            outline: none;
+            cursor: pointer;
+            background-color: #14110e;
+            transition: all 0.2s ease;
+        }
+
+        .step-circle:checked {
+            background-color: #c59a5b;
+            box-shadow: inset 0 0 0 3px #14110e;
+        }
+
+        .step-circle:hover {
+            border-color: #e5c378;
+        }
+
+        .exp-input {
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        /* ОСНОВНОЕ ТЕЛО ЛИСТА */
         .sheet-body {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1.05fr 0.95fr;
             gap: 25px;
+            align-items: stretch;
         }
 
         .aspects-grid {
@@ -302,23 +368,52 @@
             font-size: 13px;
         }
 
+        /* ТАБЛИЦА НАВЫКОВ — ВЫСОКАЯ И ПРОПОРЦИОНАЛЬНАЯ */
+        .skills-box {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+        }
+
+        .skills-table-wrap {
+            flex-grow: 1;
+            overflow-y: auto;
+            max-height: 680px;
+        }
+
         .skills-table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
         }
 
         .skills-table th {
             text-align: left;
-            padding: 6px;
-            color: #a99e8d;
-            font-size: 13px;
+            padding: 6px 4px;
+            color: #c59a5b;
+            font-size: 12px;
             letter-spacing: 1px;
             border-bottom: 1px solid #4a3825;
         }
 
+        .skills-table th.th-av, .skills-table th.th-rating {
+            text-align: center;
+        }
+
         .skills-table td {
-            padding: 4px;
+            padding: 3px 2px;
             vertical-align: middle;
+        }
+
+        .skills-table td select, .skills-table td input {
+            font-size: 13px;
+            padding: 4px 6px;
+            height: 28px;
+        }
+
+        .skills-table input[type="number"] {
+            text-align: center;
+            font-weight: bold;
         }
 
         .dual-stack {
@@ -331,16 +426,15 @@
             text-align: center;
             font-weight: bold;
             color: #c59a5b;
-            font-size: 16px;
+            font-size: 14px;
             background: #14110e;
             border: 1px solid #2a2015;
-            padding: 6px 0;
-            width: 45px;
-            min-height: 35px;
+            padding: 0;
+            width: 100%;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto;
         }
 
         .del-btn {
@@ -348,8 +442,10 @@
             border: 1px solid #4a3825;
             color: #8f8679;
             cursor: pointer;
-            padding: 6px 10px;
+            padding: 4px 6px;
             font-size: 12px;
+            width: 100%;
+            height: 28px;
         }
 
         .del-btn:hover {
@@ -437,137 +533,15 @@
                 grid-template-columns: 1fr;
             }
         }
-/* СТИЛИ ДЛЯ ПЕЧАТИ И ЭКСПОРТА В PDF — 1 В 1 КАК НА САЙТЕ */
-/* КОМПАКТНЫЙ ОФИЦИАЛЬНЫЙ ЛИСТ A4 */
+
+        /* ==================================================== */
+        /* СТИЛИ ДЛЯ ПЕЧАТИ И ЭКСПОРТА В PDF — 1 В 1 ОФИЦИАЛЬНЫЙ БЛАНК */
+        /* ==================================================== */
         @page {
             size: A4 portrait;
             margin: 6mm 8mm;
         }
 
-        /* СТИЛИ ДЛЯ ПАНЕЛИ DESTINY И ОПЫТА */
-.destiny-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.destiny-row {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 10px;
-    align-items: end;
-}
-
-.destiny-field {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-.destiny-label {
-    font-size: 10px;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-    color: #c9a45c;
-    text-transform: uppercase;
-}
-
-.destiny-steps {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-    height: 32px;
-}
-
-.step-circle {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #8b7355;
-    border-radius: 50%;
-    outline: none;
-    cursor: pointer;
-    background-color: transparent;
-    transition: all 0.2s ease;
-}
-
-.step-circle:checked {
-    background-color: #c9a45c;
-    box-shadow: inset 0 0 0 3px #1a1a1a;
-}
-
-.step-circle:hover {
-    border-color: #e5c378;
-}
-
-.exp-input {
-    text-align: center;
-    font-weight: bold;
-}
-        /* РАСТЯГИВАНИЕ БЛОКА НАВЫКОВ ПО ВЫСОТЕ НА ВЕСЬ ЛИСТ */
-.sheet-body {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    align-items: stretch; /* Растягивает обе колонки на одинаковую высоту */
-}
-
-/* Карточка Skills теперь занимает всю высоту правой колонки */
-.skills-container-box {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    min-height: 580px; /* Чтобы по высоте соответствовать левой части */
-}
-
-/* Шапка колонок Skills */
-.skills-header-row {
-    display: grid;
-    grid-template-columns: 3fr 45px 50px 2fr 24px;
-    gap: 6px;
-    font-size: 11px;
-    font-weight: bold;
-    color: #c9a45c;
-    margin-bottom: 6px;
-    padding-bottom: 4px;
-    border-bottom: 1px solid #444;
-    text-align: center;
-}
-
-.skills-header-row span:first-child {
-    text-align: left;
-    padding-left: 4px;
-}
-
-/* Список строк навыков */
-#skills-list {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    flex-grow: 1; /* Заполняет всё доступное пространство */
-    overflow-y: auto; /* Если навыков очень много, появляется аккуратный скролл */
-    max-height: 520px;
-}
-
-/* Каждая отдельная строка навыка */
-.skill-row {
-    display: grid;
-    grid-template-columns: 3fr 45px 50px 2fr 24px;
-    gap: 6px;
-    align-items: center;
-}
-
-.skill-row select, .skill-row input {
-    height: 24px;
-    font-size: 11px;
-}
-
-/* AV и Rating по центру */
-.skill-row .av-box, .skill-row input[type="number"] {
-    text-align: center;
-    font-weight: bold;
-}
         @media print {
             * {
                 box-sizing: border-box !important;
@@ -577,13 +551,13 @@
                 background: #ffffff !important;
                 color: #000000 !important;
                 font-family: 'Cinzel', Georgia, serif;
-                font-size: 11px !important;
+                font-size: 10px !important;
                 line-height: 1.1 !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
 
-            header, .tab-bar, .add-row-btn, .del-btn, .toggle-btn, .counter button {
+            header, .tab-bar, .add-row-btn, .del-btn, .toggle-btn, .counter button, th:last-child, td:last-child {
                 display: none !important;
             }
 
@@ -594,30 +568,27 @@
                 margin: 0 !important;
             }
 
-            /* Шапка персонажа */
             .top-grid {
                 display: grid !important;
-                grid-template-columns: 2fr 1fr !important;
+                grid-template-columns: 1.1fr 0.9fr !important;
                 gap: 6px !important;
                 margin-bottom: 6px !important;
             }
 
-            /* Две колонки как в оригинальном бланке: слева статы и атаки, справа навыки */
             .sheet-body {
                 display: grid !important;
-                grid-template-columns: 1fr 1fr !important;
+                grid-template-columns: 1.1fr 0.9fr !important;
                 gap: 8px !important;
                 align-items: start !important;
             }
 
-            /* Запрещаем разрывать блоки между страницами */
             .box, .attack-card, .talent-card {
                 page-break-inside: avoid !important;
                 break-inside: avoid !important;
                 background: #ffffff !important;
-                border: 1px solid #222222 !important;
-                padding: 6px !important;
-                margin-bottom: 6px !important;
+                border: 1px solid #111111 !important;
+                padding: 5px !important;
+                margin-bottom: 5px !important;
                 box-shadow: none !important;
             }
 
@@ -625,23 +596,24 @@
                 color: #000000 !important;
                 font-size: 11px !important;
                 font-weight: bold !important;
-                border-bottom: 1px solid #222222 !important;
+                border-bottom: 1px solid #111111 !important;
                 padding-bottom: 2px !important;
                 margin-bottom: 4px !important;
             }
 
-            /* Компактные поля ввода */
             input, select, textarea {
                 background: #ffffff !important;
                 color: #000000 !important;
-                border: 1px solid #777777 !important;
+                border: 1px solid #666666 !important;
                 padding: 1px 3px !important;
                 font-size: 10px !important;
-                height: 20px !important;
+                height: 18px !important;
                 box-shadow: none !important;
+                appearance: none !important;
+                -webkit-appearance: none !important;
             }
 
-.aspect-row, .derived-cell {
+            .aspect-row, .derived-cell {
                 background: #ffffff !important;
                 color: #000000 !important;
                 padding: 2px 4px !important;
@@ -649,8 +621,43 @@
                 border: 1px solid #333333 !important;
             }
 
-            .aspect-row span, .derived-cell span, .aspect-row label, .derived-cell label {
+            .aspect-row span, .derived-cell span, .destiny-label, .attack-stats-grid label, .field-group label {
                 color: #000000 !important;
+                font-weight: bold !important;
+            }
+
+            .step-circle {
+                border-color: #000000 !important;
+                background-color: transparent !important;
+                width: 14px !important;
+                height: 14px !important;
+            }
+
+            .step-circle:checked {
+                background-color: #000000 !important;
+                box-shadow: none !important;
+            }
+
+            /* Таблица навыков при печати: убираем стрелочки, четко распределяем ширину */
+            .skills-table-wrap {
+                max-height: none !important;
+                overflow: visible !important;
+            }
+
+            .skills-table th {
+                color: #000000 !important;
+                border-bottom: 1px solid #000000 !important;
+                font-size: 9px !important;
+                padding: 2px !important;
+            }
+
+            .skills-table td {
+                padding: 1px !important;
+            }
+
+            .skills-table select {
+                border: none !important;
+                font-weight: 500 !important;
             }
 
             .av-box {
@@ -658,75 +665,33 @@
                 color: #000000 !important;
                 border: 1px solid #555555 !important;
                 font-size: 10px !important;
-                padding: 1px 3px !important;
+                height: 18px !important;
             }
 
-            /* Вторая вкладка с талантами уходит на 2-й отдельный лист */
-            #tab-general {
+            #tab-talents {
                 page-break-before: always !important;
                 break-before: page !important;
-                margin-top: 0 !important;
             }
 
             .talent-body {
                 display: block !important;
                 background: #ffffff !important;
                 border-top: 1px solid #666666 !important;
-                font-size: 10px !important;
+                font-size: 9px !important;
                 padding: 4px !important;
-            }
-            /* НАСТРОЙКА ТАБЛИЦЫ НАВЫКОВ ДЛЯ ПЕЧАТИ */
-            #skills-list {
-                display: flex !important;
-                flex-direction: column !important;
-                gap: 2px !important;
-            }
-
-            #skills-list > div {
-                display: grid !important;
-                grid-template-columns: 2.5fr 32px 30px 1.5fr !important;
-                gap: 4px !important;
-                align-items: center !important;
-                margin-bottom: 2px !important;
-            }
-
-            #skills-list select {
-                appearance: none !important;
-                -webkit-appearance: none !important;
-                -moz-appearance: none !important;
-                padding-right: 2px !important;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-            }
-
-            #skills-list .av-box {
-                width: 32px !important;
-                height: 20px !important;
-                padding: 0 !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                font-weight: bold !important;
-            }
-
-            #skills-list input[type="number"] {
-                text-align: center !important;
-                padding: 0 !important;
             }
         }
     </style>
-
 </head>
 <body>
 
 <header>
     <a href="characters.html" class="back-button">← НАЗАД К ПЕРСОНАЖАМ</a>
     <div class="sheet-title">CHARACTER SHEET</div>
-<div style="display: flex; gap: 10px;">
+    <div style="display: flex; gap: 10px;">
         <button type="button" class="tab-btn" onclick="saveCharacter()" style="padding: 6px 14px; font-size: 11px;">💾 СОХРАНИТЬ</button>
         <button type="button" class="tab-btn" onclick="resetCharacterSheet()" style="padding: 6px 14px; font-size: 11px; color: #e57373;">🗑 СБРОСИТЬ</button>
-    <button type="button" class="tab-btn" onclick="window.print()" style="padding: 6px 14px; font-size: 11px;">🖨 ПЕЧАТЬ / PDF</button>
+        <button type="button" class="tab-btn" onclick="window.print()" style="padding: 6px 14px; font-size: 11px;">🖨 ПЕЧАТЬ / PDF</button>
         <button type="button" class="tab-btn" onclick="exportCharacterJSON()" style="padding: 6px 14px; font-size: 11px;">⬇ СКАЧАТЬ JSON</button>
         <button type="button" class="tab-btn" onclick="document.getElementById('importFile').click()" style="padding: 6px 14px; font-size: 11px;">⬆ ЗАГРУЗИТЬ</button>
         <input type="file" id="importFile" style="display: none;" onchange="importCharacterJSON(event)" accept=".json">
@@ -746,12 +711,12 @@
             <div class="box">
                 <div class="field-group">
                     <label>Fated Name</label>
-                    <input type="text" id="charName" placeholder="И что ты придумал на этот раз?">
+                    <input type="text" id="charName" placeholder="Имя персонажа">
                 </div>
                 <div class="label-row">
                     <div class="field-group">
-                        <label>Player Name</label>
-                        <input type="text" id="playerName" placeholder="Напиши здесь свое красивое имя">
+                        <label>Current Pursuit</label>
+                        <input type="text" id="pursuit" placeholder="Текущий путь">
                     </div>
                     <div class="field-group">
                         <label>Species</label>
@@ -760,21 +725,21 @@
                 </div>
             </div>
 
-<!-- ПРАВЫЙ ВЕРХНИЙ БЛОК: ИГРОК, ДЕНЬГИ, СУДЬБА, ОПЫТ -->
+            <!-- ПРАВЫЙ ВЕРХНИЙ БЛОК: ИГРОК, ДЕНЬГИ, СУДЬБА, ОПЫТ -->
             <div class="box destiny-panel">
                 <div class="destiny-row">
                     <div class="destiny-field">
-                        <label class="destiny-label">PLAYER NAME</label>
-                        <input type="text" id="player-name" placeholder="Имя игрока">
+                        <label class="destiny-label">Player Name</label>
+                        <input type="text" id="playerName" placeholder="Имя игрока">
                     </div>
                     <div class="destiny-field">
-                        <label class="destiny-label">GUILD SCRIPT</label>
-                        <input type="number" id="guild-script" min="0" value="0">
+                        <label class="destiny-label">Guild Script</label>
+                        <input type="number" id="guildScript" min="0" value="0">
                     </div>
                 </div>
                 <div class="destiny-row bottom-row">
                     <div class="destiny-field">
-                        <label class="destiny-label">DESTINY STEPS FULFILLED</label>
+                        <label class="destiny-label">Destiny Steps Fulfilled</label>
                         <div class="destiny-steps">
                             <input type="checkbox" id="destiny-1" class="step-circle">
                             <input type="checkbox" id="destiny-2" class="step-circle">
@@ -784,11 +749,12 @@
                         </div>
                     </div>
                     <div class="destiny-field">
-                        <label class="destiny-label">EXP.</label>
-                        <input type="number" id="character-exp" min="0" value="0" class="exp-input">
+                        <label class="destiny-label">Exp.</label>
+                        <input type="number" id="characterExp" min="0" value="0" class="exp-input">
                     </div>
                 </div>
             </div>
+        </div>
 
         <div class="sheet-body">
             <div>
@@ -948,28 +914,31 @@
                 </div>
             </div>
 
+            <!-- ПРАВАЯ ВЫСОКАЯ КОЛОНКА НАВЫКОВ -->
             <div>
-                <div class="box">
+                <div class="box skills-box">
                     <div class="box-header">SKILLS</div>
-                    <table class="skills-table">
-                        <thead>
-                            <tr>
-                                <th>SKILL</th>
-                                <th style="width: 55px; text-align: center;">AV</th>
-                                <th style="width: 65px; text-align: center;">RATING</th>
-                                <th style="width: 125px;">ASPECT</th>
-                                <th style="width: 35px;"></th>
-                            </tr>
-                        </thead>
-                        <tbody id="skillsList"></tbody>
-                    </table>
+                    <div class="skills-table-wrap">
+                        <table class="skills-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 44%;">SKILL</th>
+                                    <th style="width: 14%;" class="th-av">AV</th>
+                                    <th style="width: 15%;" class="th-rating">RATING</th>
+                                    <th style="width: 22%;">ASPECT</th>
+                                    <th style="width: 5%;"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="skillsList"></tbody>
+                        </table>
+                    </div>
                     <button class="add-row-btn" onclick="addNewSkillRow()">+ ДОБАВИТЬ НАВЫК</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ВКЛАДКА 2: GENERAL TALENTS (АККОРДЕОН С ФИЛЬТРОМ) -->
+    <!-- ВКЛАДКА 2: GENERAL TALENTS -->
     <div id="tab-talents" class="tab-content">
         <div class="box">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #33271a; padding-bottom: 6px; margin-bottom: 15px;">
@@ -980,9 +949,7 @@
                 </label>
             </div>
             
-            <div id="talentsContainer">
-                <!-- Карточки будут появляться тут -->
-            </div>
+            <div id="talentsContainer"></div>
 
             <button class="add-row-btn" onclick="addNewTalentCard()">+ ДОБАВИТЬ ТАЛАНТ</button>
         </div>
@@ -1012,7 +979,7 @@
         }
     }
 
-    // === ОБНОВЛЕННАЯ УМНАЯ ПРОВЕРКА ТРЕБОВАНИЙ ТАЛАНТОВ ===
+    // ТАЛАНТЫ
     function checkTalentRequirements(talent) {
         const reqStr = talent.req ? talent.req.trim() : "None";
         if (!reqStr || reqStr.toLowerCase() === "none") return true;
@@ -1135,7 +1102,6 @@
         return true;
     }
 
-    // ЛОГИКА ТАЛАНТОВ (С ЦВЕТНОЙ ПОДСВЕТКОЙ ПРИ ВКЛЮЧЕННОЙ ГАЛОЧКЕ)
     function getTalentOptionsHtml(selectedVal = "") {
         let html = `<option value="">-- Выбери талант --</option>`;
         html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' : ''}>★ Свой талант (Custom)</option>`;
@@ -1204,7 +1170,7 @@
                     ${getTalentOptionsHtml()}
                 </select>
                 <input type="text" class="custom-name-input" placeholder="Название своего таланта" style="display: none; flex: 1;">
-                <button type="button" class="del-btn" onclick="deleteTalentCard(this)" title="Удалить">✕</button>
+                <button type="button" class="del-btn" onclick="deleteTalentCard(this)" title="Удалить" style="width: 34px;">✕</button>
             </div>
             <div class="talent-body">
                 <div class="talent-meta-info">
@@ -1462,7 +1428,7 @@
                 ${getAspectSelectHtml("")}
             </td>
             <td>
-                <button class="del-btn" onclick="deleteSkillRow(this.closest('tr'))" title="Удалить">✕</button>
+                <button type="button" class="del-btn" onclick="deleteSkillRow(this.closest('tr'))" title="Удалить">✕</button>
             </td>
         `;
         tbody.appendChild(tr);
@@ -1529,7 +1495,7 @@
         rows.forEach(tr => updateRowAV(tr));
     }
 
-    // === БЕЗОПАСНЫЙ СБОР ДАННЫХ ПЕРСОНАЖА ===
+    // СБОР ДАННЫХ
     function getCharacterData() {
         const skills = [];
         document.querySelectorAll("#skillsList tr").forEach(tr => {
@@ -1563,11 +1529,16 @@
             }
         });
 
+        const destinySteps = [1, 2, 3, 4, 5].map(i => document.getElementById(`destiny-${i}`)?.checked || false);
+
         return {
             charName: document.getElementById("charName")?.value || "",
             playerName: document.getElementById("playerName")?.value || "",
             species: document.getElementById("species")?.value || "",
             pursuit: document.getElementById("pursuit")?.value || "",
+            guildScript: document.getElementById("guildScript")?.value || 0,
+            characterExp: document.getElementById("characterExp")?.value || 0,
+            destinySteps,
             aspects: { ...aspects },
             armor: document.getElementById("armor")?.value || 0,
             height: document.getElementById("height")?.value || 2,
@@ -1577,7 +1548,7 @@
         };
     }
 
-    // === ВОССТАНОВЛЕНИЕ ПЕРСОНАЖА ИЗ ДАННЫХ ===
+    // ЗАГРУЗКА ДАННЫХ
     function loadCharacterData(data) {
         if (!data) return;
 
@@ -1585,6 +1556,16 @@
         if (data.playerName !== undefined) document.getElementById("playerName").value = data.playerName;
         if (data.species !== undefined) document.getElementById("species").value = data.species;
         if (data.pursuit !== undefined) document.getElementById("pursuit").value = data.pursuit;
+        if (data.guildScript !== undefined) document.getElementById("guildScript").value = data.guildScript;
+        if (data.characterExp !== undefined) document.getElementById("characterExp").value = data.characterExp;
+
+        if (data.destinySteps && Array.isArray(data.destinySteps)) {
+            data.destinySteps.forEach((checked, i) => {
+                const el = document.getElementById(`destiny-${i + 1}`);
+                if (el) el.checked = checked;
+            });
+        }
+
         if (data.armor !== undefined) document.getElementById("armor").value = data.armor;
         if (data.height !== undefined && document.getElementById("height")) document.getElementById("height").value = data.height;
 
@@ -1663,7 +1644,6 @@
         refreshAllTalentSelects();
     }
 
-    // === СОХРАНЕНИЕ В localStorage ===
     function saveCharacter() {
         try {
             const data = getCharacterData();
@@ -1671,62 +1651,52 @@
             alert("Персонаж успешно сохранен!");
         } catch (e) {
             alert("Ошибка сохранения: " + e.message);
-            console.error(e);
         }
     }
-    // === ПОЛНЫЙ СБРОС ЛИСТА ПЕРСОНАЖА ===
-    function resetCharacterSheet() {
-        const confirmReset = confirm("Вы уверены, что хотите сбросить лист персонажа? Все несохраненные данные будут удалены.");
-        if (!confirmReset) return;
 
-        // 1. Очищаем сохраненные данные в браузере
+    function resetCharacterSheet() {
+        if (!confirm("Вы уверены, что хотите сбросить лист персонажа? Все несохраненные данные будут удалены.")) return;
+
         localStorage.removeItem("ttb_saved_character");
 
-        // 2. Сбрасываем текстовые поля
         document.getElementById("charName").value = "";
         document.getElementById("playerName").value = "";
         document.getElementById("species").value = "Human";
         document.getElementById("pursuit").value = "";
+        document.getElementById("guildScript").value = "0";
+        document.getElementById("characterExp").value = "0";
+        for (let i = 1; i <= 5; i++) {
+            const el = document.getElementById(`destiny-${i}`);
+            if (el) el.checked = false;
+        }
+
         document.getElementById("armor").value = "0";
         if (document.getElementById("height")) document.getElementById("height").value = "2";
 
-        // 3. Сбрасываем все аспекты на 0
         for (let k in aspects) {
             aspects[k] = 0;
             const span = document.getElementById(k);
             if (span) span.textContent = "0";
         }
 
-        // 4. Очищаем строки навыков
         document.getElementById("skillsList").innerHTML = "";
-
-        // 5. Очищаем поля атак
-        document.querySelectorAll(".attack-card input").forEach(input => {
-            input.value = "";
-        });
-
-        // 6. Очищаем таланты и создаем одну чистую карточку
+        document.querySelectorAll(".attack-card input").forEach(input => input.value = "");
         document.getElementById("talentsContainer").innerHTML = "";
         addNewTalentCard();
 
-        // 7. Пересчитываем производные характеристики
         updateDerived();
         refreshAllTalentSelects();
-
         alert("Лист персонажа успешно очищен!");
     }
 
-    // === ЭКСПОРТ В JSON ===
     function exportCharacterJSON() {
         try {
             const data = getCharacterData();
-            const jsonStr = JSON.stringify(data, null, 2);
-            const blob = new Blob([jsonStr], { type: "application/json" });
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
-            const filename = (data.charName || "character").trim().replace(/\s+/g, "_") + ".json";
             a.href = url;
-            a.download = filename;
+            a.download = ((data.charName || "character").trim().replace(/\s+/g, "_")) + ".json";
             a.click();
             URL.revokeObjectURL(url);
         } catch (e) {
@@ -1734,15 +1704,13 @@
         }
     }
 
-    // === ИМПОРТ ИЗ JSON ===
     function importCharacterJSON(event) {
         const file = event.target.files[0];
         if (!file) return;
         const reader = new FileReader();
         reader.onload = function(e) {
             try {
-                const data = JSON.parse(e.target.result);
-                loadCharacterData(data);
+                loadCharacterData(JSON.parse(e.target.result));
                 alert("Персонаж успешно загружен из файла!");
             } catch (err) {
                 alert("Ошибка чтения файла JSON: " + err.message);
@@ -1751,7 +1719,6 @@
         reader.readAsText(file);
     }
 
-    // === ИНИЦИАЛИЗАЦИЯ И СТАРТ ===
     window.addEventListener("DOMContentLoaded", () => {
         updateDerived();
         const saved = localStorage.getItem("ttb_saved_character");
@@ -1759,7 +1726,6 @@
             try {
                 loadCharacterData(JSON.parse(saved));
             } catch(e) {
-                console.error("Не удалось восстановить сохранение:", e);
                 addNewTalentCard();
             }
         } else {
@@ -1769,8 +1735,7 @@
 
     window.addEventListener("beforeunload", () => {
         try {
-            const data = getCharacterData();
-            localStorage.setItem("ttb_saved_character", JSON.stringify(data));
+            localStorage.setItem("ttb_saved_character", JSON.stringify(getCharacterData()));
         } catch(e) {}
     });
 </script>
