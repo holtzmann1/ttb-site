@@ -505,6 +505,69 @@
     text-align: center;
     font-weight: bold;
 }
+        /* РАСТЯГИВАНИЕ БЛОКА НАВЫКОВ ПО ВЫСОТЕ НА ВЕСЬ ЛИСТ */
+.sheet-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    align-items: stretch; /* Растягивает обе колонки на одинаковую высоту */
+}
+
+/* Карточка Skills теперь занимает всю высоту правой колонки */
+.skills-container-box {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 580px; /* Чтобы по высоте соответствовать левой части */
+}
+
+/* Шапка колонок Skills */
+.skills-header-row {
+    display: grid;
+    grid-template-columns: 3fr 45px 50px 2fr 24px;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #c9a45c;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #444;
+    text-align: center;
+}
+
+.skills-header-row span:first-child {
+    text-align: left;
+    padding-left: 4px;
+}
+
+/* Список строк навыков */
+#skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-grow: 1; /* Заполняет всё доступное пространство */
+    overflow-y: auto; /* Если навыков очень много, появляется аккуратный скролл */
+    max-height: 520px;
+}
+
+/* Каждая отдельная строка навыка */
+.skill-row {
+    display: grid;
+    grid-template-columns: 3fr 45px 50px 2fr 24px;
+    gap: 6px;
+    align-items: center;
+}
+
+.skill-row select, .skill-row input {
+    height: 24px;
+    font-size: 11px;
+}
+
+/* AV и Rating по центру */
+.skill-row .av-box, .skill-row input[type="number"] {
+    text-align: center;
+    font-weight: bold;
+}
         @media print {
             * {
                 box-sizing: border-box !important;
