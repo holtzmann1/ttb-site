@@ -444,8 +444,9 @@
 <header>
     <a href="characters.html" class="back-button">← НАЗАД К ПЕРСОНАЖАМ</a>
     <div class="sheet-title">CHARACTER SHEET</div>
-    <div style="display: flex; gap: 10px;">
+<div style="display: flex; gap: 10px;">
         <button type="button" class="tab-btn" onclick="saveCharacter()" style="padding: 6px 14px; font-size: 11px;">💾 СОХРАНИТЬ</button>
+        <button type="button" class="tab-btn" onclick="resetCharacterSheet()" style="padding: 6px 14px; font-size: 11px; color: #e57373;">🗑 СБРОСИТЬ</button>
         <button type="button" class="tab-btn" onclick="exportCharacterJSON()" style="padding: 6px 14px; font-size: 11px;">⬇ СКАЧАТЬ JSON</button>
         <button type="button" class="tab-btn" onclick="document.getElementById('importFile').click()" style="padding: 6px 14px; font-size: 11px;">⬆ ЗАГРУЗИТЬ</button>
         <input type="file" id="importFile" style="display: none;" onchange="importCharacterJSON(event)" accept=".json">
@@ -1362,6 +1363,47 @@
 
     // === СОХРАНЕНИЕ В localStorage ===
     function saveCharacter() {
+        // === ПОЛНЫЙ СБРОС ЛИСТА ПЕРСОНАЖА ===
+    function resetCharacterSheet() {
+        const confirmReset = confirm("Вы уверены, что хотите сбросить лист персонажа? Все несохраненные данные будут удалены.");
+        if (!confirmReset) return;
+
+        // 1. Очищаем сохраненные данные в браузере
+        localStorage.removeItem("ttb_saved_character");
+
+        // 2. Сбрасываем текстовые поля
+        document.getElementById("charName").value = "";
+        document.getElementById("playerName").value = "";
+        document.getElementById("species").value = "Human";
+        document.getElementById("pursuit").value = "";
+        document.getElementById("armor").value = "0";
+        if (document.getElementById("height")) document.getElementById("height").value = "2";
+
+        // 3. Сбрасываем все аспекты на 0
+        for (let k in aspects) {
+            aspects[k] = 0;
+            const span = document.getElementById(k);
+            if (span) span.textContent = "0";
+        }
+
+        // 4. Очищаем строки навыков
+        document.getElementById("skillsList").innerHTML = "";
+
+        // 5. Очищаем поля атак
+        document.querySelectorAll(".attack-card input").forEach(input => {
+            input.value = "";
+        });
+
+        // 6. Очищаем таланты и создаем одну чистую карточку
+        document.getElementById("talentsContainer").innerHTML = "";
+        addNewTalentCard();
+
+        // 7. Пересчитываем производные характеристики
+        updateDerived();
+        refreshAllTalentSelects();
+
+        alert("Лист персонажа успешно очищен!");
+    }
         try {
             const data = getCharacterData();
             localStorage.setItem("ttb_saved_character", JSON.stringify(data));
