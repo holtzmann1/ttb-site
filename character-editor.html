@@ -437,46 +437,75 @@
                 grid-template-columns: 1fr;
             }
         }
-        /* СТИЛИ ДЛЯ ПЕЧАТИ И ЭКСПОРТА В PDF */
+/* СТИЛИ ДЛЯ ПЕЧАТИ И ЭКСПОРТА В PDF — 1 В 1 КАК НА САЙТЕ */
+        @page {
+            size: A4 landscape; /* Альбомный лист, чтобы влезли обе колонки как на мониторе */
+            margin: 8mm 10mm;
+        }
+
         @media print {
             body {
                 background: #ffffff !important;
-                color: #000000 !important;
-                font-family: Georgia, serif;
+                color: #111111 !important;
+                font-family: 'Cinzel', Georgia, serif;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
 
-            /* Скрываем шапку с кнопками, вкладки, кнопки удаления и добавления */
+            /* Скрываем кнопки шапки и сервисные элементы */
             header, .tab-bar, .add-row-btn, .del-btn, .toggle-btn, .counter button {
                 display: none !important;
             }
 
-            /* Принудительно показываем обе вкладки друг за другом */
-            .tab-content {
-                display: block !important;
-            }
-
             main {
                 max-width: 100% !important;
+                width: 100% !important;
                 padding: 0 !important;
                 margin: 0 !important;
             }
 
+            /* Принудительно сохраняем сетку из 2 колонок, как на сайте */
+            .top-grid {
+                display: grid !important;
+                grid-template-columns: 2fr 1fr !important;
+                gap: 10px !important;
+                margin-bottom: 10px !important;
+            }
+
+            .sheet-body {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 15px !important;
+            }
+
+            /* Каждая вкладка печатается на своем отдельном листе A4 */
+            .tab-content {
+                display: block !important;
+            }
+
+            #tab-general {
+                page-break-before: always; /* Вторая вкладка начинается со следующего листа */
+                margin-top: 15px;
+            }
+
+            /* Блоки и карточки */
             .box, .attack-card, .talent-card, .aspect-row, .derived-cell {
                 background: #ffffff !important;
-                border: 1px solid #777777 !important;
+                border: 1px solid #555555 !important;
                 color: #000000 !important;
                 box-shadow: none !important;
             }
 
             .box-header {
                 color: #000000 !important;
-                border-bottom: 1px solid #000000 !important;
+                border-bottom: 1px solid #333333 !important;
             }
 
             input, select, textarea {
                 background: #ffffff !important;
                 color: #000000 !important;
-                border: 1px solid #cccccc !important;
+                border: 1px solid #999999 !important;
+                box-shadow: none !important;
             }
 
             .talent-body {
@@ -486,9 +515,9 @@
             }
 
             .av-box {
-                background: #ffffff !important;
+                background: #f0f0f0 !important;
                 color: #000000 !important;
-                border: 1px solid #999999 !important;
+                border: 1px solid #666666 !important;
             }
         }
     </style>
