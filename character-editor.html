@@ -444,6 +444,67 @@
             margin: 6mm 8mm;
         }
 
+        /* СТИЛИ ДЛЯ ПАНЕЛИ DESTINY И ОПЫТА */
+.destiny-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.destiny-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 10px;
+    align-items: end;
+}
+
+.destiny-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.destiny-label {
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    color: #c9a45c;
+    text-transform: uppercase;
+}
+
+.destiny-steps {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    height: 32px;
+}
+
+.step-circle {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #8b7355;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    background-color: transparent;
+    transition: all 0.2s ease;
+}
+
+.step-circle:checked {
+    background-color: #c9a45c;
+    box-shadow: inset 0 0 0 3px #1a1a1a;
+}
+
+.step-circle:hover {
+    border-color: #e5c378;
+}
+
+.exp-input {
+    text-align: center;
+    font-weight: bold;
+}
         @media print {
             * {
                 box-sizing: border-box !important;
@@ -636,13 +697,35 @@
                 </div>
             </div>
 
-            <div class="box">
-                <div class="field-group">
-                    <label>Current Pursuits</label>
-                    <input type="text" id="pursuit" placeholder="Пиши сюда свой класс">
+<!-- ПРАВЫЙ ВЕРХНИЙ БЛОК: ИГРОК, ДЕНЬГИ, СУДЬБА, ОПЫТ -->
+            <div class="box destiny-panel">
+                <div class="destiny-row">
+                    <div class="destiny-field">
+                        <label class="destiny-label">PLAYER NAME</label>
+                        <input type="text" id="player-name" placeholder="Имя игрока">
+                    </div>
+                    <div class="destiny-field">
+                        <label class="destiny-label">GUILD SCRIPT</label>
+                        <input type="number" id="guild-script" min="0" value="0">
+                    </div>
+                </div>
+                <div class="destiny-row bottom-row">
+                    <div class="destiny-field">
+                        <label class="destiny-label">DESTINY STEPS FULFILLED</label>
+                        <div class="destiny-steps">
+                            <input type="checkbox" id="destiny-1" class="step-circle">
+                            <input type="checkbox" id="destiny-2" class="step-circle">
+                            <input type="checkbox" id="destiny-3" class="step-circle">
+                            <input type="checkbox" id="destiny-4" class="step-circle">
+                            <input type="checkbox" id="destiny-5" class="step-circle">
+                        </div>
+                    </div>
+                    <div class="destiny-field">
+                        <label class="destiny-label">EXP.</label>
+                        <input type="number" id="character-exp" min="0" value="0" class="exp-input">
+                    </div>
                 </div>
             </div>
-        </div>
 
         <div class="sheet-body">
             <div>
