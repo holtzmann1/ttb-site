@@ -1363,7 +1363,16 @@
 
     // === СОХРАНЕНИЕ В localStorage ===
     function saveCharacter() {
-        // === ПОЛНЫЙ СБРОС ЛИСТА ПЕРСОНАЖА ===
+        try {
+            const data = getCharacterData();
+            localStorage.setItem("ttb_saved_character", JSON.stringify(data));
+            alert("Персонаж успешно сохранен!");
+        } catch (e) {
+            alert("Ошибка сохранения: " + e.message);
+            console.error(e);
+        }
+    }
+    // === ПОЛНЫЙ СБРОС ЛИСТА ПЕРСОНАЖА ===
     function resetCharacterSheet() {
         const confirmReset = confirm("Вы уверены, что хотите сбросить лист персонажа? Все несохраненные данные будут удалены.");
         if (!confirmReset) return;
@@ -1403,15 +1412,6 @@
         refreshAllTalentSelects();
 
         alert("Лист персонажа успешно очищен!");
-    }
-        try {
-            const data = getCharacterData();
-            localStorage.setItem("ttb_saved_character", JSON.stringify(data));
-            alert("Персонаж успешно сохранен!");
-        } catch (e) {
-            alert("Ошибка сохранения: " + e.message);
-            console.error(e);
-        }
     }
 
     // === ЭКСПОРТ В JSON ===
