@@ -438,6 +438,61 @@
             }
         }
     </style>
+    /* СТИЛИ ДЛЯ ПЕЧАТИ И ЭКСПОРТА В PDF */
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                font-family: Georgia, serif;
+            }
+
+            /* Скрываем кнопки шапки, вкладки и лишние элементы управления */
+            header, .tab-bar, .add-row-btn, .del-btn, .toggle-btn, .counter button {
+                display: none !important;
+            }
+
+            /* Показываем сразу обе вкладки друг за другом */
+            .tab-content {
+                display: block !important;
+            }
+
+            main {
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .box, .attack-card, .talent-card, .aspect-row, .derived-cell {
+                background: #ffffff !important;
+                border: 1px solid #777777 !important;
+                color: #000000 !important;
+                box-shadow: none !important;
+            }
+
+            .box-header {
+                color: #000000 !important;
+                border-bottom: 1px solid #000000 !important;
+            }
+
+            input, select, textarea {
+                background: #ffffff !important;
+                color: #000000 !important;
+                border: 1px solid #cccccc !important;
+            }
+
+            /* Принудительно раскрываем тело талантов */
+            .talent-body {
+                display: block !important;
+                background: #ffffff !important;
+                border-top: 1px solid #777777 !important;
+            }
+
+            .av-box {
+                background: #ffffff !important;
+                color: #000000 !important;
+                border: 1px solid #999999 !important;
+            }
+        }
 </head>
 <body>
 
@@ -447,6 +502,7 @@
 <div style="display: flex; gap: 10px;">
         <button type="button" class="tab-btn" onclick="saveCharacter()" style="padding: 6px 14px; font-size: 11px;">💾 СОХРАНИТЬ</button>
         <button type="button" class="tab-btn" onclick="resetCharacterSheet()" style="padding: 6px 14px; font-size: 11px; color: #e57373;">🗑 СБРОСИТЬ</button>
+    <button type="button" class="tab-btn" onclick="window.print()" style="padding: 6px 14px; font-size: 11px;">🖨 ПЕЧАТЬ / PDF</button>
         <button type="button" class="tab-btn" onclick="exportCharacterJSON()" style="padding: 6px 14px; font-size: 11px;">⬇ СКАЧАТЬ JSON</button>
         <button type="button" class="tab-btn" onclick="document.getElementById('importFile').click()" style="padding: 6px 14px; font-size: 11px;">⬆ ЗАГРУЗИТЬ</button>
         <input type="file" id="importFile" style="display: none;" onchange="importCharacterJSON(event)" accept=".json">
