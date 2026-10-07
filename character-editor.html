@@ -1947,10 +1947,11 @@ function renderPursuitTab() {
                     </div>
                 </div>
             `;
-        } else if (st.type === "general") {
+} else if (st.type === "general") {
+            // General Talent
             html += `
-                <div style="background: #120e0b; border: 1px dashed #33271a; padding: 8px 12px; font-size: 13px; color: #8f8679;">
-                    <strong style="color: #cfc5b4;">General Talent:</strong> ${st.talent.desc}
+                <div style="background: #120e0b; border: 1px dashed #33271a; padding: 8px 12px; font-size: 13px; color: #cfc5b4; font-weight: bold;">
+                    General Talent
                 </div>
             `;
         }
