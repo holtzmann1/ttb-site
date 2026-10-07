@@ -1898,50 +1898,61 @@ function renderPursuitTab() {
     }
 
     let html = `
-        <div style="background: rgba(20, 17, 14, 0.7); border: 1px solid #382b1d; padding: 12px; margin-bottom: 15px;">
+        <div style="background: rgba(20, 17, 14, 0.8); border: 1px solid #382b1d; padding: 12px; margin-bottom: 20px;">
             <div style="margin-bottom: 8px;"><strong style="color: #c59a5b;">Starting:</strong> ${pursuit.starting}</div>
             <div><strong style="color: #c59a5b;">On the Pursuit:</strong> ${pursuit.onThePursuit}</div>
         </div>
-        <div class="box-header" style="font-size: 15px; text-align: left; margin-bottom: 10px;">ADVANCEMENT STEPS</div>
-        <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; flex-direction: column; gap: 14px;">
     `;
 
     pursuit.steps.forEach(st => {
-        html += `<div style="background: rgba(14, 11, 9, 0.85); border: 1px solid #382b1d; padding: 10px 12px;">
-            <div style="color: #c59a5b; font-weight: bold; font-size: 13px; margin-bottom: 6px;">STEP ${st.step}</div>`;
+        html += `
+            <div style="background: rgba(14, 11, 9, 0.9); border: 1px solid #2d2216; padding: 12px 14px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #241a10; padding-bottom: 6px;">
+                    <span style="color: #c59a5b; font-weight: bold; font-size: 14px; letter-spacing: 1px;">STEP ${st.step}</span>
+                    <span style="font-size: 11px; color: #73695c; text-transform: uppercase;">
+                        ${st.type === "choice" ? "Choose 1 Talent" : (st.type === "general" ? "General Talent" : "Automatic")}
+                    </span>
+                </div>
+        `;
 
-if (st.type === "general") {
-            html += `
-                <div style="font-size: 14px; color: #a99e8d;">
-                    <strong style="color: #e8dfd0;">General Talent</strong> — ${st.talent.desc}
-                </div>
-            `;
-        } else if (st.type === "single") {
-            html += `
-                <div style="font-size: 14px; color: #e8dfd0; cursor: pointer;" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'block' : 'none')">
-                    <strong>${st.talent.name}</strong> <span style="font-size: 11px; color: #8f8679;">(click for details)</span>
-                </div>
-                <div style="display: none; font-size: 12px; color: #a99e8d; margin-top: 5px; line-height: 1.4; border-top: 1px dashed #33271a; padding-top: 4px;">
-                    ${st.talent.desc}
-                </div>
-            `;
-        }
-        } else if (st.type === "choice") {
-            html += `<div style="display: flex; flex-direction: column; gap: 8px;">`;
-            st.talents.forEach((t) => {
+        if (st.type === "choice") {
+            html += `<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">`;
+            st.talents.forEach((t, idx) => {
+                const cardId = `p_card_${st.step}_${idx}`;
+                const radioId = `p_radio_${st.step}_${idx}`;
                 html += `
-                    <div>
-                        <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #e8dfd0; cursor: pointer;">
-                            <input type="radio" name="pursuit_step_${st.step}" value="${t.name}" style="accent-color: #c59a5b; width: 16px; height: 16px;">
-                            <strong>${t.name}</strong>
-                        </label>
-                        <div style="font-size: 12px; color: #a99e8d; margin-left: 24px; margin-top: 2px; line-height: 1.4;">
+                    <div id="${cardId}" 
+                         onclick="selectPursuitTalent(${st.step}, ${idx}, ${st.talents.length})"
+                         style="background: #171310; border: 1px solid #382b1d; padding: 10px 12px; cursor: pointer; transition: all 0.2s ease; opacity: 0.75; display: flex; flex-direction: column;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                            <input type="radio" id="${radioId}" name="pursuit_step_${st.step}" value="${t.name}" style="accent-color: #c59a5b; pointer-events: none;">
+                            <strong style="color: #e8dfd0; font-size: 14px;">${t.name}</strong>
+                        </div>
+                        <div style="font-size: 12px; color: #a99e8d; line-height: 1.45; flex-grow: 1;">
                             ${t.desc}
                         </div>
                     </div>
                 `;
             });
             html += `</div>`;
+        } else if (st.type === "single") {
+            html += `
+                <div style="background: #171310; border: 1px solid #4a3822; padding: 10px 12px;">
+                    <div style="color: #e8dfd0; font-size: 14px; font-weight: bold; margin-bottom: 4px;">
+                        ${st.talent.name}
+                    </div>
+                    <div style="font-size: 12px; color: #a99e8d; line-height: 1.45;">
+                        ${st.talent.desc}
+                    </div>
+                </div>
+            `;
+        } else if (st.type === "general") {
+            html += `
+                <div style="background: #120e0b; border: 1px dashed #33271a; padding: 8px 12px; font-size: 13px; color: #8f8679;">
+                    <strong style="color: #cfc5b4;">General Talent:</strong> ${st.talent.desc}
+                </div>
+            `;
         }
 
         html += `</div>`;
@@ -1949,6 +1960,28 @@ if (st.type === "general") {
 
     html += `</div>`;
     container.innerHTML = html;
+}
+
+function selectPursuitTalent(step, chosenIdx, totalCount) {
+    for (let i = 0; i < totalCount; i++) {
+        const card = document.getElementById(`p_card_${step}_${i}`);
+        const radio = document.getElementById(`p_radio_${step}_${i}`);
+        if (!card || !radio) continue;
+
+        if (i === chosenIdx) {
+            radio.checked = true;
+            card.style.borderColor = "#c59a5b";
+            card.style.background = "#241a10";
+            card.style.opacity = "1";
+            card.style.boxShadow = "0 0 8px rgba(197, 154, 91, 0.25)";
+        } else {
+            radio.checked = false;
+            card.style.borderColor = "#382b1d";
+            card.style.background = "#171310";
+            card.style.opacity = "0.5";
+            card.style.boxShadow = "none";
+        }
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
