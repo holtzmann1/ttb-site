@@ -1071,7 +1071,21 @@
             <button class="add-row-btn" onclick="addNewTalentCard()">+ ДОБАВИТЬ ТАЛАНТ</button>
         </div>
     </div>
+    
+<!-- ВКЛАДКА 3: PURSUIT -->
+    <div id="tab-pursuit" class="tab-content">
+        <div class="box">
+            <div class="box-header" style="text-align: left; display: flex; justify-content: space-between; align-items: center;">
+                <span>PURSUIT</span>
+                <select id="pursuitSelect" onchange="renderPursuitTab()" style="max-width: 250px; font-size: 14px;">
+                </select>
+            </div>
 
+            <div id="pursuitDetailsContainer" style="margin-top: 15px;">
+            </div>
+        </div>
+    </div>
+    
 </main>
 
 <script>
@@ -1855,6 +1869,84 @@
             localStorage.setItem("ttb_saved_character", JSON.stringify(getCharacterData()));
         } catch(e) {}
     });
+    function initPursuitsSelect() {
+    const select = document.getElementById("pursuitSelect");
+    if (!select || typeof PURSUITS_DATA === "undefined") return;
+
+    select.innerHTML = "";
+    PURSUITS_DATA.forEach(p => {
+        const opt = document.createElement("option");
+        opt.value = p.id;
+        opt.textContent = p.name;
+        select.appendChild(opt);
+    });
+
+    renderPursuitTab();
+}
+
+function renderPursuitTab() {
+    const select = document.getElementById("pursuitSelect");
+    const container = document.getElementById("pursuitDetailsContainer");
+    if (!select || !container || typeof PURSUITS_DATA === "undefined") return;
+
+    const pursuit = PURSUITS_DATA.find(p => p.id === select.value);
+    if (!pursuit) return;
+
+    const mainPursuitInput = document.getElementById("pursuit");
+    if (mainPursuitInput) {
+        mainPursuitInput.value = pursuit.name;
+    }
+
+    let html = `
+        <div style="background: rgba(20, 17, 14, 0.7); border: 1px solid #382b1d; padding: 12px; margin-bottom: 15px;">
+            <div style="margin-bottom: 8px;"><strong style="color: #c59a5b;">Starting:</strong> ${pursuit.starting}</div>
+            <div><strong style="color: #c59a5b;">On the Pursuit:</strong> ${pursuit.onThePursuit}</div>
+        </div>
+        <div class="box-header" style="font-size: 15px; text-align: left; margin-bottom: 10px;">ADVANCEMENT STEPS</div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+    `;
+
+    pursuit.steps.forEach(st => {
+        html += `<div style="background: rgba(14, 11, 9, 0.85); border: 1px solid #382b1d; padding: 10px 12px;">
+            <div style="color: #c59a5b; font-weight: bold; font-size: 13px; margin-bottom: 6px;">STEP ${st.step}</div>`;
+
+        if (st.type === "single" || st.type === "general") {
+            html += `
+                <div style="font-size: 14px; color: #e8dfd0; cursor: pointer;" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'block' : 'none')">
+                    <strong>${st.talent.name}</strong> <span style="font-size: 11px; color: #8f8679;">(click for details)</span>
+                </div>
+                <div style="display: none; font-size: 12px; color: #a99e8d; margin-top: 5px; line-height: 1.4; border-top: 1px dashed #33271a; padding-top: 4px;">
+                    ${st.talent.desc}
+                </div>
+            `;
+        } else if (st.type === "choice") {
+            html += `<div style="display: flex; flex-direction: column; gap: 8px;">`;
+            st.talents.forEach((t) => {
+                html += `
+                    <div>
+                        <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #e8dfd0; cursor: pointer;">
+                            <input type="radio" name="pursuit_step_${st.step}" value="${t.name}" style="accent-color: #c59a5b; width: 16px; height: 16px;">
+                            <strong>${t.name}</strong>
+                        </label>
+                        <div style="font-size: 12px; color: #a99e8d; margin-left: 24px; margin-top: 2px; line-height: 1.4;">
+                            ${t.desc}
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+        }
+
+        html += `</div>`;
+    });
+
+    html += `</div>`;
+    container.innerHTML = html;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    initPursuitsSelect();
+});
 </script>
 
 </body>
