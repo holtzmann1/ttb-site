@@ -1910,7 +1910,13 @@ function renderPursuitTab() {
         html += `<div style="background: rgba(14, 11, 9, 0.85); border: 1px solid #382b1d; padding: 10px 12px;">
             <div style="color: #c59a5b; font-weight: bold; font-size: 13px; margin-bottom: 6px;">STEP ${st.step}</div>`;
 
-        if (st.type === "single" || st.type === "general") {
+if (st.type === "general") {
+            html += `
+                <div style="font-size: 14px; color: #a99e8d;">
+                    <strong style="color: #e8dfd0;">General Talent</strong> — ${st.talent.desc}
+                </div>
+            `;
+        } else if (st.type === "single") {
             html += `
                 <div style="font-size: 14px; color: #e8dfd0; cursor: pointer;" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'block' : 'none')">
                     <strong>${st.talent.name}</strong> <span style="font-size: 11px; color: #8f8679;">(click for details)</span>
@@ -1919,6 +1925,7 @@ function renderPursuitTab() {
                     ${st.talent.desc}
                 </div>
             `;
+        }
         } else if (st.type === "choice") {
             html += `<div style="display: flex; flex-direction: column; gap: 8px;">`;
             st.talents.forEach((t) => {
