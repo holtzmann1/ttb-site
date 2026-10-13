@@ -705,7 +705,7 @@
                     <div class="box">
                         <div class="field-group">
                             <label>Fated Name</label>
-                            <input type="text" id="charName" placeholder="Имя персонажа">
+                            <input type="text" id="charName" placeholder="Character Name">
                         </div>
                         <div class="label-row">
                             <div class="field-group">
@@ -1615,6 +1615,73 @@ html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' 
             }
         }
 
+        window.collectCurrentSheetData = function() {
+            // Чекбоксы Destiny Steps
+            const destinySteps = [
+                document.getElementById("destiny-1")?.checked || false,
+                document.getElementById("destiny-2")?.checked || false,
+                document.getElementById("destiny-3")?.checked || false,
+                document.getElementById("destiny-4")?.checked || false,
+                document.getElementById("destiny-5")?.checked || false
+            ];
+
+            // Сбор навыков
+            const skills = [];
+            document.querySelectorAll("#skillsList tr").forEach(tr => {
+                const sel = tr.querySelector(".skill-select")?.value;
+                if (sel) {
+                    const rating = parseInt(tr.querySelector(".skill-rating")?.value) || 0;
+                    const aspVals = Array.from(tr.querySelectorAll(".skill-aspect")).map(s => s.value);
+                    skills.push({
+                        skillName: sel,
+                        rating: rating,
+                        aspects: aspVals
+                    });
+                }
+            });
+
+            // Сбор атак
+            const attacks = [];
+            document.querySelectorAll(".attack-card").forEach(card => {
+                const rowValues = Array.from(card.querySelectorAll("input")).map(i => i.value);
+                attacks.push(rowValues);
+            });
+
+            // Сбор талантов
+            const talents = [];
+            document.querySelectorAll(".talent-card").forEach(card => {
+                const sel = card.querySelector(".talent-select");
+                const customInp = card.querySelector(".custom-name-input");
+                const isCustom = customInp && customInp.style.display === "block";
+                const name = isCustom ? customInp.value : (sel?.value || "");
+
+                if (name && name !== "__custom__") {
+                    talents.push({
+                        name: name,
+                        isCustom: Boolean(isCustom),
+                        req: card.querySelector(".talent-req")?.textContent || "None",
+                        book: card.querySelector(".talent-book")?.textContent || "—",
+                        desc: card.querySelector(".talent-desc-area")?.value || ""
+                    });
+                }
+            });
+
+            return {
+                charName: document.getElementById("charName")?.value || "",
+                playerName: document.getElementById("playerName")?.value || "",
+                pursuit: document.getElementById("pursuit")?.value || "",
+                species: document.getElementById("species")?.value || "Human",
+                guildScript: Number(document.getElementById("guildScript")?.value) || 0,
+                characterExp: Number(document.getElementById("characterExp")?.value) || 0,
+                destinySteps: destinySteps,
+                armor: Number(document.getElementById("armor")?.value) || 0,
+                height: Number(document.getElementById("height")?.value) || 2,
+                aspects: { ...aspects },
+                skills: skills,
+                attacks: attacks,
+                talents: talents
+            };
+        };
         // ЗАГРУЗКА ДАННЫХ ПЕРСОНАЖА В ЛИСТ
         window.loadCharacterData = function(data) {
             if (!data) return;
