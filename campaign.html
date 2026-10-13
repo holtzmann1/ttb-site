@@ -1711,6 +1711,15 @@ html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' 
             if (data.pursuit !== undefined) document.getElementById("pursuit").value = data.pursuit;
             if (data.guildScript !== undefined) document.getElementById("guildScript").value = data.guildScript;
             if (data.characterExp !== undefined) document.getElementById("characterExp").value = data.characterExp;
+            if (data.bioBackground !== undefined && document.getElementById("bioBackground")) {
+                document.getElementById("bioBackground").value = data.bioBackground;
+            }
+            if (data.bioDescription !== undefined && document.getElementById("bioDescription")) {
+                document.getElementById("bioDescription").value = data.bioDescription;
+            }
+            if (data.bioNotes !== undefined && document.getElementById("bioNotes")) {
+                document.getElementById("bioNotes").value = data.bioNotes;
+            }
 
             if (data.destinySteps && Array.isArray(data.destinySteps)) {
                 data.destinySteps.forEach((checked, i) => {
@@ -1860,7 +1869,7 @@ html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' 
                 aspects: { ...aspects },
                 skills: skills,
                 attacks: attacks,
-                talents: talents
+                talents: talents,
                 bioBackground: document.getElementById("bioBackground")?.value || "",
                 bioDescription: document.getElementById("bioDescription")?.value || "",
                 bioNotes: document.getElementById("bioNotes")?.value || ""
