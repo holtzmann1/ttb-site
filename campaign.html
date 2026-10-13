@@ -709,7 +709,7 @@
                         <div class="label-row">
                             <div class="field-group">
                                 <label>Current Pursuit</label>
-                                <input type="text" id="pursuit" placeholder="Текущий путь">
+                                <input type="text" id="pursuit" placeholder="Current Pursuit">
                             </div>
                             <div class="field-group">
                                 <label>Species</label>
@@ -722,7 +722,7 @@
                         <div class="destiny-row">
                             <div class="destiny-field">
                                 <label class="destiny-label">Player Name</label>
-                                <input type="text" id="playerName" placeholder="Имя игрока">
+                                <input type="text" id="playerName" placeholder="Player Name">
                             </div>
                             <div class="destiny-field">
                                 <label class="destiny-label">Guild Script</label>
@@ -1019,14 +1019,14 @@
                 const card = document.createElement("div");
                 card.className = "character-card";
                 card.innerHTML = `
-                    <div class="card-header">
-                        <h3 class="char-name">${char.charName || "Без имени"}</h3>
-                        <span class="player-tag">${char.playerName ? "Игрок: " + char.playerName : "Игрок: —"}</span>
+<div class="card-header">
+                        <h3 class="char-name">${char.charName || "Unnamed"}</h3>
+                        <span class="player-tag">${char.playerName ? "Player: " + char.playerName : "Player: —"}</span>
                     </div>
                     <div class="card-meta">
-                        <span>Путь: <strong>${char.pursuit || "—"}</strong></span>
-                        <span>Раса: <strong>${char.species || "Human"}</strong></span>
-                        <span>Опыт: <strong>${char.characterExp || 0}</strong> | Скрип: <strong>${char.guildScript || 0}</strong></span>
+                        <span>Pursuit: <strong>${char.pursuit || "—"}</strong></span>
+                        <span>Species: <strong>${char.species || "Human"}</strong></span>
+                        <span>Exp: <strong>${char.characterExp || 0}</strong> | Scrip: <strong>${char.guildScript || 0}</strong></span>
                     </div>
                     <div class="card-actions">
                         <button class="btn-view" data-id="${char.docId}">ОТКРЫТЬ ЧАРНИК</button>
@@ -1187,7 +1187,7 @@ async function importToCampaign(event) {
         }
 
         function getSkillOptionsHtml() {
-            let html = `<option value="">-- Выбери навык --</option>`;
+            let html = `<option value="">-- Select Skill --</option>`;
             for (let cat in skillCategories) {
                 html += `<optgroup label="${cat}">`;
                 for (let sk of Object.keys(skillCategories[cat]).sort()) {
@@ -1463,8 +1463,8 @@ async function importToCampaign(event) {
         }
 
         function getTalentOptionsHtml(selectedVal = "") {
-            let html = `<option value="">-- Выбери талант --</option>`;
-            html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' : ''}>★ Свой талант (Custom)</option>`;
+let html = `<option value="">-- Select Talent --</option>`;
+html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' : ''}>★ Custom Talent</option>`;
             
             if (typeof GENERAL_TALENTS !== 'undefined') {
                 const showAll = document.getElementById("showAllTalentsToggle")?.checked || false;
