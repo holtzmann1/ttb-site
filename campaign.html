@@ -999,21 +999,19 @@
 <!-- ВКЛАДКА 4: BIO -->
             <div id="tab-bio" class="tab-content">
                 <div class="bio-grid">
-                    <!-- СЛЕВА: ТОЛЬКО ПОРТРЕТ -->
+<!-- СЛЕВА: ТОЛЬКО ПОРТРЕТ (БЕЗ ВИДИМОГО ПОЛЯ ССЫЛКИ) -->
                     <div class="box">
                         <div class="box-header" style="text-align: left;">PORTRAIT</div>
                         
-                        <div class="portrait-frame">
+                        <div class="portrait-frame" onclick="promptPortraitUrl()" style="cursor: pointer;" title="Нажмите, чтобы изменить портрет">
                             <img id="bioPortraitImg" class="portrait-img" alt="Character Portrait" onerror="onPortraitError()">
                             <div id="bioPortraitPlaceholder" class="portrait-placeholder">
-                                No portrait loaded.<br>Paste an image URL below.
+                                Нажмите сюда,<br>чтобы установить портрет
                             </div>
                         </div>
 
-                        <div class="field-group">
-                            <label>Image URL</label>
-                            <input type="text" id="bioPortraitUrl" placeholder="https://..." oninput="updatePortraitPreview()">
-                        </div>
+                        <!-- Скрытое поле для сохранения ссылки в Firebase -->
+                        <input type="hidden" id="bioPortraitUrl">
                     </div>
 
                     <!-- СПРАВА: БОЛЬШОЕ ПОЛЕ БИОГРАФИИ -->
@@ -1689,11 +1687,22 @@ html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' 
             }
         }
 
+function promptPortraitUrl() {
+            const hiddenInput = document.getElementById("bioPortraitUrl");
+            const currentUrl = hiddenInput ? hiddenInput.value : "";
+            const newUrl = prompt("Вставьте прямую ссылку на изображение портрета (URL):", currentUrl);
+
+            if (newUrl !== null) {
+                hiddenInput.value = newUrl.trim();
+                updatePortraitPreview();
+            }
+        }
+
         function updatePortraitPreview() {
-            const urlInput = document.getElementById("bioPortraitUrl");
+            const hiddenInput = document.getElementById("bioPortraitUrl");
             const img = document.getElementById("bioPortraitImg");
             const placeholder = document.getElementById("bioPortraitPlaceholder");
-            const url = urlInput ? urlInput.value.trim() : "";
+            const url = hiddenInput ? hiddenInput.value.trim() : "";
 
             if (url) {
                 img.src = url;
@@ -1703,7 +1712,7 @@ html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' 
                 img.src = "";
                 img.style.display = "none";
                 placeholder.style.display = "block";
-                placeholder.innerHTML = "No portrait loaded.<br>Paste an image URL below.";
+                placeholder.innerHTML = "Нажмите сюда,<br>чтобы установить портрет";
             }
         }
 
@@ -1712,7 +1721,7 @@ html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' 
             const placeholder = document.getElementById("bioPortraitPlaceholder");
             img.style.display = "none";
             placeholder.style.display = "block";
-            placeholder.innerHTML = "⚠️ Failed to load image.<br>Check image URL.";
+            placeholder.innerHTML = "⚠️ Ошибка загрузки картинки.<br>Нажмите, чтобы сменить ссылку.";
         }
         window.collectCurrentSheetData = function() {
             // Чекбоксы Destiny Steps
