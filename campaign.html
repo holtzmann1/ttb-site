@@ -1294,32 +1294,173 @@
             document.querySelectorAll("#skillsList tr").forEach(tr => updateRowAV(tr));
         }
 
-        // ТАЛАНТЫ
-        function checkTalentRequirements(talent) {
-            return true; // В режиме просмотра отображаем таланты персонажа без строгих блокировок
+// ТАЛАНТЫ: ПРОВЕРКА ТРЕБОВАНИЙ
+function checkTalentRequirements(talent) {
+    const reqStr = talent.req ? talent.req.trim() : "None";
+    if (!reqStr || reqStr.toLowerCase() === "none") return true;
+
+    const parts = reqStr.split(",").map(p => p.trim());
+    const speciesVal = (document.getElementById("species")?.value || "Human").toLowerCase();
+
+    for (let part of parts) {
+        if (/^Destiny:/i.test(part) || /^Book/i.test(part)) continue;
+
+        if (/Aspect:/i.test(part) || /(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)\s*(-?\d+)/i.test(part)) {
+            if (/Two Aspects -3 or less/i.test(part)) {
+                if (Object.values(aspects).filter(v => v <= -3).length < 2) return false;
+                continue;
+            }
+            if (/No Aspects higher than 1/i.test(part)) {
+                if (Object.values(aspects).some(v => v > 1)) return false;
+                continue;
+            }
+            if (/Physical Aspect\s*(\d+)\s*or higher/i.test(part)) {
+                const target = parseInt(part.match(/Physical Aspect\s*(\d+)\s*or higher/i)[1], 10);
+                if (![aspects.might, aspects.grace, aspects.speed, aspects.resilience].some(v => v >= target)) return false;
+                continue;
+            }
+            if (/Mental Aspect\s*(-?\d+)\s*(or less|or lower)/i.test(part)) {
+                const target = parseInt(part.match(/Mental Aspect\s*(-?\d+)\s*(or less|or lower)/i)[1], 10);
+                if (![aspects.intellect, aspects.charm, aspects.cunning, aspects.tenacity].some(v => v <= target)) return false;
+                continue;
+            }
+            if (/Mental Aspect\s*(\d+)\s*or higher/i.test(part)) {
+                const target = parseInt(part.match(/Mental Aspect\s*(\d+)\s*or higher/i)[1], 10);
+                if (![aspects.intellect, aspects.charm, aspects.cunning, aspects.tenacity].some(v => v >= target)) return false;
+                continue;
+            }
+
+            const subClauses = part.replace(/^Aspect:\s*/i, "").split(/\s+or\s+/i);
+            let orPassed = false;
+            for (let sub of subClauses) {
+                const match = sub.match(/(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)\s*(-?\d+)\s*(or higher|or lower|or less|\+)?/i);
+                if (match) {
+                    const aspKey = match[1].toLowerCase();
+                    const targetVal = parseInt(match[2], 10);
+                    const cond = (match[3] || (targetVal < 0 ? "or lower" : "or higher")).toLowerCase();
+                    const currentVal = aspects[aspKey] !== undefined ? aspects[aspKey] : 0;
+
+                    if ((cond.includes("lower") || cond.includes("less")) && currentVal <= targetVal) {
+                        orPassed = true;
+                        break;
+                    } else if ((cond.includes("higher") || cond === "+") && currentVal >= targetVal) {
+                        orPassed = true;
+                        break;
+                    } else if (currentVal === targetVal) {
+                        orPassed = true;
+                        break;
+                    }
+                }
+            }
+            if (!orPassed && subClauses.some(s => /(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)/i.test(s))) {
+                return false;
+            }
+            continue;
         }
 
-        function getTalentOptionsHtml(selectedVal = "") {
-            let html = `<option value="">-- Выбери талант --</option>`;
-            html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' : ''}>★ Свой талант (Custom)</option>`;
-            if (typeof GENERAL_TALENTS !== 'undefined') {
-                const grouped = {};
-                GENERAL_TALENTS.forEach(t => {
-                    const bookName = t.book && t.book.trim() ? t.book.trim() : "Other / Core";
-                    if (!grouped[bookName]) grouped[bookName] = [];
-                    grouped[bookName].push(t);
-                });
-                Object.keys(grouped).sort().forEach(book => {
-                    html += `<optgroup label="📖 ${book}">`;
-                    grouped[book].sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
-                        const sel = (t.name === selectedVal) ? 'selected' : '';
-                        html += `<option value="${t.name}" ${sel}>${t.name}</option>`;
-                    });
-                    html += `</optgroup>`;
-                });
-            }
-            return html;
+        const typeMatch = part.match(/Type:\s*([A-Za-z\-]+)/i);
+        if (typeMatch) {
+            const reqType = typeMatch[1].toLowerCase();
+            if (reqType === "fated" && (speciesVal.includes("construct") || speciesVal.includes("stitched"))) return false;
+            if (reqType === "kin" && !speciesVal.includes("gremlin") && !speciesVal.includes("kin")) return false;
+            if (reqType === "non-kin" && (speciesVal.includes("gremlin") || speciesVal.includes("kin"))) return false;
+            if (reqType === "invested" && !speciesVal.includes("invested") && !speciesVal.includes("construct")) return false;
+            if (reqType === "stitched" && !speciesVal.includes("stitched") && !speciesVal.includes("undead")) return false;
+            continue;
         }
+
+        const skillMatch = part.match(/Skill:\s*([A-Za-z\s\-]+?)\s*(\d+)/i);
+        if (skillMatch) {
+            let skillName = skillMatch[1].trim().toLowerCase();
+            const targetRank = parseInt(skillMatch[2], 10);
+
+            if (skillName.endsWith("s") && skillName !== "flexible") {
+                skillName = skillName.slice(0, -1);
+            }
+
+            if (skillName.includes("chosen skill") || skillName.includes("close combat") || skillName.includes("ranged combat")) {
+                let hasEligible = false;
+                const rows = document.querySelectorAll("#skillsList tr");
+                for (let tr of rows) {
+                    const rank = parseInt(tr.querySelector(".skill-rating")?.value) || 0;
+                    if (rank >= targetRank) { hasEligible = true; break; }
+                }
+                if (!hasEligible) return false;
+            } else if (skillName.includes("magical")) {
+                let hasMagical = false;
+                for (let magSkill of Object.keys(skillCategories["Magical"])) {
+                    if (getSkillRank(magSkill) >= targetRank) { hasMagical = true; break; }
+                }
+                if (!hasMagical) return false;
+            } else {
+                let foundRank = 0;
+                const rows = document.querySelectorAll("#skillsList tr");
+                for (let tr of rows) {
+                    const sel = tr.querySelector(".skill-select")?.value.toLowerCase() || "";
+                    if (sel.includes(skillName) || skillName.includes(sel)) {
+                        foundRank = Math.max(foundRank, parseInt(tr.querySelector(".skill-rating")?.value) || 0);
+                    }
+                }
+                if (foundRank < targetRank) return false;
+            }
+            continue;
+        }
+
+        const otherTalentMatch = part.match(/Other:.*?\b([A-Za-z\s]+)\s+Talent/i);
+        if (otherTalentMatch) {
+            const reqTalentName = otherTalentMatch[1].trim().toLowerCase();
+            const hasTalent = Array.from(document.querySelectorAll(".talent-select")).some(s => s.value.toLowerCase().includes(reqTalentName));
+            if (!hasTalent) return false;
+            continue;
+        }
+    }
+    return true;
+}
+
+// ТАЛАНТЫ: ВЫПАДАЮЩИЙ СПИСОК С УЧЕТОМ ФИЛЬТРА
+function getTalentOptionsHtml(selectedVal = "") {
+    let html = `<option value="">-- Выбери талант --</option>`;
+    html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' : ''}>★ Свой талант (Custom)</option>`;
+    
+    if (typeof GENERAL_TALENTS !== 'undefined') {
+        const showAll = document.getElementById("showAllTalentsToggle")?.checked || false;
+
+        const availableTalents = GENERAL_TALENTS.filter(t => 
+            showAll || checkTalentRequirements(t) || t.name === selectedVal
+        );
+
+        const grouped = {};
+        availableTalents.forEach(t => {
+            const bookName = t.book && t.book.trim() ? t.book.trim() : "Other / Core";
+            if (!grouped[bookName]) {
+                grouped[bookName] = [];
+            }
+            grouped[bookName].push(t);
+        });
+
+        Object.keys(grouped).sort().forEach(book => {
+            html += `<optgroup label="📖 ${book}">`;
+            
+            grouped[book].sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
+                const fits = checkTalentRequirements(t);
+                const sel = (t.name === selectedVal) ? 'selected' : '';
+
+                if (showAll) {
+                    if (fits) {
+                        html += `<option value="${t.name}" ${sel} style="color: #66bb6a; background: #14110e;">✓ ${t.name}</option>`;
+                    } else {
+                        html += `<option value="${t.name}" ${sel} style="color: #ef5350; background: #14110e;">✕ ${t.name}</option>`;
+                    }
+                } else {
+                    html += `<option value="${t.name}" ${sel}>${t.name}</option>`;
+                }
+            });
+
+            html += `</optgroup>`;
+        });
+    }
+    return html;
+}
 
         function refreshAllTalentSelects() {
             document.querySelectorAll(".talent-card").forEach(card => {
