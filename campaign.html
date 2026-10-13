@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Текущая кампания — Through the Breach</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at 50% 20%, #30251b 0%, #17130f 45%, #0b0a09 100%);
+            color: #e8dfd0;
+            font-family: Georgia, serif;
+        }
+
+        header {
+            padding: 20px 50px;
+            border-bottom: 1px solid #4a3825;
+            background: rgba(10, 9, 8, 0.7);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-back {
+            color: #c59a5b;
+            text-decoration: none;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+
+        .nav-back:hover {
+            color: #e8dfd0;
+        }
+
+        .page-title {
+            color: #c59a5b;
+            font-size: 20px;
+            letter-spacing: 2px;
+            margin: 0;
+            font-weight: normal;
+        }
+
+        .action-btn {
+            background: rgba(14, 11, 9, 0.85);
+            border: 1px solid #4a3825;
+            color: #c59a5b;
+            padding: 8px 18px;
+            font-family: Georgia, serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            color: #0b0a09;
+            background: #b88a4a;
+            border-color: #b88a4a;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #33271a;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        .party-stats {
+            color: #a99e8d;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .roster-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .character-card {
+            background: rgba(16, 14, 11, 0.85);
+            border: 1px solid #4a3825;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: border-color 0.2s ease;
+        }
+
+        .character-card:hover {
+            border-color: #b88a4a;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px solid #2a2015;
+            padding-bottom: 8px;
+        }
+
+        .char-name {
+            font-size: 18px;
+            color: #c59a5b;
+            margin: 0;
+            font-weight: normal;
+        }
+
+        .player-tag {
+            font-size: 12px;
+            color: #8f8679;
+        }
+
+        .card-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 13px;
+            color: #a99e8d;
+        }
+
+        .card-meta span strong {
+            color: #e8dfd0;
+        }
+
+        .card-actions {
+            margin-top: 6px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-view {
+            flex: 1;
+            padding: 8px;
+            background: transparent;
+            border: 1px solid #4a3825;
+            color: #c59a5b;
+            font-family: Georgia, serif;
+            font-size: 12px;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .btn-view:hover {
+            border-color: #b88a4a;
+            color: #e8dfd0;
+        }
+
+        .btn-remove {
+            background: transparent;
+            border: 1px solid #4a3825;
+            color: #8f8679;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-remove:hover {
+            border-color: #e57373;
+            color: #e57373;
+        }
+
+        .empty-roster {
+            text-align: center;
+            padding: 60px 20px;
+            color: #8f8679;
+            font-style: italic;
+            border: 1px dashed #33271a;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="nav-back">← На главную</a>
+        <h1 class="page-title">ТЕКУЩАЯ КАМПАНИЯ</h1>
+        <div>
+            <button type="button" class="action-btn" onclick="document.getElementById('campaignFileInput').click()">
+                ⬆ ДОБАВИТЬ ПЕРСОНАЖА (.JSON)
+            </button>
+            <input type="file" id="campaignFileInput" style="display: none;" accept=".json" onchange="importToCampaign(event)">
+        </div>
+    </header>
+
+    <main>
+        <div class="toolbar">
+            <div class="party-stats" id="partyCounter">Отряд: 0 персонажей</div>
+        </div>
+
+        <div class="roster-grid" id="rosterContainer"></div>
+    </main>
+
+    <script>
+        const CAMPAIGN_STORAGE_KEY = "ttb_campaign_characters";
+
+        function getCampaignCharacters() {
+            try {
+                return JSON.parse(localStorage.getItem(CAMPAIGN_STORAGE_KEY)) || [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveCampaignCharacters(list) {
+            localStorage.setItem(CAMPAIGN_STORAGE_KEY, JSON.stringify(list));
+        }
+
+        function renderRoster() {
+            const list = getCampaignCharacters();
+            const container = document.getElementById("rosterContainer");
+            const counter = document.getElementById("partyCounter");
+
+            counter.textContent = `Отряд: ${list.length} персонаж(ей)`;
+
+            if (list.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-roster" style="grid-column: 1 / -1;">
+                        В текущей кампании пока нет персонажей. Нажмите «Добавить персонажа», чтобы загрузить JSON-файл.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = "";
+            list.forEach((char, index) => {
+                const card = document.createElement("div");
+                card.className = "character-card";
+                card.innerHTML = `
+                    <div class="card-header">
+                        <h3 class="char-name">${char.charName || "Без имени"}</h3>
+                        <span class="player-tag">${char.playerName ? "Игрок: " + char.playerName : "Игрок: —"}</span>
+                    </div>
+                    <div class="card-meta">
+                        <span>Путь: <strong>${char.pursuit || "—"}</strong></span>
+                        <span>Раса: <strong>${char.species || "Human"}</strong></span>
+                        <span>Опыт: <strong>${char.characterExp || 0}</strong> | Скрип: <strong>${char.guildScript || 0}</strong></span>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn-view" onclick="openCharacter(${index})">ОТКРЫТЬ ЧАРНИК</button>
+                        <button class="btn-remove" onclick="removeCharacter(${index})" title="Удалить из кампании">✕</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function importToCampaign(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsedData = JSON.parse(e.target.result);
+                    if (!parsedData || typeof parsedData !== "object") {
+                        throw new Error("Неверный формат данных");
+                    }
+                    const list = getCampaignCharacters();
+                    list.push(parsedData);
+                    saveCampaignCharacters(list);
+                    renderRoster();
+                    alert(`Персонаж «${parsedData.charName || "Без имени"}» добавлен в кампанию!`);
+                } catch (err) {
+                    alert("Ошибка чтения JSON: " + err.message);
+                }
+                event.target.value = "";
+            };
+            reader.readAsText(file);
+        }
+
+        function removeCharacter(index) {
+            const list = getCampaignCharacters();
+            const name = list[index]?.charName || "персонажа";
+            if (!confirm(`Удалить «${name}» из списка кампании?`)) return;
+
+            list.splice(index, 1);
+            saveCampaignCharacters(list);
+            renderRoster();
+        }
+
+        function openCharacter(index) {
+            alert("На следующем шаге здесь будет открываться полный лист этого персонажа!");
+        }
+
+        window.addEventListener("DOMContentLoaded", renderRoster);
+    </script>
+</body>
+</html>
