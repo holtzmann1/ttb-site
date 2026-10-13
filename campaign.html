@@ -983,14 +983,14 @@
         let campaignCharacters = [];
         let activeCharacterDocId = null;
 
-        // ПОДПИСКА НА ОБНОВЛЕНИЯ В РЕАЛЬНОМ ВРЕМЕНИ
+// ПОДПИСКА НА ОБНОВЛЕНИЯ В РЕАЛЬНОМ ВРЕМЕНИ
         onSnapshot(campaignCol, (snapshot) => {
             campaignCharacters = [];
             snapshot.forEach((d) => {
-                campaignCharacters.push({
-                    docId: d.id,
-                    ...d.data()
-                });
+                const data = d.data();
+                let charData = data.sheetJson ? JSON.parse(data.sheetJson) : data;
+                charData.docId = d.id;
+                campaignCharacters.push(charData);
             });
             renderRoster();
         }, (error) => {
@@ -1041,7 +1041,7 @@
             });
         }
 
-        async function importToCampaign(event) {
+async function importToCampaign(event) {
             const file = event.target.files[0];
             if (!file) return;
 
@@ -1053,9 +1053,19 @@
                         throw new Error("Неверный формат данных");
                     }
                     
-                    parsedData.createdAt = serverTimestamp();
-                    await addDoc(campaignCol, parsedData);
-                    alert(`Персонаж «${parsedData.charName || "Без имени"}» успешно отправлен в облако!`);
+                    const docToSave = {
+                        charName: parsedData.charName || "Без имени",
+                        playerName: parsedData.playerName || "—",
+                        pursuit: parsedData.pursuit || "—",
+                        species: parsedData.species || "Human",
+                        characterExp: Number(parsedData.characterExp) || 0,
+                        guildScript: Number(parsedData.guildScript) || 0,
+                        sheetJson: JSON.stringify(parsedData),
+                        createdAt: serverTimestamp()
+                    };
+
+                    await addDoc(campaignCol, docToSave);
+                    alert(`Персонаж «${parsedData.charName || "Без имени"}» успешно добавлен в кампанию!`);
                 } catch (err) {
                     alert("Ошибка сохранения: " + err.message);
                 }
