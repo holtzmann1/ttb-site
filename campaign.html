@@ -697,6 +697,7 @@
                 <button class="tab-btn active" onclick="switchSheetTab('character')">CHARACTER</button>
                 <button class="tab-btn" onclick="switchSheetTab('talents')">GENERAL TALENTS</button>
                 <button class="tab-btn" onclick="switchSheetTab('pursuit')">PURSUIT</button>
+                <button class="tab-btn" onclick="switchSheetTab('bio')">BIO</button>
             </div>
 
             <!-- ВКЛАДКА 1: CHARACTER -->
@@ -950,6 +951,24 @@
                 <div class="box">
                     <div class="box-header" style="text-align: left;">PURSUIT DETAILS</div>
                     <p style="color: #a99e8d; font-size: 14px;">Информация о выбранном пути персонажа.</p>
+                </div>
+            </div>
+            <!-- ВКЛАДКА 4: BIO -->
+            <div id="tab-bio" class="tab-content">
+                <div class="box">
+                    <div class="box-header" style="text-align: left;">CHARACTER BIOGRAPHY & NOTES</div>
+                    <div class="field-group" style="margin-bottom: 15px;">
+                        <label>Background & Concept</label>
+                        <textarea id="bioBackground" style="min-height: 120px; resize: vertical;" placeholder="Character background, origin, history..."></textarea>
+                    </div>
+                    <div class="field-group" style="margin-bottom: 15px;">
+                        <label>Physical Description & Quirks</label>
+                        <textarea id="bioDescription" style="min-height: 90px; resize: vertical;" placeholder="Appearance, scars, clothing, behavior quirks..."></textarea>
+                    </div>
+                    <div class="field-group">
+                        <label>Campaign Notes & Contacts</label>
+                        <textarea id="bioNotes" style="min-height: 120px; resize: vertical;" placeholder="Allies, enemies, personal goals, session notes..."></textarea>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1842,6 +1861,9 @@ html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' 
                 skills: skills,
                 attacks: attacks,
                 talents: talents
+                bioBackground: document.getElementById("bioBackground")?.value || "",
+                bioDescription: document.getElementById("bioDescription")?.value || "",
+                bioNotes: document.getElementById("bioNotes")?.value || ""
             };
         };
     </script>
