@@ -674,10 +674,11 @@
                 </button>
                 <input type="file" id="campaignFileInput" style="display: none;" accept=".json" onchange="importToCampaign(event)">
             </div>
-            <div id="sheet-actions" style="display: none; gap: 8px;">
-                <button type="button" class="tab-btn" onclick="exportCurrentCharacterJSON()">⬇ СКАЧАТЬ JSON</button>
-                <button type="button" class="tab-btn" onclick="window.print()">🖨 ПЕЧАТЬ</button>
-            </div>
+<div id="sheet-actions" style="display: none; gap: 8px;">
+    <button type="button" class="action-btn" id="saveToCloudBtn" onclick="saveCharacterChanges()">💾 СОХРАНИТЬ В ОБЛАКО</button>
+    <button type="button" class="tab-btn" onclick="exportCurrentCharacterJSON()">⬇ СКАЧАТЬ JSON</button>
+    <button type="button" class="tab-btn" onclick="window.print()">🖨 ПЕЧАТЬ</button>
+</div>
         </div>
     </header>
 
@@ -964,7 +965,8 @@
             deleteDoc, 
             doc, 
             onSnapshot, 
-            serverTimestamp 
+            serverTimestamp, 
+            updateDoc
         } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -1137,6 +1139,48 @@ async function importToCampaign(event) {
             URL.revokeObjectURL(url);
         }
 
+        async function saveCharacterChanges() {
+            if (!activeCharacterDocId) return;
+
+            const saveBtn = document.getElementById("saveToCloudBtn");
+            const originalText = saveBtn ? saveBtn.textContent : "";
+            if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.textContent = "СОХРАНЕНИЕ...";
+            }
+
+            try {
+                // Собираем актуальные статы со страницы
+                const currentData = window.collectCurrentSheetData();
+
+                const docToUpdate = {
+                    charName: currentData.charName || "Unnamed",
+                    playerName: currentData.playerName || "—",
+                    pursuit: currentData.pursuit || "—",
+                    species: currentData.species || "Human",
+                    characterExp: Number(currentData.characterExp) || 0,
+                    guildScript: Number(currentData.guildScript) || 0,
+                    sheetJson: JSON.stringify(currentData),
+                    updatedAt: serverTimestamp()
+                };
+
+                // Находим именно этого персонажа в Firestore по id и обновляем
+                const charDocRef = doc(db, "campaign_characters", activeCharacterDocId);
+                await updateDoc(charDocRef, docToUpdate);
+
+                alert("Изменения успешно сохранены в облаке!");
+            } catch (err) {
+                console.error("Ошибка сохранения:", err);
+                alert("Ошибка сохранения: " + err.message);
+            } finally {
+                if (saveBtn) {
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = originalText;
+                }
+            }
+        }
+
+        window.saveCharacterChanges = saveCharacterChanges;
         // Делаем функции доступными в глобальной области видимости для inline обработчиков
         window.importToCampaign = importToCampaign;
         window.exportCurrentCharacterJSON = exportCurrentCharacterJSON;
