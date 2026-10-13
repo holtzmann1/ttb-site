@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Текущая кампания — Through the Breach</title>
+    <!-- ПОДКЛЮЧАЕМ БАЗУ ТАЛАНТОВ -->
+    <script src="talents-data.js?v=2"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -31,6 +33,11 @@
             text-decoration: none;
             letter-spacing: 1px;
             font-size: 14px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: Georgia, serif;
+            padding: 0;
         }
 
         .nav-back:hover {
@@ -45,10 +52,10 @@
             font-weight: normal;
         }
 
-        .action-btn {
+        .action-btn, .tab-btn {
             background: rgba(14, 11, 9, 0.85);
             border: 1px solid #4a3825;
-            color: #c59a5b;
+            color: #8f8679;
             padding: 8px 18px;
             font-family: Georgia, serif;
             font-size: 12px;
@@ -57,18 +64,29 @@
             transition: all 0.2s ease;
         }
 
-        .action-btn:hover {
-            color: #0b0a09;
-            background: #b88a4a;
+        .action-btn {
+            color: #c59a5b;
+        }
+
+        .action-btn:hover, .tab-btn:hover {
+            color: #e8dfd0;
             border-color: #b88a4a;
         }
 
-        main {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 40px 20px;
+        .tab-btn.active {
+            color: #c59a5b;
+            border-color: #c59a5b;
+            background: rgba(45, 33, 21, 0.6);
+            box-shadow: inset 0 0 10px rgba(197, 154, 91, 0.2);
         }
 
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px 40px 20px;
+        }
+
+        /* ЭКРАН 1: РОСТЕР ОТРИДА */
         .toolbar {
             display: flex;
             justify-content: space-between;
@@ -180,32 +198,771 @@
             font-style: italic;
             border: 1px dashed #33271a;
         }
+
+        /* ЭКРАН 2: ЛИСТ ПЕРСОНАЖА */
+        #view-character-sheet {
+            display: none;
+        }
+
+        .tab-bar {
+            margin: 0 auto 20px auto;
+            display: flex;
+            gap: 15px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        input[type="text"], input[type="number"], select, textarea {
+            background: #14110e;
+            border: 1px solid #4a3825;
+            color: #e8dfd0;
+            font-family: Georgia, serif;
+            font-size: 15px;
+            padding: 8px 10px;
+            outline: none;
+            width: 100%;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #b88a4a;
+        }
+
+        optgroup {
+            background: #1e1914;
+            color: #c59a5b;
+            font-style: normal;
+            font-weight: bold;
+        }
+
+        option {
+            background: #14110e;
+            color: #e8dfd0;
+            font-weight: normal;
+        }
+
+        .box {
+            border: 1px solid #4a3825;
+            background: rgba(10, 9, 8, 0.6);
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+
+        .box-header {
+            margin: 0 0 15px 0;
+            color: #c59a5b;
+            font-size: 20px;
+            font-weight: normal;
+            letter-spacing: 1.5px;
+            text-align: center;
+            border-bottom: 1px solid #33271a;
+            padding-bottom: 6px;
+        }
+
+        .top-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .label-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .field-group label {
+            display: block;
+            font-size: 12px;
+            color: #a99e8d;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .destiny-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .destiny-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .destiny-field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .destiny-label {
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #a99e8d;
+            text-transform: uppercase;
+        }
+
+        .destiny-steps {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            height: 38px;
+        }
+
+        .step-circle {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border: 2px solid #8b7355;
+            border-radius: 50%;
+            outline: none;
+            cursor: pointer;
+            background-color: #14110e;
+            transition: all 0.2s ease;
+        }
+
+        .step-circle:checked {
+            background-color: #c59a5b;
+            box-shadow: inset 0 0 0 3px #14110e;
+        }
+
+        .step-circle:hover {
+            border-color: #e5c378;
+        }
+
+        .exp-input {
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .sheet-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            align-items: stretch;
+        }
+
+        .aspects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .aspect-subgroup h4 {
+            margin: 0 0 10px 0;
+            text-align: center;
+            color: #a99e8d;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .aspect-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(20, 17, 14, 0.8);
+            border: 1px solid #382b1d;
+            padding: 6px 10px;
+            margin-bottom: 8px;
+        }
+
+        .aspect-name {
+            font-size: 15px;
+        }
+
+        .counter {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .counter button {
+            width: 26px;
+            height: 26px;
+            background: #14110e;
+            border: 1px solid #4a3825;
+            color: #c59a5b;
+            cursor: pointer;
+            font-family: monospace;
+        }
+
+        .counter button:hover {
+            background: #b88a4a;
+            color: #000;
+        }
+
+        .counter span {
+            min-width: 25px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .derived-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .derived-cell {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(20, 17, 14, 0.8);
+            border: 1px solid #382b1d;
+            padding: 6px 10px;
+        }
+
+        .derived-cell span:first-child {
+            color: #a99e8d;
+            font-size: 13px;
+        }
+
+        .derived-cell input {
+            width: 65px;
+            text-align: center;
+            padding: 4px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .defense-container {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .defense-container input {
+            width: 44px;
+            text-align: center;
+            padding: 4px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .attack-card {
+            border: 1px solid #382b1d;
+            background: rgba(16, 14, 11, 0.85);
+            padding: 10px;
+            margin-bottom: 12px;
+        }
+
+        .attack-row-1 {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .attack-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .attack-stats-grid div {
+            text-align: center;
+        }
+
+        .attack-stats-grid label {
+            display: block;
+            font-size: 10px;
+            color: #8f8679;
+            margin-bottom: 3px;
+        }
+
+        .attack-stats-grid input {
+            text-align: center;
+            padding: 4px;
+            font-size: 13px;
+        }
+
+        .skills-box {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+        }
+
+        .skills-table-wrap {
+            overflow-y: auto;
+            max-height: 680px;
+        }
+
+        .skills-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .skills-table th {
+            text-align: left;
+            padding: 6px 4px;
+            color: #c59a5b;
+            font-size: 12px;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #4a3825;
+        }
+
+        .skills-table th.th-av, .skills-table th.th-rating {
+            text-align: center;
+        }
+
+        .skills-table td {
+            padding: 3px 2px;
+            vertical-align: middle;
+        }
+
+        .skills-table td select, .skills-table td input {
+            font-size: 13px;
+            padding: 4px 6px;
+            height: 28px;
+        }
+
+        .skills-table input[type="number"] {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .dual-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .av-box {
+            text-align: center;
+            font-weight: bold;
+            color: #c59a5b;
+            font-size: 14px;
+            background: #14110e;
+            border: 1px solid #2a2015;
+            padding: 0;
+            width: 100%;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .del-btn {
+            background: transparent;
+            border: 1px solid #4a3825;
+            color: #8f8679;
+            cursor: pointer;
+            padding: 4px 6px;
+            font-size: 12px;
+            width: 100%;
+            height: 28px;
+        }
+
+        .del-btn:hover {
+            color: #e57373;
+            border-color: #e57373;
+        }
+
+        .add-row-btn {
+            margin-top: 15px;
+            padding: 10px;
+            background: transparent;
+            border: 1px dashed #b88a4a;
+            color: #c59a5b;
+            cursor: pointer;
+            font-family: Georgia, serif;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+
+        .add-row-btn:hover {
+            background: rgba(184, 138, 74, 0.15);
+        }
+
+        .talent-card {
+            border: 1px solid #3d2f21;
+            background: rgba(18, 15, 12, 0.85);
+            margin-bottom: 10px;
+        }
+
+        .talent-header-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+        }
+
+        .toggle-btn {
+            background: transparent;
+            border: 1px solid #4a3825;
+            color: #c59a5b;
+            cursor: pointer;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .talent-body {
+            display: none;
+            padding: 12px 14px 14px 14px;
+            border-top: 1px solid #2a2015;
+            background: rgba(12, 10, 8, 0.6);
+        }
+
+        .talent-meta-info {
+            font-size: 13px;
+            color: #a99e8d;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .talent-meta-info span {
+            color: #c59a5b;
+            font-weight: bold;
+        }
+
+        .talent-desc-area {
+            min-height: 70px;
+            resize: vertical;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        @media (max-width: 900px) {
+            header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 12px;
+            }
+            .top-grid, .sheet-body {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="index.html" class="nav-back">← На главную</a>
-        <h1 class="page-title">ТЕКУЩАЯ КАМПАНИЯ</h1>
-        <div>
-            <button type="button" class="action-btn" onclick="document.getElementById('campaignFileInput').click()">
-                ⬆ ДОБАВИТЬ ПЕРСОНАЖА (.JSON)
-            </button>
-            <input type="file" id="campaignFileInput" style="display: none;" accept=".json" onchange="importToCampaign(event)">
+        <!-- Левая часть: навигация меняется динамически -->
+        <div id="header-nav-left">
+            <a href="index.html" class="nav-back">← На главную</a>
+        </div>
+
+        <h1 class="page-title" id="mainHeaderTitle">ТЕКУЩАЯ КАМПАНИЯ</h1>
+
+        <!-- Правая часть кнопок -->
+        <div id="header-actions">
+            <!-- Кнопки ростера -->
+            <div id="roster-actions">
+                <button type="button" class="action-btn" onclick="document.getElementById('campaignFileInput').click()">
+                    ⬆ ДОБАВИТЬ ПЕРСОНАЖА (.JSON)
+                </button>
+                <input type="file" id="campaignFileInput" style="display: none;" accept=".json" onchange="importToCampaign(event)">
+            </div>
+            <!-- Кнопки просмотра листа -->
+            <div id="sheet-actions" style="display: none; gap: 8px;">
+                <button type="button" class="tab-btn" onclick="exportCurrentCharacterJSON()">⬇ СКАЧАТЬ JSON</button>
+                <button type="button" class="tab-btn" onclick="window.print()">🖨 ПЕЧАТЬ</button>
+            </div>
         </div>
     </header>
 
     <main>
-        <div class="toolbar">
-            <div class="party-stats" id="partyCounter">Отряд: 0 персонажей</div>
+        <!-- ======================= ЭКРАН 1: РОСТЕР ОТРИДА ======================= -->
+        <div id="view-roster">
+            <div class="toolbar">
+                <div class="party-stats" id="partyCounter">Отряд: 0 персонажей</div>
+            </div>
+            <div class="roster-grid" id="rosterContainer"></div>
         </div>
 
-        <div class="roster-grid" id="rosterContainer"></div>
+        <!-- ======================= ЭКРАН 2: ЛИСТ ПЕРСОНАЖА ======================= -->
+        <div id="view-character-sheet">
+            <div class="tab-bar">
+                <button class="tab-btn active" onclick="switchSheetTab('character')">CHARACTER</button>
+                <button class="tab-btn" onclick="switchSheetTab('talents')">GENERAL TALENTS</button>
+                <button class="tab-btn" onclick="switchSheetTab('pursuit')">PURSUIT</button>
+            </div>
+
+            <!-- ВКЛАДКА 1: CHARACTER -->
+            <div id="tab-character" class="tab-content active">
+                <div class="top-grid">
+                    <div class="box">
+                        <div class="field-group">
+                            <label>Fated Name</label>
+                            <input type="text" id="charName" placeholder="Имя персонажа">
+                        </div>
+                        <div class="label-row">
+                            <div class="field-group">
+                                <label>Current Pursuit</label>
+                                <input type="text" id="pursuit" placeholder="Текущий путь">
+                            </div>
+                            <div class="field-group">
+                                <label>Species</label>
+                                <input type="text" id="species" value="Human" oninput="refreshAllTalentSelects()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box destiny-panel">
+                        <div class="destiny-row">
+                            <div class="destiny-field">
+                                <label class="destiny-label">Player Name</label>
+                                <input type="text" id="playerName" placeholder="Имя игрока">
+                            </div>
+                            <div class="destiny-field">
+                                <label class="destiny-label">Guild Script</label>
+                                <input type="number" id="guildScript" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="destiny-row bottom-row">
+                            <div class="destiny-field">
+                                <label class="destiny-label">Destiny Steps Fulfilled</label>
+                                <div class="destiny-steps">
+                                    <input type="checkbox" id="destiny-1" class="step-circle">
+                                    <input type="checkbox" id="destiny-2" class="step-circle">
+                                    <input type="checkbox" id="destiny-3" class="step-circle">
+                                    <input type="checkbox" id="destiny-4" class="step-circle">
+                                    <input type="checkbox" id="destiny-5" class="step-circle">
+                                </div>
+                            </div>
+                            <div class="destiny-field">
+                                <label class="destiny-label">Exp.</label>
+                                <input type="number" id="characterExp" min="0" value="0" class="exp-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sheet-body">
+                    <div>
+                        <div class="box">
+                            <div class="box-header">ASPECTS</div>
+                            <div class="aspects-grid">
+                                <div class="aspect-subgroup">
+                                    <h4>Physical</h4>
+                                    <div class="aspect-row">
+                                        <span class="aspect-name">Might</span>
+                                        <div class="counter">
+                                            <button onclick="modAspect('might', -1)">-</button>
+                                            <span id="might">0</span>
+                                            <button onclick="modAspect('might', 1)">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="aspect-row">
+                                        <span class="aspect-name">Grace</span>
+                                        <div class="counter">
+                                            <button onclick="modAspect('grace', -1)">-</button>
+                                            <span id="grace">0</span>
+                                            <button onclick="modAspect('grace', 1)">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="aspect-row">
+                                        <span class="aspect-name">Speed</span>
+                                        <div class="counter">
+                                            <button onclick="modAspect('speed', -1)">-</button>
+                                            <span id="speed">0</span>
+                                            <button onclick="modAspect('speed', 1)">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="aspect-row">
+                                        <span class="aspect-name">Resilience</span>
+                                        <div class="counter">
+                                            <button onclick="modAspect('resilience', -1)">-</button>
+                                            <span id="resilience">0</span>
+                                            <button onclick="modAspect('resilience', 1)">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="aspect-subgroup">
+                                    <h4>Mental</h4>
+                                    <div class="aspect-row">
+                                        <span class="aspect-name">Intellect</span>
+                                        <div class="counter">
+                                            <button onclick="modAspect('intellect', -1)">-</button>
+                                            <span id="intellect">0</span>
+                                            <button onclick="modAspect('intellect', 1)">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="aspect-row">
+                                        <span class="aspect-name">Charm</span>
+                                        <div class="counter">
+                                            <button onclick="modAspect('charm', -1)">-</button>
+                                            <span id="charm">0</span>
+                                            <button onclick="modAspect('charm', 1)">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="aspect-row">
+                                        <span class="aspect-name">Cunning</span>
+                                        <div class="counter">
+                                            <button onclick="modAspect('cunning', -1)">-</button>
+                                            <span id="cunning">0</span>
+                                            <button onclick="modAspect('cunning', 1)">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="aspect-row">
+                                        <span class="aspect-name">Tenacity</span>
+                                        <div class="counter">
+                                            <button onclick="modAspect('tenacity', -1)">-</button>
+                                            <span id="tenacity">0</span>
+                                            <button onclick="modAspect('tenacity', 1)">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box">
+                            <div class="box-header">DERIVED ASPECTS</div>
+                            <div class="derived-grid">
+                                <div class="derived-cell">
+                                    <span>Defense</span>
+                                    <div class="defense-container">
+                                        <input type="number" id="defenseTotal" value="2">
+                                        <span>(</span>
+                                        <input type="number" id="defenseBase" value="2">
+                                        <span>)</span>
+                                    </div>
+                                </div>
+                                <div class="derived-cell">
+                                    <span>Walk</span>
+                                    <input type="number" id="walk" value="4">
+                                </div>
+                                <div class="derived-cell">
+                                    <span>Armor</span>
+                                    <input type="number" id="armor" value="0" onchange="updateArmorPenalty()">
+                                </div>
+                                <div class="derived-cell">
+                                    <span>Charge</span>
+                                    <input type="number" id="charge" value="4">
+                                </div>
+                                <div class="derived-cell">
+                                    <span>Willpower</span>
+                                    <input type="number" id="willpower" value="2">
+                                </div>
+                                <div class="derived-cell">
+                                    <span>Initiative</span>
+                                    <input type="number" id="initiative" value="0">
+                                </div>
+                                <div class="derived-cell">
+                                    <span>Wounds</span>
+                                    <input type="number" id="wounds" value="4">
+                                </div>
+                                <div class="derived-cell">
+                                    <span>Height</span>
+                                    <input type="number" id="height" value="2">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box">
+                            <div class="box-header">ATTACKS</div>
+                            <div class="attack-card">
+                                <div class="attack-row-1">
+                                    <input type="text" placeholder="Attack Name (Оружие)">
+                                    <input type="text" placeholder="Special (Свойства)">
+                                </div>
+                                <div class="attack-stats-grid">
+                                    <div><label>AV</label><input type="text" placeholder="4"></div>
+                                    <div><label>Range</label><input type="text" placeholder="1"></div>
+                                    <div><label>Damage</label><input type="text" placeholder="2/3/4"></div>
+                                    <div><label>Capacity</label><input type="text" placeholder="-"></div>
+                                    <div><label>Reload</label><input type="text" placeholder="-"></div>
+                                    <div><label>TN</label><input type="text" placeholder="-"></div>
+                                </div>
+                                <input type="text" placeholder="Triggers">
+                            </div>
+
+                            <div class="attack-card">
+                                <div class="attack-row-1">
+                                    <input type="text" placeholder="Attack Name (Второе оружие)">
+                                    <input type="text" placeholder="Special (Свойства)">
+                                </div>
+                                <div class="attack-stats-grid">
+                                    <div><label>AV</label><input type="text" placeholder="5"></div>
+                                    <div><label>Range</label><input type="text" placeholder="12"></div>
+                                    <div><label>Damage</label><input type="text" placeholder="2/4/5"></div>
+                                    <div><label>Capacity</label><input type="text" placeholder="6"></div>
+                                    <div><label>Reload</label><input type="text" placeholder="1"></div>
+                                    <div><label>TN</label><input type="text" placeholder="-"></div>
+                                </div>
+                                <input type="text" placeholder="Triggers">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="box skills-box">
+                            <div class="box-header">SKILLS</div>
+                            <div class="skills-table-wrap">
+                                <table class="skills-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 44%;">SKILL</th>
+                                            <th style="width: 14%;" class="th-av">AV</th>
+                                            <th style="width: 15%;" class="th-rating">RATING</th>
+                                            <th style="width: 22%;">ASPECT</th>
+                                            <th style="width: 5%;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="skillsList"></tbody>
+                                </table>
+                            </div>
+                            <button class="add-row-btn" onclick="addNewSkillRow()">+ ДОБАВИТЬ НАВЫК</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ВКЛАДКА 2: GENERAL TALENTS -->
+            <div id="tab-talents" class="tab-content">
+                <div class="box">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #33271a; padding-bottom: 6px; margin-bottom: 15px;">
+                        <div class="box-header" style="border-bottom: none; margin: 0; padding: 0;">GENERAL TALENTS</div>
+                        <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #a99e8d; cursor: pointer; user-select: none;">
+                            <input type="checkbox" id="showAllTalentsToggle" onchange="refreshAllTalentSelects()" style="width: 16px; height: 16px; cursor: pointer; accent-color: #c59a5b;">
+                            Показать все таланты
+                        </label>
+                    </div>
+                    <div id="talentsContainer"></div>
+                    <button class="add-row-btn" onclick="addNewTalentCard()">+ ДОБАВИТЬ ТАЛАНТ</button>
+                </div>
+            </div>
+
+            <!-- ВКЛАДКА 3: PURSUIT -->
+            <div id="tab-pursuit" class="tab-content">
+                <div class="box">
+                    <div class="box-header" style="text-align: left;">PURSUIT DETAILS</div>
+                    <p style="color: #a99e8d; font-size: 14px;">Информация о выбранном пути персонажа.</p>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script>
         const CAMPAIGN_STORAGE_KEY = "ttb_campaign_characters";
+        let activeCharacterIndex = null;
 
+        // --- УПРАВЛЕНИЕ РОСТЕРОМ ---
         function getCampaignCharacters() {
             try {
                 return JSON.parse(localStorage.getItem(CAMPAIGN_STORAGE_KEY)) || [];
@@ -291,8 +1048,442 @@
             renderRoster();
         }
 
+        // --- ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ: РОСТЕР <-> ЧАРНИК ---
         function openCharacter(index) {
-            alert("На следующем шаге здесь будет открываться полный лист этого персонажа!");
+            const list = getCampaignCharacters();
+            const char = list[index];
+            if (!char) return;
+
+            activeCharacterIndex = index;
+            loadCharacterData(char);
+
+            document.getElementById("view-roster").style.display = "none";
+            document.getElementById("view-character-sheet").style.display = "block";
+            document.getElementById("roster-actions").style.display = "none";
+            document.getElementById("sheet-actions").style.display = "flex";
+
+            document.getElementById("mainHeaderTitle").textContent = (char.charName || "ПЕРСОНАЖ").toUpperCase();
+            document.getElementById("header-nav-left").innerHTML = `
+                <button type="button" class="nav-back" onclick="closeCharacterSheet()">← Назад к отряду</button>
+            `;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function closeCharacterSheet() {
+            activeCharacterIndex = null;
+            document.getElementById("view-character-sheet").style.display = "none";
+            document.getElementById("view-roster").style.display = "block";
+            document.getElementById("sheet-actions").style.display = "none";
+            document.getElementById("roster-actions").style.display = "block";
+
+            document.getElementById("mainHeaderTitle").textContent = "ТЕКУЩАЯ КАМПАНИЯ";
+            document.getElementById("header-nav-left").innerHTML = `
+                <a href="index.html" class="nav-back">← На главную</a>
+            `;
+            renderRoster();
+        }
+
+        function switchSheetTab(tabKey) {
+            document.querySelectorAll('#view-character-sheet .tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('#view-character-sheet .tab-content').forEach(content => {
+                content.classList.remove('active');
+                content.style.display = 'none';
+            });
+
+            const target = document.getElementById('tab-' + tabKey);
+            if (target) {
+                target.classList.add('active');
+                target.style.display = 'block';
+            }
+
+            const activeBtn = Array.from(document.querySelectorAll('.tab-bar .tab-btn')).find(b => 
+                b.getAttribute('onclick') && b.getAttribute('onclick').includes(tabKey)
+            );
+            if (activeBtn) activeBtn.classList.add('active');
+        }
+
+        function exportCurrentCharacterJSON() {
+            if (activeCharacterIndex === null) return;
+            const list = getCampaignCharacters();
+            const data = list[activeCharacterIndex];
+            if (!data) return;
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = ((data.charName || "character").trim().replace(/\s+/g, "_")) + ".json";
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // --- ЛОГИКА ДАННЫХ И СТАТОВ ЛИСТА ПЕРСОНАЖА ---
+        const aspects = {
+            might: 0, grace: 0, speed: 0, resilience: 0,
+            intellect: 0, charm: 0, cunning: 0, tenacity: 0
+        };
+
+        const skillCategories = {
+            "Academic": { "Bureaucracy": "cunning", "Engineering": "intellect", "History": "intellect", "Literacy": "intellect", "Mathematics": "intellect", "Music": "charm" },
+            "Close Combat": { "Flexible": "grace", "Grappling": "speed", "Heavy Melee": "might", "Martial Arts": "speed", "Melee": "might", "Pneumatic": "might", "Pugilism": "might" },
+            "Crafting": { "Alchemistry": "intellect", "Art": "cunning", "Artefacting": "intellect", "Blacksmithing": "intellect", "Culinary": "charm", "Explosives": "intellect", "Homesteading": "tenacity", "Printing": "intellect", "Stitching": "tenacity" },
+            "Expertise": { "Doctor": "intellect", "Forgery": "cunning", "Gambling": "cunning", "Husbandry": "charm", "Lockpicking": "grace", "Notice": "cunning", "Track": "cunning", "Wilderness": "cunning" },
+            "Magical": { "Counter-Spelling": "tenacity", "Enchanting": ["charm", "cunning"], "Necromancy": ["charm", "tenacity"], "Prestidigitation": ["intellect", "cunning"], "Sorcery": ["intellect", "tenacity"] },
+            "Ranged Combat": { "Archery": "grace", "Heavy Guns": "might", "Long Arms": "intellect", "Pistol": "grace", "Shotgun": "grace", "Thrown": "grace" },
+            "Social": { "Barter": "tenacity", "Bewitch": "charm", "Convince": "intellect", "Deceive": "cunning", "Intimidate": "tenacity", "Leadership": "charm", "Scrutiny": "cunning" },
+            "Training": { "Acrobatics": "grace", "Athletics": "might", "Carouse": "resilience", "Centering": "tenacity", "Evade": "speed", "Pick Pocket": "speed", "Stealth": "cunning", "Toughness": "resilience" }
+        };
+
+        function findSkillAspectDef(name) {
+            for (let cat in skillCategories) {
+                if (skillCategories[cat][name] !== undefined) return skillCategories[cat][name];
+            }
+            return "";
+        }
+
+        function getSkillOptionsHtml() {
+            let html = `<option value="">-- Выбери навык --</option>`;
+            for (let cat in skillCategories) {
+                html += `<optgroup label="${cat}">`;
+                for (let sk of Object.keys(skillCategories[cat]).sort()) {
+                    html += `<option value="${sk}">${sk}</option>`;
+                }
+                html += `</optgroup>`;
+            }
+            return html;
+        }
+
+        function getAspectSelectHtml(defaultVal = "") {
+            const list = ["might", "grace", "speed", "resilience", "intellect", "charm", "cunning", "tenacity"];
+            let html = `<select class="skill-aspect" onchange="updateRowAV(this.closest('tr'))">`;
+            html += `<option value="">—</option>`;
+            list.forEach(asp => {
+                const cap = asp.charAt(0).toUpperCase() + asp.slice(1);
+                const sel = asp === defaultVal ? "selected" : "";
+                html += `<option value="${asp}" ${sel}>${cap}</option>`;
+            });
+            html += `</select>`;
+            return html;
+        }
+
+        function modAspect(stat, delta) {
+            aspects[stat] += delta;
+            document.getElementById(stat).textContent = aspects[stat];
+            updateDerived();
+            updateAllSkillAVs();
+            refreshAllTalentSelects();
+        }
+
+        function getSkillRank(skillName) {
+            const rows = document.querySelectorAll("#skillsList tr");
+            let maxRank = 0;
+            for (let tr of rows) {
+                const select = tr.querySelector(".skill-select");
+                if (select && select.value.toLowerCase() === skillName.toLowerCase()) {
+                    const rank = parseInt(tr.querySelector(".skill-rating").value) || 0;
+                    if (rank > maxRank) maxRank = rank;
+                }
+            }
+            return maxRank;
+        }
+
+        function updateDerived() {
+            const evade = getSkillRank("Evade");
+            const centering = getSkillRank("Centering");
+            const notice = getSkillRank("Notice");
+            const toughness = getSkillRank("Toughness");
+
+            const defBonus = Math.max(0, evade, aspects.speed);
+            const baseDef = 2 + defBonus;
+            const defBaseEl = document.getElementById("defenseBase");
+            if (defBaseEl) defBaseEl.value = baseDef;
+
+            const armor = parseInt(document.getElementById("armor")?.value) || 0;
+            const armorPenalty = armor > 0 ? 1 : 0;
+            const defTotEl = document.getElementById("defenseTotal");
+            if (defTotEl) defTotEl.value = Math.max(1, baseDef - armorPenalty);
+
+            const wpBonus = Math.max(0, centering, aspects.tenacity);
+            const wpEl = document.getElementById("willpower");
+            if (wpEl) wpEl.value = 2 + wpBonus;
+
+            const initEl = document.getElementById("initiative");
+            if (initEl) initEl.value = aspects.speed + notice;
+
+            let resBonus = 0;
+            if (aspects.resilience > 0) resBonus = Math.ceil(aspects.resilience / 2);
+            const wEl = document.getElementById("wounds");
+            if (wEl) wEl.value = 4 + toughness + resBonus;
+
+            const walkVal = 4 + Math.ceil(aspects.speed / 2);
+            const walkEl = document.getElementById("walk");
+            if (walkEl) walkEl.value = walkVal;
+
+            const rawCharge = 4 + aspects.speed;
+            const chEl = document.getElementById("charge");
+            if (chEl) chEl.value = Math.max(rawCharge, walkVal);
+        }
+
+        function updateArmorPenalty() {
+            const baseDef = parseInt(document.getElementById("defenseBase")?.value) || 2;
+            const armor = parseInt(document.getElementById("armor")?.value) || 0;
+            const armorPenalty = armor > 0 ? 1 : 0;
+            const defTotEl = document.getElementById("defenseTotal");
+            if (defTotEl) defTotEl.value = Math.max(1, baseDef - armorPenalty);
+        }
+
+        function addNewSkillRow() {
+            const tbody = document.getElementById("skillsList");
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><select class="skill-select" onchange="onSkillSelectChange(this.closest('tr'))">${getSkillOptionsHtml()}</select></td>
+                <td class="av-container"><div class="av-box av-val">—</div></td>
+                <td><input type="number" class="skill-rating" value="0" min="0" max="5" oninput="onRatingChange(this.closest('tr'))"></td>
+                <td class="aspect-container">${getAspectSelectHtml("")}</td>
+                <td><button type="button" class="del-btn" onclick="deleteSkillRow(this.closest('tr'))" title="Удалить">✕</button></td>
+            `;
+            tbody.appendChild(tr);
+        }
+
+        function onSkillSelectChange(tr) {
+            const skillName = tr.querySelector(".skill-select").value;
+            const aspectDef = findSkillAspectDef(skillName);
+            const avContainer = tr.querySelector(".av-container");
+            const aspectContainer = tr.querySelector(".aspect-container");
+
+            if (Array.isArray(aspectDef)) {
+                avContainer.innerHTML = `<div class="dual-stack"><div class="av-box av-val">—</div><div class="av-box av-val">—</div></div>`;
+                aspectContainer.innerHTML = `<div class="dual-stack">${getAspectSelectHtml(aspectDef[0])}${getAspectSelectHtml(aspectDef[1])}</div>`;
+            } else {
+                avContainer.innerHTML = `<div class="av-box av-val">—</div>`;
+                aspectContainer.innerHTML = getAspectSelectHtml(aspectDef || "");
+            }
+            updateRowAV(tr);
+            updateDerived();
+            refreshAllTalentSelects();
+        }
+
+        function onRatingChange(tr) {
+            updateRowAV(tr);
+            updateDerived();
+            refreshAllTalentSelects();
+        }
+
+        function deleteSkillRow(tr) {
+            tr.remove();
+            updateDerived();
+            refreshAllTalentSelects();
+        }
+
+        function updateRowAV(tr) {
+            const rating = parseInt(tr.querySelector(".skill-rating")?.value) || 0;
+            const avCells = tr.querySelectorAll(".av-val");
+            const aspectSelects = tr.querySelectorAll(".skill-aspect");
+
+            aspectSelects.forEach((sel, idx) => {
+                const aspectKey = sel.value;
+                if (!aspectKey) {
+                    if (avCells[idx]) avCells[idx].textContent = "—";
+                } else {
+                    if (avCells[idx]) avCells[idx].textContent = rating + (aspects[aspectKey] || 0);
+                }
+            });
+        }
+
+        function updateAllSkillAVs() {
+            document.querySelectorAll("#skillsList tr").forEach(tr => updateRowAV(tr));
+        }
+
+        // ТАЛАНТЫ
+        function checkTalentRequirements(talent) {
+            return true; // В режиме просмотра отображаем таланты персонажа без строгих блокировок
+        }
+
+        function getTalentOptionsHtml(selectedVal = "") {
+            let html = `<option value="">-- Выбери талант --</option>`;
+            html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' : ''}>★ Свой талант (Custom)</option>`;
+            if (typeof GENERAL_TALENTS !== 'undefined') {
+                const grouped = {};
+                GENERAL_TALENTS.forEach(t => {
+                    const bookName = t.book && t.book.trim() ? t.book.trim() : "Other / Core";
+                    if (!grouped[bookName]) grouped[bookName] = [];
+                    grouped[bookName].push(t);
+                });
+                Object.keys(grouped).sort().forEach(book => {
+                    html += `<optgroup label="📖 ${book}">`;
+                    grouped[book].sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
+                        const sel = (t.name === selectedVal) ? 'selected' : '';
+                        html += `<option value="${t.name}" ${sel}>${t.name}</option>`;
+                    });
+                    html += `</optgroup>`;
+                });
+            }
+            return html;
+        }
+
+        function refreshAllTalentSelects() {
+            document.querySelectorAll(".talent-card").forEach(card => {
+                const select = card.querySelector(".talent-select");
+                const customInput = card.querySelector(".custom-name-input");
+                if (select && customInput && customInput.style.display !== "block") {
+                    const currentVal = select.value;
+                    select.innerHTML = getTalentOptionsHtml(currentVal);
+                    select.value = currentVal;
+                }
+            });
+        }
+
+        function addNewTalentCard() {
+            const container = document.getElementById("talentsContainer");
+            const card = document.createElement("div");
+            card.className = "talent-card";
+            card.innerHTML = `
+                <div class="talent-header-row">
+                    <button type="button" class="toggle-btn" onclick="toggleTalentAccordion(this)">▼</button>
+                    <select class="talent-select" onchange="onTalentSelectChange(this)" style="flex: 1;">
+                        ${getTalentOptionsHtml()}
+                    </select>
+                    <input type="text" class="custom-name-input" placeholder="Название таланта" style="display: none; flex: 1;">
+                    <button type="button" class="del-btn" onclick="this.closest('.talent-card').remove()" style="width: 34px;">✕</button>
+                </div>
+                <div class="talent-body">
+                    <div class="talent-meta-info">Требования: <span class="talent-req">—</span> | Книга: <span class="talent-book">—</span></div>
+                    <textarea class="talent-desc-area" placeholder="Описание таланта..."></textarea>
+                </div>
+            `;
+            container.appendChild(card);
+        }
+
+        function toggleTalentAccordion(btn) {
+            const card = btn.closest(".talent-card");
+            const body = card.querySelector(".talent-body");
+            const isOpen = body.style.display === "block";
+            body.style.display = isOpen ? "none" : "block";
+            btn.textContent = isOpen ? "▼" : "▲";
+        }
+
+        function onTalentSelectChange(select) {
+            const card = select.closest(".talent-card");
+            const customInput = card.querySelector(".custom-name-input");
+            const reqSpan = card.querySelector(".talent-req");
+            const bookSpan = card.querySelector(".talent-book");
+            const descArea = card.querySelector(".talent-desc-area");
+            const val = select.value;
+
+            if (val === "__custom__") {
+                select.style.display = "none";
+                customInput.style.display = "block";
+                reqSpan.textContent = "Любые";
+                bookSpan.textContent = "Custom";
+                descArea.value = "";
+            } else if (val && typeof GENERAL_TALENTS !== 'undefined') {
+                const found = GENERAL_TALENTS.find(t => t.name === val);
+                if (found) {
+                    reqSpan.textContent = found.req || "None";
+                    bookSpan.textContent = found.book || "—";
+                    descArea.value = found.desc || "";
+                }
+            } else {
+                reqSpan.textContent = "—";
+                bookSpan.textContent = "—";
+                descArea.value = "";
+            }
+        }
+
+        // ЗАГРУЗКА ДАННЫХ ПЕРСОНАЖА В ЛИСТ
+        function loadCharacterData(data) {
+            if (!data) return;
+
+            if (data.charName !== undefined) document.getElementById("charName").value = data.charName;
+            if (data.playerName !== undefined) document.getElementById("playerName").value = data.playerName;
+            if (data.species !== undefined) document.getElementById("species").value = data.species;
+            if (data.pursuit !== undefined) document.getElementById("pursuit").value = data.pursuit;
+            if (data.guildScript !== undefined) document.getElementById("guildScript").value = data.guildScript;
+            if (data.characterExp !== undefined) document.getElementById("characterExp").value = data.characterExp;
+
+            if (data.destinySteps && Array.isArray(data.destinySteps)) {
+                data.destinySteps.forEach((checked, i) => {
+                    const el = document.getElementById(`destiny-${i + 1}`);
+                    if (el) el.checked = checked;
+                });
+            }
+
+            if (data.armor !== undefined) document.getElementById("armor").value = data.armor;
+            if (data.height !== undefined && document.getElementById("height")) document.getElementById("height").value = data.height;
+
+            if (data.aspects) {
+                for (let k in data.aspects) {
+                    aspects[k] = data.aspects[k];
+                    const span = document.getElementById(k);
+                    if (span) span.textContent = aspects[k];
+                }
+            }
+
+            const tbody = document.getElementById("skillsList");
+            tbody.innerHTML = "";
+            if (data.skills && data.skills.length > 0) {
+                data.skills.forEach(sk => {
+                    addNewSkillRow();
+                    const lastRow = tbody.lastElementChild;
+                    const sel = lastRow.querySelector(".skill-select");
+                    if (sel) {
+                        sel.value = sk.skillName;
+                        onSkillSelectChange(lastRow);
+                    }
+                    const ratingInput = lastRow.querySelector(".skill-rating");
+                    if (ratingInput) ratingInput.value = sk.rating;
+
+                    const aspSelects = lastRow.querySelectorAll(".skill-aspect");
+                    if (sk.aspects && aspSelects.length > 0) {
+                        aspSelects.forEach((s, idx) => {
+                            if (sk.aspects[idx]) s.value = sk.aspects[idx];
+                        });
+                    }
+                    updateRowAV(lastRow);
+                });
+            }
+
+            if (data.attacks && data.attacks.length > 0) {
+                const attackCards = document.querySelectorAll(".attack-card");
+                data.attacks.forEach((atkValues, idx) => {
+                    if (attackCards[idx]) {
+                        const inputs = attackCards[idx].querySelectorAll("input");
+                        inputs.forEach((inp, i) => {
+                            if (atkValues[i] !== undefined) inp.value = atkValues[i];
+                        });
+                    }
+                });
+            }
+
+            updateDerived();
+
+            const tContainer = document.getElementById("talentsContainer");
+            tContainer.innerHTML = "";
+            if (data.talents && data.talents.length > 0) {
+                data.talents.forEach(t => {
+                    addNewTalentCard();
+                    const lastCard = tContainer.lastElementChild;
+                    const select = lastCard.querySelector(".talent-select");
+                    const customInput = lastCard.querySelector(".custom-name-input");
+                    const reqSpan = lastCard.querySelector(".talent-req");
+                    const bookSpan = lastCard.querySelector(".talent-book");
+                    const descArea = lastCard.querySelector(".talent-desc-area");
+
+                    if (t.isCustom) {
+                        select.style.display = "none";
+                        customInput.style.display = "block";
+                        customInput.value = t.name;
+                    } else {
+                        select.value = t.name;
+                    }
+                    reqSpan.textContent = t.req || "—";
+                    bookSpan.textContent = t.book || "—";
+                    descArea.value = t.desc || "";
+                });
+            } else {
+                addNewTalentCard();
+            }
+            refreshAllTalentSelects();
         }
 
         window.addEventListener("DOMContentLoaded", renderRoster);
