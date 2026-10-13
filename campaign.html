@@ -86,7 +86,7 @@
             padding: 30px 20px 40px 20px;
         }
 
-        /* ЭКРАН 1: РОСТЕР ОТРИДА */
+        /* ЭКРАН 1: РОСТЕР ОТРЯДА */
         .toolbar {
             display: flex;
             justify-content: space-between;
@@ -661,23 +661,19 @@
 <body>
 
     <header>
-        <!-- Левая часть: навигация меняется динамически -->
         <div id="header-nav-left">
             <a href="index.html" class="nav-back">← На главную</a>
         </div>
 
         <h1 class="page-title" id="mainHeaderTitle">ТЕКУЩАЯ КАМПАНИЯ</h1>
 
-        <!-- Правая часть кнопок -->
         <div id="header-actions">
-            <!-- Кнопки ростера -->
             <div id="roster-actions">
                 <button type="button" class="action-btn" onclick="document.getElementById('campaignFileInput').click()">
                     ⬆ ДОБАВИТЬ ПЕРСОНАЖА (.JSON)
                 </button>
                 <input type="file" id="campaignFileInput" style="display: none;" accept=".json" onchange="importToCampaign(event)">
             </div>
-            <!-- Кнопки просмотра листа -->
             <div id="sheet-actions" style="display: none; gap: 8px;">
                 <button type="button" class="tab-btn" onclick="exportCurrentCharacterJSON()">⬇ СКАЧАТЬ JSON</button>
                 <button type="button" class="tab-btn" onclick="window.print()">🖨 ПЕЧАТЬ</button>
@@ -686,15 +682,15 @@
     </header>
 
     <main>
-        <!-- ======================= ЭКРАН 1: РОСТЕР ОТРИДА ======================= -->
+        <!-- ЭКРАН 1: РОСТЕР ОТРЯДА -->
         <div id="view-roster">
             <div class="toolbar">
-                <div class="party-stats" id="partyCounter">Отряд: 0 персонажей</div>
+                <div class="party-stats" id="partyCounter">Отряд: загрузка...</div>
             </div>
             <div class="roster-grid" id="rosterContainer"></div>
         </div>
 
-        <!-- ======================= ЭКРАН 2: ЛИСТ ПЕРСОНАЖА ======================= -->
+        <!-- ЭКРАН 2: ЛИСТ ПЕРСОНАЖА -->
         <div id="view-character-sheet">
             <div class="tab-bar">
                 <button class="tab-btn active" onclick="switchSheetTab('character')">CHARACTER</button>
@@ -958,41 +954,68 @@
         </div>
     </main>
 
-    <script>
-        const CAMPAIGN_STORAGE_KEY = "ttb_campaign_characters";
-        let activeCharacterIndex = null;
+    <!-- ПОДКЛЮЧЕНИЕ FIREBASE И ЛОГИКА КАМПАНИИ -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { 
+            getFirestore, 
+            collection, 
+            addDoc, 
+            deleteDoc, 
+            doc, 
+            onSnapshot, 
+            serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-        // --- УПРАВЛЕНИЕ РОСТЕРОМ ---
-        function getCampaignCharacters() {
-            try {
-                return JSON.parse(localStorage.getItem(CAMPAIGN_STORAGE_KEY)) || [];
-            } catch (e) {
-                return [];
-            }
-        }
+        const firebaseConfig = {
+            apiKey: "AIzaSyA3crQ2JzZPh7nPRl7Jg0DNdypGv2t5oXc",
+            authDomain: "ttb-campaign.firebaseapp.com",
+            projectId: "ttb-campaign",
+            storageBucket: "ttb-campaign.firebasestorage.app",
+            messagingSenderId: "110224119076",
+            appId: "1:110224119076:web:190021bf5ea64a8dd78fb1"
+        };
 
-        function saveCampaignCharacters(list) {
-            localStorage.setItem(CAMPAIGN_STORAGE_KEY, JSON.stringify(list));
-        }
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const campaignCol = collection(db, "campaign_characters");
+
+        let campaignCharacters = [];
+        let activeCharacterDocId = null;
+
+        // ПОДПИСКА НА ОБНОВЛЕНИЯ В РЕАЛЬНОМ ВРЕМЕНИ
+        onSnapshot(campaignCol, (snapshot) => {
+            campaignCharacters = [];
+            snapshot.forEach((d) => {
+                campaignCharacters.push({
+                    docId: d.id,
+                    ...d.data()
+                });
+            });
+            renderRoster();
+        }, (error) => {
+            console.error("Ошибка Firestore:", error);
+            const counter = document.getElementById("partyCounter");
+            if (counter) counter.textContent = "Ошибка загрузки из базы данных";
+        });
 
         function renderRoster() {
-            const list = getCampaignCharacters();
             const container = document.getElementById("rosterContainer");
             const counter = document.getElementById("partyCounter");
 
-            counter.textContent = `Отряд: ${list.length} персонаж(ей)`;
+            counter.textContent = `Отряд: ${campaignCharacters.length} персонаж(ей)`;
 
-            if (list.length === 0) {
+            if (campaignCharacters.length === 0) {
                 container.innerHTML = `
                     <div class="empty-roster" style="grid-column: 1 / -1;">
-                        В текущей кампании пока нет персонажей. Нажмите «Добавить персонажа», чтобы загрузить JSON-файл.
+                        В кампании пока нет персонажей. Нажмите «Добавить персонажа», чтобы загрузить JSON-файл в общую базу.
                     </div>
                 `;
                 return;
             }
 
             container.innerHTML = "";
-            list.forEach((char, index) => {
+            campaignCharacters.forEach((char) => {
                 const card = document.createElement("div");
                 card.className = "character-card";
                 card.innerHTML = `
@@ -1006,56 +1029,59 @@
                         <span>Опыт: <strong>${char.characterExp || 0}</strong> | Скрип: <strong>${char.guildScript || 0}</strong></span>
                     </div>
                     <div class="card-actions">
-                        <button class="btn-view" onclick="openCharacter(${index})">ОТКРЫТЬ ЧАРНИК</button>
-                        <button class="btn-remove" onclick="removeCharacter(${index})" title="Удалить из кампании">✕</button>
+                        <button class="btn-view" data-id="${char.docId}">ОТКРЫТЬ ЧАРНИК</button>
+                        <button class="btn-remove" data-id="${char.docId}" title="Удалить из кампании">✕</button>
                     </div>
                 `;
+
+                card.querySelector(".btn-view").addEventListener("click", () => openCharacter(char.docId));
+                card.querySelector(".btn-remove").addEventListener("click", () => removeCharacter(char.docId));
+
                 container.appendChild(card);
             });
         }
 
-        function importToCampaign(event) {
+        async function importToCampaign(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = async function(e) {
                 try {
                     const parsedData = JSON.parse(e.target.result);
                     if (!parsedData || typeof parsedData !== "object") {
                         throw new Error("Неверный формат данных");
                     }
-                    const list = getCampaignCharacters();
-                    list.push(parsedData);
-                    saveCampaignCharacters(list);
-                    renderRoster();
-                    alert(`Персонаж «${parsedData.charName || "Без имени"}» добавлен в кампанию!`);
+                    
+                    parsedData.createdAt = serverTimestamp();
+                    await addDoc(campaignCol, parsedData);
+                    alert(`Персонаж «${parsedData.charName || "Без имени"}» успешно отправлен в облако!`);
                 } catch (err) {
-                    alert("Ошибка чтения JSON: " + err.message);
+                    alert("Ошибка сохранения: " + err.message);
                 }
                 event.target.value = "";
             };
             reader.readAsText(file);
         }
 
-        function removeCharacter(index) {
-            const list = getCampaignCharacters();
-            const name = list[index]?.charName || "персонажа";
-            if (!confirm(`Удалить «${name}» из списка кампании?`)) return;
+        async function removeCharacter(docId) {
+            const char = campaignCharacters.find(c => c.docId === docId);
+            const name = char?.charName || "персонажа";
+            if (!confirm(`Удалить «${name}» из базы кампании?`)) return;
 
-            list.splice(index, 1);
-            saveCampaignCharacters(list);
-            renderRoster();
+            try {
+                await deleteDoc(doc(db, "campaign_characters", docId));
+            } catch (err) {
+                alert("Ошибка удаления: " + err.message);
+            }
         }
 
-        // --- ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ: РОСТЕР <-> ЧАРНИК ---
-        function openCharacter(index) {
-            const list = getCampaignCharacters();
-            const char = list[index];
+        function openCharacter(docId) {
+            const char = campaignCharacters.find(c => c.docId === docId);
             if (!char) return;
 
-            activeCharacterIndex = index;
-            loadCharacterData(char);
+            activeCharacterDocId = docId;
+            window.loadCharacterData(char);
 
             document.getElementById("view-roster").style.display = "none";
             document.getElementById("view-character-sheet").style.display = "block";
@@ -1064,13 +1090,14 @@
 
             document.getElementById("mainHeaderTitle").textContent = (char.charName || "ПЕРСОНАЖ").toUpperCase();
             document.getElementById("header-nav-left").innerHTML = `
-                <button type="button" class="nav-back" onclick="closeCharacterSheet()">← Назад к отряду</button>
+                <button type="button" class="nav-back" id="backToRosterBtn">← Назад к отряду</button>
             `;
+            document.getElementById("backToRosterBtn").addEventListener("click", closeCharacterSheet);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function closeCharacterSheet() {
-            activeCharacterIndex = null;
+            activeCharacterDocId = null;
             document.getElementById("view-character-sheet").style.display = "none";
             document.getElementById("view-roster").style.display = "block";
             document.getElementById("sheet-actions").style.display = "none";
@@ -1080,8 +1107,48 @@
             document.getElementById("header-nav-left").innerHTML = `
                 <a href="index.html" class="nav-back">← На главную</a>
             `;
-            renderRoster();
         }
+
+        function exportCurrentCharacterJSON() {
+            if (!activeCharacterDocId) return;
+            const data = campaignCharacters.find(c => c.docId === activeCharacterDocId);
+            if (!data) return;
+
+            const copy = { ...data };
+            delete copy.docId;
+            delete copy.createdAt;
+
+            const blob = new Blob([JSON.stringify(copy, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = ((data.charName || "character").trim().replace(/\s+/g, "_")) + ".json";
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Делаем функции доступными в глобальной области видимости для inline обработчиков
+        window.importToCampaign = importToCampaign;
+        window.exportCurrentCharacterJSON = exportCurrentCharacterJSON;
+    </script>
+
+    <!-- СТАТЫ, НАВЫКИ И ТАЛАНТЫ -->
+    <script>
+        const aspects = {
+            might: 0, grace: 0, speed: 0, resilience: 0,
+            intellect: 0, charm: 0, cunning: 0, tenacity: 0
+        };
+
+        const skillCategories = {
+            "Academic": { "Bureaucracy": "cunning", "Engineering": "intellect", "History": "intellect", "Literacy": "intellect", "Mathematics": "intellect", "Music": "charm" },
+            "Close Combat": { "Flexible": "grace", "Grappling": "speed", "Heavy Melee": "might", "Martial Arts": "speed", "Melee": "might", "Pneumatic": "might", "Pugilism": "might" },
+            "Crafting": { "Alchemistry": "intellect", "Art": "cunning", "Artefacting": "intellect", "Blacksmithing": "intellect", "Culinary": "charm", "Explosives": "intellect", "Homesteading": "tenacity", "Printing": "intellect", "Stitching": "tenacity" },
+            "Expertise": { "Doctor": "intellect", "Forgery": "cunning", "Gambling": "cunning", "Husbandry": "charm", "Lockpicking": "grace", "Notice": "cunning", "Track": "cunning", "Wilderness": "cunning" },
+            "Magical": { "Counter-Spelling": "tenacity", "Enchanting": ["charm", "cunning"], "Necromancy": ["charm", "tenacity"], "Prestidigitation": ["intellect", "cunning"], "Sorcery": ["intellect", "tenacity"] },
+            "Ranged Combat": { "Archery": "grace", "Heavy Guns": "might", "Long Arms": "intellect", "Pistol": "grace", "Shotgun": "grace", "Thrown": "grace" },
+            "Social": { "Barter": "tenacity", "Bewitch": "charm", "Convince": "intellect", "Deceive": "cunning", "Intimidate": "tenacity", "Leadership": "charm", "Scrutiny": "cunning" },
+            "Training": { "Acrobatics": "grace", "Athletics": "might", "Carouse": "resilience", "Centering": "tenacity", "Evade": "speed", "Pick Pocket": "speed", "Stealth": "cunning", "Toughness": "resilience" }
+        };
 
         function switchSheetTab(tabKey) {
             document.querySelectorAll('#view-character-sheet .tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -1101,38 +1168,6 @@
             );
             if (activeBtn) activeBtn.classList.add('active');
         }
-
-        function exportCurrentCharacterJSON() {
-            if (activeCharacterIndex === null) return;
-            const list = getCampaignCharacters();
-            const data = list[activeCharacterIndex];
-            if (!data) return;
-
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = ((data.charName || "character").trim().replace(/\s+/g, "_")) + ".json";
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-
-        // --- ЛОГИКА ДАННЫХ И СТАТОВ ЛИСТА ПЕРСОНАЖА ---
-        const aspects = {
-            might: 0, grace: 0, speed: 0, resilience: 0,
-            intellect: 0, charm: 0, cunning: 0, tenacity: 0
-        };
-
-        const skillCategories = {
-            "Academic": { "Bureaucracy": "cunning", "Engineering": "intellect", "History": "intellect", "Literacy": "intellect", "Mathematics": "intellect", "Music": "charm" },
-            "Close Combat": { "Flexible": "grace", "Grappling": "speed", "Heavy Melee": "might", "Martial Arts": "speed", "Melee": "might", "Pneumatic": "might", "Pugilism": "might" },
-            "Crafting": { "Alchemistry": "intellect", "Art": "cunning", "Artefacting": "intellect", "Blacksmithing": "intellect", "Culinary": "charm", "Explosives": "intellect", "Homesteading": "tenacity", "Printing": "intellect", "Stitching": "tenacity" },
-            "Expertise": { "Doctor": "intellect", "Forgery": "cunning", "Gambling": "cunning", "Husbandry": "charm", "Lockpicking": "grace", "Notice": "cunning", "Track": "cunning", "Wilderness": "cunning" },
-            "Magical": { "Counter-Spelling": "tenacity", "Enchanting": ["charm", "cunning"], "Necromancy": ["charm", "tenacity"], "Prestidigitation": ["intellect", "cunning"], "Sorcery": ["intellect", "tenacity"] },
-            "Ranged Combat": { "Archery": "grace", "Heavy Guns": "might", "Long Arms": "intellect", "Pistol": "grace", "Shotgun": "grace", "Thrown": "grace" },
-            "Social": { "Barter": "tenacity", "Bewitch": "charm", "Convince": "intellect", "Deceive": "cunning", "Intimidate": "tenacity", "Leadership": "charm", "Scrutiny": "cunning" },
-            "Training": { "Acrobatics": "grace", "Athletics": "might", "Carouse": "resilience", "Centering": "tenacity", "Evade": "speed", "Pick Pocket": "speed", "Stealth": "cunning", "Toughness": "resilience" }
-        };
 
         function findSkillAspectDef(name) {
             for (let cat in skillCategories) {
@@ -1294,173 +1329,168 @@
             document.querySelectorAll("#skillsList tr").forEach(tr => updateRowAV(tr));
         }
 
-// ТАЛАНТЫ: ПРОВЕРКА ТРЕБОВАНИЙ
-function checkTalentRequirements(talent) {
-    const reqStr = talent.req ? talent.req.trim() : "None";
-    if (!reqStr || reqStr.toLowerCase() === "none") return true;
+        // ТАЛАНТЫ: ВАЛИДАЦИЯ ТРЕБОВАНИЙ
+        function checkTalentRequirements(talent) {
+            const reqStr = talent.req ? talent.req.trim() : "None";
+            if (!reqStr || reqStr.toLowerCase() === "none") return true;
 
-    const parts = reqStr.split(",").map(p => p.trim());
-    const speciesVal = (document.getElementById("species")?.value || "Human").toLowerCase();
+            const parts = reqStr.split(",").map(p => p.trim());
+            const speciesVal = (document.getElementById("species")?.value || "Human").toLowerCase();
 
-    for (let part of parts) {
-        if (/^Destiny:/i.test(part) || /^Book/i.test(part)) continue;
+            for (let part of parts) {
+                if (/^Destiny:/i.test(part) || /^Book/i.test(part)) continue;
 
-        if (/Aspect:/i.test(part) || /(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)\s*(-?\d+)/i.test(part)) {
-            if (/Two Aspects -3 or less/i.test(part)) {
-                if (Object.values(aspects).filter(v => v <= -3).length < 2) return false;
-                continue;
-            }
-            if (/No Aspects higher than 1/i.test(part)) {
-                if (Object.values(aspects).some(v => v > 1)) return false;
-                continue;
-            }
-            if (/Physical Aspect\s*(\d+)\s*or higher/i.test(part)) {
-                const target = parseInt(part.match(/Physical Aspect\s*(\d+)\s*or higher/i)[1], 10);
-                if (![aspects.might, aspects.grace, aspects.speed, aspects.resilience].some(v => v >= target)) return false;
-                continue;
-            }
-            if (/Mental Aspect\s*(-?\d+)\s*(or less|or lower)/i.test(part)) {
-                const target = parseInt(part.match(/Mental Aspect\s*(-?\d+)\s*(or less|or lower)/i)[1], 10);
-                if (![aspects.intellect, aspects.charm, aspects.cunning, aspects.tenacity].some(v => v <= target)) return false;
-                continue;
-            }
-            if (/Mental Aspect\s*(\d+)\s*or higher/i.test(part)) {
-                const target = parseInt(part.match(/Mental Aspect\s*(\d+)\s*or higher/i)[1], 10);
-                if (![aspects.intellect, aspects.charm, aspects.cunning, aspects.tenacity].some(v => v >= target)) return false;
-                continue;
-            }
-
-            const subClauses = part.replace(/^Aspect:\s*/i, "").split(/\s+or\s+/i);
-            let orPassed = false;
-            for (let sub of subClauses) {
-                const match = sub.match(/(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)\s*(-?\d+)\s*(or higher|or lower|or less|\+)?/i);
-                if (match) {
-                    const aspKey = match[1].toLowerCase();
-                    const targetVal = parseInt(match[2], 10);
-                    const cond = (match[3] || (targetVal < 0 ? "or lower" : "or higher")).toLowerCase();
-                    const currentVal = aspects[aspKey] !== undefined ? aspects[aspKey] : 0;
-
-                    if ((cond.includes("lower") || cond.includes("less")) && currentVal <= targetVal) {
-                        orPassed = true;
-                        break;
-                    } else if ((cond.includes("higher") || cond === "+") && currentVal >= targetVal) {
-                        orPassed = true;
-                        break;
-                    } else if (currentVal === targetVal) {
-                        orPassed = true;
-                        break;
+                if (/Aspect:/i.test(part) || /(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)\s*(-?\d+)/i.test(part)) {
+                    if (/Two Aspects -3 or less/i.test(part)) {
+                        if (Object.values(aspects).filter(v => v <= -3).length < 2) return false;
+                        continue;
                     }
-                }
-            }
-            if (!orPassed && subClauses.some(s => /(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)/i.test(s))) {
-                return false;
-            }
-            continue;
-        }
-
-        const typeMatch = part.match(/Type:\s*([A-Za-z\-]+)/i);
-        if (typeMatch) {
-            const reqType = typeMatch[1].toLowerCase();
-            if (reqType === "fated" && (speciesVal.includes("construct") || speciesVal.includes("stitched"))) return false;
-            if (reqType === "kin" && !speciesVal.includes("gremlin") && !speciesVal.includes("kin")) return false;
-            if (reqType === "non-kin" && (speciesVal.includes("gremlin") || speciesVal.includes("kin"))) return false;
-            if (reqType === "invested" && !speciesVal.includes("invested") && !speciesVal.includes("construct")) return false;
-            if (reqType === "stitched" && !speciesVal.includes("stitched") && !speciesVal.includes("undead")) return false;
-            continue;
-        }
-
-        const skillMatch = part.match(/Skill:\s*([A-Za-z\s\-]+?)\s*(\d+)/i);
-        if (skillMatch) {
-            let skillName = skillMatch[1].trim().toLowerCase();
-            const targetRank = parseInt(skillMatch[2], 10);
-
-            if (skillName.endsWith("s") && skillName !== "flexible") {
-                skillName = skillName.slice(0, -1);
-            }
-
-            if (skillName.includes("chosen skill") || skillName.includes("close combat") || skillName.includes("ranged combat")) {
-                let hasEligible = false;
-                const rows = document.querySelectorAll("#skillsList tr");
-                for (let tr of rows) {
-                    const rank = parseInt(tr.querySelector(".skill-rating")?.value) || 0;
-                    if (rank >= targetRank) { hasEligible = true; break; }
-                }
-                if (!hasEligible) return false;
-            } else if (skillName.includes("magical")) {
-                let hasMagical = false;
-                for (let magSkill of Object.keys(skillCategories["Magical"])) {
-                    if (getSkillRank(magSkill) >= targetRank) { hasMagical = true; break; }
-                }
-                if (!hasMagical) return false;
-            } else {
-                let foundRank = 0;
-                const rows = document.querySelectorAll("#skillsList tr");
-                for (let tr of rows) {
-                    const sel = tr.querySelector(".skill-select")?.value.toLowerCase() || "";
-                    if (sel.includes(skillName) || skillName.includes(sel)) {
-                        foundRank = Math.max(foundRank, parseInt(tr.querySelector(".skill-rating")?.value) || 0);
+                    if (/No Aspects higher than 1/i.test(part)) {
+                        if (Object.values(aspects).some(v => v > 1)) return false;
+                        continue;
                     }
+                    if (/Physical Aspect\s*(\d+)\s*or higher/i.test(part)) {
+                        const target = parseInt(part.match(/Physical Aspect\s*(\d+)\s*or higher/i)[1], 10);
+                        if (![aspects.might, aspects.grace, aspects.speed, aspects.resilience].some(v => v >= target)) return false;
+                        continue;
+                    }
+                    if (/Mental Aspect\s*(-?\d+)\s*(or less|or lower)/i.test(part)) {
+                        const target = parseInt(part.match(/Mental Aspect\s*(-?\d+)\s*(or less|or lower)/i)[1], 10);
+                        if (![aspects.intellect, aspects.charm, aspects.cunning, aspects.tenacity].some(v => v <= target)) return false;
+                        continue;
+                    }
+                    if (/Mental Aspect\s*(\d+)\s*or higher/i.test(part)) {
+                        const target = parseInt(part.match(/Mental Aspect\s*(\d+)\s*or higher/i)[1], 10);
+                        if (![aspects.intellect, aspects.charm, aspects.cunning, aspects.tenacity].some(v => v >= target)) return false;
+                        continue;
+                    }
+
+                    const subClauses = part.replace(/^Aspect:\s*/i, "").split(/\s+or\s+/i);
+                    let orPassed = false;
+                    for (let sub of subClauses) {
+                        const match = sub.match(/(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)\s*(-?\d+)\s*(or higher|or lower|or less|\+)?/i);
+                        if (match) {
+                            const aspKey = match[1].toLowerCase();
+                            const targetVal = parseInt(match[2], 10);
+                            const cond = (match[3] || (targetVal < 0 ? "or lower" : "or higher")).toLowerCase();
+                            const currentVal = aspects[aspKey] !== undefined ? aspects[aspKey] : 0;
+
+                            if ((cond.includes("lower") || cond.includes("less")) && currentVal <= targetVal) {
+                                orPassed = true;
+                                break;
+                            } else if ((cond.includes("higher") || cond === "+") && currentVal >= targetVal) {
+                                orPassed = true;
+                                break;
+                            } else if (currentVal === targetVal) {
+                                orPassed = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!orPassed && subClauses.some(s => /(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)/i.test(s))) {
+                        return false;
+                    }
+                    continue;
                 }
-                if (foundRank < targetRank) return false;
-            }
-            continue;
-        }
 
-        const otherTalentMatch = part.match(/Other:.*?\b([A-Za-z\s]+)\s+Talent/i);
-        if (otherTalentMatch) {
-            const reqTalentName = otherTalentMatch[1].trim().toLowerCase();
-            const hasTalent = Array.from(document.querySelectorAll(".talent-select")).some(s => s.value.toLowerCase().includes(reqTalentName));
-            if (!hasTalent) return false;
-            continue;
-        }
-    }
-    return true;
-}
+                const typeMatch = part.match(/Type:\s*([A-Za-z\-]+)/i);
+                if (typeMatch) {
+                    const reqType = typeMatch[1].toLowerCase();
+                    if (reqType === "fated" && (speciesVal.includes("construct") || speciesVal.includes("stitched"))) return false;
+                    if (reqType === "kin" && !speciesVal.includes("gremlin") && !speciesVal.includes("kin")) return false;
+                    if (reqType === "non-kin" && (speciesVal.includes("gremlin") || speciesVal.includes("kin"))) return false;
+                    if (reqType === "invested" && !speciesVal.includes("invested") && !speciesVal.includes("construct")) return false;
+                    if (reqType === "stitched" && !speciesVal.includes("stitched") && !speciesVal.includes("undead")) return false;
+                    continue;
+                }
 
-// ТАЛАНТЫ: ВЫПАДАЮЩИЙ СПИСОК С УЧЕТОМ ФИЛЬТРА
-function getTalentOptionsHtml(selectedVal = "") {
-    let html = `<option value="">-- Выбери талант --</option>`;
-    html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' : ''}>★ Свой талант (Custom)</option>`;
-    
-    if (typeof GENERAL_TALENTS !== 'undefined') {
-        const showAll = document.getElementById("showAllTalentsToggle")?.checked || false;
+                const skillMatch = part.match(/Skill:\s*([A-Za-z\s\-]+?)\s*(\d+)/i);
+                if (skillMatch) {
+                    let skillName = skillMatch[1].trim().toLowerCase();
+                    const targetRank = parseInt(skillMatch[2], 10);
 
-        const availableTalents = GENERAL_TALENTS.filter(t => 
-            showAll || checkTalentRequirements(t) || t.name === selectedVal
-        );
+                    if (skillName.endsWith("s") && skillName !== "flexible") {
+                        skillName = skillName.slice(0, -1);
+                    }
 
-        const grouped = {};
-        availableTalents.forEach(t => {
-            const bookName = t.book && t.book.trim() ? t.book.trim() : "Other / Core";
-            if (!grouped[bookName]) {
-                grouped[bookName] = [];
-            }
-            grouped[bookName].push(t);
-        });
-
-        Object.keys(grouped).sort().forEach(book => {
-            html += `<optgroup label="📖 ${book}">`;
-            
-            grouped[book].sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
-                const fits = checkTalentRequirements(t);
-                const sel = (t.name === selectedVal) ? 'selected' : '';
-
-                if (showAll) {
-                    if (fits) {
-                        html += `<option value="${t.name}" ${sel} style="color: #66bb6a; background: #14110e;">✓ ${t.name}</option>`;
+                    if (skillName.includes("chosen skill") || skillName.includes("close combat") || skillName.includes("ranged combat")) {
+                        let hasEligible = false;
+                        const rows = document.querySelectorAll("#skillsList tr");
+                        for (let tr of rows) {
+                            const rank = parseInt(tr.querySelector(".skill-rating")?.value) || 0;
+                            if (rank >= targetRank) { hasEligible = true; break; }
+                        }
+                        if (!hasEligible) return false;
+                    } else if (skillName.includes("magical")) {
+                        let hasMagical = false;
+                        for (let magSkill of Object.keys(skillCategories["Magical"])) {
+                            if (getSkillRank(magSkill) >= targetRank) { hasMagical = true; break; }
+                        }
+                        if (!hasMagical) return false;
                     } else {
-                        html += `<option value="${t.name}" ${sel} style="color: #ef5350; background: #14110e;">✕ ${t.name}</option>`;
+                        let foundRank = 0;
+                        const rows = document.querySelectorAll("#skillsList tr");
+                        for (let tr of rows) {
+                            const sel = tr.querySelector(".skill-select")?.value.toLowerCase() || "";
+                            if (sel.includes(skillName) || skillName.includes(sel)) {
+                                foundRank = Math.max(foundRank, parseInt(tr.querySelector(".skill-rating")?.value) || 0);
+                            }
+                        }
+                        if (foundRank < targetRank) return false;
                     }
-                } else {
-                    html += `<option value="${t.name}" ${sel}>${t.name}</option>`;
+                    continue;
                 }
-            });
 
-            html += `</optgroup>`;
-        });
-    }
-    return html;
-}
+                const otherTalentMatch = part.match(/Other:.*?\b([A-Za-z\s]+)\s+Talent/i);
+                if (otherTalentMatch) {
+                    const reqTalentName = otherTalentMatch[1].trim().toLowerCase();
+                    const hasTalent = Array.from(document.querySelectorAll(".talent-select")).some(s => s.value.toLowerCase().includes(reqTalentName));
+                    if (!hasTalent) return false;
+                    continue;
+                }
+            }
+            return true;
+        }
+
+        function getTalentOptionsHtml(selectedVal = "") {
+            let html = `<option value="">-- Выбери талант --</option>`;
+            html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' : ''}>★ Свой талант (Custom)</option>`;
+            
+            if (typeof GENERAL_TALENTS !== 'undefined') {
+                const showAll = document.getElementById("showAllTalentsToggle")?.checked || false;
+
+                const availableTalents = GENERAL_TALENTS.filter(t => 
+                    showAll || checkTalentRequirements(t) || t.name === selectedVal
+                );
+
+                const grouped = {};
+                availableTalents.forEach(t => {
+                    const bookName = t.book && t.book.trim() ? t.book.trim() : "Other / Core";
+                    if (!grouped[bookName]) grouped[bookName] = [];
+                    grouped[bookName].push(t);
+                });
+
+                Object.keys(grouped).sort().forEach(book => {
+                    html += `<optgroup label="📖 ${book}">`;
+                    grouped[book].sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
+                        const fits = checkTalentRequirements(t);
+                        const sel = (t.name === selectedVal) ? 'selected' : '';
+
+                        if (showAll) {
+                            if (fits) {
+                                html += `<option value="${t.name}" ${sel} style="color: #66bb6a; background: #14110e;">✓ ${t.name}</option>`;
+                            } else {
+                                html += `<option value="${t.name}" ${sel} style="color: #ef5350; background: #14110e;">✕ ${t.name}</option>`;
+                            }
+                        } else {
+                            html += `<option value="${t.name}" ${sel}>${t.name}</option>`;
+                        }
+                    });
+                    html += `</optgroup>`;
+                });
+            }
+            return html;
+        }
 
         function refreshAllTalentSelects() {
             document.querySelectorAll(".talent-card").forEach(card => {
@@ -1532,7 +1562,7 @@ function getTalentOptionsHtml(selectedVal = "") {
         }
 
         // ЗАГРУЗКА ДАННЫХ ПЕРСОНАЖА В ЛИСТ
-        function loadCharacterData(data) {
+        window.loadCharacterData = function(data) {
             if (!data) return;
 
             if (data.charName !== undefined) document.getElementById("charName").value = data.charName;
@@ -1625,9 +1655,7 @@ function getTalentOptionsHtml(selectedVal = "") {
                 addNewTalentCard();
             }
             refreshAllTalentSelects();
-        }
-
-        window.addEventListener("DOMContentLoaded", renderRoster);
+        };
     </script>
 </body>
 </html>
