@@ -250,5 +250,131 @@ const PURSUITS_DATA = [
                 }
             }
         ]
+    },
+    {
+        id: "dabbler",
+        name: "Dabbler",
+        starting: "A Dabbler begins the game with a Grimoire containing one Sorcery Magia; one Enchanting, Necromancy, or Prestidigitation Magia (for a total of two Magia); and three Immuto.",
+        onThePursuit: "Epiphany: When this character fails a Magical duel during Dramatic Time, she may draw a card. During the Epilogue, a character on this Pursuit may advance in any Magical Skill in addition to those Skill Advancement options presented by the Fatemaster.",
+        steps: [
+            {
+                step: 0,
+                type: "single",
+                talent: {
+                    name: "Imbue Protection",
+                    desc: "This character gains the following Tactical Action:\n(0) Imbue Protection: This character may target a friendly character within 1 yard (which may be herself) and discard a card. If she does so, the target gains the following Condition for five minutes: “Imbued Protection +1: When this character suffers damage, reduce the damage suffered by +1 (to a minimum of 0), then reduce the value of this Condition by the same amount.” Increase the value of this Condition to Imbued Protection +2 if the discarded card had a value of 6-10, or Imbued Protection +3 if the card had a value of 11 or greater."
+                }
+            },
+            {
+                step: 1,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Counter Magic",
+                        desc: "This character gains the following Tactical Action:\n(0) Counter Magic: Target a character within 10 yards and line of sight. Until the start of this character’s next turn, the next time the target attempts to cast a Spell or Spell-like Manifested Power, this character may make a Counter-Spelling Challenge against a TN equal to the final duel total of the Spell or Manifested Power being cast. On a success, the Spell or Manifested Power is successfully countered and has no effect, just as if the casting attempt had failed."
+                    },
+                    {
+                        name: "Mastered Immuto",
+                        desc: "When this character gains this Talent, she chooses an Immuto. This character always has access to the chosen Immuto, no matter her chosen Grimoire."
+                    }
+                ]
+            },
+            {
+                step: 2,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 3,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Arcane Musings",
+                        desc: "This character adds +t to her Sorcery Skill."
+                    },
+                    {
+                        name: "Mastered Magia",
+                        desc: "When this character gains this Talent, she chooses a Magia. This character always has access to the chosen Magia, no matter her chosen Grimoire. If she does not possess a Grimoire, she may act as if she possessed a Grimoire with this Magia."
+                    }
+                ]
+            },
+            {
+                step: 4,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 5,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Spell Twisting",
+                        desc: "After this character adds one or more Immuto to a Spell, she may discard a card to add one instance of an additional Immuto she knows (which may be the same Immuto, if allowed) to the Spell with no increase to the Spell's TN."
+                    },
+                    {
+                        name: "Mastered Immuto",
+                        desc: "When this character gains this Talent, she chooses an Immuto. This character always has access to the chosen Immuto, no matter her chosen Grimoire."
+                    }
+                ]
+            },
+            {
+                step: 6,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 7,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Surge",
+                        desc: "This character gains the following Trigger on Magical Skill Challenges used to cast Spells:\ntt Surge: After succeeding, draw a card."
+                    },
+                    {
+                        name: "Mastered Magia",
+                        desc: "When this character gains this Talent, she chooses a Magia. This character always has access to the chosen Magia, no matter her chosen Grimoire. If she does not possess a Grimoire, she may act as if she possessed a Grimoire with this Magia."
+                    }
+                ]
+            },
+            {
+                step: 8,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 9,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Empowered Channeling",
+                        desc: "This character gains + to the casting attempt and any resulting damage flip of the first Spell she casts on her turn."
+                    },
+                    {
+                        name: "Mastered Immuto",
+                        desc: "When this character gains this Talent, she chooses an Immuto. This character always has access to the chosen Immuto, no matter her chosen Grimoire."
+                    }
+                ]
+            },
+            {
+                step: 10,
+                type: "single",
+                talent: {
+                    name: "Casting Expert",
+                    desc: "This character gains 1 additional AP on her turn, but this AP may only be used to cast a Spell or Manifested Power."
+                }
+            }
+        ]
     }
 ];
