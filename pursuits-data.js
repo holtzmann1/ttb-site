@@ -936,5 +936,257 @@ const PURSUITS_DATA = [
                 }
             }
         ]
+    },
+    {
+        id: "mercenary",
+        name: "Mercenary",
+        starting: "A Mercenary begins the game with one Ranged Combat weapon and any armor. These items cannot have a total combined value greater than 20§.",
+        onThePursuit: "A Fistful of Scrip: When this character fails a Ranged Combat duel during Dramatic Time, she may draw a card. During the Epilogue, a character on this Pursuit may advance in any Ranged Combat Skill in addition to those Skill Advancement options presented by the Fatemaster.",
+        steps: [
+            {
+                step: 0,
+                type: "single",
+                talent: {
+                    name: "Bounty Hunter",
+                    desc: "When this character encounters a character with a bounty on his or her head (including otherwise decent people she was simply paid to locate), she automatically realizes this and remembers the amount of the bounty and whether the character is wanted dead, alive, or either of the two. If the wanted character has disguised themselves or is using a fake name, this character must succeed on a Scrutiny Challenge (TN equal to the wanted character’s Deceive + Cunning + Rank Value) to realize that he or she has a bounty on their head; on a failure, the disguise or fake name prevents this character from realizing the wanted character’s true identity."
+                }
+            },
+            {
+                step: 1,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Endless Pursuit",
+                        desc: "This character gains :+: to her Track Challenges, and on a successful Track Challenge, she finds her target 50% faster than normal. If she achieves a Margin of Success on a Track Challenge, she learns how the characters she is tracking are equipped, including their provisions, weapons, armor, and a general sense of how much ammunition they have (if any)."
+                    },
+                    {
+                        name: "Odd Jobs",
+                        desc: "At the start of every session, this character gains an amount of scrip equal to twice her completed ranks in this Pursuit. This income represents various odd jobs that the character has completed between adventures, so if she has not had at least eight hours of waking time between sessions to complete one of these minor assignments, she does not gain this scrip. The exact nature of the odd jobs the character completes are up to her and the Fatemaster to work out."
+                    }
+                ]
+            },
+            {
+                step: 2,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 3,
+                type: "choice",
+                talents: [
+                    {
+                        name: "To the Highest Bidder",
+                        desc: "When this character is targeted with a Close Combat attack performed by a non-Beast attacker, she may choose to throw a handful of scrip amounting to no less than half the attacker’s Rank Value into the air. If she does so, she may add her ranks in Barter to her Defense and Willpower for the duration of the attack. If the Close Combat attack misses, the target cannot make any further attacks against this character for the rest of its turn, and if the attack achieved a Margin of Failure, the attacker’s turn immediately ends as it focuses its full attention on snatching up the money."
+                    },
+                    {
+                        name: "Contract Negotiation",
+                        desc: "This character gains :+: to her Barter Challenges. If she turns in a character with a bounty on their head (dead or alive), she may attempt a Barter Challenge (TN 5 + the target’s Rank Value) to increase the value of the character’s bounty by +50%."
+                    }
+                ]
+            },
+            {
+                step: 4,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 5,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Human Shield",
+                        desc: "This character gains the following Defensive Trigger:\n\nDf (:m:) Human Shield: After this character fails, she grabs a target character of Minion rank or lower within 2 yards and Line of Sight (which may not be the attacker) and places it into physical contact with her, between her and the attacker. Damage is then split evenly between the Minion and this character, with any uneven damage going to the Minion."
+                    },
+                    {
+                        name: "Making Ends Meet",
+                        desc: "After this character fails a Skill Challenge, she may “lose” an amount of scrip equal to twice the difference between her final acting value and the TN of the Skill Challenge. If she does so, she is considered to have passed the Skill Challenge with no Margins of Success. If the Skill Challenge was an attack, it counts as a tie (and thus, the damage flip suffers a :--: modifier)."
+                    }
+                ]
+            },
+            {
+                step: 6,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 7,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Coin for Kills",
+                        desc: "After this character kills an enemy, she may discard a card to gain an amount of scrip equal to the target’s Rank Value. The exact source of this scrip is left to the player and Fatemaster to work out."
+                    },
+                    {
+                        name: "Deadly Hunter",
+                        desc: "This character gains :+: to the damage flip of any attack made against a target that she was paid to fight or kill.\n\nIt falls to the Fatemaster’s discretion what counts as “paid to fight,” but for the most part, if the character was hired by a Fatemaster character to commit violence or is chasing a bounty, this Talent should apply."
+                    }
+                ]
+            },
+            {
+                step: 8,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 9,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Hard Knock Life",
+                        desc: "This character may, at the end of her turn during Dramatic Time, choose to either “lose” two scrip or suffer 1 Wound. If she chooses to do either, she may draw a card."
+                    },
+                    {
+                        name: "Borrowed Time",
+                        desc: "At the start of this character’s turn during Dramatic Time, this character may choose to “lose” five scrip or suffer 2 damage. If she chooses to do either, she gains Fast."
+                    }
+                ]
+            },
+            {
+                step: 10,
+                type: "single",
+                talent: {
+                    name: "Paid in Advance",
+                    desc: "When this character flips her Initiative at the start of Dramatic Time, she may draw up to five cards. If she does so, at the start of her second turn and every turn thereafter until the end of Dramatic Time, she must discard a card (if possible).\n\nAdditionally, when this character accepts a mission or agrees to bring in a bounty, she gains 50% of the final reward or bounty as an advance. If the character does not complete the mission or capture the bounty, she is expected to return this cash advance. If she does not, her reputation suffers, she earns the enmity of the people that gave her the advance, and she cannot use this Talent (for either of its effects) for a period of two months."
+                }
+            }
+        ]
+    },
+    {
+        id: "overseer",
+        name: "Overseer",
+        starting: "An Overseer begins the game with a non-magical skill toolkit.",
+        onThePursuit: "Oversight: When this character fails a Social duel, she may draw a card. During the Epilogue, a character on this Pursuit may advance in any Social Skill in addition to those Skill Advancement options presented by the Fatemaster.",
+        steps: [
+            {
+                step: 0,
+                type: "single",
+                talent: {
+                    name: "Management Material",
+                    desc: "When this character joins an Ongoing Challenge, she may discard a card to use the Leadership Skill as if it were one of the Skills Allowed by the Ongoing Challenge for a set number of Durations, as determined by the value of the discarded card. If the discarded card had a value of 1-5, she may use the Leadership Skill for one Duration. If it had a value of 6-10, she may use it for two Durations, and if it had a value of 11+, she may use it for three Durations."
+                }
+            },
+            {
+                step: 1,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Concerted Effort",
+                        desc: "This character always makes Initiative flips before any of her companions. If two or more characters have this Talent, they may choose the order in which they make their Initiative flips.\n\nWhen friendly characters make Initiative flips, they may choose not to make an Initiative flip and to use this character’s initiative value (after calculating all modifiers) instead."
+                    },
+                    {
+                        name: "Supervision",
+                        desc: "This character may discard a card to add the suit of the discarded card to the final duel total of any friendly character that can see or hear her (including herself)."
+                    }
+                ]
+            },
+            {
+                step: 2,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 3,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Work Smarter",
+                        desc: "After this character succeeds at a Skill Challenge during an Ongoing Challenge, permanently reduce the TN of the Ongoing Challenge by -1 for all subsequent Durations of the Ongoing Challenge. If there are multiple characters with this Talent participating in the Ongoing Challenge, this effect is cumulative."
+                    },
+                    {
+                        name: "Reminder of a Worse Fate",
+                        desc: "When another friendly character within 6 yards attempts a Horror or Unconsciousness Challenge, she may add this character’s ranks in the Leadership Skill to her final duel total."
+                    }
+                ]
+            },
+            {
+                step: 4,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 5,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Best Practices",
+                        desc: "When this character succeeds on a Challenge Flip made as part of an Ongoing Challenge, she gains one extra Margin of Success."
+                    },
+                    {
+                        name: "Protect Me!",
+                        desc: "This character gains the following Defensive Trigger:\n\nDf (:t:) Protect Me!: After this character fails, another willing character within 2 yards of this character and within range and line of the sight of the attacker suffers the effects of the attack instead of this character. This character’s subordinate characters (if any) are always considered to be willing characters."
+                    }
+                ]
+            },
+            {
+                step: 6,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 7,
+                type: "choice",
+                talents: [
+                    {
+                        name: "How to Do Your Job",
+                        desc: "After another character within 6 yards fails a Skill Challenge, this character may discard a card to make a Skill Challenge against the same TN. If there were any modifiers to the original character’s flip (such as :+: or :-: modifiers), they apply to this character’s flip as well.\n\nIf this character succeeds, the other character uses this character’s final duel total in place of her original failed final duel total."
+                    },
+                    {
+                        name: "You Lazy So-and-So",
+                        desc: "This character gains the following Manifested Power:\n\n(1) You Lazy So-and-So (Charm + Leadership / TN 8:r: / Resist: Wp / Range: 6 yards): Target unconscious character regains consciousness and heals 1/2/3 damage.\n\n:r::r: Stop Complaining: The target may ignore one Critical Effect currently affecting her for three rounds.\n\n:t: On Your Feet!: The target may immediately stand up from being Prone."
+                    }
+                ]
+            },
+            {
+                step: 8,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 9,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Finish the Job",
+                        desc: "When another friendly character within 6 yards of this character would fall unconscious or be killed, that character may discard a card to take a 1 AP Action before they fall unconscious or are killed. This ability cannot affect a specific character more than once per round."
+                    },
+                    {
+                        name: "Stay Focused",
+                        desc: "This character may discard a card to end the Focused Condition on herself. If she does so, every friendly character within 6 yards that can see or hear her gains Focused +1."
+                    }
+                ]
+            },
+            {
+                step: 10,
+                type: "single",
+                talent: {
+                    name: "What Lackeys Are For",
+                    desc: "On her turn during Dramatic Time, this character may discard three cards. If she does so, every friendly character that can see or hear her may immediately take a 1 AP Action in any order that this character wishes."
+                }
+            }
+        ]
     }
 ];
