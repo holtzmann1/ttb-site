@@ -125,7 +125,6 @@ const PURSUITS_DATA = [
             }
         ]
     },
-    ,
     {
         id: "criminal",
         name: "Criminal",
