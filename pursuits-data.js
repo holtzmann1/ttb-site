@@ -432,5 +432,131 @@ const PURSUITS_DATA = [
                 }
             }
         ]
+    },
+    {
+        id: "drudge",
+        name: "Drudge",
+        starting: "A Drudge begins play with either a non-magical skill toolkit or one pneumatic limb with any number of steam augments, up to a total value of 25§.",
+        onThePursuit: "Long Days: When this character fails a Training duel, she may draw a card. During the Epilogue, a character on this Pursuit may advance in any Training Skill in addition to those Skill Advancement options presented by the Fatemaster.",
+        steps: [
+            {
+                step: 0,
+                type: "single",
+                talent: {
+                    name: "Hard Worker",
+                    desc: "Whether it's hauling heavy crates off a riverboat or digging Soulstones out of a dark and cramped mine, this character knows that the fastest way to finish a job is to put her back into it and just get it done. Slacking off and shirking one's responsibilities only delay the work, and that's time that could be spent getting other things finished.\n\nThis character gains :+: to all Athletics Challenges. If she succeeds on an Athletics Challenge, she gains a Margin of Success."
+                }
+            },
+            {
+                step: 1,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Keep Standing",
+                        desc: "No matter how deep this character's wounds, they never seem to keep her down for all that long. Where a lesser person would fall to the ground, grabbing the stump of their arm and screaming in pain as blood sprays in every direction, this character is likely to just glance at the wound, mutter a few select curse words, and then look around for someone who could point them toward a cheap physician.\n\nThis character may discard a Twist Card when she suffers a Critical Effect to mitigate its effects. If the Critical Effect is an Instant Critical Effect, it is ignored.\n\nIf the Critical Effect is a Lasting Critical Effect, it has no effect until the start of this character's next turn (during Dramatic Time) or for one minute (during Narrative Time).\n\nAdditionally, this character may discard a Twist Card to automatically pass an Unconsciousness Challenge."
+                    },
+                    {
+                        name: "Long Suffering",
+                        desc: "Say what you want about long hours of physical toil, it tends to make a person tough and hardy. After a lifetime of coming home with sore limbs and aching muscles, a knife wound in one's side just isn't all that impressive. To some, this resignation with regards to pain almost seems superhuman, but to the Drudge, it's not much more than another doctor's bill that she probably doesn't have the money to cover.\n\nThis character gains +2 Wounds."
+                    }
+                ]
+            },
+            {
+                step: 2,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 3,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Teamwork",
+                        desc: "Due to the large projects they are frequently expected to complete, Drudges rarely work alone. Most often, they are part of a team made up of hard-working men and women such as themselves. By working together, they can pool their strength and time and finish the project faster than any of them could have hoped on their own.\n\nEven when they're off the work site, Drudges carry this same mentality with them. It's often the Drudge that encourages everyone to stay on task and avoid becoming distracted, and when tempers flare and personalities clash, it's usually the Drudge that ends up trying to get everyone to shake hands, put aside their differences, and get back to work.\n\nThis character may take the (1) Assist Action as a (0) Action.\n\nAdditionally, when this character is targeted by the Assist Action, she gains a :+: to the assisted Action (in addition to the usual benefits of the Assist Action)."
+                    },
+                    {
+                        name: "Hard to Kill",
+                        desc: "This character can keep soldiering forward despite even the most serious of wounds. No matter what her opponents throw at her, the Drudge is ready to take more (and, often, to dish out far worse).\n\nOnce per Dramatic Time when this character receives a Critical Effect, she may choose not to receive that Critical Effect."
+                    }
+                ]
+            },
+            {
+                step: 4,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 5,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Steady Pace",
+                        desc: "Efforts that proceed at a consistent, reliable speed are, for this character, far more efficient than bursts of speed. As she works, she falls into a comfortable pace, ensuring that she will not tire as other, more fervent characters might.\n\nAfter this character succeeds at a Skill Challenge made as a result of an Ongoing Challenge, she gains a :+: to her next Skill Challenge made as part of that Ongoing Challenge."
+                    },
+                    {
+                        name: "Slow to Die",
+                        desc: "Somehow, this character seems to avoid the worst injuries she could suffer. A close range blast from a shotgun knocks her back and leaves her chest bleeding, but fails to blow a hole right through her. A slash from a greatsword cuts deep into her arm but fails to sever it. Whether through an almost supernatural level of toughness, incredible luck, or just sheer stubbornness, this character is impressively resistant to permanent injury.\n\nWhen this character suffers a Critical Effect, the Critical Effect flip suffers a :-:."
+                    }
+                ]
+            },
+            {
+                step: 6,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 7,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Soldier On",
+                        desc: "There are some people who just won't give up, and they can inspire others to press on despite the worst that the world can throw at them. The sight of a Drudge resolutely facing down an enemy despite her wounds is the stuff of inspirational posters and tavern stories, and she lives up to her indomitable reputation without even trying.\n\nAt the beginning of Dramatic Time, this character may heal 2/3/5 damage. In addition, she may choose any conscious friendly character that can hear her to also heal 2/3/5 damage."
+                    },
+                    {
+                        name: "Put Your Back Into It",
+                        desc: "No matter the task, a Drudge knows that, sooner or later, she is going to have to pick up a shovel or a pickaxe and do a bit of hard labor. Some might call it a pessimistic outlook on life, and maybe it is, but it doesn't stop it from also being a true statement.\n\nBefore this character performs a Close Combat, Expertise, Training, or Ranged Combat Skill Challenge, she may discard a card to use either Athletics + Resilience (if the Skill Challenge is tied to a Physical Aspect) or Athletics + Tenacity (if the Skill Challenge is tied to a Mental Aspect) in place of the Skill Challenge's original Skill and Aspect."
+                    }
+                ]
+            },
+            {
+                step: 8,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 9,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Just a Graze",
+                        desc: "This character tends to have an uncanny knack for surviving attacks that should have killed her. While most Fated are capable of avoiding certain pitfalls that destiny has laid out for them, the Drudge seems to have a special influence over suffering and pain... namely, her own.\n\nEventually, Drudges just seem to stop getting all that hurt. Extreme situations can still threaten their life, and they're certainly not immortal, as more than one gunfight has proven, but for the most part, Drudges seem to avoid most of the injuries that afflict other characters. Nephilim can chew on their arms, swordsmen can stab them in the chest, and snipers can put bullets in their heads, but somehow, the Drudge usually seems to just walk away with a splitting headache and a few minor scrapes and bruises to show for it.\n\nThis character may Cheat any Damage Flip she suffers, regardless of :-: modifiers or jokers."
+                    },
+                    {
+                        name: "Can't Keep Me Down",
+                        desc: "Less of a second wind and more of a constant breeze that never stops blowing, some Drudges seem to capable of recovering from their wounds far faster than would be expected. Most Drudges find themselves unable to explain just how they can take so much punishment and keep functioning, so they just shrug their shoulders and write it off with a simple explanation, such as \"I'm just stubborn, I guess.\"\n\nAt the start of this character's turn during Dramatic Time, if she has less than half her total Wounds remaining (rounded up), she heals 1 damage. If she is suffering from one or more Critical Effects or has less than 0 Wounds remaining, she instead heals 2 damage."
+                    }
+                ]
+            },
+            {
+                step: 10,
+                type: "single",
+                talent: {
+                    name: "My Lot in Life",
+                    desc: "As resilient as a Drudge might be, there are still times in her life when she's going to find herself in a bad situation, perhaps with a missing limb or a fatal wound. When that happens, rather than panicking or passing out, a Drudge tends to just sigh and realize that she always knew this day would come eventually.\n\nEven if such injuries lead to her death, a Drudge doesn't plan to wait for death on her back. She's worked too hard to go out that way, and if it's her time to go, then she plans to go on her terms, whatever they may be.\n\nAt the start of this character's turn during Dramatic Time, she may discard a card to gain a number of additional AP equal to the number of Lasting Critical Effects she is suffering from (even if she is currently ignoring their effects due to the Keep Standing Talent), to a maximum of 3 additional AP."
+                }
+            }
+        ]
     }
 ];
