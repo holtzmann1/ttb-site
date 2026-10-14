@@ -1696,5 +1696,95 @@ const PURSUITS_DATA = [
                 }
             }
         ]
-    }
+    },
+    {
+        id: "wastrel",
+        name: "Wastrel",
+        starting: "A Wastrel begins the game with a non-magical skill toolkit.",
+        onThePursuit: "Aces and Eights: When this character fails an Expertise duel, she may draw a card. During the Epilogue, a character on this Pursuit may advance in any Expertise Skill in addition to those Skill Advancement options presented by the Fatemaster.",
+        steps: [
+            {
+                step: 0,
+                type: "single",
+                talent: {
+                    name: "Luck of the Draw",
+                    desc: "When the Fate Deck is shuffled, this character draws two cards instead of one."
+                }
+            },
+            {
+                step: 1,
+                type: "single",
+                talent: {
+                    name: "Cards Up a Sleeve",
+                    desc: "At any point, this character may place one Twist Card from her Control Hand face up on the table in front of her. While the Twist Card is face up, any player may discard a card from their Control Hand to Cheat Fate with that card instead of a card from their own Control Hand.\n\nAfter the face up card has been used to Cheat Fate, or at the end of the session, it is discarded into the appropriate discard pile. This character may only have one face up Twist Card in front of her at any one time (i.e., the face up card must be used before this character can use this Talent again)."
+                }
+            },
+            {
+                step: 2,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 3,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Marked Cards",
+                        desc: "At any point during this character’s turn during Dramatic Time, she may discard a card to look at the top three cards of the Fate Deck and either discard all three cards or replace all three cards in any order."
+                    },
+                    {
+                        name: "Double Down",
+                        desc: "After succeeding at a Challenge, this character may choose to “Double Down.” If she does, she makes a second Challenge, using all the same modifiers as the first. If this second Challenge succeeds, it has no effect other than allowing her to either deal +1 damage to her target (if the Challenge was an attack) or gain a Margin of Success (if the Challenge was not an attack). If the second Skill Challenge fails, however, then her original success counts as a failure.\n\nIf this Talent is gained a second time, when this character would be able to declare a legal Trigger on her second Challenge, she may choose to declare that Trigger in addition to any she declared on her first Challenge. This can allow the character to potentially declare two Triggers on a single Action (one from the initial flip and one from the second flip), provided that both Triggers are different. The character may choose the order in which the Triggers resolve."
+                    }
+                ]
+            },
+            {
+                step: 4,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 5,
+                type: "choice",
+                talents: [
+                    {
+                        name: "All In",
+                        desc: "This character gains :+: to all duels when she has no Twist Cards in her hand."
+                    },
+                    {
+                        name: "Counting Cards",
+                        desc: "At the start of this character’s turn, she may discard a Twist Card. If she does, for the rest of her turn, this character “flips” cards from the top of the Fate Deck discard pile, instead of from the Fate Deck.\n\nWhile this Talent is being used, any Fate Card that would be discarded is instead set aside and discarded at the end of this character’s turn. If this character cannot “flip” a card from the discard pile – if it has run out of cards, for instance – then any cards she cannot flip are treated as if she had instead flipped the Black Joker."
+                    }
+                ]
+            },
+            {
+                step: 6,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 7,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Gamble Your Life",
+                        desc: "This character gains the following Manifested Power:",
+                        power: {
+                            name: "Gamble Your Life",
+                            typeLine: "Manifested Power",
+                            av: "Cunning + Gambling",
+                            ap: "(1)",
+                            tn: "10:m:",
+                            resist: "Special",
+                            range: "6 yards",
+                            desc: "Special: This Manifested Power is resisted by the target's Gambling + Cunning (+ Rank Value
 ];
