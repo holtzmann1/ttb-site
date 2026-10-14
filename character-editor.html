@@ -2031,11 +2031,37 @@ function renderTalentContent(talent) {
                 </div>
             `;
         }
-        // Если у таланта есть статблок миньона (как Thugs)
+
+        bodyHtml += `
+            <div class="pursuit-weapon-box">
+                <table class="pursuit-weapon-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 45%;">${skillHeader}</th>
+                            <th style="width: 25%;">RANGE</th>
+                            <th style="width: 30%;">DAMAGE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>${w.name}</td>
+                            <td>${w.range || "—"}</td>
+                            <td>${w.damage || "—"}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="pursuit-weapon-details">
+                    ${w.special ? `<div class="pursuit-weapon-special"><strong>Special:</strong> ${formatPursuitText(w.special)}</div>` : ""}
+                    ${triggerHtml}
+                </div>
+            </div>
+        `;
+    }
+
+    // Если у таланта есть статблок миньона (как Thugs)
     if (talent.minion) {
         const m = talent.minion;
         
-        // Рендерим таблицу характеристик (Might, Grace, Speed и т.д.)
         let statsRows = "";
         if (m.stats) {
             statsRows = `
@@ -2118,32 +2144,6 @@ function renderTalentContent(talent) {
                     ${m.skills ? `<div style="margin-bottom: 4px;"><strong>Skills:</strong> ${m.skills}</div>` : ""}
                     ${abilitiesHtml}
                     ${minionWeaponHtml}
-                </div>
-            </div>
-        `;
-    }
-
-        bodyHtml += `
-            <div class="pursuit-weapon-box">
-                <table class="pursuit-weapon-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 45%;">${skillHeader}</th>
-                            <th style="width: 25%;">RANGE</th>
-                            <th style="width: 30%;">DAMAGE</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>${w.name}</td>
-                            <td>${w.range || "—"}</td>
-                            <td>${w.damage || "—"}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="pursuit-weapon-details">
-                    ${w.special ? `<div class="pursuit-weapon-special"><strong>Special:</strong> ${formatPursuitText(w.special)}</div>` : ""}
-                    ${triggerHtml}
                 </div>
             </div>
         `;
