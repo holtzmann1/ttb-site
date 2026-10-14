@@ -1151,9 +1151,31 @@ const PURSUITS_DATA = [
                         name: "How to Do Your Job",
                         desc: "After another character within 6 yards fails a Skill Challenge, this character may discard a card to make a Skill Challenge against the same TN. If there were any modifiers to the original character’s flip (such as :+: or :-: modifiers), they apply to this character’s flip as well.\n\nIf this character succeeds, the other character uses this character’s final duel total in place of her original failed final duel total."
                     },
-                    {
+{
                         name: "You Lazy So-and-So",
-                        desc: "This character gains the following Manifested Power:\n\n(1) You Lazy So-and-So (Charm + Leadership / TN 8:r: / Resist: Wp / Range: 6 yards): Target unconscious character regains consciousness and heals 1/2/3 damage.\n\n:r::r: Stop Complaining: The target may ignore one Critical Effect currently affecting her for three rounds.\n\n:t: On Your Feet!: The target may immediately stand up from being Prone."
+                        desc: "This character gains the following Manifested Power:",
+                        power: {
+                            name: "You Lazy So-and-So",
+                            typeLine: "Manifested Power",
+                            av: "Charm + Leadership",
+                            ap: "(1)",
+                            tn: "8:r:",
+                            resist: "Wp",
+                            range: "6 yards",
+                            desc: "Target unconscious character regains consciousness and heals 1/2/3 damage.",
+                            triggers: [
+                                {
+                                    cost: ":r::r:",
+                                    name: "Stop Complaining",
+                                    desc: "The target may ignore one Critical Effect currently affecting her for three rounds."
+                                },
+                                {
+                                    cost: ":t:",
+                                    name: "On Your Feet!",
+                                    desc: "The target may immediately stand up from being Prone."
+                                }
+                            ]
+                        }
                     }
                 ]
             },
