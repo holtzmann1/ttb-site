@@ -558,5 +558,131 @@ const PURSUITS_DATA = [
                 }
             }
         ]
+    },
+    {
+        id: "graverobber",
+        name: "Graverobber",
+        starting: "A Graverobber begins the game with a Grimoire containing one Necromancy Magia; one Enchanting, Prestidigitation, or Sorcery Magia (for a total of two Magia); and three Immuto.",
+        onThePursuit: "Black Soul: When this character fails a Magical duel during Dramatic Time, she may draw a card. During the Epilogue, a character on this Pursuit may advance in any Magical Skill in addition to those Skill Advancement options presented by the Fatemaster.",
+        steps: [
+            {
+                step: 0,
+                type: "single",
+                talent: {
+                    name: "Sense Corpse",
+                    desc: "This character gains the following Tactical Action:\n\n(0) Sense Corpse: This character may discard a card to sense the presence of a corpse within 5 yards of her. This corpse is typically buried in the ground and requires digging to exhume, but it's also possible for the character to find corpses boarded up behind walls or in similar hidden areas. Note that this Action only locates corpses; it does not create them out of thin air.\n\nThe Fatemaster is within her rights to declare that there are no corpses in a given area, particularly if the character has already found corpses there or if the area is frequently and heavily patrolled, such as the Guild Enclave."
+                }
+            },
+            {
+                step: 1,
+                type: "choice",
+                talents: [
+                    {
+                        name: "They Weren't Using It",
+                        desc: "When this character uses her Sense Corpse Talent, if the discarded card was a :c:, the corpse has valuables such as rings, jewelry, or pneumatic augmentations that she can sell for a small profit. These valuables have a total scrip value equal to half the value of the card the character discarded to use her Sense Corpse Talent."
+                    },
+                    {
+                        name: "Mastered Immuto",
+                        desc: "When this character gains this Talent, she chooses an Immuto. This character always has access to the chosen Immuto, no matter her chosen Grimoire."
+                    }
+                ]
+            },
+            {
+                step: 2,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 3,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Morbid Thoughts",
+                        desc: "This character adds +:c: to her Necromancy Skill."
+                    },
+                    {
+                        name: "Mastered Magia",
+                        desc: "When this character gains this Talent, she chooses a Magia. This character always has access to the chosen Magia, no matter her chosen Grimoire. If she does not possess a Grimoire, she may act as if she possessed a Grimoire with this Magia."
+                    }
+                ]
+            },
+            {
+                step: 4,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 5,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Macabre Infusions",
+                        desc: "If this character does not have the Undead Characteristic, she may count as if she had the Undead Characteristic whenever she wishes. Fatemaster Undead characters consider this character to be one of them and will treat her with disinterest unless attacked or directly threatened."
+                    },
+                    {
+                        name: "Mastered Immuto",
+                        desc: "When this character gains this Talent, she chooses an Immuto. This character always has access to the chosen Immuto, no matter her chosen Grimoire."
+                    }
+                ]
+            },
+            {
+                step: 6,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 7,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Consume Corpse",
+                        desc: "When casting a Necromancy Spell, this character may choose to consume any number of corpses within 5 yards of her to lower the TN of the spell by -2 for each such consumed corpse. Corpses consumed in this way are reduced to dust and ash as the character leeches the energy from them.\n\nThe character must be aware of any corpses she consumes in this manner, but she does not need line of sight to them (and thus may even consume buried corpses that she has sensed with her Sense Corpse Talent).\n\nAlternatively, if this character has any Undead subordinate characters under her control, she may consume them with this Talent as if they were corpses. She may only consume undead characters under her direct control; uncontrolled undead or those under the control of another character cannot be consumed in this manner."
+                    },
+                    {
+                        name: "Mastered Magia",
+                        desc: "When this character gains this Talent, she chooses a Magia. This character always has access to the chosen Magia, no matter her chosen Grimoire. If she does not possess a Grimoire, she may act as if she possessed a Grimoire with this Magia."
+                    }
+                ]
+            },
+            {
+                step: 8,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 9,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Maniacal Laugh",
+                        desc: "This character may discard a card to animate all corpses within Aura 8 of her as Mindless Zombies. The corpses remain animated for a number of rounds equal to half the value of the discarded card, rounded up. The Mindless Zombies count as subordinate characters under this character's control.\n\nThis character may command every Mindless Zombie under her control with a (1) Order Action, and the orders may be different."
+                    },
+                    {
+                        name: "Mastered Immuto",
+                        desc: "When this character gains this Talent, she chooses an Immuto. This character always has access to the chosen Immuto, no matter her chosen Grimoire."
+                    }
+                ]
+            },
+            {
+                step: 10,
+                type: "single",
+                talent: {
+                    name: "Unholy Beacon",
+                    desc: "This character may discard a card from her Control Hand to take control of an Undead character within her line of sight. If the Undead character is of Minion Rank or lower, this character does not have to perform a Challenge to take control of it.\n\nIf the target is of Enforcer Rank or higher, the character must make a Necromancy + Charm against the Undead character’s Willpower to take control of it. This Challenge Flip may be cheated as normal. On a success, the Undead character is placed under this character’s control as a subordinate character. On a failure, the Undead character becomes immune to this Talent for 24 hours.\n\nUndead characters of Minion Rank or lower remain under this character’s control indefinitely, usually until they are destroyed. Undead characters of Enforcer Rank or higher only remain under this character’s control for 24 hours (at which point this character can attempt to use this Talent on them again).\n\nStitched characters - Fated characters who happen to be Undead - are immune to this Talent."
+                }
+            }
+        ]
     }
 ];
