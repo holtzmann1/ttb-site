@@ -684,5 +684,257 @@ const PURSUITS_DATA = [
                 }
             }
         ]
+    },
+    {
+        id: "guard",
+        name: "Guard",
+        starting: "A Guard begins the game with one Close Combat weapon and any Armor. These items cannot have a total combined value greater than 20§.",
+        onThePursuit: "Iron Tank: When this character fails a Close Combat duel during Dramatic Time, she may draw a card. During the Epilogue, a character on this Pursuit may advance in any Close Combat Skill in addition to those Skill Advancement options presented by the Fatemaster.",
+        steps: [
+            {
+                step: 0,
+                type: "single",
+                talent: {
+                    name: "Lasting Challenge",
+                    desc: "When this character succeeds on the Impose Action, the effects last until the end of Dramatic Time or until this character takes the Impose Action again (in which case the previous Impose Action lasts until the start of this character's next turn)."
+                }
+            },
+            {
+                step: 1,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Stoic Defender",
+                        desc: "This character gains the following Defensive Trigger:\n\nDf (:r:) Glancing Blow: When suffering damage, reduce the amount of damage suffered by 1, to a minimum of 0."
+                    },
+                    {
+                        name: "Stand Ground",
+                        desc: "This character does not need to discard a card to take the Defensive Stance Action."
+                    }
+                ]
+            },
+            {
+                step: 2,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 3,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Take the Hit",
+                        desc: "This character may discard a card from her control hand after an attack hits a friendly character within 2 yards of her. If she does, this character moves to a position between the friendly character and the attacker, and this character suffers the effects of the attack, which suffers a :-: to its damage flip, instead of the friendly character. Opponents engaged with this character when she moves may not attempt Disengaging Strikes to stop this movement."
+                    },
+                    {
+                        name: "Ocular Pat Down",
+                        desc: "After watching a target character for at least one minute during Narrative Time, this character may attempt a Scrutiny Challenge against a TN equal to the target’s Cunning + Stealth + Rank Value. On a failure, this character may not attempt to use this Talent against the target for the remainder of the scene.\n\nIf this character succeeds, she learns whether or not the target has any concealed weapons, and if so, what they are. In addition, the target gains the following Condition for the rest of the scene: “Assessed Threat: This character suffers a :-: to Intimidate Challenges. If this character enters into combat against the character that applied this Condition, this character’s Initiative is reduced by -5 (to a minimum of 0), and the character that applied this Condition gains :+: to all Close Combat Attacks made against this character.”"
+                    }
+                ]
+            },
+            {
+                step: 4,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 5,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Flurry",
+                        desc: "When this character gains this Talent, choose a Close Combat Skill. This character gains the following Tactical Action:\n\n(2) Flurry: This character may discard a Twist Card to take three 1 AP strikes with a Close Combat weapon with the chosen skill against a single target."
+                    },
+                    {
+                        name: "Laugh Off",
+                        desc: "This character may not be pushed or moved by enemy characters."
+                    }
+                ]
+            },
+            {
+                step: 6,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 7,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Juggernaut",
+                        desc: "This character gains the following Tactical Action:\n\n(0) Juggernaut: This character may discard a card to heal 1/2/4 damage."
+                    },
+                    {
+                        name: "Imposing Stance",
+                        desc: "When this character takes the Impose Action, she may target two characters instead of one. She makes a single Intimidate Challenge against both of them."
+                    }
+                ]
+            },
+            {
+                step: 8,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 9,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Enduring Defense",
+                        desc: "When this character takes the Defensive Stance action, her Defensive Condition lasts one additional round (i.e., until the start of her second turn after she took the Defensive Stance action)."
+                    },
+                    {
+                        name: "Knock Aside",
+                        desc: "This character gains the following Defensive Trigger:\n\nDf (:r:) Knock Aside: After an attacker misses this character with a Close Combat attack, if this character has a readied Close Combat weapon, the attacker suffers that weapon’s weak damage and is pushed a number of yards away from this character equal to this character’s Might Aspect (minimum 1 yard)."
+                    }
+                ]
+            },
+            {
+                step: 10,
+                type: "single",
+                talent: {
+                    name: "Sentinel",
+                    desc: "This character may take the Defensive Stance Action as a (0) Action.\n\nIn addition, whenever this character has the Defensive Condition (at any value), all friendly characters within 2 yards of her gain :+: to their Defense Challenges."
+                }
+            }
+        ]
+    },
+    {
+        id: "gunfighter",
+        name: "Gunfighter",
+        starting: "A Gunfighter begins the game with one or two Pistols. These items cannot have a total combined value greater than 20§.",
+        onThePursuit: "High Noon: When this character fails a Ranged Combat duel during Dramatic Time, she may draw a card. During the Epilogue, a character on this Pursuit may advance in any Ranged Combat Skill in addition to those Skill Advancement options presented by the Fatemaster.",
+        steps: [
+            {
+                step: 0,
+                type: "single",
+                talent: {
+                    name: "Quick Draw",
+                    desc: "This character may treat the (1) Ready Weapon Action as if it were a (0) Action when drawing a Pistol, and she may draw two Pistols instead of one."
+                }
+            },
+            {
+                step: 1,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Call Out",
+                        desc: "When this character takes the Impose Action, she may add her ranks in the Pistol Skill to her final duel total."
+                    },
+                    {
+                        name: "Bulletproof",
+                        desc: "This character gains the following ability:\n\nBulletproof +1: Reduce all damage suffered by this character from Ranged Combat attacks by +1, to a minimum of 1."
+                    }
+                ]
+            },
+            {
+                step: 2,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 3,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Gunfighter",
+                        desc: "This character may use Pistol weapons as if their Range were (y)2 (in addition to their normal range)."
+                    },
+                    {
+                        name: "Quick Reload",
+                        desc: "This character reduces the AP cost required to load Pistol weapons by 1."
+                    }
+                ]
+            },
+            {
+                step: 4,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 5,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Rapid Fire",
+                        desc: "This character gains the following Tactical Action:\n\n(2) Rapid Fire: This character may discard a Twist Card to take three 1 AP attack Actions with a Ranged Combat weapon against a single target."
+                    },
+                    {
+                        name: "Fastest Gun",
+                        desc: "This character gains the following Defensive Trigger:\n\nDf (:m:) Fastest Gun: After a Ranged Combat attack fails against this character, this character may expend one round of ammunition in a readied Pistol to deal its damage to the attacker. This damage flip receives a :-:."
+                    }
+                ]
+            },
+            {
+                step: 6,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 7,
+                type: "choice",
+                talents: [
+                    {
+                        name: "No Time For This",
+                        desc: "Whenever this character is involved in an Ongoing Challenge, she may choose to make one of the Challenge Flips using her Pistol Skill instead of the appropriate Skill (she still uses the appropriate Aspect, however). It falls to the Fatemaster and the player to explain how this functions from a story perspective."
+                    },
+                    {
+                        name: "Debilitating Shot",
+                        desc: "After damaging an enemy with a Ranged Combat weapon, this character may discard a card to give her enemy the Useless Limb (Arms) or Useless Limb (Legs) Condition with a limb of her choice. The Condition lasts until the enemy has fully healed all of her missing Wounds."
+                    }
+                ]
+            },
+            {
+                step: 8,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 9,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Finger on the Trigger",
+                        desc: "This character gains the following Tactical Action:\n\n(1) Finger on the Trigger: Until the start of this character’s next turn, if an enemy character within 10 yards declares a Charge Action or Ranged Combat action, this character may immediately make a 1 AP Ranged Combat attack against the enemy character.\n\nOn a success, the enemy character suffers 1 damage and the Charge Action or Ranged Combat attack fails."
+                    },
+                    {
+                        name: "Bullet Bending",
+                        desc: "Before making a Ranged Combat attack, this character may discard a card. If she does so, her Ranged Combat attack may ignore her choice of either cover or line of sight. If this character chooses to ignore line of sight and fires at a target behind cover, that target receives the benefits of cover (whether soft cover or hard cover) as usual."
+                    }
+                ]
+            },
+            {
+                step: 10,
+                type: "single",
+                talent: {
+                    name: "Ranged Expert",
+                    desc: "This character gains 1 additional AP on her turn, but this AP may only be used to make a Ranged Combat attack."
+                }
+            }
+        ]
     }
 ];
