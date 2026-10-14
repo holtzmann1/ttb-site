@@ -10,7 +10,7 @@ const PURSUITS_DATA = [
                 type: "single",
                 talent: {
                     name: "Know-It-All",
-                    desc: "When this character fails a Skill Challenge with a Skill that is associated with a Mental Aspect, she may discard a card to immediately reflip that Challenge. If the discarded card was a Tome (t), she may use an Academic Skill of her choice in place of the original Skill."
+                    desc: "When this character fails a Skill Challenge with a Skill that is associated with a Mental Aspect, she may discard a card to immediately reflip that Challenge. If the discarded card was a Tome :t:, she may use an Academic Skill of her choice in place of the original Skill."
                 }
             },
             {
@@ -19,11 +19,16 @@ const PURSUITS_DATA = [
                 talents: [
                     {
                         name: "Student of Knowledge",
-                        desc: "This character gains the following Trigger on all Academic Skill Duels: (t) Insight: After resolving, draw a card."
+                        desc: "This character gains the following Trigger on all Academic Skill Duels:\n:t: Insight: After resolving, draw a card."
                     },
                     {
                         name: "Scientific Classification",
-                        desc: "This character gains the following Tactical Action: (1) Document Denizen: Target an enemy within 10 yards and make a Challenge flip using either the Engineering Skill (if the target is a Construct), the History Skill (if the target is a human), or the Wilderness Skill (for everything else). This Challenge is opposed by the target’s Deceive + Cunning + Rank Value. The Wilderness Skill is considered to be an Academic Skill for this duel. On a success, this character learns what the target is, its Rank Value, and the nature of any Abilities or Talents that it possesses. Particularly rare or unique targets may impose a - to the character’s Challenge flip, at the Fatemaster’s discretion."
+                        desc: "This character gains the following Tactical Action:",
+                        action: {
+                            cost: "(1)",
+                            name: "Document Denizen",
+                            desc: "Target an enemy within 10 yards and make a Challenge flip using either the Engineering Skill (if the target is a Construct), the History Skill (if the target is a human), or the Wilderness Skill (for everything else). This Challenge is opposed by the target’s Deceive + Cunning + Rank Value. The Wilderness Skill is considered to be an Academic Skill for this duel. On a success, this character learns what the target is, its Rank Value, and the nature of any Abilities or Talents that it possesses. Particularly rare or unique targets may impose a :-: to the character’s Challenge flip, at the Fatemaster’s discretion."
+                        }
                     }
                 ]
             },
@@ -85,7 +90,7 @@ const PURSUITS_DATA = [
                 talents: [
                     {
                         name: "Lessons Learned",
-                        desc: "This character gains the following Defensive Trigger: Df (t) Lessons Learned: After resolving against an enemy’s attack, draw a card."
+                        desc: "This character gains the following Defensive Trigger:\nDf :t: Lessons Learned: After resolving against an enemy’s attack, draw a card."
                     },
                     {
                         name: "Mental Conditioning",
@@ -136,7 +141,19 @@ const PURSUITS_DATA = [
                 type: "single",
                 talent: {
                     name: "Improvise",
-                    desc: "This character may discard a card to create a shiv. The shiv lasts indefinitely until it is used, at which point it breaks at the end of Dramatic Time. The shiv has the following stats:\nShiv (Melee) | Range: y1 | Damage: 1/2/4\nSpecial: Concealable, Thrown. If the target is engaged with at least one other friendly character, this weapon deals +1 damage.\n(c)(c) In the Neck: After damaging, the target gains the Bleeding Out Condition."
+                    desc: "This character may discard a card to create a shiv. The shiv lasts indefinitely until it is used, at which point it breaks at the end of Dramatic Time. The shiv has the following stats:",
+                    weapon: {
+                        name: "Shiv",
+                        skill: "Melee",
+                        range: "1",
+                        damage: "1/2/4",
+                        special: "Concealable, Thrown. If the target is engaged with at least one other friendly character, this weapon deals +1 damage.",
+                        trigger: {
+                            cost: ":c::c:",
+                            name: "In the Neck",
+                            desc: "After damaging, the target gains the Bleeding Out Condition."
+                        }
+                    }
                 }
             },
             {
@@ -145,11 +162,11 @@ const PURSUITS_DATA = [
                 talents: [
                     {
                         name: "Scoundrel",
-                        desc: "This character gains the following Trigger to all Social Skill Challenges:\n(m) Fast Talk: After resolving, take a Pick Pocket Action against a target within 1 yard. The Pick Pocket Action gains + to its flip."
+                        desc: "This character gains the following Trigger to all Social Skill Challenges:\n:m: Fast Talk: After resolving, take a Pick Pocket Action against a target within 1 yard. The Pick Pocket Action gains :+: to its flip."
                     },
                     {
                         name: "Friends in Low Places",
-                        desc: "This character gains + to Barter, Bewitch, and Leadership Challenges made against bandits, gang members, criminals, mercenaries, and other lawless types. Additionally, if a Fatemaster character ever decides to pursue a bounty that has been placed on this character, this character finds out about it from one of her contacts as soon as is possible."
+                        desc: "This character gains :+: to Barter, Bewitch, and Leadership Challenges made against bandits, gang members, criminals, mercenaries, and other lawless types. Additionally, if a Fatemaster character ever decides to pursue a bounty that has been placed on this character, this character finds out about it from one of her contacts as soon as is possible."
                     }
                 ]
             },
@@ -189,7 +206,7 @@ const PURSUITS_DATA = [
                 talents: [
                     {
                         name: "Dirty Trick",
-                        desc: "This character gains the following Trigger on the Trick Action:\n(m) Dirty Trick: After succeeding, take a (1) AP Close Combat attack against the target, if it is in range."
+                        desc: "This character gains the following Trigger on the Trick Action:\n:m: Dirty Trick: After succeeding, take a (1) AP Close Combat attack against the target, if it is in range."
                     },
                     {
                         name: "Thugs",
@@ -215,7 +232,7 @@ const PURSUITS_DATA = [
                     },
                     {
                         name: "Into Shadows",
-                        desc: "When this character gains this Talent, she chooses either Close Combat or Ranged Combat attacks. This character gains the following Trigger on all attacks of the chosen type:\n(m) Hide in Shadow: After succeeding, this character may move up to 3 yards in any direction."
+                        desc: "When this character gains this Talent, she chooses either Close Combat or Ranged Combat attacks. This character gains the following Trigger on all attacks of the chosen type:\n:m: Hide in Shadow: After succeeding, this character may move up to 3 yards in any direction."
                     }
                 ]
             },
@@ -233,7 +250,7 @@ const PURSUITS_DATA = [
                 talents: [
                     {
                         name: "Misdirection",
-                        desc: "This character gains the following Defensive Trigger:\nDf (m) Misdirection: After a Close Combat attack from an enemy character succeeds against this character, this character may discard a card. If she does, a target enemy character in the attacker’s engagement range suffers the effects of the Attack Action instead of this character."
+                        desc: "This character gains the following Defensive Trigger:\nDf :m: Misdirection: After a Close Combat attack from an enemy character succeeds against this character, this character may discard a card. If she does, a target enemy character in the attacker’s engagement range suffers the effects of the Attack Action instead of this character."
                     },
                     {
                         name: "Shock and Awe",
@@ -262,7 +279,12 @@ const PURSUITS_DATA = [
                 type: "single",
                 talent: {
                     name: "Imbue Protection",
-                    desc: "This character gains the following Tactical Action:\n(0) Imbue Protection: This character may target a friendly character within 1 yard (which may be herself) and discard a card. If she does so, the target gains the following Condition for five minutes: “Imbued Protection +1: When this character suffers damage, reduce the damage suffered by +1 (to a minimum of 0), then reduce the value of this Condition by the same amount.” Increase the value of this Condition to Imbued Protection +2 if the discarded card had a value of 6-10, or Imbued Protection +3 if the card had a value of 11 or greater."
+                    desc: "This character gains the following Tactical Action:",
+                    action: {
+                        cost: "(0)",
+                        name: "Imbue Protection",
+                        desc: "This character may target a friendly character within 1 yard (which may be herself) and discard a card. If she does so, the target gains the following Condition for five minutes: “Imbued Protection +1: When this character suffers damage, reduce the damage suffered by +1 (to a minimum of 0), then reduce the value of this Condition by the same amount.” Increase the value of this Condition to Imbued Protection +2 if the discarded card had a value of 6-10, or Imbued Protection +3 if the card had a value of 11 or greater."
+                    }
                 }
             },
             {
@@ -271,7 +293,12 @@ const PURSUITS_DATA = [
                 talents: [
                     {
                         name: "Counter Magic",
-                        desc: "This character gains the following Tactical Action:\n(0) Counter Magic: Target a character within 10 yards and line of sight. Until the start of this character’s next turn, the next time the target attempts to cast a Spell or Spell-like Manifested Power, this character may make a Counter-Spelling Challenge against a TN equal to the final duel total of the Spell or Manifested Power being cast. On a success, the Spell or Manifested Power is successfully countered and has no effect, just as if the casting attempt had failed."
+                        desc: "This character gains the following Tactical Action:",
+                        action: {
+                            cost: "(0)",
+                            name: "Counter Magic",
+                            desc: "Target a character within 10 yards and line of sight. Until the start of this character’s next turn, the next time the target attempts to cast a Spell or Spell-like Manifested Power, this character may make a Counter-Spelling Challenge against a TN equal to the final duel total of the Spell or Manifested Power being cast. On a success, the Spell or Manifested Power is successfully countered and has no effect, just as if the casting attempt had failed."
+                        }
                     },
                     {
                         name: "Mastered Immuto",
@@ -293,7 +320,7 @@ const PURSUITS_DATA = [
                 talents: [
                     {
                         name: "Arcane Musings",
-                        desc: "This character adds +t to her Sorcery Skill."
+                        desc: "This character adds +:t: to her Sorcery Skill."
                     },
                     {
                         name: "Mastered Magia",
@@ -337,7 +364,7 @@ const PURSUITS_DATA = [
                 talents: [
                     {
                         name: "Surge",
-                        desc: "This character gains the following Trigger on Magical Skill Challenges used to cast Spells:\ntt Surge: After succeeding, draw a card."
+                        desc: "This character gains the following Trigger on Magical Skill Challenges used to cast Spells:\n:t::t: Surge: After succeeding, draw a card."
                     },
                     {
                         name: "Mastered Magia",
@@ -359,7 +386,7 @@ const PURSUITS_DATA = [
                 talents: [
                     {
                         name: "Empowered Channeling",
-                        desc: "This character gains + to the casting attempt and any resulting damage flip of the first Spell she casts on her turn."
+                        desc: "This character gains :+: to the casting attempt and any resulting damage flip of the first Spell she casts on her turn."
                     },
                     {
                         name: "Mastered Immuto",
