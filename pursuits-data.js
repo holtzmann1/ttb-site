@@ -124,5 +124,132 @@ const PURSUITS_DATA = [
                 }
             }
         ]
+    },
+    ,
+    {
+        id: "criminal",
+        name: "Criminal",
+        starting: "A Criminal begins the game with a non-magical skill toolkit.",
+        onThePursuit: "Opportunist: When this character fails a Training duel, she may draw a card. During the Epilogue, a character on this Pursuit may advance in any Training Skill in addition to those Skill Advancement options presented by the Fatemaster.",
+        steps: [
+            {
+                step: 0,
+                type: "single",
+                talent: {
+                    name: "Improvise",
+                    desc: "This character may discard a card to create a shiv. The shiv lasts indefinitely until it is used, at which point it breaks at the end of Dramatic Time. The shiv has the following stats:\nShiv (Melee) | Range: y1 | Damage: 1/2/4\nSpecial: Concealable, Thrown. If the target is engaged with at least one other friendly character, this weapon deals +1 damage.\n(c)(c) In the Neck: After damaging, the target gains the Bleeding Out Condition."
+                }
+            },
+            {
+                step: 1,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Scoundrel",
+                        desc: "This character gains the following Trigger to all Social Skill Challenges:\n(m) Fast Talk: After resolving, take a Pick Pocket Action against a target within 1 yard. The Pick Pocket Action gains + to its flip."
+                    },
+                    {
+                        name: "Friends in Low Places",
+                        desc: "This character gains + to Barter, Bewitch, and Leadership Challenges made against bandits, gang members, criminals, mercenaries, and other lawless types. Additionally, if a Fatemaster character ever decides to pursue a bounty that has been placed on this character, this character finds out about it from one of her contacts as soon as is possible."
+                    }
+                ]
+            },
+            {
+                step: 2,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 3,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Relentless",
+                        desc: "This character is immune to Horror Duels."
+                    },
+                    {
+                        name: "Duplicitous",
+                        desc: "This character may use her Deceive Skill in place of her Evade Skill when calculating her Defense Derived Aspect."
+                    }
+                ]
+            },
+            {
+                step: 4,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 5,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Dirty Trick",
+                        desc: "This character gains the following Trigger on the Trick Action:\n(m) Dirty Trick: After succeeding, take a (1) AP Close Combat attack against the target, if it is in range."
+                    },
+                    {
+                        name: "Thugs",
+                        desc: "This character attracts the service of two Thugs who want nothing more than to be her left and right hands as the character slowly climbs her way up through the ranks of the criminal underworld. These Thugs are subordinate characters. When this character uses the (1) Order Action to command her Thugs, she may command them both, and her orders may be different. Alternatively, if this character is commanding a single Thug, she may treat the (1) Order Action as if it were a (0) Action. If any of this character's Thugs are killed, she may recruit new Thugs at the start of the next session.\n\nThug Stats:\nMight 2, Grace 1, Speed 0, Resilience 2, Charm -3, Intellect 2, Cunning -1, Tenacity 2\nMinion (5), Living\nDefense: 4 (9), Willpower: 4 (9), Initiative: 1 (6), Wounds: 6, Walk: 4, Charge: 4, Height: 2\nSkills: Evade 2, Intimidate 2, Melee 3, Notice 1, Toughness 1\nAbilities:\n- Goons: When this character's controller succeeds on the (1) Trick Action, this character also gains the benefits of the Action (instead of just its controller).\n- Pick On Someone Yer Own Size!: When this character's controller is targeted with a (y) attack, if this character would be a valid target for the attack, its controller may discard a card to make this character the target of the attack.\nAttack:\n- (1) Crude Club (Melee): AV 5 (10) | Rg: y2 | Resist: Df | Target suffers 2/2/4 damage. Whenever this weapon deals Severe damage, the target suffers a Weak Critical Effect in addition to any other Critical Effects it would suffer."
+                    }
+                ]
+            },
+            {
+                step: 6,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 7,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Study Opponent",
+                        desc: "When this character gains this Talent, she chooses either Close Combat or Ranged Combat attacks. When this character makes an attack of the chosen type, she may choose to target the opponent’s Willpower instead of Defense."
+                    },
+                    {
+                        name: "Into Shadows",
+                        desc: "When this character gains this Talent, she chooses either Close Combat or Ranged Combat attacks. This character gains the following Trigger on all attacks of the chosen type:\n(m) Hide in Shadow: After succeeding, this character may move up to 3 yards in any direction."
+                    }
+                ]
+            },
+            {
+                step: 8,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 9,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Misdirection",
+                        desc: "This character gains the following Defensive Trigger:\nDf (m) Misdirection: After a Close Combat attack from an enemy character succeeds against this character, this character may discard a card. If she does, a target enemy character in the attacker’s engagement range suffers the effects of the Attack Action instead of this character."
+                    },
+                    {
+                        name: "Shock and Awe",
+                        desc: "When this character succeeds on the (1) Trick Action, every friendly character within 6 yards and line of sight of the target also gains the Action’s benefits (instead of just this character)."
+                    }
+                ]
+            },
+            {
+                step: 10,
+                type: "single",
+                talent: {
+                    name: "Nimble",
+                    desc: "This character generates an additional AP on her turn that can only be used to take a Movement General Action."
+                }
+            }
+        ]
     }
 ];
