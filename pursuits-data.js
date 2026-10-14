@@ -1441,10 +1441,260 @@ const PURSUITS_DATA = [
                     }
                 ]
             },
-            {
+           {
                 step: 10,
                 type: "single",
                 talent: {
                     name: "Manifest Destiny",
-                    desc: "This character may discard two cards to lay claim to a reasonably sized area (generally one structure or natural area such as a grove). This doesn’t give her any immediate legal claim to the area in question, but her determination and confidence about her claim give
+                    desc: "This character may discard two cards to lay claim to a reasonably sized area (generally one structure or natural area such as a grove). This doesn’t give her any immediate legal claim to the area in question, but her determination and confidence about her claim give her a :+: to Bureaucracy, Convince, or Intimidate Challenges to convince people otherwise. This bonus lasts until the character uses this Talent again.\n\nWhile on any land that could reasonably be considered to be owned by this character (including while on her homestead, in the Contract Town or neighborhood she calls home, or in an area that she’s claimed with this Talent), this character generates 1 additional General AP at the start of her turn."
+                }
+            }
+        ]
+    },
+    {
+        id: "scrapper",
+        name: "Scrapper",
+        starting: "A Scrapper begins the game with one Close Combat weapon and any Armor. These items cannot have a total combined value greater than 20§.",
+        onThePursuit: "Bloody Minded: When this character fails a Close Combat duel during Dramatic Time, she may draw a card. During the Epilogue, a character on this Pursuit may advance in any Close Combat Skill in addition to those Skill Advancement options presented by the Fatemaster.",
+        steps: [
+            {
+                step: 0,
+                type: "single",
+                talent: {
+                    name: "Into the Fray",
+                    desc: "This character increases her Charge Aspect by +2."
+                }
+            },
+            {
+                step: 1,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Duck and Weave",
+                        desc: "This character gains the following Trigger on her Close Combat attacks:\n\n:t: Duck and Weave: After succeeding, this character increases her Defense by +1 until the start of her next turn."
+                    },
+                    {
+                        name: "Fast Healer",
+                        desc: "This character gains :+: to her Healing Flips. Additionally, when this character is healed with the Artefacting, Doctor, or Stitching Skills, she heals one additional damage."
+                    }
+                ]
+            },
+            {
+                step: 2,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 3,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Close the Gap",
+                        desc: "When this character declares a Charge Action, she may draw a Twist Card."
+                    },
+                    {
+                        name: "Shoot Past Me",
+                        desc: "Friendly characters do not flip a card for this character when shooting into an engagement."
+                    }
+                ]
+            },
+            {
+                step: 4,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 5,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Wicked",
+                        desc: "When this character makes a successful disengaging strike, she deals damage with her weapon in addition to stopping her target's movement."
+                    },
+                    {
+                        name: "Flurry",
+                        desc: "When this character gains this Talent, choose a Close Combat Skill. This character gains the following Tactical Action:\n\n(2) Flurry: This character may discard a Twist Card to take three 1 AP strikes with a Close Combat weapon with the chosen skill against a single target."
+                    }
+                ]
+            },
+            {
+                step: 6,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 7,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Finish the Cur",
+                        desc: "Once per round, after an enemy character suffers a Critical Effect, this character may discard a card to allow a friendly character within 5 yards of her (which may be herself) to make a 1 AP Close Combat attack against that enemy character."
+                    },
+                    {
+                        name: "Counter-Charge",
+                        desc: "Once per round, after an enemy character completes a Charge Action against this character (including any resulting attacks), this character may discard a card to make a Close Combat attack against the enemy character."
+                    }
+                ]
+            },
+            {
+                step: 8,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 9,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Diving Charge",
+                        desc: "This character may declare Charge Actions while she is engaged. When this character moves as part of a Charge Action, she may ignore intervening characters, is not slowed by terrain, and opponents engaged with her may not attempt Disengaging Strikes to prevent her movement."
+                    },
+                    {
+                        name: "Momentum",
+                        desc: "After this character completes the movement portion of a Charge Action, this character may make a single Athletics Challenge that is opposed by the Evade Challenges of every character within her engagement range. Every character that fails this Evade Challenge suffers 1 damage and immediately becomes Prone."
+                    }
+                ]
+            },
+            {
+                step: 10,
+                type: "single",
+                talent: {
+                    name: "Melee Expert",
+                    desc: "This character gains 1 additional AP on her turn, but this AP may only be used to make a Close Combat attack."
+                }
+            }
+        ]
+    },
+    {
+        id: "tinkerer",
+        name: "Tinkerer",
+        starting: "A Tinkerer begins the game with a Height 1 Construct built according to the Construct creation rules (pg. 311). The Construct cannot have a total value greater than 25§.",
+        onThePursuit: "Gear Head: When one of this character's subordinate Constructs fails a Pneumatic duel during Dramatic Time, this character may draw a card. During the Epilogue, a character on this Pursuit may advance in any Magical Skill in addition to those Skill Advancement options presented by the Fatemaster.",
+        steps: [
+            {
+                step: 0,
+                type: "single",
+                talent: {
+                    name: "Machine Magic",
+                    desc: "This character always has access to the Animate Construct Magia, no matter her current Grimoire. If this character does not possess a Grimoire, she may act as if she possessed a Grimoire with this Magia. If she does not possess a Magical Theory, she gains the Darlin Theories Magical Theory."
+                }
+            },
+            {
+                step: 1,
+                type: "single",
+                talent: {
+                    name: "Loyal Protector",
+                    desc: "While this character is within 2 yards of one or more of her subordinate Constructs, she may add the Height of the largest such Construct to her Defense."
+                }
+            },
+            {
+                step: 2,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 3,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Construct Specialist",
+                        desc: "When this character gains this Talent, she chooses one Skill. With an hour of work, this character may increase a Construct’s ranks in that Skill to a value equal to her ranks in the Engineering Skill. When this character builds a Construct, it gains a number of ranks of the chosen Skill equal to her ranks in the Engineering Skill at no additional cost."
+                    },
+                    {
+                        name: "Push the Limits",
+                        desc: "When a subordinate Construct under this character’s control performs an Action, this character can force it to suffer 1 damage. If she does so, the Construct gains a :+: on the Action.\n\nIf this character is a Construct or has at least one pneumatic limb, she may use this Talent on herself."
+                    }
+                ]
+            },
+            {
+                step: 4,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 5,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Mend Steel",
+                        desc: "When this character successfully casts the Animate Construct Magia on a Construct, the Construct heals 1/2/3 damage.\n\nIf this character is a Construct, she may cast the Animate Construct Magia on herself to heal her own damage in this way."
+                    },
+                    {
+                        name: "Multi-Tasker",
+                        desc: "When this character takes a (1) Order Action, she may give orders to an additional Construct subordinate, and the orders for each Construct may be different."
+                    }
+                ]
+            },
+            {
+                step: 6,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 7,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Unrealistic Expectations",
+                        desc: "With an hour of tinkering, this character can give a subordinate Construct character a +1 increase to one of its Physical Aspects for one week.\n\nSubordinate characters who are not Constructs can benefit from this Talent as well, provided that they have one or more pneumatic limbs.\n\nA character can only benefit from a single instance of this Talent at one time; any additional applications of this Talent merely change which Aspect is increased and reset the duration."
+                    },
+                    {
+                        name: "Bleeding Edge Tech",
+                        desc: "When this character is building a Construct, each Construct Point she spends to increase its Skills gives the Construct twice as many Skill Ranks to distribute as normal."
+                    }
+                ]
+            },
+            {
+                step: 8,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 9,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Over Pressure",
+                        desc: "This character and every subordinate Construct under her control gains the following Trigger on their Pneumatic attacks:\n\n:t: Over Pressure: After succeeding, take an additional attack against the target. This Trigger may only be declared once per turn.\n\nIf this character is a Construct or has at least one pneumatic limb, she also gains this Trigger on her Pugilism and Martial Arts attacks."
+                    },
+                    {
+                        name: "Magical Maintenance",
+                        desc: "At the start of this character's turn, each of her subordinate Constructs within Aura 4 heals 1 damage."
+                    }
+                ]
+            },
+            {
+                step: 10,
+                type: "single",
+                talent: {
+                    name: "Rise of the Machines",
+                    desc: "When this character takes the (1) Order Action to command a subordinate Construct during Dramatic Time, it may act normally at the end of her next turn as well as the current turn, just as if she had taken the (1) Order Action on her next turn to command it. If this character is killed or knocked unconscious before then, the Construct still gets its \"free\" turn immediately after when this character's turn would normally have been."
+                }
+            }
+        ]
+    }
 ];
