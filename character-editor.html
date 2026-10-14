@@ -1992,14 +1992,20 @@
 function formatPursuitText(text) {
     if (!text) return "";
     return text
-        .replace(/:c:/g, '<span class="suit-badge suit-crow" title="Crows">X</span>')
-        .replace(/:m:/g, '<span class="suit-badge suit-mask" title="Masks">M</span>')
-        .replace(/:r:/g, '<span class="suit-badge suit-ram" title="Rams">R</span>')
-        .replace(/:t:/g, '<span class="suit-badge suit-tome" title="Tomes">T</span>')
-        .replace(/:\+:/g, '<span class="mod-flip-plus">[+]</span>')
-        .replace(/:–:/g, '<span class="mod-flip-minus">[-]</span>')
-        .replace(/:--:/g, '<span class="mod-flip-minus">[-]</span>')
-        .replace(/:-\:/g, '<span class="mod-flip-minus">[-]</span>');
+        // Зеленые перья (Crows)
+        .replace(/:c:/g, '<svg viewBox="0 0 24 24" style="width: 1em; height: 1em; vertical-align: -0.15em; fill: #3fb950; display: inline-block;"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>')
+        // Фиолетовые маски (Masks)
+        .replace(/:m:/g, '<svg viewBox="0 0 24 24" style="width: 1em; height: 1em; vertical-align: -0.15em; fill: #bc8cff; display: inline-block;"><path d="M12 2a10 10 0 00-10 10c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0012 2z"/></svg>')
+        // Красные бараны (Rams)
+        .replace(/:r:/g, '<svg viewBox="0 0 24 24" style="width: 1em; height: 1em; vertical-align: -0.15em; fill: #f85149; display: inline-block;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>')
+        // Синие тома (Tomes)
+        .replace(/:t:/g, '<svg viewBox="0 0 24 24" style="width: 1em; height: 1em; vertical-align: -0.15em; fill: #58a6ff; display: inline-block;"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>')
+        // Иконка ближнего боя (когти) вместо (y) или для дальности
+        .replace(/\(y\)/g, '<svg viewBox="0 0 24 24" style="width: 1.1em; height: 1.1em; vertical-align: -0.2em; fill: #c59a5b; display: inline-block;"><path d="M7 2l-4 6 5 3-3 7 8-10-4-3 4-3-6-2z"/></svg>')
+        .replace(/Rg: y/g, 'Rg: <svg viewBox="0 0 24 24" style="width: 1.1em; height: 1.1em; vertical-align: -0.2em; fill: #c59a5b; display: inline-block;"><path d="M7 2l-4 6 5 3-3 7 8-10-4-3 4-3-6-2z"/></svg>')
+        // Плюсы и минусы флипов
+        .replace(/:\+:/g, '<span style="color: #56d364; font-weight: bold; font-family: monospace;">[+]</span>')
+        .replace(/:–:|:--:|:-\:/g, '<span style="color: #f85149; font-weight: bold; font-family: monospace;">[-]</span>');
 }
 
 function renderTalentContent(talent) {
@@ -2025,6 +2031,97 @@ function renderTalentContent(talent) {
                 </div>
             `;
         }
+        // Если у таланта есть статблок миньона (как Thugs)
+    if (talent.minion) {
+        const m = talent.minion;
+        
+        // Рендерим таблицу характеристик (Might, Grace, Speed и т.д.)
+        let statsRows = "";
+        if (m.stats) {
+            statsRows = `
+                <table class="pursuit-weapon-table" style="margin-bottom: 0;">
+                    <tbody>
+                        <tr>
+                            <td><strong>Might</strong><br>${m.stats.might ?? '—'}</td>
+                            <td><strong>Grace</strong><br>${m.stats.grace ?? '—'}</td>
+                            <td><strong>Speed</strong><br>${m.stats.speed ?? '—'}</td>
+                            <td><strong>Resilience</strong><br>${m.stats.resilience ?? '—'}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Charm</strong><br>${m.stats.charm ?? '—'}</td>
+                            <td><strong>Intellect</strong><br>${m.stats.intellect ?? '—'}</td>
+                            <td><strong>Cunning</strong><br>${m.stats.cunning ?? '—'}</td>
+                            <td><strong>Tenacity</strong><br>${m.stats.tenacity ?? '—'}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Defense</strong><br>${m.stats.defense ?? '—'}</td>
+                            <td><strong>Walk</strong><br>${m.stats.walk ?? '—'}</td>
+                            <td><strong>Height</strong><br>${m.stats.height ?? '—'}</td>
+                            <td><strong>Initiative</strong><br>${m.stats.initiative ?? '—'}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Willpower</strong><br>${m.stats.willpower ?? '—'}</td>
+                            <td><strong>Charge</strong><br>${m.stats.charge ?? '—'}</td>
+                            <td><strong>Wounds</strong><br>${m.stats.wounds ?? '—'}</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+        }
+
+        let abilitiesHtml = "";
+        if (m.abilities && m.abilities.length > 0) {
+            abilitiesHtml = `<div style="margin-top: 6px;"><strong>Abilities:</strong><ul style="margin: 2px 0 0 15px; padding: 0;">`;
+            m.abilities.forEach(ab => {
+                abilitiesHtml += `<li style="margin-bottom: 3px;"><strong>${ab.name}:</strong> ${formatPursuitText(ab.desc)}</li>`;
+            });
+            abilitiesHtml += `</ul></div>`;
+        }
+
+        let minionWeaponHtml = "";
+        if (m.weapon) {
+            minionWeaponHtml = `
+                <div class="pursuit-weapon-box" style="margin-top: 6px;">
+                    <table class="pursuit-weapon-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 45%;">${(m.weapon.name || "WEAPON").toUpperCase()} (${(m.weapon.skill || "MELEE").toUpperCase()})</th>
+                                <th style="width: 25%;">AV</th>
+                                <th style="width: 30%;">RESIST</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>${m.weapon.name}</td>
+                                <td>${m.weapon.av || "—"}</td>
+                                <td>${m.weapon.resist || "—"}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pursuit-weapon-details">
+                        <div><strong>Damage:</strong> ${m.weapon.damage || "—"}</div>
+                        ${m.weapon.special ? `<div style="margin-top: 2px;">${formatPursuitText(m.weapon.special)}</div>` : ""}
+                    </div>
+                </div>
+            `;
+        }
+
+        bodyHtml += `
+            <div class="pursuit-weapon-box" style="margin-top: 8px; border: 1px solid #c59a5b;">
+                <div style="background: #251d16; padding: 6px 8px; text-align: center; border-bottom: 1px solid #4a3825;">
+                    <strong style="color: #c59a5b; font-size: 13px; letter-spacing: 0.5px;">${m.name.toUpperCase()}</strong>
+                    <div style="font-size: 10px; color: #bfaea0; font-style: italic;">${m.typeLine || ""}</div>
+                </div>
+                ${statsRows}
+                <div class="pursuit-weapon-details">
+                    ${m.skills ? `<div style="margin-bottom: 4px;"><strong>Skills:</strong> ${m.skills}</div>` : ""}
+                    ${abilitiesHtml}
+                    ${minionWeaponHtml}
+                </div>
+            </div>
+        `;
+    }
 
         bodyHtml += `
             <div class="pursuit-weapon-box">
