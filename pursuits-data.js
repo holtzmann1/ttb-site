@@ -19,7 +19,7 @@ const PURSUITS_DATA = [
                 talents: [
                     {
                         name: "Student of Knowledge",
-                        desc: "This character gains the following Trigger on all Academic Skill Duels:\n:t: Insight: After resolving, draw a card."
+                        desc: "This character gains the following Trigger on all Academic Skill Duels:\n:t: *Insight*: After resolving, draw a card."
                     },
                     {
                         name: "Scientific Classification",
@@ -90,7 +90,7 @@ const PURSUITS_DATA = [
                 talents: [
                     {
                         name: "Lessons Learned",
-                        desc: "This character gains the following Defensive Trigger:\nDf :t: Lessons Learned: After resolving against an enemy’s attack, draw a card."
+                        desc: "This character gains the following Defensive Trigger:\nDf :t: *Lessons Learned*: After resolving against an enemy’s attack, draw a card."
                     },
                     {
                         name: "Mental Conditioning",
@@ -151,7 +151,7 @@ const PURSUITS_DATA = [
                         trigger: {
                             cost: ":c::c:",
                             name: "In the Neck",
-                            desc: "After damaging, the target gains the Bleeding Out Condition."
+                            desc: "After damaging, the target gains the **Bleeding Out** Condition."
                         }
                     }
                 }
@@ -162,7 +162,7 @@ const PURSUITS_DATA = [
                 talents: [
                     {
                         name: "Scoundrel",
-                        desc: "This character gains the following Trigger to all Social Skill Challenges:\n:m: Fast Talk: After resolving, take a Pick Pocket Action against a target within 1 yard. The Pick Pocket Action gains :+: to its flip."
+                        desc: "This character gains the following Trigger to all Social Skill Challenges:\n:m: *Fast Talk*: After resolving, take a Pick Pocket Action against a target within 1 yard. The Pick Pocket Action gains :+: to its flip."
                     },
                     {
                         name: "Friends in Low Places",
@@ -206,11 +206,40 @@ const PURSUITS_DATA = [
                 talents: [
                     {
                         name: "Dirty Trick",
-                        desc: "This character gains the following Trigger on the Trick Action:\n:m: Dirty Trick: After succeeding, take a (1) AP Close Combat attack against the target, if it is in range."
+                        desc: "This character gains the following Trigger on the Trick Action:\n:m: *Dirty Trick*: After succeeding, take a (1) AP Close Combat attack against the target, if it is in range."
                     },
                     {
                         name: "Thugs",
-                        desc: "This character attracts the service of two Thugs who want nothing more than to be her left and right hands as the character slowly climbs her way up through the ranks of the criminal underworld. These Thugs are subordinate characters. When this character uses the (1) Order Action to command her Thugs, she may command them both, and her orders may be different. Alternatively, if this character is commanding a single Thug, she may treat the (1) Order Action as if it were a (0) Action. If any of this character's Thugs are killed, she may recruit new Thugs at the start of the next session.\n\nThug Stats:\nMight 2, Grace 1, Speed 0, Resilience 2, Charm -3, Intellect 2, Cunning -1, Tenacity 2\nMinion (5), Living\nDefense: 4 (9), Willpower: 4 (9), Initiative: 1 (6), Wounds: 6, Walk: 4, Charge: 4, Height: 2\nSkills: Evade 2, Intimidate 2, Melee 3, Notice 1, Toughness 1\nAbilities:\n- Goons: When this character's controller succeeds on the (1) Trick Action, this character also gains the benefits of the Action (instead of just its controller).\n- Pick On Someone Yer Own Size!: When this character's controller is targeted with a (y) attack, if this character would be a valid target for the attack, its controller may discard a card to make this character the target of the attack.\nAttack:\n- (1) Crude Club (Melee): AV 5 (10) | Rg: y2 | Resist: Df | Target suffers 2/2/4 damage. Whenever this weapon deals Severe damage, the target suffers a Weak Critical Effect in addition to any other Critical Effects it would suffer."
+                        desc: "This character attracts the service of two Thugs who want nothing more than to be her left and right hands as the character slowly climbs her way up through the ranks of the criminal underworld. These Thugs are subordinate characters. When this character uses the (1) Order Action to command her Thugs, she may command them both, and her orders may be different. Alternatively, if this character is commanding a single Thug, she may treat the (1) Order Action as if it were a (0) Action. If any of this character's Thugs are killed, she may recruit new Thugs at the start of the next session.",
+                        minion: {
+                            name: "Thug",
+                            typeLine: "Minion (5), Living",
+                            stats: {
+                                might: 2, grace: 1, speed: 0, resilience: 2,
+                                charm: -3, intellect: 2, cunning: -1, tenacity: 2,
+                                defense: "4 (9)", walk: 4, height: 2, initiative: "1 (6)",
+                                willpower: "4 (9)", charge: 4, wounds: 6
+                            },
+                            skills: "Evade 2, Intimidate 2, Melee 3, Notice 1, Toughness 1",
+                            abilities: [
+                                {
+                                    name: "Goons",
+                                    desc: "When this character's controller succeeds on the (1) Trick Action, this character also gains the benefits of the Action (instead of just its controller)."
+                                },
+                                {
+                                    name: "Pick On Someone Yer Own Size!",
+                                    desc: "When this character's controller is targeted with a (y) attack, if this character would be a valid target for the attack, its controller may discard a card to make this character the target of the attack."
+                                }
+                            ],
+                            weapon: {
+                                name: "Crude Club",
+                                skill: "Melee",
+                                av: "5 (10)",
+                                resist: "Df",
+                                damage: "2/2/4",
+                                special: "Target suffers 2/2/4 damage. Whenever this weapon deals Severe damage, the target suffers a Weak Critical Effect in addition to any other Critical Effects it would suffer."
+                            }
+                        }
                     }
                 ]
             },
@@ -232,7 +261,7 @@ const PURSUITS_DATA = [
                     },
                     {
                         name: "Into Shadows",
-                        desc: "When this character gains this Talent, she chooses either Close Combat or Ranged Combat attacks. This character gains the following Trigger on all attacks of the chosen type:\n:m: Hide in Shadow: After succeeding, this character may move up to 3 yards in any direction."
+                        desc: "When this character gains this Talent, she chooses either Close Combat or Ranged Combat attacks. This character gains the following Trigger on all attacks of the chosen type:\n:m: *Hide in Shadow*: After succeeding, this character may move up to 3 yards in any direction."
                     }
                 ]
             },
@@ -250,7 +279,7 @@ const PURSUITS_DATA = [
                 talents: [
                     {
                         name: "Misdirection",
-                        desc: "This character gains the following Defensive Trigger:\nDf :m: Misdirection: After a Close Combat attack from an enemy character succeeds against this character, this character may discard a card. If she does, a target enemy character in the attacker’s engagement range suffers the effects of the Attack Action instead of this character."
+                        desc: "This character gains the following Defensive Trigger:\nDf :m: *Misdirection*: After a Close Combat attack from an enemy character succeeds against this character, this character may discard a card. If she does, a target enemy character in the attacker’s engagement range suffers the effects of the Attack Action instead of this character."
                     },
                     {
                         name: "Shock and Awe",
@@ -364,7 +393,7 @@ const PURSUITS_DATA = [
                 talents: [
                     {
                         name: "Surge",
-                        desc: "This character gains the following Trigger on Magical Skill Challenges used to cast Spells:\n:t::t: Surge: After succeeding, draw a card."
+                        desc: "This character gains the following Trigger on Magical Skill Challenges used to cast Spells:\n:t::t: *Surge*: After succeeding, draw a card."
                     },
                     {
                         name: "Mastered Magia",
