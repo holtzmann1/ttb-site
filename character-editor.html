@@ -2161,6 +2161,55 @@ function renderTalentContent(talent) {
             </div>
         `;
     }
+    // Если у таланта есть проявленная сила / заклинание (Manifested Power / Spell)
+    if (talent.power) {
+        const p = talent.power;
+        let triggersHtml = "";
+        if (p.triggers && p.triggers.length > 0) {
+            triggersHtml = `<div style="margin-top: 6px; border-top: 1px dashed #382b1d; padding-top: 4px;">`;
+            p.triggers.forEach(tr => {
+                triggersHtml += `
+                    <div class="pursuit-trigger-row">
+                        ${formatPursuitText(tr.cost)} <strong>${tr.name}:</strong> ${formatPursuitText(tr.desc)}
+                    </div>
+                `;
+            });
+            triggersHtml += `</div>`;
+        }
+
+        bodyHtml += `
+            <div class="pursuit-weapon-box" style="margin-top: 8px; border: 1px solid #c59a5b;">
+                <div style="background: #251d16; padding: 6px 8px; text-align: center; border-bottom: 1px solid #4a3825;">
+                    <strong style="color: #c59a5b; font-size: 13px; letter-spacing: 0.5px;">${(p.name || talent.name || "POWER").toUpperCase()}</strong>
+                    <div style="font-size: 10px; color: #bfaea0; font-style: italic;">${p.typeLine || "Manifested Power"}</div>
+                </div>
+                <table class="pursuit-weapon-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 32%;">ACTING VALUE</th>
+                            <th style="width: 14%;">AP</th>
+                            <th style="width: 18%;">TN</th>
+                            <th style="width: 16%;">RESIST</th>
+                            <th style="width: 20%;">RANGE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>${p.av || "—"}</td>
+                            <td>${p.ap || "1"}</td>
+                            <td>${formatPursuitText(p.tn || "—")}</td>
+                            <td>${p.resist || "—"}</td>
+                            <td>${p.range || "—"}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="pursuit-weapon-details">
+                    ${p.desc ? `<div style="line-height: 1.4;">${formatPursuitText(p.desc)}</div>` : ""}
+                    ${triggersHtml}
+                </div>
+            </div>
+        `;
+    }
 
     return bodyHtml;
 }
