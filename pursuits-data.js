@@ -1210,5 +1210,241 @@ const PURSUITS_DATA = [
                 }
             }
         ]
-    }
+    },
+    {
+        id: "performer",
+        name: "Performer",
+        starting: "A Performer begins play with a non-magical skill toolkit.",
+        onThePursuit: "Flair for the Dramatic: When this character fails a Social duel, she may draw a card. During the Epilogue, a character on this Pursuit may advance in any Social Skill in addition to those Skill Advancement options presented by the Fatemaster.",
+        steps: [
+            {
+                step: 0,
+                type: "single",
+                talent: {
+                    name: "Center of Attention",
+                    desc: "After another character fails a Social Skill Challenge, this character may discard a card to make a Skill Challenge with the same Skill against the same TN. If there were any modifiers to the original character’s flip (such as :+: or :-: modifiers), they apply to this character’s flip as well.\n\nIf she succeeds, this character is considered to have succeeded on the initial Social duel, and the original character’s failure is ignored."
+                }
+            },
+            {
+                step: 1,
+                type: "single",
+                talent: {
+                    name: "Distracting Performance",
+                    desc: "When this character is performing in any manner, her allies within 10 yards gain :+: to their Deceive, Pick Pocket, and Stealth Challenges for the duration of the performance."
+                }
+            },
+            {
+                step: 2,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 3,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Grace Under Fire",
+                        desc: "This character may substitute her Grace for her Speed when calculating her Defense Aspect and when flipping for Initiative."
+                    },
+                    {
+                        name: "Powerful Impression",
+                        desc: "This character gains the following Trigger on all Social duels:\n\n:m: Impress: After succeeding, draw a card."
+                    }
+                ]
+            },
+            {
+                step: 4,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 5,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Helluva Entrance",
+                        desc: "This character may gain a :+: to the first non-Stealth Challenge Flip she makes in any scene. If she does so, she suffers a :-: to all Stealth Challenges she makes for the remainder of the scene."
+                    },
+                    {
+                        name: "Charming Demeanor",
+                        desc: "When this character is targeted with an attack, she may discard a card to impose a :--: penalty to the attack flip."
+                    }
+                ]
+            },
+            {
+                step: 6,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 7,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Opening Act",
+                        desc: "After flipping for Initiative at the start of Dramatic Time, this character may nominate a friendly character (which may be herself) to take a Walk Action."
+                    },
+                    {
+                        name: "The World is a Stage",
+                        desc: "When this character is involved in an Ongoing Challenge, she may choose to make one of the Challenge flips using her Bewitch or Music Skill instead of the appropriate Skill (she still uses the appropriate Aspect, however). It falls to the Fatemaster and the player to explain how this functions from a story perspective."
+                    }
+                ]
+            },
+            {
+                step: 8,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 9,
+                type: "choice",
+                talents: [
+                    {
+                        name: "A Whisper in Your Ear",
+                        desc: "If this character scores a Margin of Success on a Bewitch Challenge during Narrative Time, she may force the target of her attentions to perform a single act of up to one hour in length. Unless this character achieves two Margins of Success, the act cannot involve violence.\n\nFor the duration of the act, the target believes that the act was their idea (though they may come to believe otherwise in time). This action cannot cause the target to directly hurt themselves."
+                    },
+                    {
+                        name: "Practiced Production",
+                        desc: "If this character achieves a Margin of Success on a Skill Challenge, she may choose not to apply it to the results of her Challenge. If she does so, then she may instead apply the Margin of Success to a successful Skill Challenge made by one of her allies, provided that her ally makes the Skill Challenge within five minutes of her own Skill Challenge.\n\nThe maximum number of Margins of Success that this character may have ‘saved’ at one time cannot exceed her Charm Aspect (minimum one)."
+                    }
+                ]
+            },
+            {
+                step: 10,
+                type: "single",
+                talent: {
+                    name: "That’s Showbiz",
+                    desc: "This character may exchange her Charm Aspect for any of her other Mental Aspects when she makes a Social Skill Challenge."
+                }
+            }
+        ]
+    },
+    {
+        id: "pioneer",
+        name: "Pioneer",
+        starting: "A Pioneer begins the game with a non-magical skill toolkit.",
+        onThePursuit: "Rugged Individual: When this character fails a Training duel, she may draw a card. During the Epilogue, a character on this Pursuit may advance in any Training Skill in addition to those Skill Advancement options presented by the Fatemaster.",
+        steps: [
+            {
+                step: 0,
+                type: "single",
+                talent: {
+                    name: "Unimpeded",
+                    desc: "This character ignores penalties for severe terrain while taking Movement Actions."
+                }
+            },
+            {
+                step: 1,
+                type: "single",
+                talent: {
+                    name: "Making Do With What We Have",
+                    desc: "This character may discard a card to create a skill toolkit. The toolkit must be for a skill in which the character has at least one rank, and unless she discarded a card with a value of 11+, she is the only character that can use it. The created skill toolkit lasts for an hour."
+                }
+            },
+            {
+                step: 2,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 3,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Circle the Wagons",
+                        desc: "On her turn during Dramatic Time, this character may discard a card to let all friendly characters that can hear her treat Severe Terrain as if it were also Soft Cover or Soft Cover as if it were Hard Cover until the end of Dramatic Time."
+                    },
+                    {
+                        name: "At a Glance",
+                        desc: "If this character fails a Notice Challenge, she may discard a card to reflip the Notice Challenge with a :+:."
+                    }
+                ]
+            },
+            {
+                step: 4,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 5,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Healing Poultices",
+                        desc: "When in a rural or wilderness area, this character may spend one hour and discard a card to produce a Healing Poultice. This character produces an additional Healing Poultice if the discarded card had a value of 6-10, or two additional Healing Poultices if the card had a value of 11 or greater.\n\nAny character may apply a Healing Poultice to a Living character (which may be themselves) as a (2) AP Action. Doing so consumes the poultice, reduces the value of the target’s Poison Condition by 5 (to a minimum of 0), and heals 2/3/4 damage.\n\nA Healing Poultice only remains viable for three days, at which point the plant material in it begins to decay and it becomes useless."
+                    },
+                    {
+                        name: "Favorable Terrain",
+                        desc: "At the start of Dramatic Time, this character may discard a card to declare that one patch of ground no more than 3 yards in radius counts as Severe Terrain.\n\nOnce “created,” the area in question remains Severe Terrain indefinitely (until someone prunes the underbrush, replaces the cobblestones, sweeps the street, etc.)."
+                    }
+                ]
+            },
+            {
+                step: 6,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 7,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Survivalist",
+                        desc: "This character no longer suffers damage from Hazardous Terrain. She and any allies she travels with gain :+: on any Challenges made to resist the elements or other environmental hazards (such as frostbite, sunstroke, biting insects, or drowning)."
+                    },
+                    {
+                        name: "Know the Path",
+                        desc: "When this character joins an Ongoing Challenge that allows the use of the Homesteading, Track, or Wilderness Skills, the TN of the Ongoing Challenge is lowered by -2 for participating characters that use one of those Skills."
+                    }
+                ]
+            },
+            {
+                step: 8,
+                type: "general",
+                talent: {
+                    name: "General Talent",
+                    desc: "This character gains one General Talent."
+                }
+            },
+            {
+                step: 9,
+                type: "choice",
+                talents: [
+                    {
+                        name: "Pathfinder",
+                        desc: "Friendly characters within Aura 3 of this character ignore movement penalties for terrain while taking Movement Actions and only suffer 1 damage from Hazardous Terrain."
+                    },
+                    {
+                        name: "Nature Lover",
+                        desc: "At the start of this character’s turn during Dramatic Time, if she is in Severe or Hazardous Terrain, she may draw a card and then discard a card."
+                    }
+                ]
+            },
+            {
+                step: 10,
+                type: "single",
+                talent: {
+                    name: "Manifest Destiny",
+                    desc: "This character may discard two cards to lay claim to a reasonably sized area (generally one structure or natural area such as a grove). This doesn’t give her any immediate legal claim to the area in question, but her determination and confidence about her claim give
 ];
