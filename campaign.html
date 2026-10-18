@@ -1656,22 +1656,30 @@ function addNewSkillRow(skillData = null) {
             tbody.appendChild(trMain);
             tbody.appendChild(trSub);
 
-            if (skillData) {
+if (skillData) {
+                const sName = skillData.skillName || skillData.name || skillData.skill || "";
+                const rVal = skillData.rating !== undefined ? skillData.rating : (skillData.rank !== undefined ? skillData.rank : 0);
+
+                const ratingInput = trMain.querySelector(".skill-rating");
+                if (ratingInput) ratingInput.value = rVal;
+
                 const sel = trMain.querySelector(".skill-select");
-                if (sel && skillData.skillName) {
-                    sel.value = skillData.skillName;
+                if (sel && sName) {
+                    sel.value = sName;
                     onSkillSelectChange(trMain);
                 }
-                const ratingInput = trMain.querySelector(".skill-rating");
-                if (ratingInput && skillData.rating !== undefined) {
-                    ratingInput.value = skillData.rating;
-                }
+
+                // Повторно восстанавливаем рейтинг после onSkillSelectChange, если он сбился
+                if (ratingInput) ratingInput.value = rVal;
+
                 const aspSelects = trMain.querySelectorAll(".skill-aspect");
-                if (skillData.aspects && aspSelects.length > 0) {
+                const aspList = Array.isArray(skillData.aspects) ? skillData.aspects : (skillData.aspect ? [skillData.aspect] : []);
+                if (aspList.length > 0 && aspSelects.length > 0) {
                     aspSelects.forEach((s, idx) => {
-                        if (skillData.aspects[idx]) s.value = skillData.aspects[idx];
+                        if (aspList[idx]) s.value = aspList[idx];
                     });
                 }
+
                 updateRowAV(trMain);
 
                 const savedTriggers = skillData.triggers || (skillData.trigger ? [skillData.trigger] : []);
