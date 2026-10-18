@@ -701,6 +701,125 @@
                 gap: 15px;
             }
         }
+        /* Кнопка открытия триггеров [T] */
+        .skill-trigger-btn {
+            width: 24px;
+            height: 28px;
+            background: #14110e;
+            border: 1px solid #4a3825;
+            color: #8f8679;
+            font-family: Georgia, serif;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .skill-trigger-btn:hover {
+            color: #c59a5b;
+            border-color: #b88a4a;
+        }
+
+        .skill-trigger-btn.has-triggers {
+            color: #3fb950 !important;
+            border-color: #3fb950 !important;
+            box-shadow: 0 0 6px rgba(63, 185, 80, 0.35);
+        }
+
+        .skill-trigger-btn.disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+            border-color: #2a2015;
+            color: #4a3825;
+        }
+
+        /* Выпадающая подстрока триггеров навыка */
+        .skill-trigger-row {
+            background: rgba(14, 11, 9, 0.7);
+            border-bottom: 1px solid #33271a;
+        }
+
+        .skill-trigger-container {
+            padding: 6px 8px 8px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .skill-triggers-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .skill-trigger-item {
+            background: rgba(20, 17, 14, 0.85);
+            border: 1px solid #382b1d;
+            border-left: 2px solid #c59a5b;
+            padding: 4px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .skill-trigger-text {
+            font-size: 11px;
+            color: #a99e8d;
+            line-height: 1.35;
+            flex: 1;
+        }
+
+        .skill-trigger-del {
+            background: transparent;
+            border: none;
+            color: #8f8679;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 0 4px;
+            line-height: 1;
+        }
+
+        .skill-trigger-del:hover {
+            color: #e57373;
+        }
+
+        .skill-trigger-controls {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .skill-trigger-select {
+            font-size: 12px;
+            padding: 3px 6px;
+            height: 26px;
+            border: 1px solid #3a2e20;
+            background: #100d0a;
+            color: #c59a5b;
+            flex: 1;
+        }
+
+        .add-trigger-btn {
+            background: transparent;
+            border: 1px dashed #b88a4a;
+            color: #c59a5b;
+            font-family: Georgia, serif;
+            font-size: 11px;
+            padding: 4px 10px;
+            cursor: pointer;
+            height: 26px;
+            white-space: nowrap;
+        }
+
+        .add-trigger-btn:hover {
+            background: rgba(184, 138, 74, 0.15);
+            color: #e8dfd0;
+        }
     </style>
 </head>
 <body>
@@ -1278,6 +1397,109 @@ async function importToCampaign(event) {
             "Training": { "Acrobatics": "grace", "Athletics": "might", "Carouse": "resilience", "Centering": "tenacity", "Evade": "speed", "Pick Pocket": "speed", "Stealth": "cunning", "Toughness": "resilience" }
         };
 
+        function formatPursuitText(text) {
+        if (!text) return "";
+        return text
+            .replace(/:c:/g, '<span style="color: #3fb950; font-weight: bold; display: inline-block; margin-right: 2px;">[Crow]</span>')
+            .replace(/:m:/g, '<span style="color: #bc8cff; font-weight: bold; display: inline-block; margin-right: 2px;">[Mask]</span>')
+            .replace(/:r:/g, '<span style="color: #f85149; font-weight: bold; display: inline-block; margin-right: 2px;">[Ram]</span>')
+            .replace(/:t:/g, '<span style="color: #58a6ff; font-weight: bold; display: inline-block; margin-right: 2px;">[Tome]</span>')
+            .replace(/\(y\)/g, '<svg viewBox="0 0 24 24" style="width: 1.1em; height: 1.1em; vertical-align: -0.2em; fill: #c59a5b; display: inline-block;"><path d="M7 2l-4 6 5 3-3 7 8-10-4-3 4-3-6-2z"/></svg>')
+            .replace(/Rg: y/g, 'Rg: <svg viewBox="0 0 24 24" style="width: 1.1em; height: 1.1em; vertical-align: -0.2em; fill: #c59a5b; display: inline-block;"><path d="M7 2l-4 6 5 3-3 7 8-10-4-3 4-3-6-2z"/></svg>')
+            .replace(/:\+:/g, '<span style="color: #56d364; font-weight: bold; font-family: monospace;">[+]</span>')
+            .replace(/:–:|:--:|:-\:/g, '<span style="color: #f85149; font-weight: bold; font-family: monospace;">[-]</span>');
+    }
+
+    function getTalentTriggersForSkill(skillName) {
+        const triggers = [];
+        if (!skillName) return triggers;
+        const lowSkill = skillName.toLowerCase();
+
+        const activeTalents = [];
+        document.querySelectorAll(".talent-card").forEach(card => {
+            const sel = card.querySelector(".talent-select");
+            const custom = card.querySelector(".custom-name-input");
+            const val = (custom && custom.style.display === "block") ? custom.value : (sel?.value || "");
+            if (val) activeTalents.push(val.trim());
+        });
+
+        if (activeTalents.includes("Speed Loading") && ["long arms", "pistol", "shotgun", "heavy guns"].includes(lowSkill)) {
+            triggers.push({
+                name: "Speed Loading",
+                cost: ":r:",
+                desc: "If this weapon's Reload AP cost is 2 or lower, reload this weapon. (from General Talent)",
+                source: "talent"
+            });
+        }
+
+        const isCombat = Object.keys(skillCategories["Close Combat"]).map(s => s.toLowerCase()).includes(lowSkill) ||
+                         Object.keys(skillCategories["Ranged Combat"]).map(s => s.toLowerCase()).includes(lowSkill);
+
+        if (activeTalents.includes("Critical Strike") && isCombat) {
+            triggers.push({
+                name: "Critical Strike",
+                cost: ":r:",
+                desc: "When damaging, deal 1 additional damage for each [Ram] in the final duel total. (from General Talent)",
+                source: "talent"
+            });
+        }
+        if (activeTalents.includes("Hobbling Attack") && isCombat) {
+            triggers.push({
+                name: "Hobbling Attack",
+                cost: ":c:",
+                desc: "After succeeding, the target gains the following Condition for the remainder of Dramatic Time: 'Hobbled: This character may only declare one Movement General Action per turn and may not declare the Run Action.' (from General Talent)",
+                source: "talent"
+            });
+        }
+        if (activeTalents.includes("C-C-C-Combo!!!!") && lowSkill === "martial arts") {
+            triggers.push({
+                name: "Combo!",
+                cost: ":m:",
+                desc: "This character may take this attack again against the same target. This second attack may not declare Triggers. (from General Talent)",
+                source: "talent"
+            });
+        }
+        if (activeTalents.includes("Disarming Attack") && lowSkill === "martial arts") {
+            triggers.push({
+                name: "Disarming Attack",
+                cost: ":c:",
+                desc: "After succeeding, the target drops a single item of your choice held in its hands. This attack's damage flip receives a [-]. (from General Talent)",
+                source: "talent"
+            });
+        }
+        if (activeTalents.includes("Queensbury Rules") && lowSkill === "pugilism") {
+            triggers.push({
+                name: "Win By Knockout",
+                cost: ":r:",
+                desc: "After damaging, the target takes the Drop Prone action. (from General Talent)",
+                source: "talent"
+            });
+        }
+        if (activeTalents.includes("Street Fighter") && lowSkill === "pugilism") {
+            triggers.push({
+                name: "Street Fighter",
+                cost: ":c:",
+                desc: "Df (Crow) Street Fighter: After a Close Combat attack fails against this character, if this character is wielding no weapons, this character deals 1/2/3 damage to the attacker. This damage flip may not be cheated. (from General Talent)",
+                source: "talent"
+            });
+        }
+
+        return triggers;
+    }
+
+    function getAvailableTriggers(skillName, rating) {
+        let triggers = [];
+        const isEligible = rating >= 3;
+
+        if (isEligible && typeof SKILL_TRIGGERS !== "undefined") {
+            triggers = SKILL_TRIGGERS.filter(t => t.skill.toLowerCase() === (skillName || "").toLowerCase()).map(t => ({ ...t, source: "skill" }));
+        }
+
+        const talentTriggers = getTalentTriggersForSkill(skillName);
+        talentTriggers.forEach(tt => triggers.push(tt));
+
+        return triggers;
+    }
         function switchSheetTab(tabKey) {
             document.querySelectorAll('#view-character-sheet .tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('#view-character-sheet .tab-content').forEach(content => {
