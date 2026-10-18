@@ -1878,7 +1878,8 @@ const trSub = document.createElement("tr");
                 });
             }
             updateRowAV(trMain);
-            refreshSkillTriggerRow(trMain, skillData.trigger || "");
+            const saved = skillData.triggers || (skillData.trigger ? [skillData.trigger] : []);
+refreshSkillTriggerRow(trMain, saved);
         }
     }
 function getTriggerItemHtml(triggerObj) {
@@ -2056,10 +2057,17 @@ const skills = [];
             const rating = parseInt(tr.querySelector(".skill-rating")?.value, 10) || 0;
             const aspectSelects = Array.from(tr.querySelectorAll(".skill-aspect")).map(s => s.value);
             const trSub = tr.nextElementSibling;
-            const trigger = trSub?.querySelector(".skill-trigger-select")?.value || "";
+            
+            const triggers = [];
+            if (trSub) {
+                trSub.querySelectorAll(".skill-trigger-item").forEach(item => {
+                    const tName = item.getAttribute("data-trigger-name");
+                    if (tName) triggers.push(tName);
+                });
+            }
 
             if (skillName) {
-                skills.push({ skillName, rating, aspects: aspectSelects, trigger });
+                skills.push({ skillName, rating, aspects: aspectSelects, triggers });
             }
         });
 
