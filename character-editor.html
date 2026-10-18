@@ -902,6 +902,33 @@
             padding-top: 4px;
             margin-top: 4px;
         }
+        /* Подстрока триггера навыка */
+        .skill-trigger-row {
+            background: rgba(14, 11, 9, 0.7);
+            border-bottom: 1px solid #33271a;
+        }
+        .skill-trigger-container {
+            padding: 4px 6px 8px 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .skill-trigger-select {
+            font-size: 12px;
+            padding: 3px 6px;
+            height: 26px;
+            border: 1px solid #3a2e20;
+            background: #100d0a;
+            color: #c59a5b;
+        }
+        .skill-trigger-desc {
+            font-size: 11px;
+            color: #a99e8d;
+            line-height: 1.35;
+            padding: 4px 6px;
+            background: rgba(20, 17, 14, 0.6);
+            border-left: 2px solid #c59a5b;
+        }
     </style>
 </head>
 <body>
@@ -1392,6 +1419,7 @@
                 select.value = currentVal;
             }
         });
+        refreshAllSkillTriggers();
     }
 
     function addNewTalentCard() {
@@ -1542,6 +1570,103 @@
         }
     };
 
+    // Поиск триггеров от взятых General Talents для конкретного навыка
+    function getTalentTriggersForSkill(skillName) {
+        const triggers = [];
+        if (!skillName) return triggers;
+        const lowSkill = skillName.toLowerCase();
+
+        const activeTalents = [];
+        document.querySelectorAll(".talent-card").forEach(card => {
+            const sel = card.querySelector(".talent-select");
+            const custom = card.querySelector(".custom-name-input");
+            const val = (custom && custom.style.display === "block") ? custom.value : (sel?.value || "");
+            if (val) activeTalents.push(val.trim());
+        });
+
+        // Speed Loading (Rams)
+        if (activeTalents.includes("Speed Loading") && ["long arms", "pistol", "shotgun", "heavy guns"].includes(lowSkill)) {
+            triggers.push({
+                name: "Speed Loading",
+                cost: ":r:",
+                desc: "If this weapon's Reload AP cost is 2 or lower, reload this weapon. (from General Talent)",
+                source: "talent"
+            });
+        }
+        // Critical Strike (Rams)
+        const isCombat = Object.keys(skillCategories["Close Combat"]).map(s => s.toLowerCase()).includes(lowSkill) ||
+                         Object.keys(skillCategories["Ranged Combat"]).map(s => s.toLowerCase()).includes(lowSkill);
+        if (activeTalents.includes("Critical Strike") && isCombat) {
+            triggers.push({
+                name: "Critical Strike",
+                cost: ":r:",
+                desc: "When damaging, deal 1 additional damage for each [Ram] in the final duel total. (from General Talent)",
+                source: "talent"
+            });
+        }
+        // Hobbling Attack (Crows)
+        if (activeTalents.includes("Hobbling Attack") && isCombat) {
+            triggers.push({
+                name: "Hobbling Attack",
+                cost: ":c:",
+                desc: "After succeeding, the target gains the following Condition for the remainder of Dramatic Time: 'Hobbled: This character may only declare one Movement General Action per turn and may not declare the Run Action.' (from General Talent)",
+                source: "talent"
+            });
+        }
+        // C-C-C-Combo!!!! (Masks)
+        if (activeTalents.includes("C-C-C-Combo!!!!") && lowSkill === "martial arts") {
+            triggers.push({
+                name: "Combo!",
+                cost: ":m:",
+                desc: "This character may take this attack again against the same target. This second attack may not declare Triggers. (from General Talent)",
+                source: "talent"
+            });
+        }
+        // Disarming Attack (Crows)
+        if (activeTalents.includes("Disarming Attack") && lowSkill === "martial arts") {
+            triggers.push({
+                name: "Disarming Attack",
+                cost: ":c:",
+                desc: "After succeeding, the target drops a single item of your choice held in its hands. This attack's damage flip receives a [-]. (from General Talent)",
+                source: "talent"
+            });
+        }
+        // Queensbury Rules (Rams)
+        if (activeTalents.includes("Queensbury Rules") && lowSkill === "pugilism") {
+            triggers.push({
+                name: "Win By Knockout",
+                cost: ":r:",
+                desc: "After damaging, the target takes the Drop Prone action. (from General Talent)",
+                source: "talent"
+            });
+        }
+        // Street Fighter (Crows)
+        if (activeTalents.includes("Street Fighter") && lowSkill === "pugilism") {
+            triggers.push({
+                name: "Street Fighter",
+                cost: ":c:",
+                desc: "Df (Crow) Street Fighter: After a Close Combat attack fails against this character, if this character is wielding no weapons, this character deals 1/2/3 damage to the attacker. This damage flip may not be cheated. (from General Talent)",
+                source: "talent"
+            });
+        }
+
+        return triggers;
+    }
+
+    // Формирование списка доступных триггеров
+    function getAvailableTriggers(skillName, rating) {
+        let triggers = [];
+        const isEligible = rating >= 3;
+
+        if (isEligible && typeof SKILL_TRIGGERS !== "undefined") {
+            triggers = SKILL_TRIGGERS.filter(t => t.skill.toLowerCase() === (skillName || "").toLowerCase()).map(t => ({ ...t, source: "skill" }));
+        }
+
+        const talentTriggers = getTalentTriggersForSkill(skillName);
+        talentTriggers.forEach(tt => triggers.push(tt));
+
+        return triggers;
+    }
     function findSkillAspectDef(name) {
         for (let cat in skillCategories) {
             if (skillCategories[cat][name] !== undefined) {
@@ -1644,11 +1769,12 @@
         if (defTotEl) defTotEl.value = Math.max(1, baseDef - armorPenalty);
     }
 
-    function addNewSkillRow() {
+function addNewSkillRow(skillData = null) {
         const tbody = document.getElementById("skillsList");
-        const tr = document.createElement("tr");
+        const trMain = document.createElement("tr");
+        trMain.className = "skill-main-row";
 
-        tr.innerHTML = `
+        trMain.innerHTML = `
             <td>
                 <select class="skill-select" onchange="onSkillSelectChange(this.closest('tr'))">
                     ${getSkillOptionsHtml()}
@@ -1667,10 +1793,108 @@
                 <button type="button" class="del-btn" onclick="deleteSkillRow(this.closest('tr'))" title="Удалить">✕</button>
             </td>
         `;
-        tbody.appendChild(tr);
+
+        const trSub = document.createElement("tr");
+        trSub.className = "skill-trigger-row";
+        trSub.style.display = "none";
+        trSub.innerHTML = `
+            <td colspan="5">
+                <div class="skill-trigger-container">
+                    <select class="skill-trigger-select" onchange="onSkillTriggerChange(this)">
+                        <option value="">-- No Skill Trigger --</option>
+                    </select>
+                    <div class="skill-trigger-desc" style="display: none;"></div>
+                </div>
+            </td>
+        `;
+
+        tbody.appendChild(trMain);
+        tbody.appendChild(trSub);
+
+        if (skillData) {
+            const sel = trMain.querySelector(".skill-select");
+            if (sel) {
+                sel.value = skillData.skillName;
+                onSkillSelectChange(trMain);
+            }
+            const ratingInput = trMain.querySelector(".skill-rating");
+            if (ratingInput) ratingInput.value = skillData.rating;
+
+            const aspSelects = trMain.querySelectorAll(".skill-aspect");
+            if (skillData.aspects && aspSelects.length > 0) {
+                aspSelects.forEach((s, idx) => {
+                    if (skillData.aspects[idx]) s.value = skillData.aspects[idx];
+                });
+            }
+            updateRowAV(trMain);
+            refreshSkillTriggerRow(trMain, skillData.trigger || "");
+        }
+    }
+    function refreshSkillTriggerRow(trMain, selectedVal = "") {
+        const trSub = trMain.nextElementSibling;
+        if (!trSub || !trSub.classList.contains("skill-trigger-row")) return;
+
+        const skillName = trMain.querySelector(".skill-select")?.value || "";
+        const rating = parseInt(trMain.querySelector(".skill-rating")?.value, 10) || 0;
+        const available = getAvailableTriggers(skillName, rating);
+
+        const select = trSub.querySelector(".skill-trigger-select");
+        const descDiv = trSub.querySelector(".skill-trigger-desc");
+
+        if (available.length === 0) {
+            trSub.style.display = "none";
+            select.innerHTML = `<option value="">-- No Skill Trigger --</option>`;
+            descDiv.style.display = "none";
+            return;
+        }
+
+        trSub.style.display = "";
+        let html = `<option value="">-- Choose Trigger --</option>`;
+        available.forEach(t => {
+            const tag = t.source === "talent" ? " [Talent]" : "";
+            const isSel = (t.name === selectedVal) ? "selected" : "";
+            html += `<option value="${t.name}" ${isSel}>${t.cost || ""} ${t.name}${tag}</option>`;
+        });
+        select.innerHTML = html;
+
+        const activeTrigger = available.find(t => t.name === (selectedVal || select.value));
+        if (activeTrigger) {
+            select.value = activeTrigger.name;
+            descDiv.style.display = "block";
+            descDiv.innerHTML = `<strong>${activeTrigger.name} (${formatPursuitText(activeTrigger.cost)}):</strong> ${formatPursuitText(activeTrigger.desc)}`;
+        } else {
+            descDiv.style.display = "none";
+            descDiv.innerHTML = "";
+        }
     }
 
-    function onSkillSelectChange(tr) {
+    function onSkillTriggerChange(select) {
+        const trSub = select.closest(".skill-trigger-row");
+        const trMain = trSub.previousElementSibling;
+        const skillName = trMain.querySelector(".skill-select")?.value || "";
+        const rating = parseInt(trMain.querySelector(".skill-rating")?.value, 10) || 0;
+        const available = getAvailableTriggers(skillName, rating);
+        const descDiv = trSub.querySelector(".skill-trigger-desc");
+
+        const found = available.find(t => t.name === select.value);
+        if (found) {
+            descDiv.style.display = "block";
+            descDiv.innerHTML = `<strong>${found.name} (${formatPursuitText(found.cost)}):</strong> ${formatPursuitText(found.desc)}`;
+        } else {
+            descDiv.style.display = "none";
+            descDiv.innerHTML = "";
+        }
+    }
+
+    function refreshAllSkillTriggers() {
+        document.querySelectorAll("#skillsList tr.skill-main-row").forEach(trMain => {
+            const trSub = trMain.nextElementSibling;
+            const currentVal = trSub?.querySelector(".skill-trigger-select")?.value || "";
+            refreshSkillTriggerRow(trMain, currentVal);
+        });
+    }
+
+function onSkillSelectChange(tr) {
         const skillName = tr.querySelector(".skill-select").value;
         const aspectDef = findSkillAspectDef(skillName);
         const avContainer = tr.querySelector(".av-container");
@@ -1697,15 +1921,19 @@
         updateRowAV(tr);
         updateDerived();
         refreshAllTalentSelects();
+        refreshSkillTriggerRow(tr);
     }
 
     function onRatingChange(tr) {
         updateRowAV(tr);
         updateDerived();
         refreshAllTalentSelects();
+        refreshSkillTriggerRow(tr);
     }
 
     function deleteSkillRow(tr) {
+        const sub = tr.nextElementSibling;
+        if (sub && sub.classList.contains("skill-trigger-row")) sub.remove();
         tr.remove();
         updateDerived();
         refreshAllTalentSelects();
@@ -1733,13 +1961,16 @@
 
     // СБОР ДАННЫХ
     function getCharacterData() {
-        const skills = [];
-        document.querySelectorAll("#skillsList tr").forEach(tr => {
+const skills = [];
+        document.querySelectorAll("#skillsList tr.skill-main-row").forEach(tr => {
             const skillName = tr.querySelector(".skill-select")?.value || "";
             const rating = parseInt(tr.querySelector(".skill-rating")?.value, 10) || 0;
             const aspectSelects = Array.from(tr.querySelectorAll(".skill-aspect")).map(s => s.value);
+            const trSub = tr.nextElementSibling;
+            const trigger = trSub?.querySelector(".skill-trigger-select")?.value || "";
+
             if (skillName) {
-                skills.push({ skillName, rating, aspects: aspectSelects });
+                skills.push({ skillName, rating, aspects: aspectSelects, trigger });
             }
         });
 
