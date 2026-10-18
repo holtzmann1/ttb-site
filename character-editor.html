@@ -1853,7 +1853,13 @@ function addNewSkillRow(skillData = null) {
         available.forEach(t => {
             const tag = t.source === "talent" ? " [Talent]" : "";
             const isSel = (t.name === selectedVal) ? "selected" : "";
-            html += `<option value="${t.name}" ${isSel}>${t.cost || ""} ${t.name}${tag}</option>`;
+const suitLabel = (t.cost || "")
+                .replace(/:r:/g, "[Ram]")
+                .replace(/:c:/g, "[Crow]")
+                .replace(/:t:/g, "[Tome]")
+                .replace(/:m:/g, "[Mask]");
+
+            html += `<option value="${t.name}" ${isSel}>${suitLabel} ${t.name}${tag}</option>`;
         });
         select.innerHTML = html;
 
