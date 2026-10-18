@@ -977,6 +977,43 @@
             background: rgba(184, 138, 74, 0.15);
             color: #e8dfd0;
         }
+        /* Кнопка открытия триггеров [T] */
+        .skill-trigger-btn {
+            width: 24px;
+            height: 28px;
+            background: #14110e;
+            border: 1px solid #4a3825;
+            color: #8f8679;
+            font-family: Georgia, serif;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .skill-trigger-btn:hover {
+            color: #c59a5b;
+            border-color: #b88a4a;
+        }
+
+        /* Когда у навыка выбран хотя бы один триггер — кнопка становится зеленой */
+        .skill-trigger-btn.has-triggers {
+            color: #3fb950 !important;
+            border-color: #3fb950 !important;
+            box-shadow: 0 0 6px rgba(63, 185, 80, 0.35);
+        }
+
+        /* Если ранг меньше 3 — кнопка скрыта или выключена */
+        .skill-trigger-btn.disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+            border-color: #2a2015;
+            color: #4a3825;
+        }
     </style>
 </head>
 <body>
@@ -1822,11 +1859,14 @@ function addNewSkillRow(skillData = null) {
         const trMain = document.createElement("tr");
         trMain.className = "skill-main-row";
 
-        trMain.innerHTML = `
+trMain.innerHTML = `
             <td>
-                <select class="skill-select" onchange="onSkillSelectChange(this.closest('tr'))">
-                    ${getSkillOptionsHtml()}
-                </select>
+                <div style="display: flex; gap: 4px; align-items: center;">
+                    <button type="button" class="skill-trigger-btn disabled" onclick="toggleSkillTriggerAccordion(this)" title="Триггеры навыка">T</button>
+                    <select class="skill-select" onchange="onSkillSelectChange(this.closest('tr'))" style="flex: 1;">
+                        ${getSkillOptionsHtml()}
+                    </select>
+                </div>
             </td>
             <td class="av-container">
                 <div class="av-box av-val">—</div>
@@ -1901,6 +1941,7 @@ function getTriggerItemHtml(triggerObj) {
         const rating = parseInt(trMain.querySelector(".skill-rating")?.value, 10) || 0;
         const available = getAvailableTriggers(skillName, rating);
 
+        const tBtn = trMain.querySelector(".skill-trigger-btn");
         const listDiv = trSub.querySelector(".skill-triggers-list");
         const select = trSub.querySelector(".skill-trigger-select");
         const controls = trSub.querySelector(".skill-trigger-controls");
@@ -1926,18 +1967,31 @@ function getTriggerItemHtml(triggerObj) {
         const selectedNames = Array.from(listDiv.querySelectorAll(".skill-trigger-item")).map(i => i.getAttribute("data-trigger-name"));
         const remaining = available.filter(t => !selectedNames.includes(t.name));
 
-        if (available.length === 0 && selectedNames.length === 0) {
-            trSub.style.display = "none";
-            return;
+        // Управление состоянием кнопки [T]
+        if (tBtn) {
+            if (available.length > 0 || selectedNames.length > 0) {
+                tBtn.classList.remove("disabled");
+                tBtn.title = `Триггеры (${selectedNames.length} выбрано)`;
+            } else {
+                tBtn.classList.add("disabled");
+                tBtn.classList.remove("has-triggers");
+                tBtn.title = "Доступно с 3-го ранга или от талантов";
+                trSub.style.display = "none";
+            }
+
+            if (selectedNames.length > 0) {
+                tBtn.classList.add("has-triggers");
+            } else {
+                tBtn.classList.remove("has-triggers");
+            }
         }
 
-        trSub.style.display = "";
-
+        // Обновляем список для добавления
         if (remaining.length === 0) {
             controls.style.display = "none";
         } else {
             controls.style.display = "flex";
-            let html = `<option value="">-- Choose Trigger to Add --</option>`;
+            let html = `<option value="">-- Выбрать триггер --</option>`;
             remaining.forEach(t => {
                 const tag = t.source === "talent" ? " [Talent]" : "";
                 const suitLabel = (t.cost || "")
@@ -1951,7 +2005,16 @@ function getTriggerItemHtml(triggerObj) {
             select.innerHTML = html;
         }
     }
+    function toggleSkillTriggerAccordion(btn) {
+        if (btn.classList.contains("disabled")) return;
 
+        const trMain = btn.closest("tr.skill-main-row");
+        const trSub = trMain?.nextElementSibling;
+        if (!trSub || !trSub.classList.contains("skill-trigger-row")) return;
+
+        const isClosed = trSub.style.display === "none" || !trSub.style.display;
+        trSub.style.display = isClosed ? "table-row" : "none";
+    }
     function addSkillTriggerFromSelect(btn) {
         const trSub = btn.closest(".skill-trigger-row");
         const trMain = trSub.previousElementSibling;
