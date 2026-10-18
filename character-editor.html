@@ -904,16 +904,54 @@
             padding-top: 4px;
             margin-top: 4px;
         }
-        /* Подстрока триггера навыка */
+/* Подстрока триггеров навыка */
         .skill-trigger-row {
             background: rgba(14, 11, 9, 0.7);
             border-bottom: 1px solid #33271a;
         }
         .skill-trigger-container {
-            padding: 4px 6px 8px 6px;
+            padding: 6px 8px 8px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .skill-triggers-list {
             display: flex;
             flex-direction: column;
             gap: 4px;
+        }
+        .skill-trigger-item {
+            background: rgba(20, 17, 14, 0.85);
+            border: 1px solid #382b1d;
+            border-left: 2px solid #c59a5b;
+            padding: 4px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .skill-trigger-text {
+            font-size: 11px;
+            color: #a99e8d;
+            line-height: 1.35;
+            flex: 1;
+        }
+        .skill-trigger-del {
+            background: transparent;
+            border: none;
+            color: #8f8679;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 0 4px;
+            line-height: 1;
+        }
+        .skill-trigger-del:hover {
+            color: #e57373;
+        }
+        .skill-trigger-controls {
+            display: flex;
+            gap: 6px;
+            align-items: center;
         }
         .skill-trigger-select {
             font-size: 12px;
@@ -922,14 +960,22 @@
             border: 1px solid #3a2e20;
             background: #100d0a;
             color: #c59a5b;
+            flex: 1;
         }
-        .skill-trigger-desc {
+        .add-trigger-btn {
+            background: transparent;
+            border: 1px dashed #b88a4a;
+            color: #c59a5b;
+            font-family: Georgia, serif;
             font-size: 11px;
-            color: #a99e8d;
-            line-height: 1.35;
-            padding: 4px 6px;
-            background: rgba(20, 17, 14, 0.6);
-            border-left: 2px solid #c59a5b;
+            padding: 4px 10px;
+            cursor: pointer;
+            height: 26px;
+            white-space: nowrap;
+        }
+        .add-trigger-btn:hover {
+            background: rgba(184, 138, 74, 0.15);
+            color: #e8dfd0;
         }
     </style>
 </head>
