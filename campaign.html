@@ -1617,17 +1617,66 @@ async function importToCampaign(event) {
             if (defTotEl) defTotEl.value = Math.max(1, baseDef - armorPenalty);
         }
 
-        function addNewSkillRow() {
+function addNewSkillRow(skillData = null) {
             const tbody = document.getElementById("skillsList");
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td><select class="skill-select" onchange="onSkillSelectChange(this.closest('tr'))">${getSkillOptionsHtml()}</select></td>
+            const trMain = document.createElement("tr");
+            trMain.className = "skill-main-row";
+            trMain.innerHTML = `
+                <td>
+                    <div style="display: flex; gap: 4px; align-items: center;">
+                        <button type="button" class="skill-trigger-btn disabled" onclick="toggleSkillTriggerAccordion(this)" title="Триггеры навыка">T</button>
+                        <select class="skill-select" onchange="onSkillSelectChange(this.closest('tr'))" style="flex: 1;">
+                            ${getSkillOptionsHtml()}
+                        </select>
+                    </div>
+                </td>
                 <td class="av-container"><div class="av-box av-val">—</div></td>
                 <td><input type="number" class="skill-rating" value="0" min="0" max="5" oninput="onRatingChange(this.closest('tr'))"></td>
                 <td class="aspect-container">${getAspectSelectHtml("")}</td>
                 <td><button type="button" class="del-btn" onclick="deleteSkillRow(this.closest('tr'))" title="Удалить">✕</button></td>
             `;
-            tbody.appendChild(tr);
+
+            const trSub = document.createElement("tr");
+            trSub.className = "skill-trigger-row";
+            trSub.style.display = "none";
+            trSub.innerHTML = `
+                <td colspan="5">
+                    <div class="skill-trigger-container">
+                        <div class="skill-triggers-list"></div>
+                        <div class="skill-trigger-controls">
+                            <select class="skill-trigger-select">
+                                <option value="">-- Выбрать триггер --</option>
+                            </select>
+                            <button type="button" class="add-trigger-btn" onclick="addSkillTriggerFromSelect(this)">+ Добавить</button>
+                        </div>
+                    </div>
+                </td>
+            `;
+
+            tbody.appendChild(trMain);
+            tbody.appendChild(trSub);
+
+            if (skillData) {
+                const sel = trMain.querySelector(".skill-select");
+                if (sel && skillData.skillName) {
+                    sel.value = skillData.skillName;
+                    onSkillSelectChange(trMain);
+                }
+                const ratingInput = trMain.querySelector(".skill-rating");
+                if (ratingInput && skillData.rating !== undefined) {
+                    ratingInput.value = skillData.rating;
+                }
+                const aspSelects = trMain.querySelectorAll(".skill-aspect");
+                if (skillData.aspects && aspSelects.length > 0) {
+                    aspSelects.forEach((s, idx) => {
+                        if (skillData.aspects[idx]) s.value = skillData.aspects[idx];
+                    });
+                }
+                updateRowAV(trMain);
+
+                const savedTriggers = skillData.triggers || (skillData.trigger ? [skillData.trigger] : []);
+                refreshSkillTriggerRow(trMain, savedTriggers);
+            }
         }
 
         function onSkillSelectChange(tr) {
