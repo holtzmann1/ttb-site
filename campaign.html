@@ -2160,27 +2160,11 @@ if (document.getElementById("bioPortraitUrl")) {
                 }
             }
 
-            const tbody = document.getElementById("skillsList");
+const tbody = document.getElementById("skillsList");
             tbody.innerHTML = "";
             if (data.skills && data.skills.length > 0) {
                 data.skills.forEach(sk => {
-                    addNewSkillRow();
-                    const lastRow = tbody.lastElementChild;
-                    const sel = lastRow.querySelector(".skill-select");
-                    if (sel) {
-                        sel.value = sk.skillName;
-                        onSkillSelectChange(lastRow);
-                    }
-                    const ratingInput = lastRow.querySelector(".skill-rating");
-                    if (ratingInput) ratingInput.value = sk.rating;
-
-                    const aspSelects = lastRow.querySelectorAll(".skill-aspect");
-                    if (sk.aspects && aspSelects.length > 0) {
-                        aspSelects.forEach((s, idx) => {
-                            if (sk.aspects[idx]) s.value = sk.aspects[idx];
-                        });
-                    }
-                    updateRowAV(lastRow);
+                    addNewSkillRow(sk);
                 });
             }
 
@@ -2236,17 +2220,28 @@ if (document.getElementById("bioPortraitUrl")) {
                 document.getElementById("destiny-5")?.checked || false
             ];
 
-            // Навыки
+// Навыки
             const skills = [];
-            document.querySelectorAll("#skillsList tr").forEach(tr => {
+            document.querySelectorAll("#skillsList tr.skill-main-row").forEach(tr => {
                 const sel = tr.querySelector(".skill-select")?.value;
                 if (sel) {
                     const rating = parseInt(tr.querySelector(".skill-rating")?.value) || 0;
                     const aspVals = Array.from(tr.querySelectorAll(".skill-aspect")).map(s => s.value);
+                    const trSub = tr.nextElementSibling;
+                    
+                    const triggers = [];
+                    if (trSub && trSub.classList.contains("skill-trigger-row")) {
+                        trSub.querySelectorAll(".skill-trigger-item").forEach(item => {
+                            const tName = item.getAttribute("data-trigger-name");
+                            if (tName) triggers.push(tName);
+                        });
+                    }
+
                     skills.push({
                         skillName: sel,
                         rating: rating,
-                        aspects: aspVals
+                        aspects: aspVals,
+                        triggers: triggers
                     });
                 }
             });
