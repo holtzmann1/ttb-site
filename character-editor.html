@@ -8,6 +8,8 @@
     <script src="talents-data.js?v=2"></script>
     <!-- ПОДКЛЮЧАЕМ БАЗУ ПУТЕЙ -->
     <script src="pursuits-data.js?v=2"></script>
+    <!-- ПОДКЛЮЧАЕМ БАЗУ СКИЛЛ ТРИГГЕРОВ -->
+    <script src="skill-triggers-data.js?v=1"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -1867,7 +1869,7 @@ const suitLabel = (t.cost || "")
         if (activeTrigger) {
             select.value = activeTrigger.name;
             descDiv.style.display = "block";
-            descDiv.innerHTML = `<strong>${activeTrigger.name} (${formatPursuitText(activeTrigger.cost)}):</strong> ${formatPursuitText(activeTrigger.desc)}`;
+            descDiv.innerHTML = `<strong>${activeTrigger.name} ${formatPursuitText(activeTrigger.cost)}:</strong> ${formatPursuitText(activeTrigger.desc)}`;
         } else {
             descDiv.style.display = "none";
             descDiv.innerHTML = "";
