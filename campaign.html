@@ -1695,20 +1695,149 @@ function addNewSkillRow(skillData = null) {
             updateRowAV(tr);
             updateDerived();
             refreshAllTalentSelects();
+            refreshSkillTriggerRow(tr);
         }
 
         function onRatingChange(tr) {
             updateRowAV(tr);
             updateDerived();
             refreshAllTalentSelects();
+            refreshSkillTriggerRow(tr);
         }
 
-        function deleteSkillRow(tr) {
+function deleteSkillRow(tr) {
+            const trSub = tr.nextElementSibling;
+            if (trSub && trSub.classList.contains("skill-trigger-row")) {
+                trSub.remove();
+            }
             tr.remove();
             updateDerived();
             refreshAllTalentSelects();
         }
+        function getTriggerItemHtml(triggerObj) {
+            return `
+                <div class="skill-trigger-item" data-trigger-name="${triggerObj.name}">
+                    <div class="skill-trigger-text">
+                        <strong>${triggerObj.name} ${formatPursuitText(triggerObj.cost)}:</strong> ${formatPursuitText(triggerObj.desc)}
+                    </div>
+                    <button type="button" class="skill-trigger-del" onclick="removeSkillTriggerItem(this)" title="Удалить триггер">✕</button>
+                </div>
+            `;
+        }
 
+        function refreshSkillTriggerRow(trMain, savedTriggers = null) {
+            const trSub = trMain.nextElementSibling;
+            if (!trSub || !trSub.classList.contains("skill-trigger-row")) return;
+
+            const skillName = trMain.querySelector(".skill-select")?.value || "";
+            const rating = parseInt(trMain.querySelector(".skill-rating")?.value, 10) || 0;
+            const available = getAvailableTriggers(skillName, rating);
+
+            const tBtn = trMain.querySelector(".skill-trigger-btn");
+            const listDiv = trSub.querySelector(".skill-triggers-list");
+            const select = trSub.querySelector(".skill-trigger-select");
+            const controls = trSub.querySelector(".skill-trigger-controls");
+
+            if (Array.isArray(savedTriggers)) {
+                listDiv.innerHTML = "";
+                savedTriggers.forEach(name => {
+                    const found = available.find(t => t.name === name);
+                    if (found) {
+                        listDiv.insertAdjacentHTML("beforeend", getTriggerItemHtml(found));
+                    }
+                });
+            } else {
+                const currentItems = listDiv.querySelectorAll(".skill-trigger-item");
+                currentItems.forEach(item => {
+                    const name = item.getAttribute("data-trigger-name");
+                    if (!available.some(t => t.name === name)) {
+                        item.remove();
+                    }
+                });
+            }
+
+            const selectedNames = Array.from(listDiv.querySelectorAll(".skill-trigger-item")).map(i => i.getAttribute("data-trigger-name"));
+            const remaining = available.filter(t => !selectedNames.includes(t.name));
+
+            if (tBtn) {
+                if (available.length > 0 || selectedNames.length > 0) {
+                    tBtn.classList.remove("disabled");
+                    tBtn.title = `Триггеры (${selectedNames.length} выбрано)`;
+                } else {
+                    tBtn.classList.add("disabled");
+                    tBtn.classList.remove("has-triggers");
+                    tBtn.title = "Доступно с 3-го ранга или от талантов";
+                    trSub.style.display = "none";
+                }
+
+                if (selectedNames.length > 0) {
+                    tBtn.classList.add("has-triggers");
+                } else {
+                    tBtn.classList.remove("has-triggers");
+                }
+            }
+
+            if (remaining.length === 0) {
+                controls.style.display = "none";
+            } else {
+                controls.style.display = "flex";
+                let html = `<option value="">-- Выбрать триггер --</option>`;
+                remaining.forEach(t => {
+                    const tag = t.source === "talent" ? " [Talent]" : "";
+                    const suitLabel = (t.cost || "")
+                        .replace(/:r:/g, "[Ram]")
+                        .replace(/:c:/g, "[Crow]")
+                        .replace(/:t:/g, "[Tome]")
+                        .replace(/:m:/g, "[Mask]");
+
+                    html += `<option value="${t.name}">${suitLabel} ${t.name}${tag}</option>`;
+                });
+                select.innerHTML = html;
+            }
+        }
+
+        function toggleSkillTriggerAccordion(btn) {
+            if (btn.classList.contains("disabled")) return;
+
+            const trMain = btn.closest("tr.skill-main-row");
+            const trSub = trMain?.nextElementSibling;
+            if (!trSub || !trSub.classList.contains("skill-trigger-row")) return;
+
+            const isClosed = trSub.style.display === "none" || !trSub.style.display;
+            trSub.style.display = isClosed ? "table-row" : "none";
+        }
+
+        function addSkillTriggerFromSelect(btn) {
+            const trSub = btn.closest(".skill-trigger-row");
+            const trMain = trSub.previousElementSibling;
+            const select = trSub.querySelector(".skill-trigger-select");
+            const triggerName = select.value;
+            if (!triggerName) return;
+
+            const skillName = trMain.querySelector(".skill-select")?.value || "";
+            const rating = parseInt(trMain.querySelector(".skill-rating")?.value, 10) || 0;
+            const available = getAvailableTriggers(skillName, rating);
+
+            const found = available.find(t => t.name === triggerName);
+            if (found) {
+                const listDiv = trSub.querySelector(".skill-triggers-list");
+                listDiv.insertAdjacentHTML("beforeend", getTriggerItemHtml(found));
+                refreshSkillTriggerRow(trMain);
+            }
+        }
+
+        function removeSkillTriggerItem(btn) {
+            const trSub = btn.closest(".skill-trigger-row");
+            const trMain = trSub.previousElementSibling;
+            btn.closest(".skill-trigger-item").remove();
+            refreshSkillTriggerRow(trMain);
+        }
+
+        function refreshAllSkillTriggers() {
+            document.querySelectorAll("#skillsList tr.skill-main-row").forEach(trMain => {
+                refreshSkillTriggerRow(trMain);
+            });
+        }
         function updateRowAV(tr) {
             const rating = parseInt(tr.querySelector(".skill-rating")?.value) || 0;
             const avCells = tr.querySelectorAll(".av-val");
