@@ -820,7 +820,7 @@
             background: rgba(184, 138, 74, 0.15);
             color: #e8dfd0;
         }
-        /* СТИЛИ ВКЛАДКИ EQUIPMENT */
+/* СТИЛИ ВКЛАДКИ EQUIPMENT */
         .equipment-box {
             max-width: 900px;
             margin: 0 auto;
@@ -836,20 +836,24 @@
             display: grid;
             grid-template-columns: 280px 1fr 34px;
             gap: 12px;
-            margin-bottom: 2px;
+            align-items: end;
+            margin-bottom: -1px;
+            z-index: 1;
         }
 
         .eq-header-badge {
-            background: #090807;
+            background: #000000;
             border: 1px solid #4a3825;
-            color: #c59a5b;
+            border-bottom: 1px solid #000000;
+            border-radius: 4px 4px 0 0;
+            color: #ffffff;
             font-size: 11px;
             font-weight: bold;
             letter-spacing: 1.5px;
-            padding: 5px 12px;
+            padding: 4px 10px 3px 10px;
             display: inline-block;
             text-transform: uppercase;
-            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
         }
 
         .equipment-row {
@@ -2141,8 +2145,8 @@ html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' 
             const row = document.createElement("div");
             row.className = "equipment-row";
             row.innerHTML = `
-                <input type="text" class="eq-item" placeholder="Предмет / снаряжение" value="${itemData && itemData.item ? String(itemData.item).replace(/"/g, '&quot;') : ''}">
-                <input type="text" class="eq-notes" placeholder="Свойства / количество / заметки" value="${itemData && itemData.notes ? String(itemData.notes).replace(/"/g, '&quot;') : ''}">
+                <input type="text" class="eq-item" value="${itemData && itemData.item ? String(itemData.item).replace(/"/g, '&quot;') : ''}">
+                <input type="text" class="eq-notes" value="${itemData && itemData.notes ? String(itemData.notes).replace(/"/g, '&quot;') : ''}">
                 <button type="button" class="eq-del-btn" onclick="this.closest('.equipment-row').remove()" title="Удалить строку">✕</button>
             `;
             container.appendChild(row);
