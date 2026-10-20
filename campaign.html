@@ -2134,7 +2134,19 @@ html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' 
                 }
             });
         }
+        function addNewEquipmentRow(itemData = null) {
+            const container = document.getElementById("equipmentList");
+            if (!container) return;
 
+            const row = document.createElement("div");
+            row.className = "equipment-row";
+            row.innerHTML = `
+                <input type="text" class="eq-item" placeholder="Предмет / снаряжение" value="${itemData && itemData.item ? String(itemData.item).replace(/"/g, '&quot;') : ''}">
+                <input type="text" class="eq-notes" placeholder="Свойства / количество / заметки" value="${itemData && itemData.notes ? String(itemData.notes).replace(/"/g, '&quot;') : ''}">
+                <button type="button" class="eq-del-btn" onclick="this.closest('.equipment-row').remove()" title="Удалить строку">✕</button>
+            `;
+            container.appendChild(row);
+        }
         function addNewTalentCard() {
             const container = document.getElementById("talentsContainer");
             const card = document.createElement("div");
@@ -2285,6 +2297,18 @@ const tbody = document.getElementById("skillsList");
 
             updateDerived();
 
+            // Снаряжение (Equipment)
+            const eqContainer = document.getElementById("equipmentList");
+            if (eqContainer) {
+                eqContainer.innerHTML = "";
+                const list = data.equipment || [];
+                list.forEach(item => addNewEquipmentRow(item));
+                // Добиваем пустыми строками до 14, чтобы всегда выглядело как оригинальный бланк
+                for (let i = list.length; i < 14; i++) {
+                    addNewEquipmentRow();
+                }
+            }
+            
             const tContainer = document.getElementById("talentsContainer");
             tContainer.innerHTML = "";
             if (data.talents && data.talents.length > 0) {
@@ -2349,6 +2373,16 @@ const tbody = document.getElementById("skillsList");
                 }
             });
 
+            // Снаряжение (Equipment)
+            const equipment = [];
+            document.querySelectorAll("#equipmentList .equipment-row").forEach(row => {
+                const item = row.querySelector(".eq-item")?.value.trim() || "";
+                const notes = row.querySelector(".eq-notes")?.value.trim() || "";
+                if (item || notes) {
+                    equipment.push({ item, notes });
+                }
+            });
+            
             // Атаки
             const attacks = [];
             document.querySelectorAll(".attack-card").forEach(card => {
@@ -2388,6 +2422,7 @@ const tbody = document.getElementById("skillsList");
                 aspects: { ...aspects },
                 skills: skills,
                 attacks: attacks,
+                equipment: equipment,
                 talents: talents,
 bioPortraitUrl: document.getElementById("bioPortraitUrl")?.value || "",
                 bioNotes: document.getElementById("bioNotes")?.value || ""
