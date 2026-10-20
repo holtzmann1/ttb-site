@@ -903,6 +903,151 @@
                 gap: 6px;
             }
         }
+        /* =================================================== */
+        /* КНОПКА И МОДАЛЬНОЕ ОКНО: DESTINY STEPS REWARDS      */
+        /* =================================================== */
+        
+        /* Кнопка вызова заметок рядом с заголовком */
+        .destiny-notes-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            padding: 0 4px;
+            margin-left: 6px;
+            vertical-align: middle;
+            opacity: 0.7;
+            transition: opacity 0.2s ease, transform 0.15s ease;
+        }
+
+        .destiny-notes-btn:hover {
+            opacity: 1;
+            transform: scale(1.15);
+        }
+
+        /* Затемненный оверлей на весь экран */
+        .destiny-modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            backdrop-filter: blur(2px);
+        }
+
+        /* Карточка окна */
+        .destiny-modal-content {
+            background: #120e0b;
+            border: 1px solid #5a4227;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.9), 0 0 10px rgba(184, 138, 74, 0.2);
+            width: 100%;
+            max-width: 520px;
+            padding: 20px 24px;
+            box-sizing: border-box;
+            color: #d6ccbe;
+        }
+
+        /* Заголовок окна */
+        .destiny-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #382b1d;
+            padding-bottom: 10px;
+            margin-bottom: 18px;
+        }
+
+        .destiny-modal-title {
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            color: #c9a063;
+            text-transform: uppercase;
+        }
+
+        .destiny-close-btn {
+            background: transparent;
+            border: none;
+            color: #8f8679;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 2px 6px;
+            transition: color 0.2s ease;
+        }
+
+        .destiny-close-btn:hover {
+            color: #e57373;
+        }
+
+        /* Список шагов STEP 1 - STEP 5 */
+        .destiny-modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .destiny-step-row {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .destiny-step-label {
+            font-size: 11px;
+            font-weight: bold;
+            color: #a89f91;
+            letter-spacing: 1px;
+        }
+
+        .destiny-step-input {
+            background: rgba(18, 15, 12, 0.85);
+            border: 1px solid #382b1d;
+            height: 32px;
+            padding: 4px 10px;
+            font-size: 13px;
+            color: #e8dfd0;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .destiny-step-input:focus {
+            border-color: #b88a4a;
+            background: #14110e;
+        }
+
+        /* Нижняя часть с кнопкой закрытия */
+        .destiny-modal-footer {
+            margin-top: 20px;
+            padding-top: 14px;
+            border-top: 1px solid #292015;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .destiny-save-btn {
+            background: #1a140e;
+            border: 1px solid #4a3825;
+            color: #c9a063;
+            padding: 6px 18px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .destiny-save-btn:hover {
+            background: #2b1f14;
+            border-color: #b88a4a;
+            color: #f0e6d2;
+        }
     </style>
 </head>
 <body>
@@ -981,7 +1126,7 @@
                         </div>
                         <div class="destiny-row bottom-row">
                             <div class="destiny-field">
-                                <label class="destiny-label">Destiny Steps Fulfilled</label>
+                                <label class="destiny-label">DESTINY STEPS FULFILLED <button type="button" class="destiny-notes-btn" onclick="openDestinyModal()">📝</button>
                                 <div class="destiny-steps">
                                     <input type="checkbox" id="destiny-1" class="step-circle">
                                     <input type="checkbox" id="destiny-2" class="step-circle">
@@ -1480,6 +1625,43 @@ async function importToCampaign(event) {
 
     <!-- СТАТЫ, НАВЫКИ И ТАЛАНТЫ -->
     <script>
+// Открытие модального окна
+function openDestinyModal() {
+    const modal = document.getElementById('destinyModal');
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+}
+
+// Закрытие модального окна
+function closeDestinyModal() {
+    const modal = document.getElementById('destinyModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+    // Если у тебя есть общая функция автосохранения (например, saveCharacterData() или saveToStorage())
+    // её можно вызвать прямо здесь:
+    if (typeof autoSave === 'function') autoSave();
+    if (typeof saveCharacter === 'function') saveCharacter();
+}
+
+// Закрытие по клику мимо окна (по темному фону)
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('destinyModal');
+    if (event.target === modal) {
+        closeDestinyModal();
+    }
+});
+
+// Закрытие по нажатию клавиши Escape
+window.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        const modal = document.getElementById('destinyModal');
+        if (modal && modal.style.display === 'flex') {
+            closeDestinyModal();
+        }
+    }
+});
         const aspects = {
             might: 0, grace: 0, speed: 0, resilience: 0,
             intellect: 0, charm: 0, cunning: 0, tenacity: 0
@@ -2433,5 +2615,39 @@ bioPortraitUrl: document.getElementById("bioPortraitUrl")?.value || "",
             };
         };
     </script>
+    <!-- МОДАЛЬНОЕ ОКНО: DESTINY STEPS REWARDS -->
+<div id="destinyModal" class="destiny-modal-backdrop" style="display: none;">
+    <div class="destiny-modal-content">
+        <div class="destiny-modal-header">
+            <span class="destiny-modal-title">DESTINY STEPS REWARDS</span>
+            <button type="button" class="destiny-close-btn" onclick="closeDestinyModal()">✕</button>
+        </div>
+        <div class="destiny-modal-body">
+            <div class="destiny-step-row">
+                <label class="destiny-step-label">STEP 1</label>
+                <input type="text" id="destinyStep1" class="destiny-step-input" placeholder="Что получено за 1-й шаг судьбы...">
+            </div>
+            <div class="destiny-step-row">
+                <label class="destiny-step-label">STEP 2</label>
+                <input type="text" id="destinyStep2" class="destiny-step-input" placeholder="Что получено за 2-й шаг судьбы...">
+            </div>
+            <div class="destiny-step-row">
+                <label class="destiny-step-label">STEP 3</label>
+                <input type="text" id="destinyStep3" class="destiny-step-input" placeholder="Что получено за 3-й шаг судьбы...">
+            </div>
+            <div class="destiny-step-row">
+                <label class="destiny-step-label">STEP 4</label>
+                <input type="text" id="destinyStep4" class="destiny-step-input" placeholder="Что получено за 4-й шаг судьбы...">
+            </div>
+            <div class="destiny-step-row">
+                <label class="destiny-step-label">STEP 5</label>
+                <input type="text" id="destinyStep5" class="destiny-step-input" placeholder="Что получено за 5-й шаг судьбы...">
+            </div>
+        </div>
+        <div class="destiny-modal-footer">
+            <button type="button" class="destiny-save-btn" onclick="closeDestinyModal()">ЗАКРЫТЬ</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>
