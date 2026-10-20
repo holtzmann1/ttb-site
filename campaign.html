@@ -1048,6 +1048,69 @@
             border-color: #b88a4a;
             color: #f0e6d2;
         }
+        /* Контейнер поля SPECIES */
+.species-select-box {
+    background: #0d0c0a;
+    border: 1px solid #4a3f2c;
+    color: #e2d6b5;
+    height: 34px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+.species-select-box:hover {
+    border-color: #8c734b;
+}
+
+.species-arrow {
+    color: #8c734b;
+    font-size: 10px;
+}
+
+/* Выпадающий список */
+.species-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #12100d;
+    border: 1px solid #6e5d3b;
+    z-index: 1000;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.8);
+    margin-top: 2px;
+}
+
+.species-item {
+    padding: 7px 12px;
+    font-size: 12px;
+    color: #aaa;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.species-item:hover {
+    background: #252016;
+    color: #fff;
+}
+
+/* Выбранный пункт */
+.species-item.selected {
+    color: #d4af37;
+    background: #1c1810;
+    font-weight: bold;
+}
+
+/* Заблокированные пункты (когда выбрано уже 2) */
+.species-item.disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
     </style>
 </head>
 <body>
@@ -1106,32 +1169,23 @@
                                 <label>Current Pursuit</label>
                                 <input type="text" id="pursuit" placeholder="Current Pursuit">
                             </div>
-<div class="field-group">
-    <label>Type / Status</label>
-    <div style="display: flex; gap: 6px;">
-        <!-- Слот 1: Основной тип (по умолчанию Fated) -->
-        <select id="species" onchange="refreshAllTalentSelects()" style="flex: 1;">
-            <option value="Fated" selected>Fated</option>
-            <option value="Fatemaster">Fatemaster</option>
-            <option value="Invested">Invested</option>
-            <option value="Kin">Kin</option>
-            <option value="Stitched">Stitched</option>
-            <option value="Twisted">Twisted</option>
-            <option value="Guild">Guild</option>
-            <option value="None">— Нет —</option>
-        </select>
+<div class="field-group" style="position: relative;">
+    <label>SPECIES</label>
+    <div id="speciesDisplay" class="species-select-box" onclick="toggleSpeciesMenu(event)">
+        <span id="speciesText">Fated</span>
+        <span class="species-arrow">▾</span>
+    </div>
+    
+    <input type="hidden" id="species" value="Fated">
 
-        <!-- Слот 2: Дополнительный статус/фракция -->
-        <select id="species2" onchange="refreshAllTalentSelects()" style="flex: 1;">
-            <option value="" selected>— Доп. тип —</option>
-            <option value="Fated">Fated</option>
-            <option value="Fatemaster">Fatemaster</option>
-            <option value="Invested">Invested</option>
-            <option value="Kin">Kin</option>
-            <option value="Stitched">Stitched</option>
-            <option value="Twisted">Twisted</option>
-            <option value="Guild">Guild</option>
-        </select>
+    <div id="speciesMenu" class="species-dropdown-menu" style="display: none;">
+        <div class="species-item selected" onclick="toggleSpeciesItem('Fated')">Fated</div>
+        <div class="species-item" onclick="toggleSpeciesItem('Kin')">Kin</div>
+        <div class="species-item" onclick="toggleSpeciesItem('Invested')">Invested</div>
+        <div class="species-item" onclick="toggleSpeciesItem('Stitched')">Stitched</div>
+        <div class="species-item" onclick="toggleSpeciesItem('Twisted')">Twisted</div>
+        <div class="species-item" onclick="toggleSpeciesItem('Guild')">Guild</div>
+        <div class="species-item" onclick="toggleSpeciesItem('Fatemaster')">Fatemaster</div>
     </div>
 </div>
                         </div>
@@ -1649,6 +1703,67 @@ async function importToCampaign(event) {
 
     <!-- СТАТЫ, НАВЫКИ И ТАЛАНТЫ -->
     <script>
+        // Хранилище выбранных статусов
+let activeSpecies = ["Fated"];
+
+// Открытие / закрытие выпадающего списка
+function toggleSpeciesMenu(e) {
+    e.stopPropagation();
+    const menu = document.getElementById("speciesMenu");
+    if (!menu) return;
+    menu.style.display = (menu.style.display === "none" || !menu.style.display) ? "block" : "none";
+}
+
+// Клик по конкретному пункту в списке
+function toggleSpeciesItem(name) {
+    const idx = activeSpecies.indexOf(name);
+    
+    if (idx !== -1) {
+        // Уже выбран — снимаем
+        activeSpecies.splice(idx, 1);
+    } else {
+        // Не выбран — проверяем лимит в 2 статуса
+        if (activeSpecies.length >= 2) {
+            return;
+        }
+        activeSpecies.push(name);
+    }
+
+    updateSpeciesUI();
+}
+
+// Обновление отображения в строке и меню
+function updateSpeciesUI() {
+    const textEl = document.getElementById("speciesText");
+    const hiddenInput = document.getElementById("species");
+
+    const displayText = activeSpecies.join(", ");
+    if (textEl) textEl.textContent = displayText || "—";
+    if (hiddenInput) hiddenInput.value = displayText;
+
+    // Обновляем подсветку пунктов в меню
+    const items = document.querySelectorAll(".species-item");
+    const isMax = activeSpecies.length >= 2;
+
+    items.forEach(el => {
+        const val = el.textContent.trim();
+        const isSelected = activeSpecies.includes(val);
+
+        el.classList.toggle("selected", isSelected);
+        el.classList.toggle("disabled", !isSelected && isMax);
+    });
+
+    // Пересчитываем таланты под новые статусы
+    if (typeof refreshAllTalentSelects === "function") {
+        refreshAllTalentSelects();
+    }
+}
+
+// Закрытие меню при клике в любое свободное место экрана
+document.addEventListener("click", () => {
+    const menu = document.getElementById("speciesMenu");
+    if (menu) menu.style.display = "none";
+});
 // Открытие модального окна
 function openDestinyModal() {
     const modal = document.getElementById('destinyModal');
@@ -2175,12 +2290,8 @@ function checkTalentRequirements(talent) {
     const reqStr = talent.req ? talent.req.trim() : "None";
     if (!reqStr || reqStr.toLowerCase() === "none") return true;
 
-    // Считываем выбранные статусы из обоих слотов
-    const s1 = (document.getElementById("species")?.value || "").toLowerCase();
-    const s2 = (document.getElementById("species2")?.value || "").toLowerCase();
-    const activeTypes = [s1, s2].filter(v => v && v !== "none");
-
-    const hasType = (t) => activeTypes.some(at => at.includes(t.toLowerCase()));
+// Сверяем с активными статусами из поля SPECIES
+    const hasType = (t) => activeSpecies.map(s => s.toLowerCase()).includes(t.toLowerCase());
 
     // Если персонаж под статусом Fatemaster — ему доступны любые таланты
     if (hasType("fatemaster")) return true;
