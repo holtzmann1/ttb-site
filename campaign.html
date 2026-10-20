@@ -2449,6 +2449,12 @@ if (document.getElementById("bioPortraitUrl")) {
                     if (el) el.checked = checked;
                 });
             }
+            for (let i = 1; i <= 5; i++) {
+                const stepInput = document.getElementById(`destinyStep${i}`);
+                if (stepInput) {
+                    stepInput.value = (data.destinyStepRewards && data.destinyStepRewards[i - 1]) || "";
+                }
+            }
 
             if (data.armor !== undefined) document.getElementById("armor").value = data.armor;
             if (data.height !== undefined && document.getElementById("height")) document.getElementById("height").value = data.height;
@@ -2603,6 +2609,7 @@ const tbody = document.getElementById("skillsList");
                 guildScript: Number(document.getElementById("guildScript")?.value) || 0,
                 characterExp: Number(document.getElementById("characterExp")?.value) || 0,
                 destinySteps: destinySteps,
+                destinyStepRewards: [1, 2, 3, 4, 5].map(i => document.getElementById(`destinyStep${i}`)?.value || ""),
                 armor: Number(document.getElementById("armor")?.value) || 0,
                 height: Number(document.getElementById("height")?.value) || 2,
                 aspects: { ...aspects },
