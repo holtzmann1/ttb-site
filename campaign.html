@@ -1106,10 +1106,34 @@
                                 <label>Current Pursuit</label>
                                 <input type="text" id="pursuit" placeholder="Current Pursuit">
                             </div>
-                            <div class="field-group">
-                                <label>Species</label>
-                                <input type="text" id="species" value="Human" oninput="refreshAllTalentSelects()">
-                            </div>
+<div class="field-group">
+    <label>Type / Status</label>
+    <div style="display: flex; gap: 6px;">
+        <!-- Слот 1: Основной тип (по умолчанию Fated) -->
+        <select id="species" onchange="refreshAllTalentSelects()" style="flex: 1;">
+            <option value="Fated" selected>Fated</option>
+            <option value="Fatemaster">Fatemaster</option>
+            <option value="Invested">Invested</option>
+            <option value="Kin">Kin</option>
+            <option value="Stitched">Stitched</option>
+            <option value="Twisted">Twisted</option>
+            <option value="Guild">Guild</option>
+            <option value="None">— Нет —</option>
+        </select>
+
+        <!-- Слот 2: Дополнительный статус/фракция -->
+        <select id="species2" onchange="refreshAllTalentSelects()" style="flex: 1;">
+            <option value="" selected>— Доп. тип —</option>
+            <option value="Fated">Fated</option>
+            <option value="Fatemaster">Fatemaster</option>
+            <option value="Invested">Invested</option>
+            <option value="Kin">Kin</option>
+            <option value="Stitched">Stitched</option>
+            <option value="Twisted">Twisted</option>
+            <option value="Guild">Guild</option>
+        </select>
+    </div>
+</div>
                         </div>
                     </div>
 
@@ -2147,127 +2171,167 @@ function deleteSkillRow(tr) {
         }
 
         // ТАЛАНТЫ: ВАЛИДАЦИЯ ТРЕБОВАНИЙ
-        function checkTalentRequirements(talent) {
-            const reqStr = talent.req ? talent.req.trim() : "None";
-            if (!reqStr || reqStr.toLowerCase() === "none") return true;
+function checkTalentRequirements(talent) {
+    const reqStr = talent.req ? talent.req.trim() : "None";
+    if (!reqStr || reqStr.toLowerCase() === "none") return true;
 
-            const parts = reqStr.split(",").map(p => p.trim());
-            const speciesVal = (document.getElementById("species")?.value || "Human").toLowerCase();
+    // Считываем выбранные статусы из обоих слотов
+    const s1 = (document.getElementById("species")?.value || "").toLowerCase();
+    const s2 = (document.getElementById("species2")?.value || "").toLowerCase();
+    const activeTypes = [s1, s2].filter(v => v && v !== "none");
 
-            for (let part of parts) {
-                if (/^Destiny:/i.test(part) || /^Book/i.test(part)) continue;
+    const hasType = (t) => activeTypes.some(at => at.includes(t.toLowerCase()));
 
-                if (/Aspect:/i.test(part) || /(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)\s*(-?\d+)/i.test(part)) {
-                    if (/Two Aspects -3 or less/i.test(part)) {
-                        if (Object.values(aspects).filter(v => v <= -3).length < 2) return false;
-                        continue;
+    // Если персонаж под статусом Fatemaster — ему доступны любые таланты
+    if (hasType("fatemaster")) return true;
+
+    const parts = reqStr.split(",").map(p => p.trim());
+
+    for (let part of parts) {
+        if (/^Destiny:/i.test(part) || /^Book/i.test(part)) continue;
+
+        // --- 1. ПРОВЕРКА АСПЕКТОВ ---
+        if (/Aspect:/i.test(part) || /(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)\s*(-?\d+)/i.test(part)) {
+            if (/Two Aspects -3 or less/i.test(part)) {
+                if (Object.values(aspects).filter(v => v <= -3).length < 2) return false;
+                continue;
+            }
+            if (/No Aspects higher than 1/i.test(part)) {
+                if (Object.values(aspects).some(v => v > 1)) return false;
+                continue;
+            }
+            if (/Physical Aspect\s*(\d+)\s*or higher/i.test(part)) {
+                const target = parseInt(part.match(/Physical Aspect\s*(\d+)\s*or higher/i)[1], 10);
+                if (![aspects.might, aspects.grace, aspects.speed, aspects.resilience].some(v => v >= target)) return false;
+                continue;
+            }
+            if (/Mental Aspect\s*(-?\d+)\s*(or less|or lower)/i.test(part)) {
+                const target = parseInt(part.match(/Mental Aspect\s*(-?\d+)\s*(or less|or lower)/i)[1], 10);
+                if (![aspects.intellect, aspects.charm, aspects.cunning, aspects.tenacity].some(v => v <= target)) return false;
+                continue;
+            }
+            if (/Mental Aspect\s*(\d+)\s*or higher/i.test(part)) {
+                const target = parseInt(part.match(/Mental Aspect\s*(\d+)\s*or higher/i)[1], 10);
+                if (![aspects.intellect, aspects.charm, aspects.cunning, aspects.tenacity].some(v => v >= target)) return false;
+                continue;
+            }
+
+            const subClauses = part.replace(/^Aspect:\s*/i, "").split(/\s+or\s+/i);
+            let orPassed = false;
+            for (let sub of subClauses) {
+                const match = sub.match(/(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)\s*(-?\d+)\s*(or higher|or lower|or less|\+)?/i);
+                if (match) {
+                    const aspKey = match[1].toLowerCase();
+                    const targetVal = parseInt(match[2], 10);
+                    const cond = (match[3] || (targetVal < 0 ? "or lower" : "or higher")).toLowerCase();
+                    const currentVal = aspects[aspKey] !== undefined ? aspects[aspKey] : 0;
+
+                    if ((cond.includes("lower") || cond.includes("less")) && currentVal <= targetVal) {
+                        orPassed = true;
+                        break;
+                    } else if ((cond.includes("higher") || cond === "+") && currentVal >= targetVal) {
+                        orPassed = true;
+                        break;
+                    } else if (currentVal === targetVal) {
+                        orPassed = true;
+                        break;
                     }
-                    if (/No Aspects higher than 1/i.test(part)) {
-                        if (Object.values(aspects).some(v => v > 1)) return false;
-                        continue;
-                    }
-                    if (/Physical Aspect\s*(\d+)\s*or higher/i.test(part)) {
-                        const target = parseInt(part.match(/Physical Aspect\s*(\d+)\s*or higher/i)[1], 10);
-                        if (![aspects.might, aspects.grace, aspects.speed, aspects.resilience].some(v => v >= target)) return false;
-                        continue;
-                    }
-                    if (/Mental Aspect\s*(-?\d+)\s*(or less|or lower)/i.test(part)) {
-                        const target = parseInt(part.match(/Mental Aspect\s*(-?\d+)\s*(or less|or lower)/i)[1], 10);
-                        if (![aspects.intellect, aspects.charm, aspects.cunning, aspects.tenacity].some(v => v <= target)) return false;
-                        continue;
-                    }
-                    if (/Mental Aspect\s*(\d+)\s*or higher/i.test(part)) {
-                        const target = parseInt(part.match(/Mental Aspect\s*(\d+)\s*or higher/i)[1], 10);
-                        if (![aspects.intellect, aspects.charm, aspects.cunning, aspects.tenacity].some(v => v >= target)) return false;
-                        continue;
-                    }
-
-                    const subClauses = part.replace(/^Aspect:\s*/i, "").split(/\s+or\s+/i);
-                    let orPassed = false;
-                    for (let sub of subClauses) {
-                        const match = sub.match(/(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)\s*(-?\d+)\s*(or higher|or lower|or less|\+)?/i);
-                        if (match) {
-                            const aspKey = match[1].toLowerCase();
-                            const targetVal = parseInt(match[2], 10);
-                            const cond = (match[3] || (targetVal < 0 ? "or lower" : "or higher")).toLowerCase();
-                            const currentVal = aspects[aspKey] !== undefined ? aspects[aspKey] : 0;
-
-                            if ((cond.includes("lower") || cond.includes("less")) && currentVal <= targetVal) {
-                                orPassed = true;
-                                break;
-                            } else if ((cond.includes("higher") || cond === "+") && currentVal >= targetVal) {
-                                orPassed = true;
-                                break;
-                            } else if (currentVal === targetVal) {
-                                orPassed = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (!orPassed && subClauses.some(s => /(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)/i.test(s))) {
-                        return false;
-                    }
-                    continue;
-                }
-
-                const typeMatch = part.match(/Type:\s*([A-Za-z\-]+)/i);
-                if (typeMatch) {
-                    const reqType = typeMatch[1].toLowerCase();
-                    if (reqType === "fated" && (speciesVal.includes("construct") || speciesVal.includes("stitched"))) return false;
-                    if (reqType === "kin" && !speciesVal.includes("gremlin") && !speciesVal.includes("kin")) return false;
-                    if (reqType === "non-kin" && (speciesVal.includes("gremlin") || speciesVal.includes("kin"))) return false;
-                    if (reqType === "invested" && !speciesVal.includes("invested") && !speciesVal.includes("construct")) return false;
-                    if (reqType === "stitched" && !speciesVal.includes("stitched") && !speciesVal.includes("undead")) return false;
-                    continue;
-                }
-
-                const skillMatch = part.match(/Skill:\s*([A-Za-z\s\-]+?)\s*(\d+)/i);
-                if (skillMatch) {
-                    let skillName = skillMatch[1].trim().toLowerCase();
-                    const targetRank = parseInt(skillMatch[2], 10);
-
-                    if (skillName.endsWith("s") && skillName !== "flexible") {
-                        skillName = skillName.slice(0, -1);
-                    }
-
-                    if (skillName.includes("chosen skill") || skillName.includes("close combat") || skillName.includes("ranged combat")) {
-                        let hasEligible = false;
-                        const rows = document.querySelectorAll("#skillsList tr");
-                        for (let tr of rows) {
-                            const rank = parseInt(tr.querySelector(".skill-rating")?.value) || 0;
-                            if (rank >= targetRank) { hasEligible = true; break; }
-                        }
-                        if (!hasEligible) return false;
-                    } else if (skillName.includes("magical")) {
-                        let hasMagical = false;
-                        for (let magSkill of Object.keys(skillCategories["Magical"])) {
-                            if (getSkillRank(magSkill) >= targetRank) { hasMagical = true; break; }
-                        }
-                        if (!hasMagical) return false;
-                    } else {
-                        let foundRank = 0;
-                        const rows = document.querySelectorAll("#skillsList tr");
-                        for (let tr of rows) {
-                            const sel = tr.querySelector(".skill-select")?.value.toLowerCase() || "";
-                            if (sel.includes(skillName) || skillName.includes(sel)) {
-                                foundRank = Math.max(foundRank, parseInt(tr.querySelector(".skill-rating")?.value) || 0);
-                            }
-                        }
-                        if (foundRank < targetRank) return false;
-                    }
-                    continue;
-                }
-
-                const otherTalentMatch = part.match(/Other:.*?\b([A-Za-z\s]+)\s+Talent/i);
-                if (otherTalentMatch) {
-                    const reqTalentName = otherTalentMatch[1].trim().toLowerCase();
-                    const hasTalent = Array.from(document.querySelectorAll(".talent-select")).some(s => s.value.toLowerCase().includes(reqTalentName));
-                    if (!hasTalent) return false;
-                    continue;
                 }
             }
-            return true;
+            if (!orPassed && subClauses.some(s => /(Might|Grace|Speed|Resilience|Intellect|Charm|Cunning|Tenacity)/i.test(s))) {
+                return false;
+            }
+            continue;
         }
+
+        // --- 2. ПРОВЕРКА ТИПОВ И СТАТУСОВ ---
+        const typeMatch = part.match(/Type:\s*([A-Za-z\-]+)/i);
+        if (typeMatch) {
+            const reqType = typeMatch[1].toLowerCase();
+
+            // Fated: требует статус Fated
+            if (reqType === "fated" && !hasType("fated")) return false;
+
+            // Kin / Non-Kin: гремлины и не-гремлины
+            if (reqType === "kin" && !hasType("kin")) return false;
+            if (reqType === "non-kin" && hasType("kin")) return false;
+
+            // Invested: роботы и киборги
+            if (reqType === "invested" && !hasType("invested")) return false;
+
+            // Stitched: сшитые мертвецы
+            if (reqType === "stitched" && !hasType("stitched")) return false;
+
+            // Twisted: мутанты
+            if (reqType === "twisted" && !hasType("twisted")) return false;
+
+            continue;
+        }
+
+        // --- 3. ПРОВЕРКА ГИЛЬДИИ И КОНСТРУКТОВ В "OTHER:" ---
+        if (/Other:/i.test(part)) {
+            // Требования работы на Гильдию (Guild employee / Guild Training)
+            if (/guild employee/i.test(part) || /guild training/i.test(part)) {
+                if (!hasType("guild")) return false;
+                continue;
+            }
+
+            // Требования конструкта (Construct characteristic)
+            if (/\bconstruct\b/i.test(part)) {
+                if (!hasType("invested")) return false;
+                continue;
+            }
+
+            // Проверка наличия другого таланта
+            const otherTalentMatch = part.match(/Other:.*?\b([A-Za-z\s]+)\s+Talent/i);
+            if (otherTalentMatch) {
+                const reqTalentName = otherTalentMatch[1].trim().toLowerCase();
+                const hasTalent = Array.from(document.querySelectorAll(".talent-select")).some(s => s.value.toLowerCase().includes(reqTalentName));
+                if (!hasTalent) return false;
+                continue;
+            }
+        }
+
+        // --- 4. ПРОВЕРКА НАВЫКОВ ---
+        const skillMatch = part.match(/Skill:\s*([A-Za-z\s\-]+?)\s*(\d+)/i);
+        if (skillMatch) {
+            let skillName = skillMatch[1].trim().toLowerCase();
+            const targetRank = parseInt(skillMatch[2], 10);
+
+            if (skillName.endsWith("s") && skillName !== "flexible") {
+                skillName = skillName.slice(0, -1);
+            }
+
+            if (skillName.includes("chosen skill") || skillName.includes("close combat") || skillName.includes("ranged combat")) {
+                let hasEligible = false;
+                const rows = document.querySelectorAll("#skillsList tr");
+                for (let tr of rows) {
+                    const rank = parseInt(tr.querySelector(".skill-rating")?.value) || 0;
+                    if (rank >= targetRank) { hasEligible = true; break; }
+                }
+                if (!hasEligible) return false;
+            } else if (skillName.includes("magical")) {
+                let hasMagical = false;
+                for (let magSkill of Object.keys(skillCategories["Magical"])) {
+                    if (getSkillRank(magSkill) >= targetRank) { hasMagical = true; break; }
+                }
+                if (!hasMagical) return false;
+            } else {
+                let foundRank = 0;
+                const rows = document.querySelectorAll("#skillsList tr");
+                for (let tr of rows) {
+                    const sel = tr.querySelector(".skill-select")?.value.toLowerCase() || "";
+                    if (sel.includes(skillName) || skillName.includes(sel)) {
+                        foundRank = Math.max(foundRank, parseInt(tr.querySelector(".skill-rating")?.value) || 0);
+                    }
+                }
+                if (foundRank < targetRank) return false;
+            }
+            continue;
+        }
+    }
+    return true;
+}
 
         function getTalentOptionsHtml(selectedVal = "") {
 let html = `<option value="">-- Select Talent --</option>`;
