@@ -2606,7 +2606,11 @@ function promptPortraitUrl() {
 
             if (data.charName !== undefined) document.getElementById("charName").value = data.charName;
             if (data.playerName !== undefined) document.getElementById("playerName").value = data.playerName;
-            if (data.species !== undefined) document.getElementById("species").value = data.species;
+            if (data.species !== undefined) {
+    document.getElementById("species").value = data.species;
+    activeSpecies = data.species ? data.species.split(",").map(s => s.trim()).filter(Boolean) : [];
+    updateSpeciesUI();
+}
             if (data.pursuit !== undefined) document.getElementById("pursuit").value = data.pursuit;
             if (data.guildScript !== undefined) document.getElementById("guildScript").value = data.guildScript;
             if (data.characterExp !== undefined) document.getElementById("characterExp").value = data.characterExp;
