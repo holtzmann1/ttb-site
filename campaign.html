@@ -820,6 +820,85 @@
             background: rgba(184, 138, 74, 0.15);
             color: #e8dfd0;
         }
+        /* СТИЛИ ВКЛАДКИ EQUIPMENT */
+        .equipment-box {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .equipment-table-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .equipment-headers {
+            display: grid;
+            grid-template-columns: 280px 1fr 34px;
+            gap: 12px;
+            margin-bottom: 2px;
+        }
+
+        .eq-header-badge {
+            background: #090807;
+            border: 1px solid #4a3825;
+            color: #c59a5b;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            padding: 5px 12px;
+            display: inline-block;
+            text-transform: uppercase;
+            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.8);
+        }
+
+        .equipment-row {
+            display: grid;
+            grid-template-columns: 280px 1fr 34px;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .equipment-row input[type="text"] {
+            background: rgba(18, 15, 12, 0.85);
+            border: 1px solid #382b1d;
+            height: 32px;
+            padding: 4px 10px;
+            font-size: 14px;
+            color: #e8dfd0;
+            transition: border-color 0.2s ease;
+        }
+
+        .equipment-row input[type="text"]:focus {
+            border-color: #b88a4a;
+            background: #14110e;
+        }
+
+        .eq-del-btn {
+            background: transparent;
+            border: 1px solid #382b1d;
+            color: #8f8679;
+            cursor: pointer;
+            height: 32px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .eq-del-btn:hover {
+            color: #e57373;
+            border-color: #e57373;
+            background: rgba(229, 115, 115, 0.1);
+        }
+
+        @media (max-width: 700px) {
+            .equipment-headers, .equipment-row {
+                grid-template-columns: 1fr 1fr 34px;
+                gap: 6px;
+            }
+        }
     </style>
 </head>
 <body>
