@@ -10,10 +10,10 @@
                 {
                     step: 0,
                     type: "single",
-                    talent: {
-                        name: "A Servant of the People",
-                        desc: "When this character makes a Barter, Bewitch, or Intimidate Challenge, she may discard a card to turn it into a Bureaucracy Challenge.\n\nIf the Challenge was a Barter Challenge, she may use promises of insignificant political favors instead of cash or material goods. This requires spending an hour or two speaking with associates within a week to uphold the bargain."
-                    }
+talent: {
+    name: "A Servant of the People",
+    desc: "When this character is called upon to make a Barter, Bewitch, or Intimidate Challenge, she may discard a card to turn the Challenge into a Bureaucracy Challenge. The results of succeeding or failing at the Challenge remain unchanged.\n\nIf the Challenge was a Barter Challenge, this character may use promises of relatively insignificant political favors to uphold her end of the bargain, rather than cash or other material goods.\n\nGenerally speaking, this character must spend an hour or two speaking with her allies and associates to uphold her end of the bargain. She has a week to do so before the person she bargained with begins to feel cheated and takes appropriate measures."
+}
                 },
                 {
                     step: 1,
