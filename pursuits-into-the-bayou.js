@@ -54,6 +54,7 @@
                     }
                 },
                 {
+{
                     step: 3,
                     type: "single",
                     talent: {
@@ -67,35 +68,35 @@
                             tn: "10:m:",
                             range: "6 yards",
                             resist: "Wp",
-                            desc: "Summon a Voodoo Doll adjacent to caster and under her control, Linked to target. Max active Voodoo Dolls equals Charm Aspect (minimum 1; excess breaks link and becomes inert).",
-                            minion: {
-                                name: "Voodoo Doll",
-                                typeLine: "Peon (3), Construct, Doll",
-                                stats: {
-                                    might: -5, grace: -5, speed: 0, resilience: -5,
-                                    charm: -3, intellect: -3, cunning: -3, tenacity: -3,
-                                    defense: "2 (5)", walk: 4, height: 1, initiative: "0 (3)",
-                                    willpower: "2 (5)", charge: 4, wounds: 4
+                            desc: "Summon a Voodoo Doll adjacent to caster and under her control, Linked to target. Max active Voodoo Dolls equals Charm Aspect (minimum 1; excess breaks link and becomes inert)."
+                        },
+                        minion: {
+                            name: "Voodoo Doll",
+                            typeLine: "Peon (3), Construct, Doll",
+                            stats: {
+                                might: -5, grace: -5, speed: 0, resilience: -5,
+                                charm: -3, intellect: -3, cunning: -3, tenacity: -3,
+                                defense: "2 (5)", walk: 4, height: 1, initiative: "0 (3)",
+                                willpower: "2 (5)", charge: 4, wounds: 4
+                            },
+                            skills: "Martial Arts 1",
+                            abilities: [
+                                {
+                                    name: "Linked",
+                                    desc: "Ceases being Linked to any other Voodoo Dolls. When this character suffers damage or gains a Condition, the Linked character suffers 1 damage or gains the same Condition with a value of 1."
                                 },
-                                skills: "Martial Arts 1",
-                                abilities: [
-                                    {
-                                        name: "Linked",
-                                        desc: "Ceases being Linked to any other Voodoo Dolls. When this character suffers damage or gains a Condition, the Linked character suffers 1 damage or gains the same Condition with a value of 1."
-                                    },
-                                    {
-                                        name: "Dance, Puppet",
-                                        desc: "Controller may use a (1) Action adjacent to this character to make the Linked character within Line of Sight move up to 4 yards in any direction."
-                                    }
-                                ],
-                                weapon: {
-                                    name: "Pins",
-                                    skill: "Martial Arts",
-                                    av: "1 (4)",
-                                    resist: "Df",
-                                    damage: "1/1/2",
-                                    special: "Rg: (y)1. Target suffers 1/1/2 damage."
+                                {
+                                    name: "Dance, Puppet",
+                                    desc: "Controller may use a (1) Action adjacent to this character to make the Linked character within Line of Sight move up to 4 yards in any direction."
                                 }
+                            ],
+                            weapon: {
+                                name: "Pins",
+                                skill: "Martial Arts",
+                                av: "1 (4)",
+                                resist: "Df",
+                                damage: "1/1/2",
+                                special: "Rg: (y)1. Target suffers 1/1/2 damage."
                             }
                         }
                     }
