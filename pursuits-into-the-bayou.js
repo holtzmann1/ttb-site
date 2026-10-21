@@ -54,7 +54,6 @@
                     }
                 },
                 {
-{
                     step: 3,
                     type: "single",
                     talent: {
