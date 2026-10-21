@@ -592,7 +592,7 @@
                             desc: "When declaring a Walk Action while mounted, carry a willing character within 2 yards (Height <= mount's Height), placing them adjacent to mount after movement."
                         },
                         {
-                            name: ""WHEE!"",
+                            name: "\"WHEE!\"",
                             desc: "When declaring a Charge while mounted, move mount up to its Charge Aspect, then dismount and move additional yards equal to own Charge Aspect (ignoring terrain and characters) with [+] to Attack and Damage flips. Take 1 damage upon landing."
                         }
                     ]
@@ -906,7 +906,7 @@
                             desc: "Choose a Skill; all attacks with it gain Trigger:\n:t: *Sic ‘em*: After damaging, a friendly Pig within 8 yards and Line of Sight may push into base contact with target."
                         },
                         {
-                            name: ""Sooey!"",
+                            name: "\"Sooey!\"",
                             desc: "This character gains the following Tactical Action:",
                             action: {
                                 cost: "(1)",
