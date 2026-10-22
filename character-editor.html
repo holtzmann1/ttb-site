@@ -2697,21 +2697,28 @@ function renderTalentContent(talent) {
 
     return bodyHtml;
 }
+// Хранилище мультиклассов персонажа
+    let characterPursuits = []; // [{ id, specialization, step, choices: { stepNum: talentName } }]
+    let activePursuitId = "";    // ID класса с флагом On the Pursuit / Starting
+    let currentViewingPursuitId = ""; // Какой таб сейчас открыт на экране
+
     function initPursuitsSelect() {
-        const select = document.getElementById("pursuitSelect");
-        if (select && typeof PURSUITS_DATA !== "undefined") {
-            select.innerHTML = "";
+        // Наполняем каталог добавления
+        const catalogSelect = document.getElementById("pursuitCatalogSelect");
+        if (catalogSelect && typeof PURSUITS_DATA !== "undefined") {
+            catalogSelect.innerHTML = "";
             PURSUITS_DATA.forEach(p => {
                 const opt = document.createElement("option");
                 opt.value = p.id;
                 opt.textContent = p.name;
-                select.appendChild(opt);
+                catalogSelect.appendChild(opt);
             });
         }
 
+        // Наполняем Advanced Pursuits
         const advSelect = document.getElementById("advancedPursuitSelect");
         if (advSelect && typeof ADVANCED_PURSUITS_DATA !== "undefined") {
-            advSelect.innerHTML = `<option value="">-- Без Advanced Pursuit --</option>`;
+            advSelect.innerHTML = `<option value="">-- No Advanced Pursuit --</option>`;
             ADVANCED_PURSUITS_DATA.forEach(ap => {
                 const opt = document.createElement("option");
                 opt.value = ap.id;
@@ -2720,53 +2727,168 @@ function renderTalentContent(talent) {
             });
         }
 
-        onPursuitChange();
+        renderPursuitTabsBar();
+        renderActivePursuitView();
         renderAdvancedPursuit();
     }
 
-    // 2. Смена базового пути: переключает и наполняет список специализаций
-    function onPursuitChange() {
-        const select = document.getElementById("pursuitSelect");
-        const specWrapper = document.getElementById("specializationWrapper");
-        const specSelect = document.getElementById("specializationSelect");
-        if (!select || typeof PURSUITS_DATA === "undefined") return;
+    function addPursuitFromCatalog() {
+        const catalogSelect = document.getElementById("pursuitCatalogSelect");
+        const pursuitId = catalogSelect?.value;
+        if (!pursuitId || typeof PURSUITS_DATA === "undefined") return;
 
-        const pursuit = PURSUITS_DATA.find(p => p.id === select.value);
-        if (pursuit && pursuit.specializations) {
-            specWrapper.style.display = "flex";
-            specSelect.innerHTML = "";
-            Object.entries(pursuit.specializations).forEach(([key, spec]) => {
-                const opt = document.createElement("option");
-                opt.value = key;
-                opt.textContent = spec.name;
-                specSelect.appendChild(opt);
-            });
-        } else if (specWrapper) {
-            specWrapper.style.display = "none";
-            if (specSelect) specSelect.innerHTML = "";
+        if (characterPursuits.some(p => p.id === pursuitId)) {
+            alert("This pursuit is already added!");
+            return;
         }
 
-        renderPursuitTab();
+        const newEntry = {
+            id: pursuitId,
+            specialization: "base",
+            step: 0,
+            choices: {}
+        };
+
+        characterPursuits.push(newEntry);
+
+        // Если это первый добавленный путь — делаем его активным
+        if (characterPursuits.length === 1 || !activePursuitId) {
+            setActivePursuit(pursuitId);
+        }
+
+        currentViewingPursuitId = pursuitId;
+        renderPursuitTabsBar();
+        renderActivePursuitView();
     }
 
-    // 3. Отрисовка базового пути с динамической подклейкой специализации (Шаги 6-10)
-    function renderPursuitTab() {
-        const select = document.getElementById("pursuitSelect");
-        const container = document.getElementById("pursuitDetailsContainer");
-        if (!select || !container || typeof PURSUITS_DATA === "undefined") return;
+    function removePursuit(pursuitId, event) {
+        if (event) event.stopPropagation();
+        if (!confirm("Remove this pursuit? All selected talents and steps in it will be lost.")) return;
 
-        const pursuit = PURSUITS_DATA.find(p => p.id === select.value);
-        if (!pursuit) return;
+        characterPursuits = characterPursuits.filter(p => p.id !== pursuitId);
 
-        const mainPursuitInput = document.getElementById("pursuit");
-        if (mainPursuitInput) {
-            mainPursuitInput.value = pursuit.name;
+        if (activePursuitId === pursuitId) {
+            activePursuitId = characterPursuits[0]?.id || "";
+            const mainPursuitInput = document.getElementById("pursuit");
+            if (mainPursuitInput) {
+                const pObj = PURSUITS_DATA?.find(p => p.id === activePursuitId);
+                mainPursuitInput.value = pObj ? pObj.name : "";
+            }
         }
 
-        // Собираем шаги: 0-5 общие + 6-10 из выбранной специализации (если есть)
+        if (currentViewingPursuitId === pursuitId) {
+            currentViewingPursuitId = characterPursuits[0]?.id || "";
+        }
+
+        renderPursuitTabsBar();
+        renderActivePursuitView();
+    }
+
+    function setActivePursuit(pursuitId, event) {
+        if (event) event.stopPropagation();
+        activePursuitId = pursuitId;
+
+        const pursuitDef = PURSUITS_DATA?.find(p => p.id === pursuitId);
+        const mainPursuitInput = document.getElementById("pursuit");
+        if (mainPursuitInput && pursuitDef) {
+            mainPursuitInput.value = pursuitDef.name;
+        }
+
+        renderPursuitTabsBar();
+        renderActivePursuitView();
+    }
+
+    function switchPursuitView(pursuitId) {
+        currentViewingPursuitId = pursuitId;
+        renderPursuitTabsBar();
+        renderActivePursuitView();
+    }
+
+    function renderPursuitTabsBar() {
+        const container = document.getElementById("pursuitTabsContainer");
+        if (!container) return;
+
+        if (characterPursuits.length === 0) {
+            container.innerHTML = `<span style="font-size: 12px; color: #73695c; font-style: italic;">No pursuits added. Choose from the catalog on the right and click "+ ADD".</span>`;
+            return;
+        }
+
+        let html = "";
+        characterPursuits.forEach(cp => {
+            const def = PURSUITS_DATA?.find(p => p.id === cp.id);
+            const name = def ? def.name : cp.id;
+            const isViewing = cp.id === currentViewingPursuitId;
+            const isActive = cp.id === activePursuitId;
+
+            html += `
+                <div class="pursuit-tab-pill ${isViewing ? 'active-view' : ''} ${isActive ? 'is-current-active' : ''}" 
+                     onclick="switchPursuitView('${cp.id}')">
+                    <span class="pursuit-active-star ${isActive ? 'starred' : ''}" 
+                          onclick="setActivePursuit('${cp.id}', event)" 
+                          title="${isActive ? 'Current Active Pursuit' : 'Click to Set as Current'}">★</span>
+                    <strong>${name}</strong>
+                    <span style="font-size: 11px; color: #c59a5b;">[Step ${cp.step}]</span>
+                    <button type="button" class="pursuit-tab-del" onclick="removePursuit('${cp.id}', event)" title="Remove Pursuit">✕</button>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    function setPursuitStep(delta) {
+        const cp = characterPursuits.find(p => p.id === currentViewingPursuitId);
+        if (!cp) return;
+
+        cp.step = Math.max(0, Math.min(10, cp.step + delta));
+        renderPursuitTabsBar();
+        renderActivePursuitView();
+    }
+
+    function onSpecializationChange(select) {
+        const cp = characterPursuits.find(p => p.id === currentViewingPursuitId);
+        if (!cp) return;
+        cp.specialization = select.value;
+        renderActivePursuitView();
+    }
+
+    function renderActivePursuitView() {
+        const container = document.getElementById("pursuitDetailsContainer");
+        if (!container) return;
+
+        const cp = characterPursuits.find(p => p.id === currentViewingPursuitId);
+        if (!cp) {
+            container.innerHTML = "";
+            return;
+        }
+
+        const pursuit = PURSUITS_DATA?.find(p => p.id === cp.id);
+        if (!pursuit) {
+            container.innerHTML = "";
+            return;
+        }
+
+        const isActive = cp.id === activePursuitId;
+
+        // Панель специализации (если доступна)
+        let specHtml = "";
+        if (pursuit.specializations) {
+            specHtml = `
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 12px; color: #c59a5b; font-weight: bold; white-space: nowrap;">Specialization:</span>
+                    <select onchange="onSpecializationChange(this)" style="font-size: 13px; max-width: 220px; padding: 3px 8px; height: 28px;">
+            `;
+            Object.entries(pursuit.specializations).forEach(([key, spec]) => {
+                const sel = cp.specialization === key ? "selected" : "";
+                specHtml += `<option value="${key}" ${sel}>${spec.name}</option>`;
+            });
+            specHtml += `</select></div>`;
+        }
+
+        // Собираем шаги с учётом выбранной специализации
         let effectiveSteps = pursuit.steps;
         if (pursuit.specializations) {
-            const specKey = document.getElementById("specializationSelect")?.value || "base";
+            const specKey = cp.specialization || "base";
             const spec = pursuit.specializations[specKey] || pursuit.specializations.base;
             if (spec && spec.steps) {
                 effectiveSteps = [...pursuit.steps, ...spec.steps];
@@ -2774,18 +2896,50 @@ function renderTalentContent(talent) {
         }
 
         let html = `
-            <div style="background: rgba(20, 17, 14, 0.8); border: 1px solid #382b1d; padding: 12px; margin-bottom: 20px;">
-                <div style="margin-bottom: 8px;"><strong style="color: #c59a5b;">Starting:</strong> ${pursuit.starting}</div>
-                <div><strong style="color: #c59a5b;">On the Pursuit:</strong> ${pursuit.onThePursuit}</div>
+            <!-- УПРАВЛЕНИЕ ТЕКУЩИМ КЛАССОМ -->
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(26, 21, 16, 0.95); border: 1px solid #4a3825; padding: 10px 14px; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 15px; font-weight: bold; color: ${isActive ? '#f1c40f' : '#e8dfd0'};">
+                        ${isActive ? '★ CURRENT PURSUIT' : 'PURSUIT'}
+                    </span>
+                    ${!isActive ? `<button type="button" class="tab-btn" onclick="setActivePursuit('${cp.id}')" style="padding: 3px 10px; font-size: 11px;">SET AS CURRENT</button>` : ''}
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                    ${specHtml}
+                    <!-- Счётчик шагов -->
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span style="font-size: 12px; color: #a99e8d; font-weight: bold;">STEP:</span>
+                        <div class="counter">
+                            <button type="button" onclick="setPursuitStep(-1)">-</button>
+                            <span>${cp.step}</span>
+                            <button type="button" onclick="setPursuitStep(1)">+</button>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <!-- БЛОК ON THE PURSUIT -->
+            <div style="background: rgba(20, 17, 14, 0.8); border: 1px solid ${isActive ? '#c59a5b' : '#382b1d'}; padding: 12px; margin-bottom: 20px;">
+                <div style="margin-bottom: 8px;"><strong style="color: #c59a5b;">Starting:</strong> ${pursuit.starting}</div>
+                <div><strong style="color: #c59a5b;">On the Pursuit:</strong> ${pursuit.onThePursuit} ${isActive ? '<span style="color: #66bb6a; font-weight: bold; margin-left: 6px;">(Active)</span>' : '<span style="color: #73695c; margin-left: 6px;">(Inactive)</span>'}</div>
+            </div>
+
+            <!-- ШАГИ -->
             <div style="display: flex; flex-direction: column; gap: 14px;">
         `;
 
         effectiveSteps.forEach(st => {
+            const isUnlocked = st.step <= cp.step;
+            const chosenTalentName = cp.choices[st.step] || "";
+
             html += `
-                <div style="background: rgba(14, 11, 9, 0.9); border: 1px solid #2d2216; padding: 12px 14px;">
+                <div class="pursuit-step-card ${isUnlocked ? '' : 'locked-step'}" 
+                     style="background: rgba(14, 11, 9, 0.9); border: 1px solid ${isUnlocked ? '#3d2f21' : '#221912'}; padding: 12px 14px;">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #241a10; padding-bottom: 6px;">
-                        <span style="color: #c59a5b; font-weight: bold; font-size: 14px; letter-spacing: 1px;">STEP ${st.step}</span>
+                        <span style="color: ${isUnlocked ? '#c59a5b' : '#73695c'}; font-weight: bold; font-size: 14px; letter-spacing: 1px;">
+                            STEP ${st.step} ${!isUnlocked ? '🔒' : ''}
+                        </span>
                         <span style="font-size: 11px; color: #73695c; text-transform: uppercase;">
                             ${st.type === "choice" ? "Choose 1 Talent" : (st.type === "general" ? "General Talent" : "Automatic")}
                         </span>
@@ -2795,18 +2949,20 @@ function renderTalentContent(talent) {
             if (st.type === "choice") {
                 html += `<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">`;
                 st.talents.forEach((t, idx) => {
-                    const cardId = `p_card_${st.step}_${idx}`;
-                    const radioId = `p_radio_${st.step}_${idx}`;
+                    const isSelected = chosenTalentName === t.name;
                     html += `
-                        <div id="${cardId}" 
-                             onclick="selectPursuitTalent(${st.step}, ${idx}, ${st.talents.length})"
-                             style="background: #171310; border: 1px solid #382b1d; padding: 10px 12px; cursor: pointer; transition: all 0.2s ease; opacity: 0.75; display: flex; flex-direction: column;">
+                        <div onclick="selectMultiPursuitTalent('${cp.id}', ${st.step}, '${t.name.replace(/'/g, "\\'")}')"
+                             style="background: ${isSelected ? '#241a10' : '#171310'}; 
+                                    border: 1px solid ${isSelected ? '#c59a5b' : '#382b1d'}; 
+                                    box-shadow: ${isSelected ? '0 0 8px rgba(197, 154, 91, 0.25)' : 'none'}; 
+                                    opacity: ${isSelected ? '1' : '0.65'}; 
+                                    padding: 10px 12px; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column;">
                             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                                <input type="radio" id="${radioId}" name="pursuit_step_${st.step}" value="${t.name}" style="accent-color: #c59a5b; pointer-events: none;">
+                                <input type="radio" name="pursuit_${cp.id}_step_${st.step}" value="${t.name}" ${isSelected ? 'checked' : ''} style="accent-color: #c59a5b; pointer-events: none;">
                                 <strong style="color: #e8dfd0; font-size: 14px;">${t.name}</strong>
                             </div>
                             <div style="font-size: 12px; color: #a99e8d; line-height: 1.45; flex-grow: 1;">
-                              ${renderTalentContent(t)}
+                                ${renderTalentContent(t)}
                             </div>
                         </div>
                     `;
@@ -2836,6 +2992,14 @@ function renderTalentContent(talent) {
 
         html += `</div>`;
         container.innerHTML = html;
+    }
+
+    function selectMultiPursuitTalent(pursuitId, stepNum, talentName) {
+        const cp = characterPursuits.find(p => p.id === pursuitId);
+        if (!cp || stepNum > cp.step) return;
+
+        cp.choices[stepNum] = talentName;
+        renderActivePursuitView();
     }
 
     // 4. Отрисовка выбранного Advanced Pursuit
@@ -2937,28 +3101,6 @@ function renderTalentContent(talent) {
             }
         }
     }
-
-function selectPursuitTalent(step, chosenIdx, totalCount) {
-    for (let i = 0; i < totalCount; i++) {
-        const card = document.getElementById(`p_card_${step}_${i}`);
-        const radio = document.getElementById(`p_radio_${step}_${i}`);
-        if (!card || !radio) continue;
-
-        if (i === chosenIdx) {
-            radio.checked = true;
-            card.style.borderColor = "#c59a5b";
-            card.style.background = "#241a10";
-            card.style.opacity = "1";
-            card.style.boxShadow = "0 0 8px rgba(197, 154, 91, 0.25)";
-        } else {
-            radio.checked = false;
-            card.style.borderColor = "#382b1d";
-            card.style.background = "#171310";
-            card.style.opacity = "0.5";
-            card.style.boxShadow = "none";
-        }
-    }
-}
 
 document.addEventListener("DOMContentLoaded", () => {
     initPursuitsSelect();
