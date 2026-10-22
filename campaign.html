@@ -1182,6 +1182,84 @@
     opacity: 0.35;
     cursor: not-allowed;
 }
+        /* Мультиклассы: линейка табов */
+        .pursuit-tabs-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #382b1d;
+            padding-bottom: 12px;
+        }
+
+        .pursuit-tab-pill {
+            background: #15110e;
+            border: 1px solid #4a3825;
+            color: #a99e8d;
+            padding: 6px 12px;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .pursuit-tab-pill:hover {
+            border-color: #b88a4a;
+            color: #e8dfd0;
+        }
+
+        /* Выбранный таб просмотра */
+        .pursuit-tab-pill.active-view {
+            background: rgba(45, 33, 21, 0.85);
+            border-color: #c59a5b;
+            color: #e8dfd0;
+            box-shadow: inset 0 0 8px rgba(197, 154, 91, 0.25);
+        }
+
+        /* Активный боевой класс */
+        .pursuit-tab-pill.is-current-active {
+            border-left: 3px solid #f1c40f;
+        }
+
+        .pursuit-active-star {
+            color: #8f8679;
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .pursuit-active-star.starred {
+            color: #f1c40f;
+            text-shadow: 0 0 6px rgba(241, 196, 15, 0.6);
+        }
+
+        /* Кнопка крестика закрытия */
+        .pursuit-tab-del {
+            color: #73695c;
+            background: transparent !important;
+            border: none !important;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 0 2px !important;
+            line-height: 1;
+            box-shadow: none !important;
+            appearance: none;
+        }
+
+        .pursuit-tab-del:hover {
+            color: #e57373;
+        }
+
+        /* Блокировка закрытых шагов */
+        .pursuit-step-card.locked-step {
+            opacity: 0.35;
+            filter: grayscale(80%);
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
