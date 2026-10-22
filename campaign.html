@@ -1011,13 +1011,15 @@
             backdrop-filter: blur(2px);
         }
 
-        /* Карточка окна */
+/* Карточка окна Destiny */
         .destiny-modal-content {
             background: #120e0b;
             border: 1px solid #5a4227;
             box-shadow: 0 0 25px rgba(0, 0, 0, 0.9), 0 0 10px rgba(184, 138, 74, 0.2);
             width: 100%;
-            max-width: 520px;
+            max-width: 640px; /* Чуть шире под 2 поля */
+            max-height: 85vh;
+            overflow-y: auto;
             padding: 20px 24px;
             box-sizing: border-box;
             color: #d6ccbe;
@@ -1030,7 +1032,7 @@
             align-items: center;
             border-bottom: 1px solid #382b1d;
             padding-bottom: 10px;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
         .destiny-modal-title {
@@ -1055,37 +1057,42 @@
             color: #e57373;
         }
 
-        /* Список шагов STEP 1 - STEP 5 */
+        /* Список карточек шагов STEP 1 - STEP 5 */
         .destiny-modal-body {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        .destiny-step-row {
-            display: grid;
-            grid-template-columns: 80px 1fr;
-            align-items: center;
-            gap: 12px;
+        .destiny-step-card {
+            background: rgba(20, 17, 14, 0.85);
+            border: 1px solid #382b1d;
+            border-left: 3px solid #c59a5b;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
-        .destiny-step-label {
+        .destiny-step-header {
             font-size: 11px;
             font-weight: bold;
-            color: #a89f91;
+            color: #c59a5b;
             letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .destiny-step-input {
-            background: rgba(18, 15, 12, 0.85);
+            background: rgba(14, 11, 9, 0.9);
             border: 1px solid #382b1d;
-            height: 32px;
+            height: 30px;
             padding: 4px 10px;
             font-size: 13px;
             color: #e8dfd0;
             box-sizing: border-box;
             outline: none;
             transition: border-color 0.2s ease;
+            width: 100%;
         }
 
         .destiny-step-input:focus {
@@ -1093,10 +1100,15 @@
             background: #14110e;
         }
 
-        /* Нижняя часть с кнопкой закрытия */
+        .destiny-step-input.prophecy {
+            font-style: italic;
+            color: #dcd0bf;
+            border-color: #443524;
+        }
+
         .destiny-modal-footer {
-            margin-top: 20px;
-            padding-top: 14px;
+            margin-top: 18px;
+            padding-top: 12px;
             border-top: 1px solid #292015;
             display: flex;
             justify-content: flex-end;
@@ -3545,7 +3557,11 @@ window.loadCharacterData = function(data) {
                     if (el) el.checked = checked;
                 });
             }
-            for (let i = 1; i <= 5; i++) {
+for (let i = 1; i <= 5; i++) {
+                const textInput = document.getElementById(`destinyStepText${i}`);
+                if (textInput) {
+                    textInput.value = (data.destinyStepTexts && data.destinyStepTexts[i - 1]) || "";
+                }
                 const stepInput = document.getElementById(`destinyStep${i}`);
                 if (stepInput) {
                     stepInput.value = (data.destinyStepRewards && data.destinyStepRewards[i - 1]) || "";
@@ -3754,6 +3770,7 @@ const tContainer = document.getElementById("talentsContainer");
                 guildScript: Number(document.getElementById("guildScript")?.value) || 0,
                 characterExp: Number(document.getElementById("characterExp")?.value) || 0,
                 destinySteps: destinySteps,
+                destinyStepTexts: [1, 2, 3, 4, 5].map(i => document.getElementById(`destinyStepText${i}`)?.value || ""),
                 destinyStepRewards: [1, 2, 3, 4, 5].map(i => document.getElementById(`destinyStep${i}`)?.value || ""),
                 armor: Number(document.getElementById("armor")?.value) || 0,
                 height: Number(document.getElementById("height")?.value) || 2,
@@ -3780,33 +3797,43 @@ bioPortraitUrl: document.getElementById("bioPortraitUrl")?.value || "",
             initPursuitsSelect();
         });
     </script>
-    <!-- МОДАЛЬНОЕ ОКНО: DESTINY STEPS REWARDS -->
+<!-- МОДАЛЬНОЕ ОКНО: DESTINY STEPS REWARDS & PROPHECIES -->
 <div id="destinyModal" class="destiny-modal-backdrop" style="display: none;">
     <div class="destiny-modal-content">
         <div class="destiny-modal-header">
-            <span class="destiny-modal-title">DESTINY STEPS REWARDS</span>
+            <span class="destiny-modal-title">DESTINY STEPS & PROPHECIES</span>
             <button type="button" class="destiny-close-btn" onclick="closeDestinyModal()">✕</button>
         </div>
         <div class="destiny-modal-body">
-            <div class="destiny-step-row">
-                <label class="destiny-step-label">STEP 1</label>
-                <input type="text" id="destinyStep1" class="destiny-step-input" placeholder="Что получено за 1-й шаг судьбы...">
+            <!-- STEP 1 -->
+            <div class="destiny-step-card">
+                <span class="destiny-step-header">STEP 1</span>
+                <input type="text" id="destinyStepText1" class="destiny-step-input prophecy" placeholder="Строка пророчества (например: If you draw the rope's slack...)">
+                <input type="text" id="destinyStep1" class="destiny-step-input" placeholder="Полученная награда / талант / выбор...">
             </div>
-            <div class="destiny-step-row">
-                <label class="destiny-step-label">STEP 2</label>
-                <input type="text" id="destinyStep2" class="destiny-step-input" placeholder="Что получено за 2-й шаг судьбы...">
+            <!-- STEP 2 -->
+            <div class="destiny-step-card">
+                <span class="destiny-step-header">STEP 2</span>
+                <input type="text" id="destinyStepText2" class="destiny-step-input prophecy" placeholder="Строка пророчества...">
+                <input type="text" id="destinyStep2" class="destiny-step-input" placeholder="Полученная награда / талант / выбор...">
             </div>
-            <div class="destiny-step-row">
-                <label class="destiny-step-label">STEP 3</label>
-                <input type="text" id="destinyStep3" class="destiny-step-input" placeholder="Что получено за 3-й шаг судьбы...">
+            <!-- STEP 3 -->
+            <div class="destiny-step-card">
+                <span class="destiny-step-header">STEP 3</span>
+                <input type="text" id="destinyStepText3" class="destiny-step-input prophecy" placeholder="Строка пророчества...">
+                <input type="text" id="destinyStep3" class="destiny-step-input" placeholder="Полученная награда / талант / выбор...">
             </div>
-            <div class="destiny-step-row">
-                <label class="destiny-step-label">STEP 4</label>
-                <input type="text" id="destinyStep4" class="destiny-step-input" placeholder="Что получено за 4-й шаг судьбы...">
+            <!-- STEP 4 -->
+            <div class="destiny-step-card">
+                <span class="destiny-step-header">STEP 4</span>
+                <input type="text" id="destinyStepText4" class="destiny-step-input prophecy" placeholder="Строка пророчества...">
+                <input type="text" id="destinyStep4" class="destiny-step-input" placeholder="Полученная награда / талант / выбор...">
             </div>
-            <div class="destiny-step-row">
-                <label class="destiny-step-label">STEP 5</label>
-                <input type="text" id="destinyStep5" class="destiny-step-input" placeholder="Что получено за 5-й шаг судьбы...">
+            <!-- STEP 5 -->
+            <div class="destiny-step-card">
+                <span class="destiny-step-header">STEP 5</span>
+                <input type="text" id="destinyStepText5" class="destiny-step-input prophecy" placeholder="Строка пророчества...">
+                <input type="text" id="destinyStep5" class="destiny-step-input" placeholder="Полученная награда / талант / выбор...">
             </div>
         </div>
         <div class="destiny-modal-footer">
