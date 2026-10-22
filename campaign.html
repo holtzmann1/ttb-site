@@ -3207,13 +3207,14 @@ function checkTalentRequirements(talent) {
     return true;
 }
 
-        function getTalentOptionsHtml(selectedVal = "") {
-let html = `<option value="">-- Select Talent --</option>`;
-html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' : ''}>★ Custom Talent</option>`;
+function getTalentOptionsHtml(selectedVal = "") {
+            let html = `<option value="">-- Select Talent --</option>`;
+            html += `<option value="__custom__" ${selectedVal === '__custom__' ? 'selected' : ''}>★ Custom Talent</option>`;
             
             if (typeof GENERAL_TALENTS !== 'undefined') {
                 const showAll = document.getElementById("showAllTalentsToggle")?.checked || false;
 
+                // Фильтруем таланты, но ВСЕГДА оставляем выбранный (selectedVal), даже если нет требований
                 const availableTalents = GENERAL_TALENTS.filter(t => 
                     showAll || checkTalentRequirements(t) || t.name === selectedVal
                 );
