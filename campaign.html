@@ -3364,20 +3364,21 @@ function promptPortraitUrl() {
             placeholder.style.display = "block";
             placeholder.innerHTML = "⚠️ Ошибка загрузки картинки.<br>Нажмите, чтобы сменить ссылку.";
         }
-        window.loadCharacterData = function(data) {
+window.loadCharacterData = function(data) {
             if (!data) return;
 
             if (data.charName !== undefined) document.getElementById("charName").value = data.charName;
             if (data.playerName !== undefined) document.getElementById("playerName").value = data.playerName;
             if (data.species !== undefined) {
-    document.getElementById("species").value = data.species;
-    activeSpecies = data.species ? data.species.split(",").map(s => s.trim()).filter(Boolean) : [];
-    updateSpeciesUI();
-}
+                document.getElementById("species").value = data.species;
+                activeSpecies = data.species ? data.species.split(",").map(s => s.trim()).filter(Boolean) : [];
+                updateSpeciesUI();
+            }
             if (data.pursuit !== undefined) document.getElementById("pursuit").value = data.pursuit;
             if (data.guildScript !== undefined) document.getElementById("guildScript").value = data.guildScript;
             if (data.characterExp !== undefined) document.getElementById("characterExp").value = data.characterExp;
-if (document.getElementById("bioPortraitUrl")) {
+            
+            if (document.getElementById("bioPortraitUrl")) {
                 document.getElementById("bioPortraitUrl").value = data.bioPortraitUrl || "";
                 updatePortraitPreview();
             }
@@ -3400,13 +3401,6 @@ if (document.getElementById("bioPortraitUrl")) {
 
             if (data.armor !== undefined) document.getElementById("armor").value = data.armor;
             if (data.height !== undefined && document.getElementById("height")) document.getElementById("height").value = data.height;
-            if (data.defenseTotal !== undefined) document.getElementById("defenseTotal").value = data.defenseTotal;
-            if (data.defenseBase !== undefined) document.getElementById("defenseBase").value = data.defenseBase;
-            if (data.walk !== undefined) document.getElementById("walk").value = data.walk;
-            if (data.charge !== undefined) document.getElementById("charge").value = data.charge;
-            if (data.willpower !== undefined) document.getElementById("willpower").value = data.willpower;
-            if (data.initiative !== undefined) document.getElementById("initiative").value = data.initiative;
-            if (data.wounds !== undefined) document.getElementById("wounds").value = data.wounds;
 
             if (data.aspects) {
                 for (let k in data.aspects) {
@@ -3416,7 +3410,7 @@ if (document.getElementById("bioPortraitUrl")) {
                 }
             }
 
-const tbody = document.getElementById("skillsList");
+            const tbody = document.getElementById("skillsList");
             tbody.innerHTML = "";
             if (data.skills && data.skills.length > 0) {
                 data.skills.forEach(sk => {
@@ -3444,7 +3438,6 @@ const tbody = document.getElementById("skillsList");
                 eqContainer.innerHTML = "";
                 const list = data.equipment || [];
                 list.forEach(item => addNewEquipmentRow(item));
-                // Добиваем пустыми строками до 14, чтобы всегда выглядело как оригинальный бланк
                 for (let i = list.length; i < 14; i++) {
                     addNewEquipmentRow();
                 }
@@ -3473,12 +3466,21 @@ const tbody = document.getElementById("skillsList");
                     bookSpan.textContent = t.book || "—";
                     descArea.value = t.desc || "";
                 });
-} else {
+            } else {
                 addNewTalentCard();
             }
             refreshAllTalentSelects();
 
-            // Восстановление мультиклассов
+            // Восстановление ручных Derived Aspects (в самом конце, чтобы авторасчет их не стер)
+            if (data.defenseTotal !== undefined) document.getElementById("defenseTotal").value = data.defenseTotal;
+            if (data.defenseBase !== undefined) document.getElementById("defenseBase").value = data.defenseBase;
+            if (data.walk !== undefined) document.getElementById("walk").value = data.walk;
+            if (data.charge !== undefined) document.getElementById("charge").value = data.charge;
+            if (data.willpower !== undefined) document.getElementById("willpower").value = data.willpower;
+            if (data.initiative !== undefined) document.getElementById("initiative").value = data.initiative;
+            if (data.wounds !== undefined) document.getElementById("wounds").value = data.wounds;
+
+            // Восстановление мультиклассов и путей
             if (data.characterPursuits && Array.isArray(data.characterPursuits)) {
                 characterPursuits = data.characterPursuits;
                 activePursuitId = data.activePursuitId || characterPursuits[0]?.id || "";
@@ -3508,7 +3510,7 @@ const tbody = document.getElementById("skillsList");
                     renderAdvancedPursuit();
                 }
             }
-        };
+        }; // <--- ЕДИНСТВЕННАЯ И ПРАВИЛЬНАЯ ТОЧКА ЗАКРЫТИЯ ФУНКЦИИ
         window.collectCurrentSheetData = function() {
             // Чекбоксы Destiny Steps
             const destinySteps = [
