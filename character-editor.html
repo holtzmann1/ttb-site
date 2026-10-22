@@ -2463,6 +2463,7 @@ if (data.characterPursuits && Array.isArray(data.characterPursuits)) {
     }
 
     window.addEventListener("DOMContentLoaded", () => {
+        initPursuitsSelect();
         updateDerived();
         const saved = localStorage.getItem("ttb_saved_character");
         if (saved) {
@@ -3112,9 +3113,6 @@ function renderTalentContent(talent) {
         }
     }
 
-document.addEventListener("DOMContentLoaded", () => {
-    initPursuitsSelect();
-});
 </script>
 
 </body>
