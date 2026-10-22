@@ -2354,20 +2354,25 @@ const tbody = document.getElementById("skillsList");
             addNewTalentCard();
         }
         refreshAllTalentSelects();
-        if (data.selectedPursuitId) {
-            const pSel = document.getElementById("pursuitSelect");
-            if (pSel) {
-                pSel.value = data.selectedPursuitId;
-                onPursuitChange();
-            }
+if (data.characterPursuits && Array.isArray(data.characterPursuits)) {
+            characterPursuits = data.characterPursuits;
+            activePursuitId = data.activePursuitId || characterPursuits[0]?.id || "";
+            currentViewingPursuitId = activePursuitId || characterPursuits[0]?.id || "";
+        } else if (data.selectedPursuitId) {
+            // Совместимость со старыми сохранениями
+            characterPursuits = [{
+                id: data.selectedPursuitId,
+                specialization: data.selectedSpecialization || "base",
+                step: 0,
+                choices: {}
+            }];
+            activePursuitId = data.selectedPursuitId;
+            currentViewingPursuitId = data.selectedPursuitId;
         }
-        if (data.selectedSpecialization) {
-            const sSel = document.getElementById("specializationSelect");
-            if (sSel) {
-                sSel.value = data.selectedSpecialization;
-                renderPursuitTab();
-            }
-        }
+
+        renderPursuitTabsBar();
+        renderActivePursuitView();
+
         if (data.selectedAdvancedPursuitId !== undefined) {
             const aSel = document.getElementById("advancedPursuitSelect");
             if (aSel) {
