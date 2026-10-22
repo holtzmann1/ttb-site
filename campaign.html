@@ -974,21 +974,23 @@
                 gap: 6px;
             }
         }
-        /* =================================================== */
-        /* КНОПКА И МОДАЛЬНОЕ ОКНО: DESTINY STEPS REWARDS      */
-        /* =================================================== */
-        
-        /* Кнопка вызова заметок рядом с заголовком */
-        .destiny-notes-btn {
+
+.destiny-notes-btn {
             background: transparent;
             border: none;
             cursor: pointer;
             font-size: 13px;
-            padding: 0 4px;
-            margin-left: 6px;
-            vertical-align: middle;
+            line-height: 1;
+            padding: 0;
+            margin: 0;
+            width: 18px;
+            height: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             opacity: 0.7;
             transition: opacity 0.2s ease, transform 0.15s ease;
+            box-sizing: border-box;
         }
 
         .destiny-notes-btn:hover {
@@ -1416,17 +1418,19 @@
                         </div>
                         <div class="destiny-row bottom-row">
                             <div class="destiny-field">
-<label class="destiny-label">DESTINY STEPS FULFILLED 
-    <button type="button" class="destiny-notes-btn" onclick="openDestinyModal()" title="Rewards">📝</button>
-    <button type="button" class="destiny-notes-btn" onclick="openFateModal()" title="Destiny">📜</button>
-                                <div class="destiny-steps">
-                                    <input type="checkbox" id="destiny-1" class="step-circle">
-                                    <input type="checkbox" id="destiny-2" class="step-circle">
-                                    <input type="checkbox" id="destiny-3" class="step-circle">
-                                    <input type="checkbox" id="destiny-4" class="step-circle">
-                                    <input type="checkbox" id="destiny-5" class="step-circle">
-                                </div>
-                            </div>
+    <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 5px;">
+        <label class="destiny-label" style="margin: 0;">DESTINY STEPS FULFILLED</label>
+        <button type="button" class="destiny-notes-btn" onclick="openDestinyModal()" title="Rewards">📝</button>
+        <button type="button" class="destiny-notes-btn" onclick="openFateModal()" title="Destiny">📜</button>
+    </div>
+    <div class="destiny-steps">
+        <input type="checkbox" id="destiny-1" class="step-circle">
+        <input type="checkbox" id="destiny-2" class="step-circle">
+        <input type="checkbox" id="destiny-3" class="step-circle">
+        <input type="checkbox" id="destiny-4" class="step-circle">
+        <input type="checkbox" id="destiny-5" class="step-circle">
+    </div>
+</div>
                             <div class="destiny-field">
                                 <label class="destiny-label">Exp.</label>
                                 <input type="number" id="characterExp" min="0" value="0" class="exp-input">
