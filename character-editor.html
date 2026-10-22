@@ -1296,18 +1296,20 @@
 <!-- ВКЛАДКА 3: PURSUIT -->
     <div id="tab-pursuit" class="tab-content">
         <div class="box">
-            <!-- ШАПКА БАЗОВОГО ПУТИ С ВЫБОРОМ СПЕЦИАЛИЗАЦИИ -->
+<!-- ШАПКА БАЗОВОГО ПУТИ С ВЫБОРОМ СПЕЦИАЛИЗАЦИИ -->
             <div class="box-header" style="text-align: left; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                 <span>PURSUIT</span>
-                <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-                    <!-- Селектор специализации (виден только у путей с подклассами) -->
-                    <div id="specializationWrapper" style="display: none; align-items: center; gap: 6px;">
-                        <span style="font-size: 12px; color: #c59a5b; font-weight: bold;">Ветка (Шаги 6–10):</span>
-                        <select id="specializationSelect" onchange="renderPursuitTab()" style="font-size: 13px; max-width: 220px; padding: 4px 8px; height: 32px;">
+                <div style="display: flex; gap: 12px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
+                    <!-- 1. Сначала основной класс -->
+                    <select id="pursuitSelect" onchange="onPursuitChange()" style="width: auto; min-width: 180px; max-width: 240px; font-size: 14px; height: 32px;">
+                    </select>
+
+                    <!-- 2. Затем специализация (если есть) -->
+                    <div id="specializationWrapper" style="display: none; align-items: center; gap: 8px;">
+                        <span style="font-size: 12px; color: #c59a5b; font-weight: bold; white-space: nowrap;">Specialization:</span>
+                        <select id="specializationSelect" onchange="renderPursuitTab()" style="width: auto; min-width: 180px; max-width: 240px; font-size: 13px; padding: 4px 8px; height: 32px;">
                         </select>
                     </div>
-                    <select id="pursuitSelect" onchange="onPursuitChange()" style="max-width: 250px; font-size: 14px; height: 32px;">
-                    </select>
                 </div>
             </div>
 
