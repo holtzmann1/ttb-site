@@ -1260,6 +1260,38 @@
             filter: grayscale(80%);
             pointer-events: none;
         }
+        .av-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            width: 100%;
+            height: 28px;
+            background: #14110e;
+            border: 1px solid #2a2015;
+            padding: 0 4px;
+        }
+
+        .flip-toggle {
+            font-size: 11px;
+            font-weight: bold;
+            color: rgba(197, 154, 91, 0.25);
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.15s ease;
+            line-height: 1;
+            min-width: 12px;
+            text-align: center;
+        }
+
+        .flip-toggle.active {
+            color: #f1c40f;
+            text-shadow: 0 0 5px rgba(241, 196, 15, 0.5);
+        }
+
+        .av-val {
+            transition: transform 0.15s ease;
+        }
     </style>
 </head>
 <body>
@@ -2813,7 +2845,12 @@ function addNewSkillRow(skillData = null) {
                         </select>
                     </div>
                 </td>
-                <td class="av-container"><div class="av-box av-val">—</div></td>
+               <td class="av-container">
+    <div class="av-wrapper" data-flips="0">
+        <span class="flip-toggle" onclick="cycleSkillFlips(this)" title="Модификатор флипа">+</span>
+        <span class="av-val">—</span>
+    </div>
+</td>
                 <td><input type="number" class="skill-rating" value="0" min="0" max="5" oninput="onRatingChange(this.closest('tr'))"></td>
                 <td class="aspect-container">${getAspectSelectHtml("")}</td>
                 <td><button type="button" class="del-btn" onclick="deleteSkillRow(this.closest('tr'))" title="Удалить">✕</button></td>
@@ -2845,6 +2882,24 @@ if (skillData) {
 
                 const ratingInput = trMain.querySelector(".skill-rating");
                 if (ratingInput) ratingInput.value = rVal;
+    const wrapper = trMain.querySelector(".av-wrapper");
+             const flips = skillData.flips !== undefined ? skillData.flips : 0;
+             if (wrapper) {
+                 wrapper.setAttribute("data-flips", flips);
+                 const toggle = wrapper.querySelector(".flip-toggle");
+                 if (toggle) {
+                     if (flips === 1) {
+                         toggle.textContent = "+";
+                         toggle.classList.add("active");
+                     } else if (flips === 2) {
+                         toggle.textContent = "++";
+                         toggle.classList.add("active");
+                     } else {
+                         toggle.textContent = "+";
+                         toggle.classList.remove("active");
+                     }
+                 }
+             }
 
                 const sel = trMain.querySelector(".skill-select");
                 if (sel && sName) {
@@ -2867,6 +2922,25 @@ if (skillData) {
 
                 const savedTriggers = skillData.triggers || (skillData.trigger ? [skillData.trigger] : []);
                 refreshSkillTriggerRow(trMain, savedTriggers);
+            }
+        }
+        function cycleSkillFlips(elem) {
+            const wrapper = elem.closest(".av-wrapper");
+            if (!wrapper) return;
+
+            let currentFlips = parseInt(wrapper.getAttribute("data-flips") || "0", 10);
+            currentFlips = (currentFlips + 1) % 3; // Цикл: 0 -> 1 -> 2 -> 0
+            wrapper.setAttribute("data-flips", currentFlips);
+
+            if (currentFlips === 0) {
+                elem.textContent = "+";
+                elem.classList.remove("active");
+            } else if (currentFlips === 1) {
+                elem.textContent = "+";
+                elem.classList.add("active");
+            } else if (currentFlips === 2) {
+                elem.textContent = "++";
+                elem.classList.add("active");
             }
         }
 
@@ -3546,6 +3620,7 @@ const tContainer = document.getElementById("talentsContainer");
                     skills.push({
                         skillName: sel,
                         rating: rating,
+                        flips: flips,
                         aspects: aspVals,
                         triggers: triggers
                     });
