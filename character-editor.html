@@ -2198,6 +2198,9 @@ const skills = [];
             skills,
             talents,
             attacks
+            selectedPursuitId: document.getElementById("pursuitSelect")?.value || "",
+            selectedSpecialization: document.getElementById("specializationSelect")?.value || "",
+            selectedAdvancedPursuitId: document.getElementById("advancedPursuitSelect")?.value || ""
         };
     }
 
@@ -2279,6 +2282,28 @@ const tbody = document.getElementById("skillsList");
             addNewTalentCard();
         }
         refreshAllTalentSelects();
+        if (data.selectedPursuitId) {
+            const pSel = document.getElementById("pursuitSelect");
+            if (pSel) {
+                pSel.value = data.selectedPursuitId;
+                onPursuitChange();
+            }
+        }
+        if (data.selectedSpecialization) {
+            const sSel = document.getElementById("specializationSelect");
+            if (sSel) {
+                sSel.value = data.selectedSpecialization;
+                renderPursuitTab();
+            }
+        }
+        if (data.selectedAdvancedPursuitId !== undefined) {
+            const aSel = document.getElementById("advancedPursuitSelect");
+            if (aSel) {
+                aSel.value = data.selectedAdvancedPursuitId;
+                renderAdvancedPursuit();
+            }
+        }
+    }
     }
 
     function saveCharacter() {
@@ -2375,323 +2400,247 @@ const tbody = document.getElementById("skillsList");
             localStorage.setItem("ttb_saved_character", JSON.stringify(getCharacterData()));
         } catch(e) {}
     });
+// 1. Инициализация обоих выпадающих списков
     function initPursuitsSelect() {
-    const select = document.getElementById("pursuitSelect");
-    if (!select || typeof PURSUITS_DATA === "undefined") return;
-
-    select.innerHTML = "";
-    PURSUITS_DATA.forEach(p => {
-        const opt = document.createElement("option");
-        opt.value = p.id;
-        opt.textContent = p.name;
-        select.appendChild(opt);
-    });
-
-    renderPursuitTab();
-}
-
-function formatPursuitText(text) {
-    if (!text) return "";
-    return text
-        // Зеленые перья/масть (Crows) текстом
-        .replace(/:c:/g, '<span style="color: #3fb950; font-weight: bold; display: inline-block; margin-right: 2px;">[Crow]</span>')
-        // Фиолетовые маски (Masks) текстом
-        .replace(/:m:/g, '<span style="color: #bc8cff; font-weight: bold; display: inline-block; margin-right: 2px;">[Mask]</span>')
-        // Красные бараны (Rams) текстом
-        .replace(/:r:/g, '<span style="color: #f85149; font-weight: bold; display: inline-block; margin-right: 2px;">[Ram]</span>')
-        // Синие тома (Tomes) текстом
-        .replace(/:t:/g, '<span style="color: #58a6ff; font-weight: bold; display: inline-block; margin-right: 2px;">[Tome]</span>')
-        // Иконка ближнего боя (когти)
-        .replace(/\(y\)/g, '<svg viewBox="0 0 24 24" style="width: 1.1em; height: 1.1em; vertical-align: -0.2em; fill: #c59a5b; display: inline-block;"><path d="M7 2l-4 6 5 3-3 7 8-10-4-3 4-3-6-2z"/></svg>')
-        .replace(/Rg: y/g, 'Rg: <svg viewBox="0 0 24 24" style="width: 1.1em; height: 1.1em; vertical-align: -0.2em; fill: #c59a5b; display: inline-block;"><path d="M7 2l-4 6 5 3-3 7 8-10-4-3 4-3-6-2z"/></svg>')
-        // Плюсы и минусы флипов
-        .replace(/:\+:/g, '<span style="color: #56d364; font-weight: bold; font-family: monospace;">[+]</span>')
-        .replace(/:–:|:--:|:-\:/g, '<span style="color: #f85149; font-weight: bold; font-family: monospace;">[-]</span>')
-        // Рендер кондиций в красные плашки
-        .replace(/\*\*(.*?)\*\*/g, '<span class="condition-badge">$1</span>');
-}
-
-function renderTalentContent(talent) {
-    if (!talent) return "";
-
-    let bodyHtml = "";
-
-    // Описание таланта
-    if (talent.desc) {
-        bodyHtml += `<div style="line-height: 1.45; white-space: pre-line;">${formatPursuitText(talent.desc)}</div>`;
-    }
-
-    // Если у таланта есть статблок оружия (как Shiv)
-    if (talent.weapon) {
-        const w = talent.weapon;
-        const skillHeader = `${(w.name || "WEAPON").toUpperCase()} (${(w.skill || "MELEE").toUpperCase()})`;
-        
-        let triggerHtml = "";
-        if (w.trigger) {
-            triggerHtml = `
-                <div class="pursuit-trigger-row">
-                    ${formatPursuitText(w.trigger.cost)} <strong>${w.trigger.name}:</strong> ${formatPursuitText(w.trigger.desc)}
-                </div>
-            `;
-        }
-
-        bodyHtml += `
-            <div class="pursuit-weapon-box">
-                <table class="pursuit-weapon-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 45%;">${skillHeader}</th>
-                            <th style="width: 25%;">RANGE</th>
-                            <th style="width: 30%;">DAMAGE</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>${w.name}</td>
-                            <td>${w.range || "—"}</td>
-                            <td>${w.damage || "—"}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="pursuit-weapon-details">
-                    ${w.special ? `<div class="pursuit-weapon-special"><strong>Special:</strong> ${formatPursuitText(w.special)}</div>` : ""}
-                    ${triggerHtml}
-                </div>
-            </div>
-        `;
-    }
-
-    // Если у таланта есть статблок миньона (как Thugs)
-    if (talent.minion) {
-        const m = talent.minion;
-        
-        let statsRows = "";
-        if (m.stats) {
-            statsRows = `
-                <table class="pursuit-weapon-table" style="margin-bottom: 0;">
-                    <tbody>
-                        <tr>
-                            <td><strong>Might</strong><br>${m.stats.might ?? '—'}</td>
-                            <td><strong>Grace</strong><br>${m.stats.grace ?? '—'}</td>
-                            <td><strong>Speed</strong><br>${m.stats.speed ?? '—'}</td>
-                            <td><strong>Resilience</strong><br>${m.stats.resilience ?? '—'}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Charm</strong><br>${m.stats.charm ?? '—'}</td>
-                            <td><strong>Intellect</strong><br>${m.stats.intellect ?? '—'}</td>
-                            <td><strong>Cunning</strong><br>${m.stats.cunning ?? '—'}</td>
-                            <td><strong>Tenacity</strong><br>${m.stats.tenacity ?? '—'}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Defense</strong><br>${m.stats.defense ?? '—'}</td>
-                            <td><strong>Walk</strong><br>${m.stats.walk ?? '—'}</td>
-                            <td><strong>Height</strong><br>${m.stats.height ?? '—'}</td>
-                            <td><strong>Initiative</strong><br>${m.stats.initiative ?? '—'}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Willpower</strong><br>${m.stats.willpower ?? '—'}</td>
-                            <td><strong>Charge</strong><br>${m.stats.charge ?? '—'}</td>
-                            <td><strong>Wounds</strong><br>${m.stats.wounds ?? '—'}</td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-            `;
-        }
-
-        let abilitiesHtml = "";
-        if (m.abilities && m.abilities.length > 0) {
-            abilitiesHtml = `<div style="margin-top: 6px;"><strong>Abilities:</strong><ul style="margin: 2px 0 0 15px; padding: 0;">`;
-            m.abilities.forEach(ab => {
-                abilitiesHtml += `<li style="margin-bottom: 3px;"><strong>${ab.name}:</strong> ${formatPursuitText(ab.desc)}</li>`;
+        const select = document.getElementById("pursuitSelect");
+        if (select && typeof PURSUITS_DATA !== "undefined") {
+            select.innerHTML = "";
+            PURSUITS_DATA.forEach(p => {
+                const opt = document.createElement("option");
+                opt.value = p.id;
+                opt.textContent = p.name;
+                select.appendChild(opt);
             });
-            abilitiesHtml += `</ul></div>`;
         }
 
-        let minionWeaponHtml = "";
-        if (m.weapon) {
-            minionWeaponHtml = `
-                <div class="pursuit-weapon-box" style="margin-top: 6px;">
-                    <table class="pursuit-weapon-table">
-                        <thead>
-                            <tr>
-                                <th style="width: 45%;">${(m.weapon.name || "WEAPON").toUpperCase()} (${(m.weapon.skill || "MELEE").toUpperCase()})</th>
-                                <th style="width: 25%;">AV</th>
-                                <th style="width: 30%;">RESIST</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>${m.weapon.name}</td>
-                                <td>${m.weapon.av || "—"}</td>
-                                <td>${m.weapon.resist || "—"}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="pursuit-weapon-details">
-                        <div><strong>Damage:</strong> ${m.weapon.damage || "—"}</div>
-                        ${m.weapon.special ? `<div style="margin-top: 2px;">${formatPursuitText(m.weapon.special)}</div>` : ""}
-                    </div>
-                </div>
-            `;
-        }
-
-        bodyHtml += `
-            <div class="pursuit-weapon-box" style="margin-top: 8px; border: 1px solid #c59a5b;">
-                <div style="background: #251d16; padding: 6px 8px; text-align: center; border-bottom: 1px solid #4a3825;">
-                    <strong style="color: #c59a5b; font-size: 13px; letter-spacing: 0.5px;">${m.name.toUpperCase()}</strong>
-                    <div style="font-size: 10px; color: #bfaea0; font-style: italic;">${m.typeLine || ""}</div>
-                </div>
-                ${statsRows}
-                <div class="pursuit-weapon-details">
-                    ${m.skills ? `<div style="margin-bottom: 4px;"><strong>Skills:</strong> ${m.skills}</div>` : ""}
-                    ${abilitiesHtml}
-                    ${minionWeaponHtml}
-                </div>
-            </div>
-        `;
-    }
-
-    // Если у таланта есть действие (Tactical Action)
-    if (talent.action) {
-        bodyHtml += `
-            <div style="margin-top: 8px; padding: 6px 8px; background: #15110e; border: 1px solid #382b1d; font-size: 11px;">
-                <span class="action-cost-badge">${talent.action.cost || "(0)"}</span>
-                <strong style="color: #c59a5b;">${talent.action.name}:</strong>
-                <span style="color: #bfaea0; line-height: 1.4;"> ${formatPursuitText(talent.action.desc)}</span>
-            </div>
-        `;
-    }
-    // Если у таланта есть проявленная сила / заклинание (Manifested Power / Spell)
-    if (talent.power) {
-        const p = talent.power;
-        let triggersHtml = "";
-        if (p.triggers && p.triggers.length > 0) {
-            triggersHtml = `<div style="margin-top: 6px; border-top: 1px dashed #382b1d; padding-top: 4px;">`;
-            p.triggers.forEach(tr => {
-                triggersHtml += `
-                    <div class="pursuit-trigger-row">
-                        ${formatPursuitText(tr.cost)} <strong>${tr.name}:</strong> ${formatPursuitText(tr.desc)}
-                    </div>
-                `;
+        const advSelect = document.getElementById("advancedPursuitSelect");
+        if (advSelect && typeof ADVANCED_PURSUITS_DATA !== "undefined") {
+            advSelect.innerHTML = `<option value="">-- Без Advanced Pursuit --</option>`;
+            ADVANCED_PURSUITS_DATA.forEach(ap => {
+                const opt = document.createElement("option");
+                opt.value = ap.id;
+                opt.textContent = ap.name;
+                advSelect.appendChild(opt);
             });
-            triggersHtml += `</div>`;
         }
 
-        bodyHtml += `
-            <div class="pursuit-weapon-box" style="margin-top: 8px; border: 1px solid #c59a5b;">
-                <div style="background: #251d16; padding: 6px 8px; text-align: center; border-bottom: 1px solid #4a3825;">
-                    <strong style="color: #c59a5b; font-size: 13px; letter-spacing: 0.5px;">${(p.name || talent.name || "POWER").toUpperCase()}</strong>
-                    <div style="font-size: 10px; color: #bfaea0; font-style: italic;">${p.typeLine || "Manifested Power"}</div>
-                </div>
-                <table class="pursuit-weapon-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 32%;">ACTING VALUE</th>
-                            <th style="width: 14%;">AP</th>
-                            <th style="width: 18%;">TN</th>
-                            <th style="width: 16%;">RESIST</th>
-                            <th style="width: 20%;">RANGE</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>${p.av || "—"}</td>
-                            <td>${p.ap || "1"}</td>
-                            <td>${formatPursuitText(p.tn || "—")}</td>
-                            <td>${p.resist || "—"}</td>
-                            <td>${p.range || "—"}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="pursuit-weapon-details">
-                    ${p.desc ? `<div style="line-height: 1.4;">${formatPursuitText(p.desc)}</div>` : ""}
-                    ${triggersHtml}
-                </div>
+        onPursuitChange();
+        renderAdvancedPursuit();
+    }
+
+    // 2. Смена базового пути: переключает и наполняет список специализаций
+    function onPursuitChange() {
+        const select = document.getElementById("pursuitSelect");
+        const specWrapper = document.getElementById("specializationWrapper");
+        const specSelect = document.getElementById("specializationSelect");
+        if (!select || typeof PURSUITS_DATA === "undefined") return;
+
+        const pursuit = PURSUITS_DATA.find(p => p.id === select.value);
+        if (pursuit && pursuit.specializations) {
+            specWrapper.style.display = "flex";
+            specSelect.innerHTML = "";
+            Object.entries(pursuit.specializations).forEach(([key, spec]) => {
+                const opt = document.createElement("option");
+                opt.value = key;
+                opt.textContent = spec.name;
+                specSelect.appendChild(opt);
+            });
+        } else if (specWrapper) {
+            specWrapper.style.display = "none";
+            if (specSelect) specSelect.innerHTML = "";
+        }
+
+        renderPursuitTab();
+    }
+
+    // 3. Отрисовка базового пути с динамической подклейкой специализации (Шаги 6-10)
+    function renderPursuitTab() {
+        const select = document.getElementById("pursuitSelect");
+        const container = document.getElementById("pursuitDetailsContainer");
+        if (!select || !container || typeof PURSUITS_DATA === "undefined") return;
+
+        const pursuit = PURSUITS_DATA.find(p => p.id === select.value);
+        if (!pursuit) return;
+
+        const mainPursuitInput = document.getElementById("pursuit");
+        if (mainPursuitInput) {
+            mainPursuitInput.value = pursuit.name;
+        }
+
+        // Собираем шаги: 0-5 общие + 6-10 из выбранной специализации (если есть)
+        let effectiveSteps = pursuit.steps;
+        if (pursuit.specializations) {
+            const specKey = document.getElementById("specializationSelect")?.value || "base";
+            const spec = pursuit.specializations[specKey] || pursuit.specializations.base;
+            if (spec && spec.steps) {
+                effectiveSteps = [...pursuit.steps, ...spec.steps];
+            }
+        }
+
+        let html = `
+            <div style="background: rgba(20, 17, 14, 0.8); border: 1px solid #382b1d; padding: 12px; margin-bottom: 20px;">
+                <div style="margin-bottom: 8px;"><strong style="color: #c59a5b;">Starting:</strong> ${pursuit.starting}</div>
+                <div><strong style="color: #c59a5b;">On the Pursuit:</strong> ${pursuit.onThePursuit}</div>
             </div>
-        `;
-    }
-
-    return bodyHtml;
-}
-function renderPursuitTab() {
-    const select = document.getElementById("pursuitSelect");
-    const container = document.getElementById("pursuitDetailsContainer");
-    if (!select || !container || typeof PURSUITS_DATA === "undefined") return;
-
-    const pursuit = PURSUITS_DATA.find(p => p.id === select.value);
-    if (!pursuit) return;
-
-    const mainPursuitInput = document.getElementById("pursuit");
-    if (mainPursuitInput) {
-        mainPursuitInput.value = pursuit.name;
-    }
-
-    let html = `
-        <div style="background: rgba(20, 17, 14, 0.8); border: 1px solid #382b1d; padding: 12px; margin-bottom: 20px;">
-            <div style="margin-bottom: 8px;"><strong style="color: #c59a5b;">Starting:</strong> ${pursuit.starting}</div>
-            <div><strong style="color: #c59a5b;">On the Pursuit:</strong> ${pursuit.onThePursuit}</div>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 14px;">
-    `;
-
-    pursuit.steps.forEach(st => {
-        html += `
-            <div style="background: rgba(14, 11, 9, 0.9); border: 1px solid #2d2216; padding: 12px 14px;">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #241a10; padding-bottom: 6px;">
-                    <span style="color: #c59a5b; font-weight: bold; font-size: 14px; letter-spacing: 1px;">STEP ${st.step}</span>
-                    <span style="font-size: 11px; color: #73695c; text-transform: uppercase;">
-                        ${st.type === "choice" ? "Choose 1 Talent" : (st.type === "general" ? "General Talent" : "Automatic")}
-                    </span>
-                </div>
+            <div style="display: flex; flex-direction: column; gap: 14px;">
         `;
 
-        if (st.type === "choice") {
-            html += `<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">`;
-            st.talents.forEach((t, idx) => {
-                const cardId = `p_card_${st.step}_${idx}`;
-                const radioId = `p_radio_${st.step}_${idx}`;
+        effectiveSteps.forEach(st => {
+            html += `
+                <div style="background: rgba(14, 11, 9, 0.9); border: 1px solid #2d2216; padding: 12px 14px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #241a10; padding-bottom: 6px;">
+                        <span style="color: #c59a5b; font-weight: bold; font-size: 14px; letter-spacing: 1px;">STEP ${st.step}</span>
+                        <span style="font-size: 11px; color: #73695c; text-transform: uppercase;">
+                            ${st.type === "choice" ? "Choose 1 Talent" : (st.type === "general" ? "General Talent" : "Automatic")}
+                        </span>
+                    </div>
+            `;
+
+            if (st.type === "choice") {
+                html += `<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">`;
+                st.talents.forEach((t, idx) => {
+                    const cardId = `p_card_${st.step}_${idx}`;
+                    const radioId = `p_radio_${st.step}_${idx}`;
+                    html += `
+                        <div id="${cardId}" 
+                             onclick="selectPursuitTalent(${st.step}, ${idx}, ${st.talents.length})"
+                             style="background: #171310; border: 1px solid #382b1d; padding: 10px 12px; cursor: pointer; transition: all 0.2s ease; opacity: 0.75; display: flex; flex-direction: column;">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                                <input type="radio" id="${radioId}" name="pursuit_step_${st.step}" value="${t.name}" style="accent-color: #c59a5b; pointer-events: none;">
+                                <strong style="color: #e8dfd0; font-size: 14px;">${t.name}</strong>
+                            </div>
+                            <div style="font-size: 12px; color: #a99e8d; line-height: 1.45; flex-grow: 1;">
+                              ${renderTalentContent(t)}
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            } else if (st.type === "single") {
                 html += `
-                    <div id="${cardId}" 
-                         onclick="selectPursuitTalent(${st.step}, ${idx}, ${st.talents.length})"
-                         style="background: #171310; border: 1px solid #382b1d; padding: 10px 12px; cursor: pointer; transition: all 0.2s ease; opacity: 0.75; display: flex; flex-direction: column;">
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                            <input type="radio" id="${radioId}" name="pursuit_step_${st.step}" value="${t.name}" style="accent-color: #c59a5b; pointer-events: none;">
-                            <strong style="color: #e8dfd0; font-size: 14px;">${t.name}</strong>
+                    <div style="background: #171310; border: 1px solid #4a3822; padding: 10px 12px;">
+                        <div style="color: #e8dfd0; font-size: 14px; font-weight: bold; margin-bottom: 4px;">
+                            ${st.talent.name}
                         </div>
-                        <div style="font-size: 12px; color: #a99e8d; line-height: 1.45; flex-grow: 1;">
-                          ${renderTalentContent(t)}
+                        <div style="font-size: 12px; color: #a99e8d; line-height: 1.45;">
+                            ${renderTalentContent(st.talent)}
                         </div>
                     </div>
                 `;
-            });
+            } else if (st.type === "general") {
+                html += `
+                    <div style="background: #120e0b; border: 1px dashed #33271a; padding: 8px 12px; font-size: 13px; color: #cfc5b4; font-weight: bold;">
+                        General Talent
+                    </div>
+                `;
+            }
+
             html += `</div>`;
-        } else if (st.type === "single") {
-            html += `
-                <div style="background: #171310; border: 1px solid #4a3822; padding: 10px 12px;">
-                    <div style="color: #e8dfd0; font-size: 14px; font-weight: bold; margin-bottom: 4px;">
-                        ${st.talent.name}
-                    </div>
-                    <div style="font-size: 12px; color: #a99e8d; line-height: 1.45;">
-                        ${renderTalentContent(st.talent)}
-                    </div>
-                </div>
-            `;
-} else if (st.type === "general") {
-            // General Talent
-            html += `
-                <div style="background: #120e0b; border: 1px dashed #33271a; padding: 8px 12px; font-size: 13px; color: #cfc5b4; font-weight: bold;">
-                    General Talent
-                </div>
-            `;
-        }
+        });
 
         html += `</div>`;
-    });
+        container.innerHTML = html;
+    }
 
-    html += `</div>`;
-    container.innerHTML = html;
-}
+    // 4. Отрисовка выбранного Advanced Pursuit
+    function renderAdvancedPursuit() {
+        const select = document.getElementById("advancedPursuitSelect");
+        const container = document.getElementById("advancedPursuitDetailsContainer");
+        if (!select || !container) return;
+
+        if (!select.value || typeof ADVANCED_PURSUITS_DATA === "undefined") {
+            container.innerHTML = "";
+            return;
+        }
+
+        const adv = ADVANCED_PURSUITS_DATA.find(a => a.id === select.value);
+        if (!adv) {
+            container.innerHTML = "";
+            return;
+        }
+
+        let html = `
+            <div style="background: rgba(20, 17, 14, 0.8); border: 1px solid #382b1d; padding: 12px; margin-bottom: 20px;">
+                <div style="font-size: 13px; color: #a99e8d; line-height: 1.4;">
+                    <strong style="color: #c59a5b;">Requirements:</strong> ${adv.requirements || "—"}
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+        `;
+
+        adv.steps.forEach(st => {
+            html += `
+                <div style="background: rgba(14, 11, 9, 0.9); border: 1px solid #2d2216; padding: 12px 14px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #241a10; padding-bottom: 6px;">
+                        <span style="color: #c59a5b; font-weight: bold; font-size: 14px; letter-spacing: 1px;">STEP ${st.step}</span>
+                        <span style="font-size: 11px; color: #73695c; text-transform: uppercase;">
+                            ${st.type === "choice" ? "Choose 1 Talent" : "Automatic"}
+                        </span>
+                    </div>
+            `;
+
+            if (st.type === "choice") {
+                html += `<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">`;
+                st.talents.forEach((t, idx) => {
+                    const cardId = `adv_card_${st.step}_${idx}`;
+                    const radioId = `adv_radio_${st.step}_${idx}`;
+                    html += `
+                        <div id="${cardId}" 
+                             onclick="selectAdvPursuitTalent(${st.step}, ${idx}, ${st.talents.length})"
+                             style="background: #171310; border: 1px solid #382b1d; padding: 10px 12px; cursor: pointer; transition: all 0.2s ease; opacity: 0.75; display: flex; flex-direction: column;">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                                <input type="radio" id="${radioId}" name="adv_pursuit_step_${st.step}" value="${t.name}" style="accent-color: #c59a5b; pointer-events: none;">
+                                <strong style="color: #e8dfd0; font-size: 14px;">${t.name}</strong>
+                            </div>
+                            <div style="font-size: 12px; color: #a99e8d; line-height: 1.45; flex-grow: 1;">
+                              ${renderTalentContent(t)}
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            } else if (st.type === "single") {
+                html += `
+                    <div style="background: #171310; border: 1px solid #4a3822; padding: 10px 12px;">
+                        <div style="color: #e8dfd0; font-size: 14px; font-weight: bold; margin-bottom: 4px;">
+                            ${st.talent.name}
+                        </div>
+                        <div style="font-size: 12px; color: #a99e8d; line-height: 1.45;">
+                            ${renderTalentContent(st.talent)}
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += `</div>`;
+        });
+
+        html += `</div>`;
+        container.innerHTML = html;
+    }
+
+    // 5. Выбор карточки в Advanced Pursuit
+    function selectAdvPursuitTalent(step, chosenIdx, totalCount) {
+        for (let i = 0; i < totalCount; i++) {
+            const card = document.getElementById(`adv_card_${step}_${i}`);
+            const radio = document.getElementById(`adv_radio_${step}_${i}`);
+            if (!card || !radio) continue;
+
+            if (i === chosenIdx) {
+                radio.checked = true;
+                card.style.borderColor = "#c59a5b";
+                card.style.background = "#241a10";
+                card.style.opacity = "1";
+                card.style.boxShadow = "0 0 8px rgba(197, 154, 91, 0.25)";
+            } else {
+                radio.checked = false;
+                card.style.borderColor = "#382b1d";
+                card.style.background = "#171310";
+                card.style.opacity = "0.5";
+                card.style.boxShadow = "none";
+            }
+        }
+    }
 
 function selectPursuitTalent(step, chosenIdx, totalCount) {
     for (let i = 0; i < totalCount; i++) {
