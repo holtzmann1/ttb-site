@@ -2656,42 +2656,13 @@ window.addEventListener('keydown', function(event) {
             return html;
         }
 
-        function modAspect(stat, delta) {
+function modAspect(stat, delta) {
             aspects[stat] += delta;
             document.getElementById(stat).textContent = aspects[stat];
             updateDerived();
             updateAllSkillAVs();
             refreshAllTalentSelects();
-            if (data.characterPursuits && Array.isArray(data.characterPursuits)) {
-                characterPursuits = data.characterPursuits;
-                activePursuitId = data.activePursuitId || characterPursuits[0]?.id || "";
-                currentViewingPursuitId = activePursuitId || characterPursuits[0]?.id || "";
-            } else if (data.selectedPursuitId) {
-                characterPursuits = [{
-                    id: data.selectedPursuitId,
-                    specialization: data.selectedSpecialization || "base",
-                    step: 0,
-                    choices: {}
-                }];
-                activePursuitId = data.selectedPursuitId;
-                currentViewingPursuitId = data.selectedPursuitId;
-            } else {
-                characterPursuits = [];
-                activePursuitId = "";
-                currentViewingPursuitId = "";
-            }
-
-            initPursuitsSelect();
-
-            if (data.selectedAdvancedPursuitId !== undefined) {
-                const aSel = document.getElementById("advancedPursuitSelect");
-                if (aSel) {
-                    aSel.value = data.selectedAdvancedPursuitId;
-                    renderAdvancedPursuit();
-                }
-            }
         }
-
         function getSkillRank(skillName) {
             const rows = document.querySelectorAll("#skillsList tr");
             let maxRank = 0;
@@ -3421,6 +3392,42 @@ const tbody = document.getElementById("skillsList");
             }
             refreshAllTalentSelects();
         };
+        } else {
+                addNewTalentCard();
+            }
+            refreshAllTalentSelects();
+
+            // Восстановление мультиклассов
+            if (data.characterPursuits && Array.isArray(data.characterPursuits)) {
+                characterPursuits = data.characterPursuits;
+                activePursuitId = data.activePursuitId || characterPursuits[0]?.id || "";
+                currentViewingPursuitId = activePursuitId || characterPursuits[0]?.id || "";
+            } else if (data.selectedPursuitId) {
+                characterPursuits = [{
+                    id: data.selectedPursuitId,
+                    specialization: data.selectedSpecialization || "base",
+                    step: 0,
+                    choices: {}
+                }];
+                activePursuitId = data.selectedPursuitId;
+                currentViewingPursuitId = data.selectedPursuitId;
+            } else {
+                characterPursuits = [];
+                activePursuitId = "";
+                currentViewingPursuitId = "";
+            }
+
+            renderPursuitTabsBar();
+            renderActivePursuitView();
+
+            if (data.selectedAdvancedPursuitId !== undefined) {
+                const aSel = document.getElementById("advancedPursuitSelect");
+                if (aSel) {
+                    aSel.value = data.selectedAdvancedPursuitId;
+                    renderAdvancedPursuit();
+                }
+            }
+        };
         window.collectCurrentSheetData = function() {
             // Чекбоксы Destiny Steps
             const destinySteps = [
@@ -3516,6 +3523,9 @@ bioPortraitUrl: document.getElementById("bioPortraitUrl")?.value || "",
                 selectedAdvancedPursuitId: document.getElementById("advancedPursuitSelect")?.value || ""
             };
         };
+        document.addEventListener("DOMContentLoaded", () => {
+            initPursuitsSelect();
+        });
     </script>
     <!-- МОДАЛЬНОЕ ОКНО: DESTINY STEPS REWARDS -->
 <div id="destinyModal" class="destiny-modal-backdrop" style="display: none;">
