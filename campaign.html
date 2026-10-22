@@ -3606,6 +3606,8 @@ const tContainer = document.getElementById("talentsContainer");
                 const sel = tr.querySelector(".skill-select")?.value;
                 if (sel) {
                     const rating = parseInt(tr.querySelector(".skill-rating")?.value) || 0;
+                    const wrapper = tr.querySelector(".av-wrapper");
+                    const flips = wrapper ? parseInt(wrapper.getAttribute("data-flips") || "0", 10) : 0;
                     const aspVals = Array.from(tr.querySelectorAll(".skill-aspect")).map(s => s.value);
                     const trSub = tr.nextElementSibling;
                     
