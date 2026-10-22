@@ -2485,28 +2485,65 @@ window.addEventListener('keydown', function(event) {
                     </div>
             `;
 
-            if (st.type === "choice") {
-                html += `<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">`;
-                st.talents.forEach((t) => {
-                    const isSelected = chosenTalentName === t.name;
-                    html += `
-                        <div onclick="selectMultiPursuitTalent('${cp.id}', ${st.step}, '${t.name.replace(/'/g, "\\'")}')"
-                             style="background: ${isSelected ? '#241a10' : '#171310'}; 
-                                    border: 1px solid ${isSelected ? '#c59a5b' : '#382b1d'}; 
-                                    box-shadow: ${isSelected ? '0 0 8px rgba(197, 154, 91, 0.25)' : 'none'}; 
-                                    opacity: ${isSelected ? '1' : '0.65'}; 
-                                    padding: 10px 12px; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column;">
-                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                                <input type="radio" name="pursuit_${cp.id}_step_${st.step}" value="${t.name}" ${isSelected ? 'checked' : ''} style="accent-color: #c59a5b; pointer-events: none;">
-                                <strong style="color: #e8dfd0; font-size: 14px;">${t.name}</strong>
+if (st.type === "choice") {
+                const hasChoice = st.talents.some(t => t.name === chosenTalentName);
+
+                if (!hasChoice) {
+                    // ПО ДЕФОЛТУ (ничего не выбрано): 2 колонки рядом
+                    html += `<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">`;
+                    st.talents.forEach((t) => {
+                        html += `
+                            <div onclick="selectMultiPursuitTalent('${cp.id}', ${st.step}, '${t.name.replace(/'/g, "\\'")}')"
+                                 style="background: #171310; border: 1px solid #382b1d; padding: 10px 12px; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                                    <input type="radio" name="pursuit_${cp.id}_step_${st.step}" value="${t.name}" style="accent-color: #c59a5b; pointer-events: none;">
+                                    <strong style="color: #e8dfd0; font-size: 14px;">${t.name}</strong>
+                                </div>
+                                <div style="font-size: 12px; color: #a99e8d; line-height: 1.45; flex-grow: 1;">
+                                    ${renderTalentContent(t)}
+                                </div>
                             </div>
-                            <div style="font-size: 12px; color: #a99e8d; line-height: 1.45; flex-grow: 1;">
-                                ${renderTalentContent(t)}
-                            </div>
-                        </div>
-                    `;
-                });
-                html += `</div>`;
+                        `;
+                    });
+                    html += `</div>`;
+                } else {
+                    // КОГДА ТАЛАНТ ВЫБРАН: выбранный раскрыт, другой свернут в компактную строку
+                    st.talents.forEach((t) => {
+                        const isSelected = chosenTalentName === t.name;
+
+                        if (isSelected) {
+                            // Выбранный талант во всю ширину
+                            html += `
+                                <div style="background: #241a10; border: 1px solid #c59a5b; box-shadow: 0 0 8px rgba(197, 154, 91, 0.25); padding: 10px 14px; margin-bottom: 8px;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="radio" name="pursuit_${cp.id}_step_${st.step}" value="${t.name}" checked style="accent-color: #c59a5b; pointer-events: none;">
+                                            <strong style="color: #e8dfd0; font-size: 14px;">${t.name}</strong>
+                                        </div>
+                                        <span style="font-size: 11px; color: #66bb6a; font-weight: bold;">✓ Выбран</span>
+                                    </div>
+                                    <div style="font-size: 12px; color: #a99e8d; line-height: 1.45;">
+                                        ${renderTalentContent(t)}
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            // Свернутый невыбранный талант: только плашка с названием
+                            html += `
+                                <div onclick="selectMultiPursuitTalent('${cp.id}', ${st.step}, '${t.name.replace(/'/g, "\\'")}')"
+                                     style="background: #14110e; border: 1px dashed #382b1d; padding: 7px 12px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: space-between;"
+                                     onmouseover="this.style.borderColor='#c59a5b'" onmouseout="this.style.borderColor='#382b1d'">
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="radio" name="pursuit_${cp.id}_step_${st.step}" value="${t.name}" style="accent-color: #c59a5b; pointer-events: none;">
+                                        <span style="color: #8f8679; font-size: 13px;">${t.name}</span>
+                                    </div>
+                                    <span style="font-size: 11px; color: #5a4b3c;">(кликнуть для выбора)</span>
+                                </div>
+                            `;
+                        }
+                    });
+                }
+            }
             } else if (st.type === "single") {
                 html += `
                     <div style="background: #171310; border: 1px solid #4a3822; padding: 10px 12px;">
