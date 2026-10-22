@@ -1260,25 +1260,27 @@
             filter: grayscale(80%);
             pointer-events: none;
         }
-        .av-wrapper {
+.av-wrapper {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 2px;
+            gap: 4px;
             width: 100%;
             height: 28px;
-            background: #14110e;
-            border: 1px solid #2a2015;
+            background: #171310; 
+            border: 1px solid #4a3825; 
+            border-radius: 3px; 
             padding: 0 4px;
+            box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
         }
 
         .flip-toggle {
             font-size: 11px;
             font-weight: bold;
-            color: rgba(197, 154, 91, 0.25);
+            color: rgba(197, 154, 91, 0.25); 
             cursor: pointer;
             user-select: none;
-            transition: color 0.15s ease;
+            transition: all 0.15s ease;
             line-height: 1;
             min-width: 12px;
             text-align: center;
@@ -1286,7 +1288,7 @@
 
         .flip-toggle.active {
             color: #f1c40f;
-            text-shadow: 0 0 5px rgba(241, 196, 15, 0.5);
+            text-shadow: 0 0 6px rgba(241, 196, 15, 0.6);
         }
 
         .av-val {
