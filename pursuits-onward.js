@@ -1,9 +1,3 @@
-/**
- * Through the Breach 2nd Edition
- * Expansion: Onward!
- * Basic Pursuits (with Specializations) & Advanced Pursuits Database
- */
-
 (function() {
     const ONWARD_BASIC_PURSUITS = [
         {
@@ -11,14 +5,14 @@
             name: "Beastmaster",
             book: "Onward!",
             starting: "A Beastmaster begins with 5 Scrip and a subordinate character with the Beast Characteristic (Rank Value 5 or less).",
-            onThePursuit: "Wild Animals: When any of this character's Beast subordinates suffers 3+ damage from a single source, she may draw a card. During Epilogue, advance in any Expertise Skill.",
+            onThePursuit: "Wild Animals: When any of this character's Beast subordinate characters suffers 3 or more damage from a single source, she may draw a card. During the Epilogue, advance in any Expertise Skills.",
             steps: [
                 {
                     step: 0,
                     type: "single",
                     talent: {
                         name: "Born and Bred",
-                        desc: "Gain [+] on all Husbandry Challenges. May use Husbandry instead of Doctor when targeting a Beast (First Aid, Surgery)."
+                        desc: "Gain [+] on all Husbandry Challenges. This character may use her Husbandry Skill instead of the Doctor Skill when targeting a Beast (such as when providing First Aid or performing Surgery)."
                     }
                 },
                 {
@@ -26,7 +20,7 @@
                     type: "single",
                     talent: {
                         name: "Loyal Companion",
-                        desc: "Gain one subordinate Beast of Rank Value 5 or less (or increase existing subordinate Beast Rank Values by +1).\n\nGain Action: (1) *Tend*: TN 10 Husbandry duel targeting friendly Beast within 2 yards to heal 1 damage (+1 per Margin of Success)."
+                        desc: "Gain any one character with the Beast Characteristic and a Rank Value of 5 or less as a subordinate character (or increase all existing subordinate Beasts' Rank Values by +1).\n\nGain Action: (1) *Tend*: Target a friendly Beast within 2 yards and take a TN 10 Husbandry Challenge to heal 1 damage (+1 per Margin of Success)."
                     }
                 },
                 {
@@ -39,7 +33,7 @@
                         },
                         {
                             name: "Loyal Companion",
-                            desc: "Gain one subordinate Beast of Rank Value 5 or less (or increase existing subordinate Beast Rank Values by +1)."
+                            desc: "Gain any one character with the Beast Characteristic and a Rank Value of 5 or less as a subordinate character (or increase all existing subordinate Beasts' Rank Values by +1)."
                         }
                     ]
                 },
@@ -49,11 +43,11 @@
                     talents: [
                         {
                             name: "Law of Nature",
-                            desc: "Discard a card to have one subordinate Beast add the discarded card's suit to all final duel totals until start of its next turn."
+                            desc: "Discard a card to have one subordinate Beast add the discarded card's suit to all final duel totals it takes until the start of its next turn."
                         },
                         {
                             name: "Law of the Pack",
-                            desc: "Increase duel totals by +2 when targeting a Beast with a Husbandry Challenge. If it healed the target, all friendly subordinate Beasts of same type within 5 yards heal 1 damage."
+                            desc: "Whenever targeting a Beast with a Husbandry Challenge, increase final duel total by +2. If that Challenge healed the target, all other subordinate Beasts of the same type within 5 yards heal 1 damage."
                         }
                     ]
                 },
@@ -70,14 +64,14 @@
                     type: "single",
                     talent: {
                         name: "Menagerie",
-                        desc: "Keep Beasts in Menagerie (max total Rank Value = 3x completed steps; accompanying max = 2x completed steps; Explorer's Society members ignore total limit at Manor).\n\nOnce per day, target Beast/Swampfiend within 5 yards with contested Husbandry vs Wp duel to apply Tamed +1 (+1 per Margin of Success). When Tamed equals Rank Value, it joins Menagerie as a subordinate."
+                        desc: "Keep Beasts in Menagerie (combined Rank Values may not exceed 3x completed steps in this Pursuit; accompanying Beasts Rank Values may not exceed 2x completed steps; Explorer's Society members ignore total Menagerie limit at Ashford Manor).\n\nOnce per day, target a Beast or Swampfiend within 5 yards with a contested Husbandry vs Willpower duel to grant Tamed +1 (+1 per Margin of Success). When Tamed equals Rank Value, it joins the Menagerie as a friendly subordinate."
                     }
                 }
             ],
             specializations: {
                 base: {
                     id: "base",
-                    name: "Beastmaster (Базовый путь)",
+                    name: "Beastmaster (Base)",
                     steps: [
                         {
                             step: 6,
@@ -93,11 +87,11 @@
                             talents: [
                                 {
                                     name: "Effective Training",
-                                    desc: "Subordinate Beasts may Cheat Fate from this character's Control Hand (ignoring subordinate Rank Value for duel totals)."
+                                    desc: "Any subordinate Beast characters under this character's control may Cheat Fate from her Control Hand (ignoring subordinate Rank Value for duel totals)."
                                 },
                                 {
                                     name: "Nonlethal Subduction",
-                                    desc: "Attacks against Beasts may be declared non-lethal (damage flips suffer [-], no Critical Effects). Dropping target to 0 or below forces Unconsciousness Challenge (TN increased by nearby subordinates up to +3)."
+                                    desc: "When this character or subordinates attack a Beast, the attack may be declared non-lethal (damage flips suffer [-], no Critical Effects). Dropping target to 0 Wounds or below forces an Unconsciousness Challenge (TN increased by +1 per friendly subordinate within 5 yards, max +3)."
                                 }
                             ]
                         },
@@ -115,11 +109,11 @@
                             talents: [
                                 {
                                     name: "Iconic Animalia",
-                                    desc: "At day start, choose one Beast in Menagerie: it does not use Order Actions, acting on its own turn with full AP under this character's control."
+                                    desc: "At the start of each day, select one Beast in Menagerie: it cannot be given the Order Action, acting on its own turn with full AP under this character's control."
                                 },
                                 {
                                     name: "Ecosystemic",
-                                    desc: "May take Order Action as (0) when targeting friendly subordinate Beast. All friendly subordinate Beasts gain Unimpeded (ignore terrain penalties during movement)."
+                                    desc: "This character may take the Order Action as a (0) Action if targeting a friendly subordinate Beast. All friendly subordinate Beasts gain Unimpeded (ignore terrain penalties during Movement Actions)."
                                 }
                             ]
                         },
@@ -128,21 +122,21 @@
                             type: "single",
                             talent: {
                                 name: "Zoological Genius",
-                                desc: "Gain +1 AP at turn start for every two accompanying subordinate Beasts (maximum +2 AP)."
+                                desc: "Gain +1 AP at the start of her turn for every two subordinate Beasts accompanying her (to a maximum of +2 AP)."
                             }
                         }
                     ]
                 },
                 cryptozoologist: {
                     id: "cryptozoologist",
-                    name: "Cryptozoologist (Криптозоолог)",
+                    name: "Cryptozoologist",
                     steps: [
                         {
                             step: 6,
                             type: "single",
                             talent: {
                                 name: "Cryptolog",
-                                desc: "Against non-Monstrous species in Cryptolog: +1 to duel totals and ignore one [-].\n\nAction: (0) *Cryptologged*: TN = Rank Value (5+) Husbandry duel on non-Monstrous Beast/Swampfiend within 25 yards to record species and 1 Talent/Action into Cryptolog (draw card per Margin of Success; costs (1) AP if unfriendly)."
+                                desc: "Against non-Monstrous Beast/Swampfiend species recorded in Cryptolog: increase final duel totals by +1 and ignore one [-].\n\nGain Action: (0) *Cryptologged*: Target one non-Monstrous Beast/Swampfiend within 25 yards and take a Husbandry Challenge (TN = target's Rank Value, min 5). On success, record its species and one of its Talents or Actions in Cryptolog (draw 1 card per Margin of Success; costs (1) AP if unfriendly)."
                             }
                         },
                         {
@@ -155,7 +149,7 @@
                                 },
                                 {
                                     name: "Preferred Specimens",
-                                    desc: "Once per day, track a chosen Beast/Swampfiend via Ongoing Challenge (Husbandry/Track/Wilderness, TN = Rank Value, Success = Fate Points, Duration 2 hrs, Failure 4) to encounter it."
+                                    desc: "Once per day, declare a search for a specific Beast/Swampfiend and take Ongoing Challenge Searching for Specimens (Husbandry/Track/Wilderness, TN = Rank Value, Success Requirement = Fate Points, Duration 2 hours, Failure Requirement 4) to encounter the creature."
                                 }
                             ]
                         },
@@ -164,7 +158,7 @@
                             type: "single",
                             talent: {
                                 name: "Bestial Biology",
-                                desc: "This character gains Action:\n(1) *Bestial Biology*: Select a Talent in Cryptolog: all friendly characters ignore that Talent on all Beasts and Swampfiends until round end."
+                                desc: "Gain Action: (1) *Bestial Biology*: Select a Talent listed in your Cryptolog. All friendly characters ignore the selected Talent on all Beasts and Swampfiends until the end of the round."
                             }
                         },
                         {
@@ -177,7 +171,7 @@
                                 },
                                 {
                                     name: "I Told You It Was Real!",
-                                    desc: "When encountering a wild Beast/Swampfiend, discard cards: for every 3 cards discarded, grant the creature one Talent or Action from Cryptolog."
+                                    desc: "When encountering a wild Beast or Swampfiend, discard cards: for every 3 cards discarded, select one Talent or Action from Cryptolog and grant it to the encountered creature."
                                 }
                             ]
                         },
@@ -186,14 +180,14 @@
                             type: "single",
                             talent: {
                                 name: "Monstrous Manual",
-                                desc: "Permanently remove 6 entries from Cryptolog to apply the Monstrous template to one owned Beast (excluding +1 AP; max 1 Monstrous subordinate at a time)."
+                                desc: "Permanently remove 6 entries from Cryptolog to modify one owned Beast using the Monstrous template (excluding +1 AP; maximum 1 subordinate with the Monstrous Characteristic at a time)."
                             }
                         }
                     ]
                 },
                 huntmaster: {
                     id: "huntmaster",
-                    name: "Huntmaster (Егерь / Охотник)",
+                    name: "Huntmaster",
                     steps: [
                         {
                             step: 6,
@@ -209,7 +203,7 @@
                                     tn: "12",
                                     range: "15 yards",
                                     resist: "—",
-                                    desc: "Name a Minion, Enforcer, Henchman, or Master. This character and all friendly subordinate Beasts gain [+] to attacks targeting characters with that name (only 1 Adversary active at a time)."
+                                    desc: "Name a Minion, Enforcer, Henchman, or Master. This character and all friendly subordinate Beasts gain [+] to attacks targeting any characters sharing that name (only 1 Adversary active at a time)."
                                 }
                             }
                         },
@@ -223,7 +217,7 @@
                                 },
                                 {
                                     name: "Predatory Instincts",
-                                    desc: "When targeting an enemy with an Attack Action, suffer [-] to attack flip to gain [+] to damage flip (or vice versa)."
+                                    desc: "After targeting an enemy with an Attack Action, suffer [-] to that attack flip to gain [+] to the damage flip (or vice versa)."
                                 }
                             ]
                         },
@@ -245,7 +239,7 @@
                                 },
                                 {
                                     name: "Ripping and Tearing",
-                                    desc: "When applying a Condition from an Attack Action, discard a card to instead apply Bleeding Out +1 or Wounded +1 (healing flips suffer [-], healed amount reduced by -1; TN 12 Doctor to remove)."
+                                    desc: "Whenever this character or a subordinate Beast would apply a Condition from an Attack Action, discard a card to instead apply Bleeding Out +1 or Wounded +1 (healing flips suffer [-], healed amount reduced by -1; TN 12 Doctor Challenge to reduce)."
                                 }
                             ]
                         },
@@ -254,7 +248,7 @@
                             type: "single",
                             talent: {
                                 name: "The Wildest Hunt",
-                                desc: "At day start, select one Beast in Menagerie. Whenever issuing an Order to it, up to 2 additional accompanying Beasts of the same type may each take a 1 AP Action."
+                                desc: "At the start of each day, select one Beast in Menagerie. Whenever issuing an Order to the chosen character, up to 2 additional accompanying Beasts of the same type may each take a 1 AP Action."
                             }
                         }
                     ]
@@ -266,14 +260,14 @@
             name: "Gourmand",
             book: "Onward!",
             starting: "A Gourmand begins with a Culinary Skill toolkit and food ingredients worth up to 5 Scrip.",
-            onThePursuit: "Overcooked: When this character fails a duel with the Charm Associated Aspect, she may draw a card. During Epilogue, advance in any non-Magical Charm Skill.",
+            onThePursuit: "Overcooked: When this character fails a duel with the Charm Associated Aspect, she may draw a card. During the Epilogue, advance in any non-Magical Skills with the Charm Aspect.",
             steps: [
                 {
                     step: 0,
                     type: "single",
                     talent: {
                         name: "Foraging for Food",
-                        desc: "Spend 1 hour and pass TN 8 Culinary/Wilderness Challenge to find 1 edible ingredient (+1 per Margin of Success)."
+                        desc: "Spend 1 hour to make a TN 8 Culinary (settled area) or Wilderness (nature) Challenge: on success and per Margin of Success, find 1 edible ingredient."
                     }
                 },
                 {
@@ -281,7 +275,7 @@
                     type: "single",
                     talent: {
                         name: "Home Cooked Meal",
-                        desc: "Pass TN 5 Culinary duel (+1 per unique ingredient) to create Servings equal to Margins of Success (last 1 day).\n\nConsume Serving (1 AP within 1 yard): Heals 1 damage and grants “Well Fed +1: +1 Physical Aspects (max 4, cap +3)” for 1 hour."
+                        desc: "Take TN 5 Culinary duel (+1 per unique ingredient): create 1 Serving per Margin of Success (retains properties for 1 day).\n\nConsume Serving (1 AP within 1 yard): Heals 1 damage and grants “Well Fed +1: +1 Physical Aspects (max 4, cap +3)” for 1 hour."
                     }
                 },
                 {
@@ -298,11 +292,11 @@
                     talents: [
                         {
                             name: "Walking Kitchen",
-                            desc: "While holding a Culinary toolkit, gain Armor +1 (no Defense penalty) and reduce damage from Burning by 2."
+                            desc: "While holding a Culinary toolkit, gain Armor +1 (does not reduce Defense) and reduce all damage suffered from Burning by 2."
                         },
                         {
                             name: "Taste Test",
-                            desc: "When creating at least 1 Serving, gain the benefits of consuming a Serving without expending it. Automatically detect poisons and foreign substances in food/drink within 1 yard."
+                            desc: "When creating at least 1 Serving, gain the benefits of consuming a Serving without expending it. Automatically detect all poisons and foreign substances in food or drink within 1 yard."
                         }
                     ]
                 },
@@ -319,14 +313,14 @@
                     type: "single",
                     talent: {
                         name: "Gourmet Creations",
-                        desc: "This character gains Action:\n(0) *Curated Menu*: Pass TN 10 Culinary duel. Servings grant declared Trigger for 1 hour until next turn:\n• :r: *Appetizers*: 1/1/2 healing flip.\n• :m: *Brain Food*: Well Fed applies to Mental Aspects instead.\n• :c: *Hit the Spot*: Well Fed also applies to one chosen Skill.\n• :t: *Dinner Rush*: Initiative flip increased by +1."
+                        desc: "Gain Action: (0) *Curated Menu*: TN 10 Culinary duel. Servings grant declared Trigger for 1 hour until next turn:\n• :r: *Appetizers*: 1/1/2 healing flip.\n• :m: *Brain Food*: Well Fed applies to Mental Aspects instead of Physical.\n• :c: *Hit the Spot*: Well Fed also applies to one chosen Skill.\n• :t: *Dinner Rush*: Initiative flip value increased by +1."
                     }
                 }
             ],
             specializations: {
                 base: {
                     id: "base",
-                    name: "Gourmand (Базовый путь)",
+                    name: "Gourmand (Base)",
                     steps: [
                         {
                             step: 6,
@@ -342,11 +336,11 @@
                             talents: [
                                 {
                                     name: "Bon Appétit",
-                                    desc: "Servings heal +1 extra damage. At full health, excess healing becomes temporary Wounds (last 1 hour)."
+                                    desc: "Servings heal an additional +1 damage. At full health, excess healing becomes temporary Wounds (last 1 hour)."
                                 },
                                 {
                                     name: "Gorged",
-                                    desc: "Consuming a Serving also grants Hard to Wound +1 (damage flips against target suffer [-]) for 1 hour."
+                                    desc: "Servings also grant Hard to Wound +1 (damage flips against target suffer [-]) for 1 hour."
                                 }
                             ]
                         },
@@ -364,11 +358,11 @@
                             talents: [
                                 {
                                     name: "Food Fight",
-                                    desc: "Gain weapon: Food Fight (Culinary + Grace, Rg 5, Dmg 1/1/2). Reduce Servings by X to select X effects: Catapult Lunchbox (heals allies), Splattering (1/2b/3bb), Boiling (Burning +2), Spoon (Dazed). May count targets as having consumed a Serving."
+                                    desc: "Gain weapon: Food Fight (Culinary + Grace, Rg 5, Dmg 1/1/2). Reduce Servings by X to select X effects: Catapult Lunchbox (heals allies), Splattering (1/2b/3bb), Boiling (Burning +2), There Was a Spoon in There (Dazed). May count targets as having consumed a Serving."
                                 },
                                 {
                                     name: "Larder Storage",
-                                    desc: "Serving duration effects increase by +1 hour. Servings retain potency for up to 1 week."
+                                    desc: "All Serving duration effects increase by +1 hour. Servings retain potency for up to 1 week."
                                 }
                             ]
                         },
@@ -384,7 +378,7 @@
                 },
                 patissier: {
                     id: "patissier",
-                    name: "Pâtissier (Кондитер)",
+                    name: "Pâtissier",
                     steps: [
                         {
                             step: 6,
@@ -404,7 +398,7 @@
                                 },
                                 {
                                     name: "Sticky Trap",
-                                    desc: "This character gains Action:\n(1) *Sticky Trap*: Expend 1 Treat to place a 1-yard sticky puddle within 5 yards. Passing through inflicts Slow and Speed -2 until end of next turn."
+                                    desc: "Gain Action: (1) *Sticky Trap*: Expend 1 Treat to place a 1-yard sticky puddle within 5 yards. Passing through inflicts Slow and Speed -2 until the end of the target's next turn."
                                 }
                             ]
                         },
@@ -426,7 +420,7 @@
                                 },
                                 {
                                     name: "Baked Fresh",
-                                    desc: "Curated Menu gains Triggers:\n• :r: *Baker's Dozen*: Consuming a Treat counts as consuming 1 additional Treat.\n• :m: *Confectional Wisdom*: Living consumer resolves one additional (0) Action during turn."
+                                    desc: "Curated Menu gains Triggers:\n• :r: *Baker's Dozen*: Consuming a Treat counts as consuming 1 additional Treat.\n• :m: *Confectional Wisdom*: Living consumer resolves one additional (0) Action during her turn."
                                 }
                             ]
                         },
@@ -435,21 +429,21 @@
                             type: "single",
                             talent: {
                                 name: "Crème de la Crème",
-                                desc: "This character gains Action:\n(2) *Blue Ribbon Bakery*: Expend 1 Treat on ally within 1 yard: target loses Slow, gains Fast, and gains Reactivate."
+                                desc: "Gain Action: (2) *Blue Ribbon Bakery*: Select one ally within 1 yard and expend 1 Treat: target loses Slow, gains Fast, and gains Reactivate."
                             }
                         }
                     ]
                 },
                 brewer: {
                     id: "brewer",
-                    name: "Brewer (Пивовар / Бариста)",
+                    name: "Brewer",
                     steps: [
                         {
                             step: 6,
                             type: "single",
                             talent: {
                                 name: "Specialty Brews",
-                                desc: "Brewing with plants and water creates Brews (Servings that grant Speed +1 for 10 min, max +3). Fermenting grains/veggies for 1 week creates Flasks (grants Intoxicated, or Poison +2 if already Intoxicated; counts as Serving for allies)."
+                                desc: "Brewing with plants and water creates Brews (Servings that grant Speed +1 for 10 minutes, max +3). Fermenting grains or vegetables for 1 week creates Flasks (grants Intoxicated, or Poison +2 if already Intoxicated; counts as Serving for allies)."
                             }
                         },
                         {
@@ -462,7 +456,7 @@
                                 },
                                 {
                                     name: "Spillage",
-                                    desc: "Brewing alcohol takes 1 day. When a friendly drinks a Brew/Flask, an ally within 1 yard also drinks it.\n\nAction: (1) *Spillage*: Expend 1 Brew/Flask for 3-yard puddle; passing through ends move and requires TN 12 Acrobatics or places 1 yard away."
+                                    desc: "Brewing alcohol takes 1 day. When a friendly character drinks a Brew or Flask, one other character within 1 yard also counts as drinking it.\n\nGain Action: (1) *Spillage*: Expend 1 Brew/Flask to create a 3-yard puddle within 5 yards; passing through ends move and requires TN 12 Acrobatics or places 1 yard away."
                                 }
                             ]
                         },
@@ -471,7 +465,7 @@
                             type: "single",
                             talent: {
                                 name: "The Long Steep",
-                                desc: "Consuming a Brew grants Focused +1 and removes Dazed. Consuming a Flask ignores Wp penalties from Intoxicated, and Poison from drinking heals instead."
+                                desc: "Consuming a Brew grants Focused +1 and removes Dazed. Consuming a Flask ignores Wp duel penalties from Intoxicated, and Poison from drinking heals instead."
                             }
                         },
                         {
@@ -484,7 +478,7 @@
                                 },
                                 {
                                     name: "Cheers!",
-                                    desc: "Curated Menu gains Triggers:\n• :t: *Caffeinated*: Drinker gains Df Trigger: Df (Suit) *Jittery* (Gain Shielded +1).\n• :c: *Shot of Clarity*: If gaining Intoxicated from Brew, gain 1 AP instead."
+                                    desc: "Curated Menu gains Triggers:\n• :t: *Caffeinated*: Drinker gains Defensive Trigger: Df (Suit) *Jittery* (Gain Shielded +1).\n• :c: *Shot of Clarity*: If consuming a Brew would grant Intoxicated, gain 1 AP instead."
                                 }
                             ]
                         },
@@ -493,7 +487,7 @@
                             type: "single",
                             talent: {
                                 name: "Another Round!",
-                                desc: "This character gains Action:\n(2) *Another Round!*: Expend X Brews/Flasks (range +2 yards per drink). For each Brew, allies in range gain Speed +1 and draw a card. For each Flask, all targets gain Intoxicated (2+ Flasks: allies count [-] as [+] until round end; 3+ Flasks: enemies count [+] as [-])."
+                                desc: "Gain Action: (2) *Another Round!*: Expend X Brews/Flasks (range +2 yards per drink). For each Brew, allies in range gain Speed +1 and draw a card. For each Flask, all targets gain Intoxicated (2+ Flasks: allies count [-] as [+] until round end; 3+ Flasks: enemies count [+] as [-])."
                             }
                         }
                     ]
@@ -505,14 +499,14 @@
             name: "Methodologist",
             book: "Onward!",
             starting: "A Methodologist begins with 2 Magia and 1 Immuto in her Alchemicery Grimoire.",
-            onThePursuit: "Test Failure: When this character fails a Mathematics duel, she may draw a card. During Epilogue, advance in any Academic Skill.",
+            onThePursuit: "Test Failure: When this character fails a Mathematics duel, she may draw a card. During the Epilogue, advance in any Academic Skill.",
             steps: [
                 {
                     step: 0,
                     type: "single",
                     talent: {
                         name: "-Onomies and -Ologies",
-                        desc: "Gain two Mathematics Triggers (:r: Understanding, :c: Substitutions, :t: Processes, :m: Corrections). Once per day, use Mathematics in place of any Academic, Crafting, or Magical Skill."
+                        desc: "Gain two Mathematics Skill Triggers (:r: Understanding, :c: Substitutions, :t: Processes, :m: Corrections). Once per day, use Mathematics in place of any Academic, Crafting, or Magical Skill in a duel or Challenge."
                     }
                 },
                 {
@@ -520,7 +514,7 @@
                     type: "single",
                     talent: {
                         name: "Alchemicery",
-                        desc: "Add 2 Magia to Alchemicery (spells cast with Scientific Method Magical Theory). Each day, prepare Magia/Immuto equal to 1 + completed Pursuit steps."
+                        desc: "Add 2 Magia to Alchemicery (spells cast with Scientific Method Magical Theory). Each day, prepare Magia and/or Immuto equal to 1 + completed Pursuit steps."
                     }
                 },
                 {
@@ -558,14 +552,14 @@
                     type: "single",
                     talent: {
                         name: "Thesis",
-                        desc: "Research Magia via Ongoing Challenge Unifying Theories (Mathematics, TN = spell TN, Success = 1 + TN/5, Duration 1 day, Failure 3) to add it to Alchemicery."
+                        desc: "Research Magia via Ongoing Challenge Unifying Theories (Mathematics, TN = spell TN, Success Requirement = 1 + TN/5, Duration 1 day, Failure Requirement 3) to add it to Alchemicery."
                     }
                 }
             ],
             specializations: {
                 base: {
                     id: "base",
-                    name: "Methodologist (Базовый путь)",
+                    name: "Methodologist (Base)",
                     steps: [
                         {
                             step: 6,
@@ -581,7 +575,7 @@
                             talents: [
                                 {
                                     name: "Prima Materia",
-                                    desc: "Action: (2) *Prima Materia*: Swap one prepared Magia for an unprepared Magia in Alchemicery."
+                                    desc: "Gain Action: (2) *Prima Materia*: Swap one prepared Magia for an unprepared Magia in Alchemicery."
                                 },
                                 {
                                     name: "On Fundamentals",
@@ -602,7 +596,7 @@
                             type: "single",
                             talent: {
                                 name: "Create Magnum Opus",
-                                desc: "Every 15 successes in Unifying Theories creates one Magnum Opus (Philosopher's Soulstone, Alkahest, Specterglass, Essentia Mortis, Homunculus, Secretum Magicae)."
+                                desc: "Every 15 successes in Unifying Theories creates one Magnum Opus or unique item (Philosopher's Soulstone, Alkahest, Specterglass, Essentia Mortis, Homunculus, Secretum Magicae)."
                             }
                         },
                         {
@@ -610,14 +604,14 @@
                             type: "single",
                             talent: {
                                 name: "Golden Ratio",
-                                desc: "Drawing Twist Cards in sequence 1, 2, 3, 5, 8, 13 completes the Golden Ratio and immediately crafts a Magnum Opus."
+                                desc: "Drawing Twist Cards in sequence 1, 2, 3, 5, 8, 13 completes the Golden Ratio and immediately creates a Magnum Opus."
                             }
                         }
                     ]
                 },
                 astronomer: {
                     id: "astronomer",
-                    name: "Astronomer (Астроном)",
+                    name: "Astronomer",
                     steps: [
                         {
                             step: 6,
@@ -637,7 +631,7 @@
                                 },
                                 {
                                     name: "Eyes Above",
-                                    desc: "Action: (0) *Eyes Above*: Discard cards to increase range of an ally's weapon/power within 15 yards by +5 yards (+5 yards per discarded card) until next turn."
+                                    desc: "Gain Action: (0) *Eyes Above*: Discard cards to increase range of a friendly ally's weapon, Manifested Power, or Magia within 15 yards by +5 yards (+5 yards per discarded card) until next turn."
                                 }
                             ]
                         },
@@ -655,7 +649,7 @@
                                     tn: "Special",
                                     range: "20 yards",
                                     resist: "—",
-                                    desc: "Call a comet at target point: add duel total to strength. Resolve whenever desired: 1-12 (1 yd, 1/2/3 dmg); 13-20 (3 yds, 2/3/4 dmg, Dazed); 21-34 (7 yds, 3/4/5 dmg, Dazed, Prone); 35-49 (12 yds, 5/6/7 dmg, Dazed, Prone, Slow); 50+ (18 yds, 7/8/9 dmg, Dazed, Prone, Slow, Focus 0; +2 dmg per 10 over 50)."
+                                    desc: "Target impact point: add duel total to strength. Resolve when desired: 1-12 (1 yd, 1/2/3 dmg); 13-20 (3 yds, 2/3/4 dmg, Dazed); 21-34 (7 yds, 3/4/5 dmg, Dazed, Prone); 35-49 (12 yds, 5/6/7 dmg, Dazed, Prone, Slow); 50+ (18 yds, 7/8/9 dmg, Dazed, Prone, Slow, Focused 0; +2 dmg per 10 over 50)."
                                 }
                             }
                         },
@@ -669,7 +663,7 @@
                                 },
                                 {
                                     name: "Stargazer's Curse",
-                                    desc: "Failing Mathematics duel gives Crazy +1. While Crazy: (1) View the Endless (rearrange top cards of deck); (1) Celestial Elucidation (swap a prepared Magia for any unknown Magia for the day)."
+                                    desc: "Failing a Mathematics duel grants Crazy +1. While Crazy: (1) View the Endless (rearrange top X cards of Fate/Twist deck); (1) Celestial Elucidation (swap a prepared Magia for any unknown Magia for the day)."
                                 }
                             ]
                         },
@@ -678,14 +672,14 @@
                             type: "single",
                             talent: {
                                 name: "Alter the Constellations",
-                                desc: "When failing Mathematics or Magical duel with TN <= 14, automatically pass it and gain Crazy +2 (removed only via Centering Challenge)."
+                                desc: "When failing a Mathematics or Magical Skills duel with TN <= 14, automatically pass it and gain Crazy +2 (removed only through Centering Challenge)."
                             }
                         }
                     ]
                 },
                 botanist: {
                     id: "botanist",
-                    name: "Botanist (Ботаник)",
+                    name: "Botanist",
                     steps: [
                         {
                             step: 6,
@@ -705,7 +699,7 @@
                                 },
                                 {
                                     name: "Green Thumb",
-                                    desc: "Casting Natural spell with TN 12+ grants 1 Seed.\n\nAction: (2) *Punnett Square*: Discard 1/2/3 Seeds to summon a permanent subordinate Plant of Rank Value 6/7/8 with Rooted within 1 yard of a Rooted character."
+                                    desc: "Casting Natural spell with TN 12+ grants 1 Seed.\n\nGain Action: (2) *Punnett Square*: Discard 1/2/3 Seeds to summon a permanent subordinate Plant of Rank Value 6/7/8 with Rooted within 1 yard of a Rooted character."
                                 }
                             ]
                         },
@@ -714,7 +708,7 @@
                             type: "single",
                             talent: {
                                 name: "Panacea",
-                                desc: "Every 15 successes in Unifying Theories crafts 1 Panacea. Use as (0) on target within 1 yard to pick 3: full heal, remove all Conditions, remove all Critical Effects, restore lost memories/soul."
+                                desc: "Every 15 successes in Unifying Theories crafts 1 Panacea. Use as (0) on willing target within 1 yard to pick 3: heal to full health, remove any Conditions, remove any Critical Effects, restore lost memories and soul."
                             }
                         },
                         {
@@ -727,7 +721,7 @@
                                 },
                                 {
                                     name: "Uproot",
-                                    desc: "Remove Rooted from one friendly subordinate Plant (remains subordinate until another is uprooted)."
+                                    desc: "Remove the Rooted Condition from one friendly subordinate Plant (remains subordinate until another is uprooted)."
                                 }
                             ]
                         },
@@ -743,14 +737,14 @@
                 },
                 geologist: {
                     id: "geologist",
-                    name: "Geologist (Геолог)",
+                    name: "Geologist",
                     steps: [
                         {
                             step: 6,
                             type: "single",
                             talent: {
                                 name: "Quickmine",
-                                desc: "Add one Sorcery Magia and Earth & Stone Elemental Immuto to Alchemicery (always prepared).\n• Earth (TN +1): Target treats movement as Severe (Hazardous if added twice).\n• Stone (TN +2): Target gains Dazed (+1 duration per added instance)."
+                                desc: "Add one Sorcery Magia and Earth & Stone Elemental Immuto to Alchemicery (always prepared).\n• Earth (TN +1): Target treats movement as Severe Terrain (Hazardous if added twice).\n• Stone (TN +2): Target gains Dazed (+1 duration per added instance)."
                             }
                         },
                         {
@@ -772,7 +766,7 @@
                             type: "single",
                             talent: {
                                 name: "Tacta Auri",
-                                desc: "Every 15 successes in Unifying Theories crafts 1 Tacta Auri.\n\nAction: (2) *Transmuting Touch*: Discard 5-Destiny cards: target within 1 yard must discard 5-Destiny cards or Height+1 Fate Points, or turns to solid gold statue (worth 150 Scrip for small objects)."
+                                desc: "Every 15 successes in Unifying Theories crafts 1 Tacta Auri.\n\nGain Action: (2) *Transmuting Touch*: Discard 5-Destiny cards: target within 1 yard must discard 5-Destiny cards or Height+1 Fate Points, or is transmuted into solid gold (worth 150 Scrip for small objects)."
                             }
                         },
                         {
@@ -785,7 +779,7 @@
                                 },
                                 {
                                     name: "Rocky Ground",
-                                    desc: "Ignore Severe terrain and ground-based Hazardous terrain.\n\nManifested Power: Rocky Ground (Resilience + Mathematics, AP 2, TN 12, Pulse 4): Area within 4 yards becomes Hazardous Terrain."
+                                    desc: "Ignore Severe Terrain and ground-based Hazardous Terrain.\n\nGain Manifested Power: Rocky Ground (Resilience + Mathematics, AP 2, TN 12, Pulse 4): Area within 4 yards becomes Hazardous Terrain."
                                 }
                             ]
                         },
@@ -805,15 +799,15 @@
             id: "explorer",
             name: "Explorer",
             book: "Onward!",
-            starting: "An Explorer begins with an Academic or Training Toolkit and up to 5 Scrip of items.",
-            onThePursuit: "You Belong in a Museum: When this character fails a duel, she may suffer 2 irreducible damage to draw a card. During Epilogue, advance in any Academic Skill.",
+            starting: "An Explorer begins with an Academic or Training Toolkit and up to 5 Scrip worth of items.",
+            onThePursuit: "You Belong in a Museum: When this character fails a duel, she may suffer 2 irreducible damage to draw a card. During the Epilogue, advance in any Academic Skills.",
             steps: [
                 {
                     step: 0,
                     type: "single",
                     talent: {
                         name: "Fieldwork",
-                        desc: "Increase duel totals by +2 during Ongoing Challenges taking place in ruins, wilderness, or non-urban areas."
+                        desc: "When taking Ongoing Challenges, increase final duel total by +2 if taking place in ruins, the wilderness, or any non-urban area."
                     }
                 },
                 {
@@ -821,7 +815,7 @@
                     type: "single",
                     talent: {
                         name: "Areas of Study",
-                        desc: "At day start, increase any one Skill by +1 until end of day."
+                        desc: "At the start of each day, increase any one Skill by +1 until the end of the day."
                     }
                 },
                 {
@@ -842,7 +836,7 @@
                         },
                         {
                             name: "Dumb Enough to Work",
-                            desc: "Action: (0) *According to Plan*: Suffer 1 damage to allow an ally within 10 yards to move 2 yards, discard and draw a Twist Card, or resolve a (0) Action."
+                            desc: "Gain Action: (0) *According to Plan*: Suffer 1 damage to allow an ally within 10 yards to move 2 yards, discard and draw a Twist Card, or resolve a (0) Action."
                         }
                     ]
                 },
@@ -866,7 +860,7 @@
             specializations: {
                 base: {
                     id: "base",
-                    name: "Explorer (Базовый путь)",
+                    name: "Explorer (Base)",
                     steps: [
                         {
                             step: 6,
@@ -882,7 +876,7 @@
                             talents: [
                                 {
                                     name: "Well-Weathered",
-                                    desc: "Reduce the resting time needed to lower environmental Conditions (Claustrophobia, Frostbite, Sunstroke) by 50%."
+                                    desc: "Reduce the resting time required to lower environmental Conditions (Claustrophobia, Frostbite, Sunstroke) by 50%."
                                 },
                                 {
                                     name: "Societal Favors",
@@ -904,7 +898,7 @@
                             talents: [
                                 {
                                     name: "Impromptu Innovation",
-                                    desc: "Suffer 1 damage to treat next (0) Action as (1) Action, or vice versa."
+                                    desc: "Suffer 1 damage to treat next (0) Action as a (1) Action, or vice versa."
                                 },
                                 {
                                     name: "Reconfiguring",
@@ -917,21 +911,21 @@
                             type: "single",
                             talent: {
                                 name: "Acts of Legend",
-                                desc: "Select one additional Skill for Areas of Study. Discard a Twist Card during an Academic/Training duel to add its value to final total (usable Destiny Steps times per session)."
+                                desc: "Select one additional Skill for Areas of Study. Discard a Twist Card during an Academic or Training duel to add its value to final total (usable Destiny Steps times per session)."
                             }
                         }
                     ]
                 },
                 cartographer: {
                     id: "cartographer",
-                    name: "Cartographer (Картограф)",
+                    name: "Cartographer",
                     steps: [
                         {
                             step: 6,
                             type: "single",
                             talent: {
                                 name: "Mapmaking",
-                                desc: "Craft or upgrade maps via Creative Cartography (Track/Wilderness; TN: Settled 16, Wild 14, Unexplored 12, Off-Map 10; Duration 1 day).\nBonuses: 1 (Sketches: +1 Wilderness), 2-3 (Basic: +1 Wild), 4-5 (Topo: [+] Wild), 6-7 (Monsters: ignore 1 failure, no ambushes), 8-9 (Detailed: [+] Notice), 10+ (Oasis wonder)."
+                                desc: "Draft or improve maps via Ongoing Challenge Creative Cartography (Track/Wilderness; TN: Settled 16, Wild 14, Unexplored 12, Off-Map 10; Duration 1 day).\nBonuses: 1 (Sketches: +1 Wilderness), 2-3 (Basic: +1 Wild), 4-5 (Topo: [+] Wild), 6-7 (Here Be Monsters: ignore 1 failure, no ambushes), 8-9 (Detailed: [+] Notice), 10+ (Oasis wonder)."
                             }
                         },
                         {
@@ -953,7 +947,7 @@
                             type: "single",
                             talent: {
                                 name: "Adventure Awaits!",
-                                desc: "Discard a Twist Card during a duel involving a relevant Map to add its value and suit to total. Double Exploits and Benefits from Mapmaker Honor."
+                                desc: "Discard a Twist Card during a duel involving a relevant Map to add its value and suit to the total. Double Exploits and Benefits from Mapmaker Honor."
                             }
                         },
                         {
@@ -975,21 +969,21 @@
                             type: "single",
                             talent: {
                                 name: "Environmental Change",
-                                desc: "Gain 1 Environmental Charge when upgrading a map to Bonus 3.\n\nAction: (1) *Environmental Change*: Expend 1 Charge to manifest a local environmental change (quicksand, weather shift, shelter, pure spring water)."
+                                desc: "Gain 1 Environmental Charge when upgrading a map to Bonus 3.\n\nGain Action: (1) *Environmental Change*: Expend 1 Charge to manifest a local environmental change (quicksand, weather shift, shelter, pure spring water)."
                             }
                         }
                     ]
                 },
                 treasure_hunter: {
                     id: "treasure_hunter",
-                    name: "Treasure Hunter (Охотник за сокровищами)",
+                    name: "Treasure Hunter",
                     steps: [
                         {
                             step: 6,
                             type: "single",
                             talent: {
                                 name: "Nice Find",
-                                desc: "When selling loot/treasure, discard cards: each discarded card increases gained Scrip by +25%."
+                                desc: "When selling loot or treasure, discard cards: each discarded card increases gained Scrip by +25%."
                             }
                         },
                         {
@@ -1002,7 +996,7 @@
                                 },
                                 {
                                     name: "All That Glitters",
-                                    desc: "Discard cards when examining Grimoire/Relic to reveal secret qualities or next locked Tier. Automatically unlocks First Tier of any Relic acquired."
+                                    desc: "Discard cards when examining Grimoire or Relic to reveal hidden qualities or next locked Tier. Automatically unlock First Tier of any Relic acquired."
                                 }
                             ]
                         },
@@ -1024,7 +1018,7 @@
                                 },
                                 {
                                     name: "Looted Ruins",
-                                    desc: "Discard Twist Card during duels involving Grimoires/Relics to add its value and suit. Double Exploits and Benefits from Acquisitioner Honor."
+                                    desc: "Discard a Twist Card during duels involving Grimoires/Relics to add its value and suit. Double Exploits and Benefits from Acquisitioner Honor."
                                 }
                             ]
                         },
@@ -1040,7 +1034,7 @@
                 },
                 oceanographer: {
                     id: "oceanographer",
-                    name: "Oceanographer (Океанограф)",
+                    name: "Oceanographer",
                     steps: [
                         {
                             step: 6,
@@ -1082,7 +1076,7 @@
                                 },
                                 {
                                     name: "Deadly Catch",
-                                    desc: "Discard Twist Card against Swampfiends or on water to add value and suit to total. Double Exploits and Benefits from Ichthyist Honor."
+                                    desc: "Discard a Twist Card against Swampfiends or on water to add value and suit to total. Double Exploits and Benefits from Ichthyist Honor."
                                 }
                             ]
                         },
@@ -1106,7 +1100,7 @@
             name: "Magnate",
             book: "Onward!",
             isAdvanced: true,
-            requirements: "Социальный статус знаменитости, богатство или успешная ложь об огромном влиянии.",
+            requirements: "Near-celebrity status through social renown, wealth, or a convincing facade.",
             steps: [
                 {
                     step: 1,
@@ -1137,7 +1131,7 @@
                     type: "single",
                     talent: {
                         name: "Bribery",
-                        desc: "This character gains Action:\n(2) *Bribery*: Discard Fame Card for Barter/Bewitch/Convince vs Wp on enemy within 10 yards ([-] if non-human). On success, target immediately takes a turn under Order Action and exits combat if paid > 5x Willpower in Scrip."
+                        desc: "Gain Action: (2) *Bribery*: Discard Fame Card for Barter/Bewitch/Convince vs Wp on enemy within 10 yards ([-] if non-human). On success, target immediately takes a turn under Order Action and exits combat if paid > 5x Willpower in Scrip."
                     }
                 },
                 {
@@ -1155,7 +1149,7 @@
             name: "DUA Operative",
             book: "Onward!",
             isAdvanced: true,
-            requirements: "Опыт шпионажа, саботажа (напр. Infiltrator) и прохождение проверки по шифру в конспиративное убежище.",
+            requirements: "Honed abilities as a spy, covert assassin, or saboteur (such as completing Steps in the Infiltrator Pursuit), and solving coded instructions to gain entrance to a DUA safehouse.",
             steps: [
                 {
                     step: 1,
@@ -1170,7 +1164,7 @@
                     type: "single",
                     talent: {
                         name: "Turncoat",
-                        desc: "Action: (1) *Inevitable Betrayal*: Attack target within 2 yards considering you friendly: damage flip ignores [-] and gains [+].\n\nManifested Power: Part of the Plan (Intellect + Deceive, AP 1, TN 12, Wp, 10 yds): Target treats caster as friendly and attacks against caster suffer [-]."
+                        desc: "Gain Action: (1) *Inevitable Betrayal*: Attack target within 2 yards considering you friendly: damage flip ignores [-] and gains [+].\n\nManifested Power: Part of the Plan (Intellect + Deceive, AP 1, TN 12, Wp, 10 yds): Target treats caster as friendly and attacks against caster suffer [-]."
                     }
                 },
                 {
@@ -1222,7 +1216,7 @@
             name: "Paleontologist",
             book: "Onward!",
             isAdvanced: true,
-            requirements: "Опыт раскопок и базовые познания в некромантии/окаменелостях.",
+            requirements: "Experience with exploration, and some exposure to the necromantic arts or connection to fossils and long-buried tombs.",
             steps: [
                 {
                     step: 1,
@@ -1271,14 +1265,14 @@
             name: "Inevitor",
             book: "Onward!",
             isAdvanced: true,
-            requirements: "Связь с энтропией, осознание быстротечности цивилизаций или глубокие исторические изыскания.",
+            requirements: "A connection with entropy, witnessing enormous ruin or deep historical scholarship.",
             steps: [
                 {
                     step: 1,
                     type: "single",
                     talent: {
                         name: "History Repeats",
-                        desc: "May use History in place of Notice.\n\nAction: (X) *History Repeats*: One character within 6 yards immediately resolves an Action costing X AP taken during their last turn."
+                        desc: "May use History in place of Notice.\n\nGain Action: (X) *History Repeats*: One character within 6 yards immediately resolves an Action costing X AP taken during their last turn."
                     }
                 },
                 {
@@ -1303,7 +1297,7 @@
                             tn: "10:t:",
                             range: "1 yard",
                             resist: "—",
-                            desc: "Target building/structure loses 1 Structure (+1 per Margin of Success or extra :t:). Structure: Wood/Glass 1, Brick 2, Stone 3, Metal 4 (+1 to +4 based on quality). At 0, area within 3 yards crumbles to dust."
+                            desc: "Target building or structure loses 1 Structure (+1 per Margin of Success or extra :t:). Structure: Wood/Glass 1, Brick 2, Stone 3, Metal 4 (+1 to +4 based on quality). At 0, area within 3 yards crumbles to dust."
                         }
                     }
                 },
@@ -1340,7 +1334,7 @@
             name: "Curiositeer",
             book: "Onward!",
             isAdvanced: true,
-            requirements: "Страсть к собирательству историй, безделушек и культурных реликвий.",
+            requirements: "A passion for collecting stories, baubles, or cultural/personal items of memory.",
             steps: [
                 {
                     step: 1,
@@ -1355,7 +1349,7 @@
                     type: "single",
                     talent: {
                         name: "Keep It Safe",
-                        desc: "Trinket additions: Target gains Distracted +1; or adds 1 suit of choice to duel next turn.\n\nCheating Fate restores 1 expended Trinket (once/turn).\n\nAction: (0) *Enshrine*: Pulse 3 heals 1 damage (or suffer 2 dmg to take as (1))."
+                        desc: "Trinket additions: Target gains Distracted +1; or adds 1 suit of choice to duel next turn.\n\nCheating Fate restores 1 expended Trinket (once/turn).\n\nGain Action: (0) *Enshrine*: Pulse 3 heals 1 damage (or suffer 2 dmg to take as (1))."
                     }
                 },
                 {
