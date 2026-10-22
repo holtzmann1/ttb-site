@@ -2950,11 +2950,25 @@ if (skillData) {
             const avContainer = tr.querySelector(".av-container");
             const aspectContainer = tr.querySelector(".aspect-container");
 
-            if (Array.isArray(aspectDef)) {
-                avContainer.innerHTML = `<div class="dual-stack"><div class="av-box av-val">—</div><div class="av-box av-val">—</div></div>`;
+if (Array.isArray(aspectDef)) {
+                avContainer.innerHTML = `
+                    <div class="dual-stack">
+                        <div class="av-wrapper" data-flips="0">
+                            <span class="flip-toggle" onclick="cycleSkillFlips(this)" title="Модификатор флипа">+</span>
+                            <span class="av-val">—</span>
+                        </div>
+                        <div class="av-wrapper" data-flips="0">
+                            <span class="flip-toggle" onclick="cycleSkillFlips(this)" title="Модификатор флипа">+</span>
+                            <span class="av-val">—</span>
+                        </div>
+                    </div>`;
                 aspectContainer.innerHTML = `<div class="dual-stack">${getAspectSelectHtml(aspectDef[0])}${getAspectSelectHtml(aspectDef[1])}</div>`;
             } else {
-                avContainer.innerHTML = `<div class="av-box av-val">—</div>`;
+                avContainer.innerHTML = `
+                    <div class="av-wrapper" data-flips="0">
+                        <span class="flip-toggle" onclick="cycleSkillFlips(this)" title="Модификатор флипа">+</span>
+                        <span class="av-val">—</span>
+                    </div>`;
                 aspectContainer.innerHTML = getAspectSelectHtml(aspectDef || "");
             }
             updateRowAV(tr);
