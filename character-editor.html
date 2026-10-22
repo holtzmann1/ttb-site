@@ -1296,13 +1296,35 @@
 <!-- ВКЛАДКА 3: PURSUIT -->
     <div id="tab-pursuit" class="tab-content">
         <div class="box">
-            <div class="box-header" style="text-align: left; display: flex; justify-content: space-between; align-items: center;">
+            <!-- ШАПКА БАЗОВОГО ПУТИ С ВЫБОРОМ СПЕЦИАЛИЗАЦИИ -->
+            <div class="box-header" style="text-align: left; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                 <span>PURSUIT</span>
-                <select id="pursuitSelect" onchange="renderPursuitTab()" style="max-width: 250px; font-size: 14px;">
-                </select>
+                <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                    <!-- Селектор специализации (виден только у путей с подклассами) -->
+                    <div id="specializationWrapper" style="display: none; align-items: center; gap: 6px;">
+                        <span style="font-size: 12px; color: #c59a5b; font-weight: bold;">Ветка (Шаги 6–10):</span>
+                        <select id="specializationSelect" onchange="renderPursuitTab()" style="font-size: 13px; max-width: 220px; padding: 4px 8px; height: 32px;">
+                        </select>
+                    </div>
+                    <select id="pursuitSelect" onchange="onPursuitChange()" style="max-width: 250px; font-size: 14px; height: 32px;">
+                    </select>
+                </div>
             </div>
 
+            <!-- Контейнер шагов базового пути -->
             <div id="pursuitDetailsContainer" style="margin-top: 15px;">
+            </div>
+
+            <!-- БЛОК ADVANCED PURSUIT -->
+            <div style="margin-top: 35px; border-top: 2px solid #382b1d; padding-top: 20px;">
+                <div class="box-header" style="text-align: left; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <span style="color: #c59a5b;">ADVANCED PURSUIT</span>
+                    <select id="advancedPursuitSelect" onchange="renderAdvancedPursuit()" style="max-width: 260px; font-size: 14px; height: 32px;">
+                        <option value="">-- Без Advanced Pursuit --</option>
+                    </select>
+                </div>
+                <div id="advancedPursuitDetailsContainer" style="margin-top: 15px;">
+                </div>
             </div>
         </div>
     </div>
