@@ -9,7 +9,7 @@ const GENERAL_TALENTS = [
   {
     "name": "Armor Training",
     "desc": "This character reduces the penalty to Defense from wearing armor by 1, to a minimum of 0.\n\nA character can take this Talent multiple times.",
-    "req": "Aspect: Tenacity 2 or higher",
+    "req": "None",
     "book": "Second Edition Core",
     "notes": ""
   },
