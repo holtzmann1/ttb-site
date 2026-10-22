@@ -1271,14 +1271,16 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 20px;
+            min-width: 24px;
             height: 24px;
             background: #171310;
-            border: 1px solid rgba(197, 154, 91, 0.3); /* Едва заметная рамка */
+            border: 1px solid rgba(197, 154, 91, 0.3);
             border-radius: 2px;
             cursor: pointer;
             user-select: none;
             transition: all 0.15s ease;
+            padding: 0 3px;
+            flex-shrink: 0;
         }
         .av-wrapper.active {
             border-color: #f1c40f;
