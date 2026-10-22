@@ -3400,6 +3400,13 @@ if (document.getElementById("bioPortraitUrl")) {
 
             if (data.armor !== undefined) document.getElementById("armor").value = data.armor;
             if (data.height !== undefined && document.getElementById("height")) document.getElementById("height").value = data.height;
+            if (data.defenseTotal !== undefined) document.getElementById("defenseTotal").value = data.defenseTotal;
+            if (data.defenseBase !== undefined) document.getElementById("defenseBase").value = data.defenseBase;
+            if (data.walk !== undefined) document.getElementById("walk").value = data.walk;
+            if (data.charge !== undefined) document.getElementById("charge").value = data.charge;
+            if (data.willpower !== undefined) document.getElementById("willpower").value = data.willpower;
+            if (data.initiative !== undefined) document.getElementById("initiative").value = data.initiative;
+            if (data.wounds !== undefined) document.getElementById("wounds").value = data.wounds;
 
             if (data.aspects) {
                 for (let k in data.aspects) {
@@ -3585,6 +3592,13 @@ const tbody = document.getElementById("skillsList");
                 destinyStepRewards: [1, 2, 3, 4, 5].map(i => document.getElementById(`destinyStep${i}`)?.value || ""),
                 armor: Number(document.getElementById("armor")?.value) || 0,
                 height: Number(document.getElementById("height")?.value) || 2,
+                defenseTotal: Number(document.getElementById("defenseTotal")?.value) || 2,
+                defenseBase: Number(document.getElementById("defenseBase")?.value) || 2,
+                walk: Number(document.getElementById("walk")?.value) || 4,
+                charge: Number(document.getElementById("charge")?.value) || 4,
+                willpower: Number(document.getElementById("willpower")?.value) || 2,
+                initiative: Number(document.getElementById("initiative")?.value) || 0,
+                wounds: Number(document.getElementById("wounds")?.value) || 4,
                 aspects: { ...aspects },
                 skills: skills,
                 attacks: attacks,
