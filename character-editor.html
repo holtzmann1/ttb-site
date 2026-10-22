@@ -2424,6 +2424,11 @@ if (data.characterPursuits && Array.isArray(data.characterPursuits)) {
 
         updateDerived();
         refreshAllTalentSelects();
+        characterPursuits = [];
+        activePursuitId = "";
+        currentViewingPursuitId = "";
+        renderPursuitTabsBar();
+        renderActivePursuitView();
         alert("Лист персонажа успешно очищен!");
     }
 
