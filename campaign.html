@@ -2328,6 +2328,7 @@ window.addEventListener('keydown', function(event) {
         cp.step = Math.max(0, Math.min(10, cp.step + delta));
         renderPursuitTabsBar();
         renderActivePursuitView();
+        if (typeof autoSave === 'function') autoSave();
     }
 
     function onSpecializationChange(select) {
