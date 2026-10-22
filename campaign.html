@@ -698,17 +698,24 @@
             gap: 10px;
             margin-top: 15px;
         }
-        @media (max-width: 900px) {
-            header {
-                padding: 15px 20px;
-                flex-direction: column;
-                gap: 12px;
-            }
-            .top-grid, .sheet-body, .bio-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-        }
+@media (max-width: 600px) {
+    header {
+        padding: 12px 15px;
+    }
+    #header-actions, #sheet-actions {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+    .tab-bar {
+        flex-wrap: wrap;
+    }
+    .top-grid, .sheet-body {
+        grid-template-columns: 1fr !important;
+    }
+    .destiny-row {
+        grid-template-columns: 1fr !important;
+    }
+}
         /* Кнопка открытия триггеров [T] */
         .skill-trigger-btn {
             width: 24px;
@@ -1324,6 +1331,10 @@
             color: #c59a5b;
             font-size: 14px;
         }
+        html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
     </style>
 </head>
 <body>
