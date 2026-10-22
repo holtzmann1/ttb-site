@@ -996,7 +996,7 @@
             transform: scale(1.15);
         }
 
-        /* Затемненный оверлей на весь экран */
+/* Модальные окна */
         .destiny-modal-backdrop {
             position: fixed;
             top: 0;
@@ -1011,28 +1011,24 @@
             backdrop-filter: blur(2px);
         }
 
-/* Карточка окна Destiny */
         .destiny-modal-content {
             background: #120e0b;
             border: 1px solid #5a4227;
             box-shadow: 0 0 25px rgba(0, 0, 0, 0.9), 0 0 10px rgba(184, 138, 74, 0.2);
             width: 100%;
-            max-width: 640px; /* Чуть шире под 2 поля */
-            max-height: 85vh;
-            overflow-y: auto;
+            max-width: 540px;
             padding: 20px 24px;
             box-sizing: border-box;
             color: #d6ccbe;
         }
 
-        /* Заголовок окна */
         .destiny-modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid #382b1d;
             padding-bottom: 10px;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
 
         .destiny-modal-title {
@@ -1050,42 +1046,45 @@
             font-size: 16px;
             cursor: pointer;
             padding: 2px 6px;
-            transition: color 0.2s ease;
         }
 
         .destiny-close-btn:hover {
             color: #e57373;
         }
 
-        /* Список карточек шагов STEP 1 - STEP 5 */
         .destiny-modal-body {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        .destiny-step-card {
-            background: rgba(20, 17, 14, 0.85);
-            border: 1px solid #382b1d;
-            border-left: 3px solid #c59a5b;
-            padding: 10px 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+        /* Строка наград (как было) */
+        .destiny-step-row {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            align-items: center;
+            gap: 12px;
         }
 
-        .destiny-step-header {
+        /* Строка судьбы (с чекбоксом) */
+        .fate-step-row {
+            display: grid;
+            grid-template-columns: 24px 75px 1fr;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .destiny-step-label {
             font-size: 11px;
             font-weight: bold;
-            color: #c59a5b;
+            color: #a89f91;
             letter-spacing: 1px;
-            text-transform: uppercase;
         }
 
         .destiny-step-input {
-            background: rgba(14, 11, 9, 0.9);
+            background: rgba(18, 15, 12, 0.85);
             border: 1px solid #382b1d;
-            height: 30px;
+            height: 32px;
             padding: 4px 10px;
             font-size: 13px;
             color: #e8dfd0;
@@ -1100,15 +1099,9 @@
             background: #14110e;
         }
 
-        .destiny-step-input.prophecy {
-            font-style: italic;
-            color: #dcd0bf;
-            border-color: #443524;
-        }
-
         .destiny-modal-footer {
-            margin-top: 18px;
-            padding-top: 12px;
+            margin-top: 20px;
+            padding-top: 14px;
             border-top: 1px solid #292015;
             display: flex;
             justify-content: flex-end;
@@ -1423,7 +1416,9 @@
                         </div>
                         <div class="destiny-row bottom-row">
                             <div class="destiny-field">
-                                <label class="destiny-label">DESTINY STEPS FULFILLED <button type="button" class="destiny-notes-btn" onclick="openDestinyModal()">📝</button>
+<label class="destiny-label">DESTINY STEPS FULFILLED 
+    <button type="button" class="destiny-notes-btn" onclick="openDestinyModal()" title="Rewards">📝</button>
+    <button type="button" class="destiny-notes-btn" onclick="openFateModal()" title="Destiny">📜</button>
                                 <div class="destiny-steps">
                                     <input type="checkbox" id="destiny-1" class="step-circle">
                                     <input type="checkbox" id="destiny-2" class="step-circle">
@@ -2030,6 +2025,37 @@ function closeDestinyModal() {
     if (typeof autoSave === 'function') autoSave();
     if (typeof saveCharacter === 'function') saveCharacter();
 }
+        function openFateModal() {
+    // Синхронизируем чекбоксы модалки с кружочками на чарнике
+    for (let i = 1; i <= 5; i++) {
+        const mainCb = document.getElementById(`destiny-${i}`);
+        const modalCb = document.getElementById(`fateCheck${i}`);
+        if (mainCb && modalCb) {
+            modalCb.checked = mainCb.checked;
+        }
+    }
+    const modal = document.getElementById('fateModal');
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeFateModal() {
+    const modal = document.getElementById('fateModal');
+    if (modal) modal.style.display = 'none';
+}
+
+// При клике на чекбокс в окне судьбы — обновляем кружок на главном экране
+function syncFateCheckbox(stepNum, isChecked) {
+    const mainCb = document.getElementById(`destiny-${stepNum}`);
+    if (mainCb) mainCb.checked = isChecked;
+}
+
+// Закрытие окон по клику на фон
+window.addEventListener('click', function(event) {
+    const destinyModal = document.getElementById('destinyModal');
+    const fateModal = document.getElementById('fateModal');
+    if (event.target === destinyModal) closeDestinyModal();
+    if (event.target === fateModal) closeFateModal();
+});
 
 // Закрытие по клику мимо окна (по темному фону)
 window.addEventListener('click', function(event) {
@@ -3558,9 +3584,9 @@ window.loadCharacterData = function(data) {
                 });
             }
 for (let i = 1; i <= 5; i++) {
-                const textInput = document.getElementById(`destinyStepText${i}`);
-                if (textInput) {
-                    textInput.value = (data.destinyStepTexts && data.destinyStepTexts[i - 1]) || "";
+                const fateInput = document.getElementById(`destinyFate${i}`);
+                if (fateInput) {
+                    fateInput.value = (data.destinyFates && data.destinyFates[i - 1]) || (data.destinyStepTexts && data.destinyStepTexts[i - 1]) || "";
                 }
                 const stepInput = document.getElementById(`destinyStep${i}`);
                 if (stepInput) {
@@ -3770,7 +3796,7 @@ const tContainer = document.getElementById("talentsContainer");
                 guildScript: Number(document.getElementById("guildScript")?.value) || 0,
                 characterExp: Number(document.getElementById("characterExp")?.value) || 0,
                 destinySteps: destinySteps,
-                destinyStepTexts: [1, 2, 3, 4, 5].map(i => document.getElementById(`destinyStepText${i}`)?.value || ""),
+                destinyFates: [1, 2, 3, 4, 5].map(i => document.getElementById(`destinyFate${i}`)?.value || ""),
                 destinyStepRewards: [1, 2, 3, 4, 5].map(i => document.getElementById(`destinyStep${i}`)?.value || ""),
                 armor: Number(document.getElementById("armor")?.value) || 0,
                 height: Number(document.getElementById("height")?.value) || 2,
@@ -3797,47 +3823,77 @@ bioPortraitUrl: document.getElementById("bioPortraitUrl")?.value || "",
             initPursuitsSelect();
         });
     </script>
-<!-- МОДАЛЬНОЕ ОКНО: DESTINY STEPS REWARDS & PROPHECIES -->
+<!-- ОКНО 1: НАГРАДЫ (СТАРЫЙ ВАРИАНТ) -->
 <div id="destinyModal" class="destiny-modal-backdrop" style="display: none;">
     <div class="destiny-modal-content">
         <div class="destiny-modal-header">
-            <span class="destiny-modal-title">DESTINY STEPS & PROPHECIES</span>
+            <span class="destiny-modal-title">DESTINY STEPS REWARDS</span>
             <button type="button" class="destiny-close-btn" onclick="closeDestinyModal()">✕</button>
         </div>
         <div class="destiny-modal-body">
-            <!-- STEP 1 -->
-            <div class="destiny-step-card">
-                <span class="destiny-step-header">STEP 1</span>
-                <input type="text" id="destinyStepText1" class="destiny-step-input prophecy" placeholder="Строка пророчества (например: If you draw the rope's slack...)">
-                <input type="text" id="destinyStep1" class="destiny-step-input" placeholder="Полученная награда / талант / выбор...">
+            <div class="destiny-step-row">
+                <label class="destiny-step-label">STEP 1</label>
+                <input type="text" id="destinyStep1" class="destiny-step-input" placeholder="Reward / Choice...">
             </div>
-            <!-- STEP 2 -->
-            <div class="destiny-step-card">
-                <span class="destiny-step-header">STEP 2</span>
-                <input type="text" id="destinyStepText2" class="destiny-step-input prophecy" placeholder="Строка пророчества...">
-                <input type="text" id="destinyStep2" class="destiny-step-input" placeholder="Полученная награда / талант / выбор...">
+            <div class="destiny-step-row">
+                <label class="destiny-step-label">STEP 2</label>
+                <input type="text" id="destinyStep2" class="destiny-step-input" placeholder="Reward / Choice...">
             </div>
-            <!-- STEP 3 -->
-            <div class="destiny-step-card">
-                <span class="destiny-step-header">STEP 3</span>
-                <input type="text" id="destinyStepText3" class="destiny-step-input prophecy" placeholder="Строка пророчества...">
-                <input type="text" id="destinyStep3" class="destiny-step-input" placeholder="Полученная награда / талант / выбор...">
+            <div class="destiny-step-row">
+                <label class="destiny-step-label">STEP 3</label>
+                <input type="text" id="destinyStep3" class="destiny-step-input" placeholder="Reward / Choice...">
             </div>
-            <!-- STEP 4 -->
-            <div class="destiny-step-card">
-                <span class="destiny-step-header">STEP 4</span>
-                <input type="text" id="destinyStepText4" class="destiny-step-input prophecy" placeholder="Строка пророчества...">
-                <input type="text" id="destinyStep4" class="destiny-step-input" placeholder="Полученная награда / талант / выбор...">
+            <div class="destiny-step-row">
+                <label class="destiny-step-label">STEP 4</label>
+                <input type="text" id="destinyStep4" class="destiny-step-input" placeholder="Reward / Choice...">
             </div>
-            <!-- STEP 5 -->
-            <div class="destiny-step-card">
-                <span class="destiny-step-header">STEP 5</span>
-                <input type="text" id="destinyStepText5" class="destiny-step-input prophecy" placeholder="Строка пророчества...">
-                <input type="text" id="destinyStep5" class="destiny-step-input" placeholder="Полученная награда / талант / выбор...">
+            <div class="destiny-step-row">
+                <label class="destiny-step-label">STEP 5</label>
+                <input type="text" id="destinyStep5" class="destiny-step-input" placeholder="Reward / Choice...">
             </div>
         </div>
         <div class="destiny-modal-footer">
-            <button type="button" class="destiny-save-btn" onclick="closeDestinyModal()">ЗАКРЫТЬ</button>
+            <button type="button" class="destiny-save-btn" onclick="closeDestinyModal()">CLOSE</button>
+        </div>
+    </div>
+</div>
+
+<!-- ОКНО 2: СУДЬБА (FATE / DESTINY) -->
+<div id="fateModal" class="destiny-modal-backdrop" style="display: none;">
+    <div class="destiny-modal-content">
+        <div class="destiny-modal-header">
+            <span class="destiny-modal-title">DESTINY</span>
+            <button type="button" class="destiny-close-btn" onclick="closeFateModal()">✕</button>
+        </div>
+        <div class="destiny-modal-body">
+            <div class="fate-step-row">
+                <input type="checkbox" id="fateCheck1" class="step-circle" onchange="syncFateCheckbox(1, this.checked)">
+                <label class="destiny-step-label">STEP 1</label>
+                <input type="text" id="destinyFate1" class="destiny-step-input" placeholder="Destiny line...">
+            </div>
+            <div class="fate-step-row">
+                <input type="checkbox" id="fateCheck2" class="step-circle" onchange="syncFateCheckbox(2, this.checked)">
+                <label class="destiny-step-label">STEP 2</label>
+                <input type="text" id="destinyFate2" class="destiny-step-input" placeholder="Destiny line...">
+            </div>
+            <div class="fate-step-row">
+                <input type="checkbox" id="fateCheck3" class="step-circle" onchange="syncFateCheckbox(3, this.checked)">
+                <label class="destiny-step-label">STEP 3</label>
+                <input type="text" id="destinyFate3" class="destiny-step-input" placeholder="Destiny line...">
+            </div>
+            <div class="fate-step-row">
+                <input type="checkbox" id="fateCheck4" class="step-circle" onchange="syncFateCheckbox(4, this.checked)">
+                <label class="destiny-step-label">STEP 4</label>
+                <input type="text" id="destinyFate4" class="destiny-step-input" placeholder="Destiny line...">
+            </div>
+            <div class="fate-step-row">
+                <input type="checkbox" id="fateCheck5" class="step-circle" onchange="syncFateCheckbox(5, this.checked)">
+                <label class="destiny-step-label">STEP 5</label>
+                <input type="text" id="destinyFate5" class="destiny-step-input" placeholder="Destiny line...">
+            </div>
+        </div>
+        <div class="destiny-modal-footer">
+            <button type="button" class="destiny-save-btn" onclick="closeFateModal()">CLOSE</button>
         </div>
     </div>
 </div>
