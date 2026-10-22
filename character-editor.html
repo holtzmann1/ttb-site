@@ -1018,6 +1018,78 @@
             border-color: #2a2015;
             color: #4a3825;
         }
+        /* Мультиклассы: табы и счётчик шагов */
+        .pursuit-tabs-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #382b1d;
+            padding-bottom: 12px;
+        }
+
+        .pursuit-tab-pill {
+            background: #15110e;
+            border: 1px solid #4a3825;
+            color: #a99e8d;
+            padding: 6px 12px;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .pursuit-tab-pill:hover {
+            border-color: #b88a4a;
+            color: #e8dfd0;
+        }
+
+        .pursuit-tab-pill.active-view {
+            background: #251d16;
+            border-color: #c59a5b;
+            color: #e8dfd0;
+        }
+
+        .pursuit-tab-pill.is-current-active {
+            box-shadow: inset 0 0 0 1px #c59a5b, 0 0 8px rgba(197, 154, 91, 0.3);
+        }
+
+        .pursuit-active-star {
+            color: #8f8679;
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .pursuit-active-star.starred {
+            color: #f1c40f;
+            text-shadow: 0 0 6px rgba(241, 196, 15, 0.6);
+        }
+
+        .pursuit-tab-del {
+            color: #73695c;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 0 2px;
+            line-height: 1;
+        }
+
+        .pursuit-tab-del:hover {
+            color: #e57373;
+        }
+
+        /* Заблокированные шаги */
+        .pursuit-step-card.locked-step {
+            opacity: 0.35;
+            filter: grayscale(80%);
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -1296,21 +1368,19 @@
 <!-- ВКЛАДКА 3: PURSUIT -->
     <div id="tab-pursuit" class="tab-content">
         <div class="box">
-<!-- ШАПКА БАЗОВОГО ПУТИ С ВЫБОРОМ СПЕЦИАЛИЗАЦИИ -->
+<!-- ШАПКА ПУТЕЙ И ДОБАВЛЕНИЕ КЛАССА -->
             <div class="box-header" style="text-align: left; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                 <span>PURSUIT</span>
-                <div style="display: flex; gap: 12px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
-                    <!-- 1. Сначала основной класс -->
-                    <select id="pursuitSelect" onchange="onPursuitChange()" style="width: auto; min-width: 180px; max-width: 240px; font-size: 14px; height: 32px;">
+                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                    <select id="pursuitCatalogSelect" style="width: auto; min-width: 180px; max-width: 220px; font-size: 13px; height: 30px;">
                     </select>
-
-                    <!-- 2. Затем специализация (если есть) -->
-                    <div id="specializationWrapper" style="display: none; align-items: center; gap: 8px;">
-                        <span style="font-size: 12px; color: #c59a5b; font-weight: bold; white-space: nowrap;">Specialization:</span>
-                        <select id="specializationSelect" onchange="renderPursuitTab()" style="width: auto; min-width: 180px; max-width: 240px; font-size: 13px; padding: 4px 8px; height: 32px;">
-                        </select>
-                    </div>
+                    <button type="button" class="tab-btn" onclick="addPursuitFromCatalog()" style="padding: 5px 12px; font-size: 11px; height: 30px; letter-spacing: 1px;">+ ADD</button>
                 </div>
+            </div>
+
+            <!-- ЛИНЕЙКА ТАБОВ ДОБАВЛЕННЫХ КЛАССОВ -->
+            <div id="pursuitTabsContainer" class="pursuit-tabs-bar">
+                <span style="font-size: 12px; color: #73695c; font-style: italic;">No pursuits added. Choose from the catalog on the right and click "+ ADD".</span>
             </div>
 
             <!-- Контейнер шагов базового пути -->
@@ -1322,7 +1392,7 @@
                 <div class="box-header" style="text-align: left; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                     <span style="color: #c59a5b;">ADVANCED PURSUIT</span>
                     <select id="advancedPursuitSelect" onchange="renderAdvancedPursuit()" style="max-width: 260px; font-size: 14px; height: 32px;">
-                        <option value="">-- Без Advanced Pursuit --</option>
+                        <option value="">-- No Advanced Pursuit --</option>
                     </select>
                 </div>
                 <div id="advancedPursuitDetailsContainer" style="margin-top: 15px;">
@@ -2200,8 +2270,8 @@ const skills = [];
             skills,
             talents,
             attacks,
-            selectedPursuitId: document.getElementById("pursuitSelect")?.value || "",
-            selectedSpecialization: document.getElementById("specializationSelect")?.value || "",
+characterPursuits: JSON.parse(JSON.stringify(characterPursuits)),
+            activePursuitId,
             selectedAdvancedPursuitId: document.getElementById("advancedPursuitSelect")?.value || ""
         };
     }
