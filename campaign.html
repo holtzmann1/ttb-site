@@ -698,24 +698,51 @@
             gap: 10px;
             margin-top: 15px;
         }
-@media (max-width: 600px) {
-    header {
-        padding: 12px 15px;
-    }
-    #header-actions, #sheet-actions {
-        flex-wrap: wrap;
-        width: 100%;
-    }
-    .tab-bar {
-        flex-wrap: wrap;
-    }
-    .top-grid, .sheet-body {
-        grid-template-columns: 1fr !important;
-    }
-    .destiny-row {
-        grid-template-columns: 1fr !important;
-    }
-}
+@media (max-width: 900px) {
+            main {
+                padding: 15px 10px 40px 10px;
+            }
+            header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 12px;
+            }
+            #header-actions, #sheet-actions {
+                flex-wrap: wrap;
+                width: 100%;
+                justify-content: center;
+            }
+            .tab-bar {
+                flex-wrap: wrap;
+            }
+            .top-grid, .sheet-body, .bio-grid {
+                grid-template-columns: 1fr !important;
+                gap: 15px;
+            }
+            .destiny-row {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* 1. Аспекты: Physical и Mental встают друг под друга */
+            .aspects-grid {
+                grid-template-columns: 1fr !important;
+                gap: 12px;
+            }
+
+            /* 2. Атаки: 6 колонок статов перестраиваются в 3 колонки */
+            .attack-stats-grid {
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 8px;
+            }
+            .attack-stats-grid input {
+                min-width: 0;
+            }
+
+            /* 3. Защита от распирания таблицей навыков */
+            .skills-table-wrap {
+                overflow-x: auto;
+            }
+        }
         /* Кнопка открытия триггеров [T] */
         .skill-trigger-btn {
             width: 24px;
