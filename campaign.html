@@ -3272,7 +3272,7 @@ function getTalentOptionsHtml(selectedVal = "") {
             `;
             container.appendChild(row);
         }
-        function addNewTalentCard() {
+function addNewTalentCard(selectedVal = "") {
             const container = document.getElementById("talentsContainer");
             const card = document.createElement("div");
             card.className = "talent-card";
@@ -3280,7 +3280,7 @@ function getTalentOptionsHtml(selectedVal = "") {
                 <div class="talent-header-row">
                     <button type="button" class="toggle-btn" onclick="toggleTalentAccordion(this)">▼</button>
                     <select class="talent-select" onchange="onTalentSelectChange(this)" style="flex: 1;">
-                        ${getTalentOptionsHtml()}
+                        ${getTalentOptionsHtml(selectedVal)}
                     </select>
                     <input type="text" class="custom-name-input" placeholder="Название таланта" style="display: none; flex: 1;">
                     <button type="button" class="del-btn" onclick="this.closest('.talent-card').remove()" style="width: 34px;">✕</button>
@@ -3444,11 +3444,13 @@ window.loadCharacterData = function(data) {
                 }
             }
             
-            const tContainer = document.getElementById("talentsContainer");
+const tContainer = document.getElementById("talentsContainer");
             tContainer.innerHTML = "";
             if (data.talents && data.talents.length > 0) {
                 data.talents.forEach(t => {
-                    addNewTalentCard();
+                    // НОВОЕ: Передаем имя сразу при создании карточки
+                    addNewTalentCard(t.isCustom ? "__custom__" : t.name);
+                    
                     const lastCard = tContainer.lastElementChild;
                     const select = lastCard.querySelector(".talent-select");
                     const customInput = lastCard.querySelector(".custom-name-input");
@@ -3462,10 +3464,12 @@ window.loadCharacterData = function(data) {
                         customInput.value = t.name;
                     } else {
                         select.value = t.name;
+                        onTalentSelectChange(select);
                     }
-                    reqSpan.textContent = t.req || "—";
-                    bookSpan.textContent = t.book || "—";
-                    descArea.value = t.desc || "";
+                    
+                    if (t.req) reqSpan.textContent = t.req;
+                    if (t.book) bookSpan.textContent = t.book;
+                    if (t.desc) descArea.value = t.desc;
                 });
             } else {
                 addNewTalentCard();
