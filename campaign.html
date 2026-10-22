@@ -512,6 +512,15 @@
         .skills-table-wrap {
             overflow-y: auto;
             max-height: 680px;
+            -ms-overflow-style: none;  /* IE / Edge */
+            scrollbar-width: none;     /* Firefox */
+        }
+
+        /* Полное скрытие полосы прокрутки для Chrome, Safari и iOS */
+        .skills-table-wrap::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
         }
 
         .skills-table {
