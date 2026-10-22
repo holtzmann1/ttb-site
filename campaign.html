@@ -2941,36 +2941,39 @@ if (skillData) {
                 const sName = skillData.skillName || skillData.name || skillData.skill || "";
                 const rVal = skillData.rating !== undefined ? skillData.rating : (skillData.rank !== undefined ? skillData.rank : 0);
 
-                const ratingInput = trMain.querySelector(".skill-rating");
-                if (ratingInput) ratingInput.value = rVal;
-    const wrapper = trMain.querySelector(".av-wrapper");
-             const flips = skillData.flips !== undefined ? skillData.flips : 0;
-             if (wrapper) {
-                 wrapper.setAttribute("data-flips", flips);
-                 const toggle = wrapper.querySelector(".flip-toggle");
-                 if (toggle) {
-                     if (flips === 1) {
-                         toggle.textContent = "+";
-                         toggle.classList.add("active");
-                     } else if (flips === 2) {
-                         toggle.textContent = "++";
-                         toggle.classList.add("active");
-                     } else {
-                         toggle.textContent = "+";
-                         toggle.classList.remove("active");
-                     }
-                 }
-             }
-
+                // 1. Сначала выбираем навык, чтобы построилась разметка (включая двойные аспекты)
                 const sel = trMain.querySelector(".skill-select");
                 if (sel && sName) {
                     sel.value = sName;
                     onSkillSelectChange(trMain);
                 }
 
-                // Повторно восстанавливаем рейтинг после onSkillSelectChange, если он сбился
+                // 2. Восстанавливаем рейтинг
+                const ratingInput = trMain.querySelector(".skill-rating");
                 if (ratingInput) ratingInput.value = rVal;
 
+                // 3. Восстанавливаем флипы (строго ПОСЛЕ onSkillSelectChange)
+                const wrappers = trMain.querySelectorAll(".av-wrapper");
+                const flipsList = Array.isArray(skillData.flips) ? skillData.flips : [skillData.flips !== undefined ? skillData.flips : 0];
+                wrappers.forEach((wrapper, idx) => {
+                    const f = flipsList[idx] !== undefined ? flipsList[idx] : (flipsList[0] || 0);
+                    wrapper.setAttribute("data-flips", f);
+                    const toggle = wrapper.querySelector(".flip-toggle");
+                    if (toggle) {
+                        if (f === 1) {
+                            toggle.textContent = "+";
+                            toggle.classList.add("active");
+                        } else if (f === 2) {
+                            toggle.textContent = "++";
+                            toggle.classList.add("active");
+                        } else {
+                            toggle.textContent = "+";
+                            toggle.classList.remove("active");
+                        }
+                    }
+                });
+
+                // 4. Восстанавливаем выбранные аспекты
                 const aspSelects = trMain.querySelectorAll(".skill-aspect");
                 const aspList = Array.isArray(skillData.aspects) ? skillData.aspects : (skillData.aspect ? [skillData.aspect] : []);
                 if (aspList.length > 0 && aspSelects.length > 0) {
@@ -3675,14 +3678,17 @@ const tContainer = document.getElementById("talentsContainer");
                 document.getElementById("destiny-5")?.checked || false
             ];
 
-// Навыки
             const skills = [];
             document.querySelectorAll("#skillsList tr.skill-main-row").forEach(tr => {
                 const sel = tr.querySelector(".skill-select")?.value;
                 if (sel) {
                     const rating = parseInt(tr.querySelector(".skill-rating")?.value) || 0;
-                    const wrapper = tr.querySelector(".av-wrapper");
-                    const flips = wrapper ? parseInt(wrapper.getAttribute("data-flips") || "0", 10) : 0;
+                    
+                    // Считываем флипы (поддерживает и одиночные, и двойные навыки)
+                    const wrappers = tr.querySelectorAll(".av-wrapper");
+                    const flipsVals = Array.from(wrappers).map(w => parseInt(w.getAttribute("data-flips") || "0", 10));
+                    const flips = wrappers.length > 1 ? flipsVals : (flipsVals[0] || 0);
+
                     const aspVals = Array.from(tr.querySelectorAll(".skill-aspect")).map(s => s.value);
                     const trSub = tr.nextElementSibling;
                     
