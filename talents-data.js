@@ -37,7 +37,7 @@ const GENERAL_TALENTS = [
   {
     "name": "Call Shot",
     "desc": "Choose a Skill. When this character generates a Critical Effect with an attack that used the chosen Skill, she may discard a card to change the suit of the Critical Effect to the suit of the discarded card.\n\nA character may take this Talent multiple times, but each time a different Skill must be chosen.",
-    "req": "Type: Fated",
+    "req": "None",
     "book": "Second Edition Core",
     "notes": ""
   },
@@ -114,7 +114,7 @@ const GENERAL_TALENTS = [
   {
     "name": "Great Fate",
     "desc": "When this character draws her Control Hand at the end of the Prologue, she draws one additional card.\n\nA character may take this Talent multiple times, and its effects stack.",
-    "req": "Type: Fated",
+    "req": "None",
     "book": "Second Edition Core",
     "notes": ""
   },
@@ -240,7 +240,7 @@ const GENERAL_TALENTS = [
   {
     "name": "Specialized Skill",
     "desc": "Choose a Skill and a suit. Add the chosen suit to the chosen Skill’s value.\n\nA character may take this Talent multiple times, but each time, a different Skill must be chosen.",
-    "req": "Type: Fated, Destiny: 2+",
+    "req": "Destiny: 2+",
     "book": "Second Edition Core",
     "notes": ""
   },
@@ -303,7 +303,7 @@ const GENERAL_TALENTS = [
   {
     "name": "Twisted Fates",
     "desc": "When this Talent is chosen, choose a card in the character’s Twist deck and permanently increase its value by 1, to a maximum value of 13.\n\nA character may take this Talent multiple times.",
-    "req": "Type: Fated",
+    "req": "None",
     "book": "Second Edition Core",
     "notes": ""
   },
@@ -793,7 +793,7 @@ const GENERAL_TALENTS = [
   {
     "name": "Bent Fate",
     "desc": "This character may remove two cards from her Twist Deck.",
-    "req": "Type: Fated, Destiny: 2+",
+    "req": "Destiny: 2+",
     "book": "Under Quarantine",
     "notes": ""
   },
@@ -828,7 +828,7 @@ const GENERAL_TALENTS = [
   {
     "name": "Ceaseless Advance",
     "desc": "At the end of each round of Dramatic Time, if this character does not have any Twist Cards in her hand, she may take a (1) Walk Action.",
-    "req": "Aspect: Tenacity 1 or higher, Type: Fated",
+    "req": "Aspect: Tenacity 1 or higher",
     "book": "Under Quarantine",
     "notes": ""
   },
@@ -842,14 +842,14 @@ const GENERAL_TALENTS = [
   {
     "name": "Fate's Messenger",
     "desc": "Whenever this character would discard a Twist card for any reason other than Cheating Fate, she may instead choose to suffer 2 damage; this damage may not be reduced or prevented.",
-    "req": "Type: Fated, Destiny: 2+",
+    "req": "Destiny: 2+",
     "book": "Under Quarantine",
     "notes": ""
   },
   {
     "name": "Favored of Fate",
     "desc": "When this character draws a Twist Card, she may suffer 2 damage to immediately discard it and draw again; this damage may not be reduced or prevented.",
-    "req": "Type: Fated, Destiny: 1+",
+    "req": "Destiny: 1+",
     "book": "Under Quarantine",
     "notes": ""
   },
@@ -877,7 +877,7 @@ const GENERAL_TALENTS = [
   {
     "name": "Glimpse Fate's Plan",
     "desc": "This character's maximum Control Hand size is increased by +1. This character may take this Talent multiple times, and its effects stack.",
-    "req": "Type: Fated",
+    "req": "None",
     "book": "Under Quarantine",
     "notes": ""
   },
@@ -905,7 +905,7 @@ const GENERAL_TALENTS = [
   {
     "name": "It's Raining Scrip",
     "desc": "This character gains 5 scrip when she takes this Talent. When she gains scrip from any non-Fated source - whether as part of a reward for a completed adventure, gambling winnings, or just looting the pockets of the dead -- she gains an additional +20% scrip.",
-    "req": "Type: Fated",
+    "req": "None",
     "book": "Under Quarantine",
     "notes": ""
   },
@@ -975,7 +975,7 @@ const GENERAL_TALENTS = [
   {
     "name": "Reset Fate",
     "desc": "At the end of Dramatic Time, before she discards any unwanted Twist Cards, this character may reshuffle her Twist Card discard pile back into her Twist Deck.",
-    "req": "Type: Fated",
+    "req": "None",
     "book": "Under Quarantine",
     "notes": ""
   },
@@ -1269,7 +1269,7 @@ const GENERAL_TALENTS = [
   {
     "name": "Soulstone Efficiency",
     "desc": "When expending a Charge from a Soulstone, this character may select two of the benefits from using a Soulstone rather than just one.",
-    "req": "Type: Fated",
+    "req": "None",
     "book": "From Nightmares",
     "notes": ""
   },
