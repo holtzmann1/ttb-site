@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TTB 2e — Каталог Общих Талантов</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Cinzel+Decorative:wght@700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0f1013;
+      --bg-card: #18191f;
+      --bg-card-border: #2a2c35;
+      --panel-bg: rgba(20, 21, 26, 0.95);
+      --gold-primary: #d4af37;
+      --gold-bright: #ffd700;
+      --text-main: #e2e4e9;
+      --text-muted: #9aa0a6;
+      --bronze: #8c7853;
+      --suit-crows: #3fb950;
+      --suit-tomes: #58a6ff;
+      --suit-masks: #bc8cff;
+      --suit-rams: #f85149;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(212, 175, 55, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(140, 120, 83, 0.04) 0%, transparent 40%);
+      color: var(--text-main);
+      font-family: 'Lora', Georgia, serif;
+      font-size: 14.5px;
+      line-height: 1.55;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Верхняя панель */
+    .top-header {
+      background: var(--panel-bg);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--bg-card-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 12px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .title-row h1 {
+      font-family: 'Cinzel Decorative', 'Cinzel', serif;
+      font-size: 1.35rem;
+      letter-spacing: 1px;
+      color: var(--gold-bright);
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .title-row h1 span.badge {
+      font-family: 'Lora', serif;
+      font-size: 0.75rem;
+      background: #252833;
+      color: var(--text-muted);
+      padding: 2px 8px;
+      border-radius: 12px;
+      border: 1px solid #363a49;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-toggle-filters {
+      background: #232733;
+      border: 1px solid var(--bronze);
+      color: var(--gold-primary);
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-toggle-filters:hover {
+      background: var(--gold-primary);
+      color: #111;
+    }
+
+    .btn-reset {
+      background: transparent;
+      border: 1px solid #3a3f50;
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-reset:hover {
+      border-color: var(--suit-rams);
+      color: var(--suit-rams);
+    }
+
+    /* Поиск */
+    .search-bar {
+      position: relative;
+      width: 100%;
+    }
+
+    .search-input {
+      width: 100%;
+      background: #13141a;
+      border: 1px solid #2d3140;
+      border-radius: 6px;
+      padding: 9px 14px 9px 36px;
+      color: #fff;
+      font-family: 'Lora', serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    /* Алфавитная полоса */
+    .alphabet-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding-top: 2px;
+    }
+
+    .alpha-btn {
+      background: #1a1c24;
+      border: 1px solid #282c3a;
+      color: var(--text-muted);
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      min-width: 26px;
+      height: 24px;
+      border-radius: 3px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .alpha-btn:hover {
+      background: #272c3d;
+      color: #fff;
+      border-color: var(--bronze);
+    }
+
+    .alpha-btn.active {
+      background: var(--gold-primary);
+      color: #111;
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 6px rgba(212, 175, 55, 0.4);
+    }
+
+    /* Разворачиваемая панель фильтров */
+    .filter-drawer {
+      display: none;
+      background: #14161e;
+      border-bottom: 1px solid #2a2e3f;
+      padding: 16px 18px;
+    }
+
+    .filter-drawer.open {
+      display: block;
+    }
+
+    .drawer-grid {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .filter-group-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      color: var(--gold-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #252838;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Книги (мультиселект теги) */
+    .books-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .book-tag {
+      background: #1b1e29;
+      border: 1px solid #2c3144;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      padding: 4px 9px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .book-tag:hover {
+      background: #252b3d;
+      color: #e2e4e9;
+    }
+
+    .book-tag.active {
+      background: #332d18;
+      border-color: var(--gold-primary);
+      color: var(--gold-bright);
+    }
+
+    /* Аспекты */
+    .aspects-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .aspect-box {
+      background: #181a24;
+      border: 1px solid #262a3a;
+      border-radius: 4px;
+      padding: 6px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .aspect-box label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .aspect-stepper {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .step-btn {
+      background: #242838;
+      border: 1px solid #363d54;
+      color: #fff;
+      width: 19px;
+      height: 19px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .step-btn:hover {
+      background: var(--gold-primary);
+      color: #111;
+    }
+
+    .aspect-val {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--gold-bright);
+      min-width: 18px;
+      text-align: center;
+    }
+
+    .aspect-modes {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .aspect-modes input {
+      accent-color: var(--gold-primary);
+      cursor: pointer;
+    }
+
+    /* Основная сетка карточек */
+    .main-container {
+      max-width: 1400px;
+      margin: 20px auto;
+      padding: 0 18px;
+      width: 100%;
+      flex-grow: 1;
+    }
+
+    .stats-info {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 14px;
+      font-style: italic;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 16px;
+    }
+
+    /* Карточка таланта */
+    .talent-card {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 6px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .talent-card:hover {
+      border-color: #4a4430;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    }
+
+    .talent-card.dimmed {
+      opacity: 0.42;
+      border-color: #26222b;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      border-bottom: 1px solid #232530;
+      padding-bottom: 8px;
+    }
+
+    .talent-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: var(--gold-bright);
+      line-height: 1.25;
+    }
+
+    .book-badge {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      background: #101217;
+      color: #939aa6;
+      border: 1px solid #2e3344;
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    /* Блок требований */
+    .talent-req {
+      background: #121318;
+      border-left: 3px solid var(--gold-primary);
+      padding: 5px 10px;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.82rem;
+      color: #d1d5db;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .req-label {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: 0.72rem;
+      color: var(--gold-primary);
+      text-transform: uppercase;
+    }
+
+    .req-item.failed {
+      color: var(--suit-rams);
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    /* Описание таланта */
+    .talent-desc {
+      color: #cfd3dc;
+      font-size: 0.92rem;
+      line-height: 1.5;
+      white-space: pre-line;
+      flex-grow: 1;
+    }
+
+    /* Оформление мастей Malifaux */
+    .suit-pill {
+      font-family: 'Cinzel', serif;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 0 4px;
+      border-radius: 3px;
+      display: inline-block;
+      line-height: 1.2;
+    }
+
+    .suit-rams { color: var(--suit-rams); text-shadow: 0 0 6px rgba(248, 81, 73, 0.4); }
+    .suit-crows { color: var(--suit-crows); text-shadow: 0 0 6px rgba(63, 185, 80, 0.4); }
+    .suit-tomes { color: var(--suit-tomes); text-shadow: 0 0 6px rgba(88, 166, 255, 0.4); }
+    .suit-masks { color: var(--suit-masks); text-shadow: 0 0 6px rgba(188, 140, 255, 0.4); }
+
+    /* Заметки/Хоумрулы */
+    .talent-note {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      background: #2b1d14;
+      border: 1px solid #7c441a;
+      color: #fca35d;
+      border-radius: 4px;
+      align-self: flex-start;
+      font-weight: 600;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-top: 6px;
+      border-top: 1px solid #20222a;
+    }
+
+    .status-badge {
+      font-size: 0.72rem;
+      font-family: 'Cinzel', serif;
+      padding: 2px 7px;
+      border-radius: 3px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .status-badge.ok {
+      background: rgba(63, 185, 80, 0.15);
+      border: 1px solid var(--suit-crows);
+      color: #63e277;
+    }
+
+    .status-badge.fail {
+      background: rgba(248, 81, 73, 0.15);
+      border: 1px solid var(--suit-rams);
+      color: #ff7b72;
+    }
+
+    /* Пустое состояние */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      font-style: italic;
+    }
+
+    /* Адаптив для мобилок */
+    @media (max-width: 768px) {
+      .header-inner {
+        padding: 10px 12px;
+      }
+      .title-row h1 {
+        font-size: 1.15rem;
+      }
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+      .aspects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .alpha-btn {
+        min-width: 22px;
+        height: 22px;
+        font-size: 0.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
+  <header class="top-header">
+    <div class="header-inner">
+      <div class="title-row">
+        <h1>
+          General Talents
+          <span class="badge" id="talent-count-badge">0</span>
+        </h1>
+        <div class="header-actions">
+          <button class="btn-toggle-filters" id="btn-toggle-drawer">
+            ⚙ Фильтры и Аспекты
+          </button>
+          <button class="btn-reset" id="btn-reset-all" title="Сбросить поиск и фильтры">
+            Сброс
+          </button>
+        </div>
+      </div>
+
+      <!-- Поиск -->
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" class="search-input" placeholder="Поиск по названию, тексту или условию (например: Grapple, Charge, Invested)...">
+      </div>
+
+      <!-- Алфавитная полоса -->
+      <div class="alphabet-bar" id="alphabet-bar">
+        <!-- Генерируется скриптом -->
+      </div>
+    </div>
+
+    <!-- ВЫДВИЖНОЙ БЛОК ФИЛЬТРОВ -->
+    <div class="filter-drawer" id="filter-drawer">
+      <div class="drawer-grid">
+        
+        <!-- Книги -->
+        <div>
+          <div class="filter-group-title">
+            <span>Книги (Источники)</span>
+            <small style="cursor:pointer; text-transform:none; color:var(--text-muted);" id="books-toggle-all">Все / Снять</small>
+          </div>
+          <div class="books-tags" id="books-tags">
+            <!-- Генерируется из данных -->
+          </div>
+        </div>
+
+        <!-- Аспекты игрока -->
+        <div>
+          <div class="filter-group-title">
+            <span>Аспекты Персонажа</span>
+            <small style="cursor:pointer; text-transform:none; color:var(--text-muted);" id="aspects-reset">Сброс в 0</small>
+          </div>
+          <div class="aspects-grid" id="aspects-grid">
+            <!-- 8 аспектов со степперами -->
+          </div>
+          <label class="aspect-modes">
+            <input type="checkbox" id="chk-strict-aspects">
+            <span>Скрывать таланты, которые не подходят по статам</span>
+          </label>
+        </div>
+
+        <!-- Категории и происхождение -->
+        <div>
+          <div class="filter-group-title">
+            <span>Происхождение и тип</span>
+          </div>
+          <div class="books-tags" id="types-tags">
+            <button class="book-tag" data-type="Invested">Invested (Пневматика)</button>
+            <button class="book-tag" data-type="Kin">Kin (Гремлины)</button>
+            <button class="book-tag" data-type="Stitched">Stitched (Нежить)</button>
+            <button class="book-tag" data-type="Guild">Guild (Гильдия)</button>
+            <button class="book-tag" data-type="Destiny">Destiny (Судьба 1+/2+)</button>
+            <button class="book-tag" data-type="Custom">Хоумрулы</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ОСНОВНОЙ КОНТЕНТ -->
+  <main class="main-container">
+    <div class="stats-info">
+      <span id="results-count">Показано талантов: 0</span>
+      <span id="active-filters-desc"></span>
+    </div>
+    <div class="cards-grid" id="cards-container">
+      <!-- Карточки наполняются JS -->
+    </div>
+  </main>
+
+  <!-- ПОДКЛЮЧЕНИЕ БАЗЫ ТАЛАНТОВ -->
+  <script src="talents-data (2).js"></script>
+
+  <script>
+    // Резервная инициализация, если файл подключен локально с другим именем
+    const talentsRaw = (typeof GENERAL_TALENTS !== 'undefined') ? GENERAL_TALENTS : [];
+
+    // Состояние фильтра
+    const state = {
+      search: '',
+      alpha: 'ALL',
+      selectedBooks: new Set(),
+      aspects: {
+        Might: 0,
+        Grace: 0,
+        Speed: 0,
+        Resilience: 0,
+        Intellect: 0,
+        Charm: 0,
+        Cunning: 0,
+        Tenacity: 0
+      },
+      strictAspects: false,
+      selectedTypes: new Set()
+    };
+
+    // 1. Инициализация алфавита
+    function initAlphabet() {
+      const container = document.getElementById('alphabet-bar');
+      const letters = ['ALL', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')];
+      container.innerHTML = letters.map(char => `
+        <button class="alpha-btn ${char === 'ALL' ? 'active' : ''}" data-char="${char}">
+          ${char === 'ALL' ? 'Все' : char}
+        </button>
+      `).join('');
+
+      container.querySelectorAll('.alpha-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          container.querySelectorAll('.alpha-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          state.alpha = btn.dataset.char;
+          renderTalents();
+        });
+      });
+    }
+
+    // 2. Инициализация книг
+    function initBooks() {
+      const container = document.getElementById('books-tags');
+      const books = Array.from(new Set(talentsRaw.map(t => t.book).filter(Boolean))).sort();
+      container.innerHTML = books.map(book => `
+        <button class="book-tag" data-book="${book}">${book}</button>
+      `).join('');
+
+      container.querySelectorAll('.book-tag').forEach(tag => {
+        tag.addEventListener('click', () => {
+          const b = tag.dataset.book;
+          if (state.selectedBooks.has(b)) {
+            state.selectedBooks.delete(b);
+            tag.classList.remove('active');
+          } else {
+            state.selectedBooks.add(b);
+            tag.classList.add('active');
+          }
+          renderTalents();
+        });
+      });
+
+      document.getElementById('books-toggle-all').addEventListener('click', () => {
+        if (state.selectedBooks.size === books.length) {
+          state.selectedBooks.clear();
+          container.querySelectorAll('.book-tag').forEach(t => t.classList.remove('active'));
+        } else {
+          books.forEach(b => state.selectedBooks.add(b));
+          container.querySelectorAll('.book-tag').forEach(t => t.classList.add('active'));
+        }
+        renderTalents();
+      });
+    }
+
+    // 3. Инициализация регуляторов аспектов
+    function initAspects() {
+      const container = document.getElementById('aspects-grid');
+      const list = ['Might', 'Grace', 'Speed', 'Resilience', 'Intellect', 'Charm', 'Cunning', 'Tenacity'];
+      
+      container.innerHTML = list.map(asp => `
+        <div class="aspect-box">
+          <label>${asp.slice(0, 3)}</label>
+          <div class="aspect-stepper">
+            <button class="step-btn" data-aspect="${asp}" data-delta="-1">−</button>
+            <span class="aspect-val" id="val-${asp}">0</span>
+            <button class="step-btn" data-aspect="${asp}" data-delta="1">+</button>
+          </div>
+        </div>
+      `).join('');
+
+      container.querySelectorAll('.step-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const asp = btn.dataset.aspect;
+          const delta = parseInt(btn.dataset.delta, 10);
+          state.aspects[asp] = Math.max(-5, Math.min(5, state.aspects[asp] + delta));
+          document.getElementById(`val-${asp}`).textContent = (state.aspects[asp] > 0 ? '+' : '') + state.aspects[asp];
+          renderTalents();
+        });
+      });
+
+      document.getElementById('aspects-reset').addEventListener('click', () => {
+        list.forEach(asp => {
+          state.aspects[asp] = 0;
+          document.getElementById(`val-${asp}`).textContent = '0';
+        });
+        renderTalents();
+      });
+
+      document.getElementById('chk-strict-aspects').addEventListener('change', (e) => {
+        state.strictAspects = e.target.checked;
+        renderTalents();
+      });
+    }
+
+    // 4. Инициализация тегов типов/происхождения
+    function initTypes() {
+      const container = document.getElementById('types-tags');
+      container.querySelectorAll('.book-tag').forEach(tag => {
+        tag.addEventListener('click', () => {
+          const t = tag.dataset.type;
+          if (state.selectedTypes.has(t)) {
+            state.selectedTypes.delete(t);
+            tag.classList.remove('active');
+          } else {
+            state.selectedTypes.add(t);
+            tag.classList.add('active');
+          }
+          renderTalents();
+        });
+      });
+    }
+
+    // Проверка требований по аспектам
+    function evaluateRequirements(reqStr, charAspects) {
+      if (!reqStr || reqStr === 'None') return { ok: true, failedItems: [] };
+
+      const failedItems = [];
+      const parts = reqStr.split(',').map(s => s.trim());
+
+      for (const part of parts) {
+        // Проверка одиночного аспекта вида: "Aspect: Might 2 or higher" или "Aspect: Tenacity -1 or lower"
+        const aspMatch = part.match(/Aspect:\s*([A-Za-z]+)\s*(-?\d+)\s*(or higher|or lower|\+)?/i);
+        if (aspMatch) {
+          const aspName = aspMatch[1];
+          const targetVal = parseInt(aspMatch[2], 10);
+          const isLower = /lower|less/i.test(part);
+          const currentVal = charAspects[aspName] !== undefined ? charAspects[aspName] : 0;
+
+          if (isLower) {
+            if (currentVal > targetVal) {
+              failedItems.push(`${aspName} ≤ ${targetVal} (сейчас ${currentVal})`);
+            }
+          } else {
+            if (currentVal < targetVal) {
+              failedItems.push(`${aspName} ≥ ${targetVal} (сейчас ${currentVal})`);
+            }
+          }
+        }
+      }
+
+      return {
+        ok: failedItems.length === 0,
+        failedItems
+      };
+    }
+
+    // Замена текстовых мастей на цветные плашки
+    function formatSuits(text) {
+      if (!text) return '';
+      return text
+        .replace(/\[когти\]/gi, '⚔️')
+        .replace(/RAMS/g, '<span class="suit-pill suit-rams">🐏 RAMS</span>')
+        .replace(/CROWS/g, '<span class="suit-pill suit-crows">🦅 CROWS</span>')
+        .replace(/TOMES/g, '<span class="suit-pill suit-tomes">📖 TOMES</span>')
+        .replace(/MASKS/g, '<span class="suit-pill suit-masks">🎭 MASKS</span>');
+    }
+
+    // Рендер каталога
+    function renderTalents() {
+      const container = document.getElementById('cards-container');
+      const searchTerms = state.search.toLowerCase().trim().split(/\s+/).filter(Boolean);
+
+      const filtered = talentsRaw.filter(t => {
+        // 1. Поиск
+        if (searchTerms.length > 0) {
+          const fullText = `${t.name} ${t.desc} ${t.req} ${t.book} ${t.notes || ''}`.toLowerCase();
+          const match = searchTerms.every(term => fullText.includes(term));
+          if (!match) return false;
+        }
+
+        // 2. Алфавит
+        if (state.alpha !== 'ALL') {
+          if (!t.name.toUpperCase().startsWith(state.alpha)) return false;
+        }
+
+        // 3. Книги
+        if (state.selectedBooks.size > 0) {
+          if (!state.selectedBooks.has(t.book)) return false;
+        }
+
+        // 4. Типы / Теги
+        if (state.selectedTypes.size > 0) {
+          let typeMatch = false;
+          if (state.selectedTypes.has('Invested') && /Invested/i.test(t.req)) typeMatch = true;
+          if (state.selectedTypes.has('Kin') && /Kin/i.test(t.req)) typeMatch = true;
+          if (state.selectedTypes.has('Stitched') && /Stitched/i.test(t.req)) typeMatch = true;
+          if (state.selectedTypes.has('Guild') && /Guild/i.test(t.req)) typeMatch = true;
+          if (state.selectedTypes.has('Destiny') && /Destiny/i.test(t.req)) typeMatch = true;
+          if (state.selectedTypes.has('Custom') && (t.notes && t.notes.trim() !== '')) typeMatch = true;
+          if (!typeMatch) return false;
+        }
+
+        // 5. Строгий фильтр аспектов
+        if (state.strictAspects) {
+          const check = evaluateRequirements(t.req, state.aspects);
+          if (!check.ok) return false;
+        }
+
+        return true;
+      });
+
+      // Обновление счётчиков
+      document.getElementById('talent-count-badge').textContent = filtered.length;
+      document.getElementById('results-count').textContent = `Показано талантов: ${filtered.length} из ${talentsRaw.length}`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            По заданным фильтрам ничего не найдено.<br>
+            Попробуйте сбросить параметры поиска или ослабить требования.
+          </div>
+        `;
+        return;
+      }
+
+      // Генерация карточек
+      container.innerHTML = filtered.map(t => {
+        const check = evaluateRequirements(t.req, state.aspects);
+        const isDimmed = !check.ok && !state.strictAspects;
+
+        return `
+          <div class="talent-card ${isDimmed ? 'dimmed' : ''}">
+            <div class="card-top">
+              <div class="talent-name">${t.name}</div>
+              <div class="book-badge">${t.book}</div>
+            </div>
+
+            <div class="talent-req">
+              <span class="req-label">REQ:</span>
+              <span>${t.req || 'None'}</span>
+            </div>
+
+            <div class="talent-desc">${formatSuits(t.desc)}</div>
+
+            ${t.notes ? `<div class="talent-note">Заметка: ${t.notes}</div>` : ''}
+
+            <div class="card-footer">
+              <div class="status-badge ${check.ok ? 'ok' : 'fail'}">
+                ${check.ok ? '✓ Доступно' : '✗ ' + check.failedItems.join(', ')}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Инициализация событий
+    document.addEventListener('DOMContentLoaded', () => {
+      initAlphabet();
+      initBooks();
+      initAspects();
+      initTypes();
+
+      // Шторка фильтров
+      const drawer = document.getElementById('filter-drawer');
+      document.getElementById('btn-toggle-drawer').addEventListener('click', () => {
+        drawer.classList.toggle('open');
+      });
+
+      // Поиск
+      document.getElementById('search-input').addEventListener('input', (e) => {
+        state.search = e.target.value;
+        renderTalents();
+      });
+
+      // Сброс
+      document.getElementById('btn-reset-all').addEventListener('click', () => {
+        state.search = '';
+        document.getElementById('search-input').value = '';
+        state.alpha = 'ALL';
+        document.querySelectorAll('.alpha-btn').forEach(b => b.classList.toggle('active', b.dataset.char === 'ALL'));
+        state.selectedBooks.clear();
+        document.querySelectorAll('#books-tags .book-tag').forEach(b => b.classList.remove('active'));
+        state.selectedTypes.clear();
+        document.querySelectorAll('#types-tags .book-tag').forEach(b => b.classList.remove('active'));
+        document.getElementById('aspects-reset').click();
+        document.getElementById('chk-strict-aspects').checked = false;
+        state.strictAspects = false;
+        renderTalents();
+      });
+
+      // Первичный рендер
+      renderTalents();
+    });
+  </script>
+</body>
+</html>
