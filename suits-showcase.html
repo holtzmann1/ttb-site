@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Through the Breach — Malifaux Suits Showcase</title>
+  <title>Through the Breach — CROWS / FEATHERS Showcase</title>
   <style>
     * {
       box-sizing: border-box;
@@ -29,7 +29,7 @@
     header {
       border-bottom: 1px solid #4a3825;
       padding-bottom: 20px;
-      margin-bottom: 30px;
+      margin-bottom: 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -51,18 +51,103 @@
       letter-spacing: 1px;
     }
 
-    .instructions {
-      background: rgba(22, 18, 14, 0.7);
-      border-left: 3px solid #b88a4a;
-      padding: 14px 20px;
-      border-radius: 0 6px 6px 0;
-      margin-bottom: 35px;
-      font-size: 13.5px;
-      color: #dcd3c4;
+    /* Блок утвержденных мастей для проверки масштаба */
+    .confirmed-bar {
+      background: rgba(18, 14, 11, 0.9);
+      border: 1px solid #4a3825;
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin-bottom: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    .suit-section {
-      margin-bottom: 45px;
+    .confirmed-title {
+      font-size: 12px;
+      color: #c59a5b;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .confirmed-chips {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .confirmed-note {
+      font-size: 12px;
+      color: #8c8071;
+      font-style: italic;
+    }
+
+    /* Игровой жетон (Chip) — УВЕЛИЧЕННЫЙ РАЗМЕР ИКОНКИ */
+    .suit-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 3px 9px 3px 7px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 0.8px;
+      line-height: 1;
+      vertical-align: middle;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+      text-transform: uppercase;
+      user-select: none;
+    }
+
+    .suit-chip svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .suit-rams {
+      color: #ff7b72;
+      background: rgba(248, 81, 73, 0.15);
+      border: 1px solid rgba(248, 81, 73, 0.5);
+    }
+    .suit-masks {
+      color: #d2a8ff;
+      background: rgba(188, 140, 255, 0.15);
+      border: 1px solid rgba(188, 140, 255, 0.5);
+    }
+    .suit-tomes {
+      color: #79b8ff;
+      background: rgba(88, 166, 255, 0.15);
+      border: 1px solid rgba(88, 166, 255, 0.5);
+    }
+    .suit-crows {
+      color: #56d364;
+      background: rgba(63, 185, 80, 0.15);
+      border: 1px solid rgba(63, 185, 80, 0.5);
+    }
+
+    .fate-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 4px;
+      margin: 0 2px;
+      background: rgba(184, 138, 74, 0.18);
+      border: 1px solid rgba(184, 138, 74, 0.55);
+      color: #f0c674;
+      font-weight: bold;
+      font-size: 12px;
+      border-radius: 3px;
+      vertical-align: middle;
+      line-height: 1;
+    }
+
+    /* Сетка вариантов Crows */
+    .crows-section {
       background: rgba(18, 14, 11, 0.75);
       border: 1px solid #382c1e;
       border-radius: 8px;
@@ -70,31 +155,21 @@
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     }
 
-    .section-title-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding-bottom: 14px;
-      margin-bottom: 20px;
-      border-bottom: 1px solid #2e2318;
-    }
-
     .section-title {
-      font-size: 19px;
+      font-size: 20px;
       font-weight: bold;
       letter-spacing: 1.5px;
       text-transform: uppercase;
+      color: #56d364;
+      padding-bottom: 14px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid #2e2318;
     }
-
-    .title-rams { color: #ff7b72; }
-    .title-masks { color: #d2a8ff; }
-    .title-crows { color: #56d364; }
-    .title-tomes { color: #79b8ff; }
 
     .variants-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 22px;
     }
 
     .variant-card {
@@ -106,12 +181,11 @@
       flex-direction: column;
       gap: 14px;
       transition: all 0.2s ease;
-      position: relative;
     }
 
     .variant-card:hover {
-      border-color: #b88a4a;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+      border-color: #56d364;
+      box-shadow: 0 6px 20px rgba(63, 185, 80, 0.15);
       transform: translateY(-2px);
     }
 
@@ -122,7 +196,7 @@
     }
 
     .variant-id {
-      color: #c59a5b;
+      color: #56d364;
       font-weight: bold;
       font-size: 14px;
       letter-spacing: 1px;
@@ -130,25 +204,25 @@
 
     .variant-desc {
       color: #8c8071;
-      font-size: 11.5px;
+      font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
-    /* Зона крупного превью */
     .preview-large {
-      height: 70px;
+      height: 75px;
       display: flex;
       align-items: center;
       justify-content: center;
       background: rgba(0, 0, 0, 0.35);
       border-radius: 5px;
       border: 1px dashed #2e2318;
+      color: #56d364;
     }
 
     .preview-large svg {
-      width: 44px;
-      height: 44px;
+      width: 48px;
+      height: 48px;
       transition: transform 0.2s;
     }
 
@@ -156,7 +230,6 @@
       transform: scale(1.1);
     }
 
-    /* Зона чипа в реальном масштабе */
     .preview-chip-row {
       display: flex;
       flex-direction: column;
@@ -173,83 +246,12 @@
       letter-spacing: 0.8px;
     }
 
-    .chip-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    /* Игровой жетон (Chip) */
-    .suit-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: bold;
-      letter-spacing: 0.8px;
-      line-height: 1.3;
-      vertical-align: baseline;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-      text-transform: uppercase;
-      user-select: none;
-    }
-
-    .suit-chip svg {
-      width: 14px;
-      height: 14px;
-      flex-shrink: 0;
-      display: block;
-    }
-
-    /* Цвета жетонов */
-    .suit-rams {
-      color: #ff7b72;
-      background: rgba(248, 81, 73, 0.14);
-      border: 1px solid rgba(248, 81, 73, 0.45);
-    }
-    .suit-masks {
-      color: #d2a8ff;
-      background: rgba(188, 140, 255, 0.14);
-      border: 1px solid rgba(188, 140, 255, 0.45);
-    }
-    .suit-crows {
-      color: #56d364;
-      background: rgba(63, 185, 80, 0.14);
-      border: 1px solid rgba(63, 185, 80, 0.45);
-    }
-    .suit-tomes {
-      color: #79b8ff;
-      background: rgba(88, 166, 255, 0.14);
-      border: 1px solid rgba(88, 166, 255, 0.45);
-    }
-
-    /* Пример текста в карточке */
     .sample-text {
       font-size: 13px;
       color: #dcd3c4;
-      line-height: 1.5;
-      padding-top: 4px;
+      line-height: 1.55;
+      padding-top: 6px;
       border-top: 1px solid #241c14;
-    }
-
-    .fate-chip {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 17px;
-      height: 17px;
-      padding: 0 4px;
-      margin: 0 2px;
-      background: rgba(184, 138, 74, 0.18);
-      border: 1px solid rgba(184, 138, 74, 0.55);
-      color: #f0c674;
-      font-weight: bold;
-      font-size: 11.5px;
-      border-radius: 3px;
-      vertical-align: middle;
-      line-height: 1;
     }
 
     @media (max-width: 800px) {
@@ -264,347 +266,219 @@
     <header>
       <div>
         <h1>THROUGH THE BREACH</h1>
-        <div class="subtitle">Лаборатория иконок мастей Malifaux (Suits Showcase)</div>
+        <div class="subtitle">Большая лаборатория CROWS / FEATHERS (Перья и Вороны)</div>
       </div>
       <a href="talents-page.html" style="color: #c59a5b; text-decoration: none; border: 1px solid #b88a4a; padding: 8px 16px; border-radius: 4px; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;">← В каталог</a>
     </header>
 
-    <div class="instructions">
-      Посмотри как иконки выглядят в <strong>крупном размере</strong> (чтобы оценить форму) и в <strong>реальном жетоне</strong> внутри текста правил (чтобы проверить читаемость на 14px). Выбери номера вариантов, которые нравятся больше всего (например: <em>Rams 2, Masks 1, Crows 1, Tomes 1</em>).
+    <!-- БЛОК УЖЕ ВЫБРАННЫХ МАСТЕЙ С УВЕЛИЧЕННЫМИ ИКОНКАМИ -->
+    <div class="confirmed-bar">
+      <div class="confirmed-title">✓ Утверждённые масти (иконки увеличены до 18px для баланса со шрифтом):</div>
+      <div class="confirmed-chips">
+        <!-- Rams Var 3 -->
+        <span class="suit-chip suit-rams">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 7 L15.5 9 L14.5 14.5 L12 19 L9.5 14.5 L8.5 9 Z M10.5 11.5 L11.2 12.5 L10 13 Z M13.5 11.5 L14 13 L12.8 12.5 Z"/>
+            <path d="M9 7.5 C6.5 5 2.5 6 1.5 9.5 C0.8 12 2 14.5 4.5 15 C6.5 15.5 8 14 7.5 12.5 C7 11 5.5 11.5 5 12.5 C4.5 12 4.5 11 5 10 C6 8.5 8 8.5 9.5 9.5 L10.5 8 Z"/>
+            <path d="M15 7.5 C17.5 5 21.5 6 22.5 9.5 C23.2 12 22 14.5 19.5 15 C17.5 15.5 16 14 16.5 12.5 C17 11 18.5 11.5 19 12.5 C19.5 12 19.5 11 19 10 C18 8.5 16 8.5 14.5 9.5 L13.5 8 Z"/>
+          </svg>
+          RAMS
+        </span>
+
+        <!-- Masks Var 2 -->
+        <span class="suit-chip suit-masks">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" d="M4 6.5 L6.5 9.5 L17.5 9.5 L20 6.5 C20.8 9 20.5 14 19 16.5 L16.5 17.5 L15 14.5 L9 14.5 L7.5 17.5 L5 16.5 C3.5 14 3.2 9 4 6.5 Z M7.5 11 C8.6 11 9.5 11.7 9.5 12.5 C9.5 13.3 8.6 14 7.5 14 C6.4 14 5.5 13.3 5.5 12.5 C5.5 11.7 6.4 11 7.5 11 Z M16.5 11 C17.6 11 18.5 11.7 18.5 12.5 C18.5 13.3 17.6 14 16.5 14 C15.4 14 14.5 13.3 14.5 12.5 C14.5 11.7 15.4 11 16.5 11 Z"/>
+          </svg>
+          MASKS
+        </span>
+
+        <!-- Tomes Var 2 -->
+        <span class="suit-chip suit-tomes">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M4 6 C4 4.5 5.5 4 7 4.5 L11.5 6 L11.5 18.5 L6.5 17 C5 16.5 4 17 4 18.5 Z M20 6 C20 4.5 18.5 4 17 4.5 L12.5 6 L12.5 18.5 L17.5 17 C19 16.5 20 17 20 18.5 Z"/>
+            <path d="M11 6 L13 6 L13 21 L12 19.5 L11 21 Z" fill="#ff7b72"/>
+          </svg>
+          TOMES
+        </span>
+      </div>
+      <div class="confirmed-note">Выбирай вариант CROWS ниже так, чтобы он гармонично смотрелся рядом с этой тройкой по плотности и весу.</div>
     </div>
 
-    <!-- ==================== RAMS ==================== -->
-    <div class="suit-section">
-      <div class="section-title-row">
-        <span class="section-title title-rams">🐏 RAMS (Бараны)</span>
-      </div>
+    <!-- СЕКЦИЯ ВАРИАНТОВ CROWS -->
+    <div class="crows-section">
+      <div class="section-title">🦅 ВЫБОР ДЛЯ CROWS / FEATHERS (7 ВАРИАНТОВ)</div>
 
       <div class="variants-grid">
-        
-        <!-- Rams #1: Череп анфас с закрученными рогами (#2 из концепта) -->
+
+        <!-- 1. Массивный крест перьев 'X' (исправленный рулбук — жирный и читаемый) -->
         <div class="variant-card">
           <div class="variant-header">
-            <span class="variant-id">RAMS — Вариант 1</span>
-            <span class="variant-desc">Череп анфас (Симметрия)</span>
+            <span class="variant-id">CROWS #1</span>
+            <span class="variant-desc">Жирный крест перьев 'X'</span>
           </div>
-          <div class="preview-large" style="color: #ff7b72;">
+          <div class="preview-large">
             <svg viewBox="0 0 24 24" fill="currentColor">
-              <!-- Череп барана анфас с рогами-спиралями -->
-              <path d="M12 7.2 C10.8 7.2 9.8 8.1 9.6 9.3 L9.6 13.5 C9.6 15.5 11 17.5 12 18.8 C13 17.5 14.4 15.5 14.4 13.5 L14.4 9.3 C14.2 8.1 13.2 7.2 12 7.2 Z M10.8 11.2 C11.2 11.2 11.5 11.5 11.5 12 C11.5 12.5 11.2 12.8 10.8 12.8 C10.4 12.8 10.1 12.5 10.1 12 C10.1 11.5 10.4 11.2 10.8 11.2 Z M13.2 11.2 C13.6 11.2 13.9 11.5 13.9 12 C13.9 12.5 13.6 12.8 13.2 12.8 C12.8 12.8 12.5 12.5 12.5 12 C12.5 11.5 12.8 11.2 13.2 11.2 Z"/>
-              <path d="M9.8 7.8 C8.2 6.2 5.5 6.2 3.6 7.8 C1.8 9.5 1.5 12.5 3 14.5 C4.2 16.1 6.5 16.5 8 15.2 C9.2 14.2 9.4 12.5 8.5 11.3 C7.7 10.2 6.1 10.1 5.2 11 C4.5 11.8 4.7 12.8 5.4 13.2 C5.9 13.5 6.4 13.2 6.6 12.7 C6.4 12.4 6 12.4 5.8 12.6 C5.6 12.4 5.6 12.1 5.9 11.8 C6.4 11.3 7.2 11.4 7.6 12 C8.2 12.8 8 14 7.1 14.7 C5.9 15.6 4.1 15.3 3.2 14 C2 12.2 2.2 9.8 3.8 8.4 C5.2 7.2 7.5 7.2 8.9 8.6 L9.8 7.8 Z"/>
-              <path d="M14.2 7.8 C15.8 6.2 18.5 6.2 20.4 7.8 C22.2 9.5 22.5 12.5 21 14.5 C19.8 16.1 17.5 16.5 16 15.2 C14.8 14.2 14.6 12.5 15.5 11.3 C16.3 10.2 17.9 10.1 18.8 11 C19.5 11.8 19.3 12.8 18.6 13.2 C18.1 13.5 17.6 13.2 17.4 12.7 C17.6 12.4 18 12.4 18.2 12.6 C18.4 12.4 18.4 12.1 18.1 11.8 C17.6 11.3 16.8 11.4 16.4 12 C15.8 12.8 16 14 16.9 14.7 C18.1 15.6 19.9 15.3 20.8 14 C22 12.2 21.8 9.8 20.2 8.4 C18.8 7.2 16.5 7.2 15.1 8.6 L14.2 7.8 Z"/>
+              <!-- Широкие плотные перья X с выраженными перьевыми зазубринами -->
+              <path d="M2.5 3 C5.5 6.5 9.5 10.5 12 11.8 C14.5 10.5 18.5 6.5 21.5 3 C19.5 7.5 16.8 10.8 14.5 12 C16.8 13.2 19.5 16.5 21.5 21 C18.5 17.5 14.5 13.5 12 12.2 C9.5 13.5 5.5 17.5 2.5 21 C4.5 16.5 7.2 13.2 9.5 12 C7.2 10.8 4.5 7.5 2.5 3 Z"/>
             </svg>
           </div>
           <div class="preview-chip-row">
-            <span class="preview-chip-label">В жетоне (14px):</span>
-            <div class="chip-container">
-              <span class="suit-chip suit-rams">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 7.2 C10.8 7.2 9.8 8.1 9.6 9.3 L9.6 13.5 C9.6 15.5 11 17.5 12 18.8 C13 17.5 14.4 15.5 14.4 13.5 L14.4 9.3 C14.2 8.1 13.2 7.2 12 7.2 Z M10.8 11.2 C11.2 11.2 11.5 11.5 11.5 12 C11.5 12.5 11.2 12.8 10.8 12.8 C10.4 12.8 10.1 12.5 10.1 12 C10.1 11.5 10.4 11.2 10.8 11.2 Z M13.2 11.2 C13.6 11.2 13.9 11.5 13.9 12 C13.9 12.5 13.6 12.8 13.2 12.8 C12.8 12.8 12.5 12.5 12.5 12 C12.5 11.5 12.8 11.2 13.2 11.2 Z"/><path d="M9.8 7.8 C8.2 6.2 5.5 6.2 3.6 7.8 C1.8 9.5 1.5 12.5 3 14.5 C4.2 16.1 6.5 16.5 8 15.2 C9.2 14.2 9.4 12.5 8.5 11.3 C7.7 10.2 6.1 10.1 5.2 11 C4.5 11.8 4.7 12.8 5.4 13.2 C5.9 13.5 6.4 13.2 6.6 12.7 C6.4 12.4 6 12.4 5.8 12.6 C5.6 12.4 5.6 12.1 5.9 11.8 C6.4 11.3 7.2 11.4 7.6 12 C8.2 12.8 8 14 7.1 14.7 C5.9 15.6 4.1 15.3 3.2 14 C2 12.2 2.2 9.8 3.8 8.4 C5.2 7.2 7.5 7.2 8.9 8.6 L9.8 7.8 Z"/><path d="M14.2 7.8 C15.8 6.2 18.5 6.2 20.4 7.8 C22.2 9.5 22.5 12.5 21 14.5 C19.8 16.1 17.5 16.5 16 15.2 C14.8 14.2 14.6 12.5 15.5 11.3 C16.3 10.2 17.9 10.1 18.8 11 C19.5 11.8 19.3 12.8 18.6 13.2 C18.1 13.5 17.6 13.2 17.4 12.7 C17.6 12.4 18 12.4 18.2 12.6 C18.4 12.4 18.4 12.1 18.1 11.8 C17.6 11.3 16.8 11.4 16.4 12 C15.8 12.8 16 14 16.9 14.7 C18.1 15.6 19.9 15.3 20.8 14 C22 12.2 21.8 9.8 20.2 8.4 C18.8 7.2 16.5 7.2 15.1 8.6 L14.2 7.8 Z"/></svg>
-                RAMS
-              </span>
-            </div>
-          </div>
-          <div class="sample-text">When hitting with a weapon, this attack gains <span class="fate-chip">+</span> and discards a <span class="suit-chip suit-rams"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>RAMS</span> card.</div>
-        </div>
-
-        <!-- Rams #2: Официальный профиль книги (Канон рулбука с круглым рогом) -->
-        <div class="variant-card">
-          <div class="variant-header">
-            <span class="variant-id">RAMS — Вариант 2</span>
-            <span class="variant-desc">Канон книги (Профиль рога)</span>
-          </div>
-          <div class="preview-large" style="color: #ff7b72;">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <!-- Четкий профиль: большая круглая спираль рога и морда вниз -->
-              <path fill-rule="evenodd" d="M14 2 C19 2 23 5.5 23 10.5 C23 15 19.5 17.5 16.5 17.5 C14 17.5 12.5 15.8 12.5 14 C12.5 12.2 13.8 11 15.5 11 C16.5 11 17.5 11.8 17.5 12.8 C17.5 13.4 17 14 16.4 14 C16.1 14 15.8 13.8 15.8 13.5 C15.8 13.2 16.1 12.9 16.4 12.9 C16.1 12.6 15.5 12.6 15.2 12.9 C14.6 13.4 14.6 14.2 15.2 14.8 C16 15.5 17.2 15.3 18 14.3 C18.8 13.2 18.7 11 17.2 10 C15.5 8.8 13.2 9.5 12.2 11.2 C11.6 12.2 11.3 13.5 11.5 14.8 L9.2 19.5 C8.8 20.3 7.8 20.8 6.8 20.5 C6.2 20.2 6 19.2 6.5 18.2 L8.8 13.6 C8.2 12.5 8.2 11 8.8 9.5 C9.8 6 11.8 2 14 2 Z M9.5 11.5 C10.1 11.5 10.6 12 10.6 12.6 C10.6 13.2 10.1 13.7 9.5 13.7 C8.9 13.7 8.4 13.2 8.4 12.6 C8.4 12 8.9 11.5 9.5 11.5 Z"/>
-            </svg>
-          </div>
-          <div class="preview-chip-row">
-            <span class="preview-chip-label">В жетоне (14px):</span>
-            <div class="chip-container">
-              <span class="suit-chip suit-rams">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M14 2 C19 2 23 5.5 23 10.5 C23 15 19.5 17.5 16.5 17.5 C14 17.5 12.5 15.8 12.5 14 C12.5 12.2 13.8 11 15.5 11 C16.5 11 17.5 11.8 17.5 12.8 C17.5 13.4 17 14 16.4 14 C16.1 14 15.8 13.8 15.8 13.5 C15.8 13.2 16.1 12.9 16.4 12.9 C16.1 12.6 15.5 12.6 15.2 12.9 C14.6 13.4 14.6 14.2 15.2 14.8 C16 15.5 17.2 15.3 18 14.3 C18.8 13.2 18.7 11 17.2 10 C15.5 8.8 13.2 9.5 12.2 11.2 C11.6 12.2 11.3 13.5 11.5 14.8 L9.2 19.5 C8.8 20.3 7.8 20.8 6.8 20.5 C6.2 20.2 6 19.2 6.5 18.2 L8.8 13.6 C8.2 12.5 8.2 11 8.8 9.5 C9.8 6 11.8 2 14 2 Z M9.5 11.5 C10.1 11.5 10.6 12 10.6 12.6 C10.6 13.2 10.1 13.7 9.5 13.7 C8.9 13.7 8.4 13.2 8.4 12.6 C8.4 12 8.9 11.5 9.5 11.5 Z"/></svg>
-                RAMS
-              </span>
-            </div>
-          </div>
-          <div class="sample-text">When hitting with a weapon, this attack gains <span class="fate-chip">+</span> and discards a <span class="suit-chip suit-rams"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>RAMS</span> card.</div>
-        </div>
-
-        <!-- Rams #3: Брутальный геометрический череп -->
-        <div class="variant-card">
-          <div class="variant-header">
-            <span class="variant-id">RAMS — Вариант 3</span>
-            <span class="variant-desc">Геометрический / Резкий</span>
-          </div>
-          <div class="preview-large" style="color: #ff7b72;">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <!-- Четкие прямые грани, идеальная читаемость -->
-              <path d="M12 7 L15.5 9 L14.5 14.5 L12 19 L9.5 14.5 L8.5 9 Z M10.5 11.5 L11.2 12.5 L10 13 Z M13.5 11.5 L14 13 L12.8 12.5 Z"/>
-              <path d="M9 7.5 C6.5 5 2.5 6 1.5 9.5 C0.8 12 2 14.5 4.5 15 C6.5 15.5 8 14 7.5 12.5 C7 11 5.5 11.5 5 12.5 C4.5 12 4.5 11 5 10 C6 8.5 8 8.5 9.5 9.5 L10.5 8 Z"/>
-              <path d="M15 7.5 C17.5 5 21.5 6 22.5 9.5 C23.2 12 22 14.5 19.5 15 C17.5 15.5 16 14 16.5 12.5 C17 11 18.5 11.5 19 12.5 C19.5 12 19.5 11 19 10 C18 8.5 16 8.5 14.5 9.5 L13.5 8 Z"/>
-            </svg>
-          </div>
-          <div class="preview-chip-row">
-            <span class="preview-chip-label">В жетоне (14px):</span>
-            <div class="chip-container">
-              <span class="suit-chip suit-rams">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 7 L15.5 9 L14.5 14.5 L12 19 L9.5 14.5 L8.5 9 Z M10.5 11.5 L11.2 12.5 L10 13 Z M13.5 11.5 L14 13 L12.8 12.5 Z"/><path d="M9 7.5 C6.5 5 2.5 6 1.5 9.5 C0.8 12 2 14.5 4.5 15 C6.5 15.5 8 14 7.5 12.5 C7 11 5.5 11.5 5 12.5 C4.5 12 4.5 11 5 10 C6 8.5 8 8.5 9.5 9.5 L10.5 8 Z"/><path d="M15 7.5 C17.5 5 21.5 6 22.5 9.5 C23.2 12 22 14.5 19.5 15 C17.5 15.5 16 14 16.5 12.5 C17 11 18.5 11.5 19 12.5 C19.5 12 19.5 11 19 10 C18 8.5 16 8.5 14.5 9.5 L13.5 8 Z"/></svg>
-                RAMS
-              </span>
-            </div>
-          </div>
-          <div class="sample-text">When hitting with a weapon, this attack gains <span class="fate-chip">+</span> and discards a <span class="suit-chip suit-rams"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>RAMS</span> card.</div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ==================== MASKS ==================== -->
-    <div class="suit-section">
-      <div class="section-title-row">
-        <span class="section-title title-masks">🎭 MASKS (Маски)</span>
-      </div>
-
-      <div class="variants-grid">
-        
-        <!-- Masks #1: Лаконичная маска с рожками (#9 из концепта) -->
-        <div class="variant-card">
-          <div class="variant-header">
-            <span class="variant-id">MASKS — Вариант 1</span>
-            <span class="variant-desc">Рожки домино (Выбор №9)</span>
-          </div>
-          <div class="preview-large" style="color: #d2a8ff;">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <!-- Четкая маска с двумя выраженными рожками вверх и миндалевидными глазами -->
-              <path fill-rule="evenodd" d="M3 6.5 C4.2 4.2 5.8 4 7.5 5.8 C9.2 6.8 10.5 6.8 12 6.8 C13.5 6.8 14.8 6.8 16.5 5.8 C18.2 4 19.8 4.2 21 6.5 C21.8 9.5 20.8 14.5 17 15.5 C14.5 16 13.2 13 12 13 C10.8 13 9.5 16 7 15.5 C3.2 14.5 2.2 9.5 3 6.5 Z M6.5 9 C7.5 9 8.2 9.8 8 10.8 C7.8 11.8 6.8 12.2 6 11.5 C5.2 10.8 5.5 9.5 6.5 9 Z M17.5 9 C18.5 9.5 18.8 10.8 18 11.5 C17.2 12.2 16.2 11.8 16 10.8 C15.8 9.8 16.5 9 17.5 9 Z"/>
-            </svg>
-          </div>
-          <div class="preview-chip-row">
-            <span class="preview-chip-label">В жетоне (14px):</span>
-            <div class="chip-container">
-              <span class="suit-chip suit-masks">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M3 6.5 C4.2 4.2 5.8 4 7.5 5.8 C9.2 6.8 10.5 6.8 12 6.8 C13.5 6.8 14.8 6.8 16.5 5.8 C18.2 4 19.8 4.2 21 6.5 C21.8 9.5 20.8 14.5 17 15.5 C14.5 16 13.2 13 12 13 C10.8 13 9.5 16 7 15.5 C3.2 14.5 2.2 9.5 3 6.5 Z M6.5 9 C7.5 9 8.2 9.8 8 10.8 C7.8 11.8 6.8 12.2 6 11.5 C5.2 10.8 5.5 9.5 6.5 9 Z M17.5 9 C18.5 9.5 18.8 10.8 18 11.5 C17.2 12.2 16.2 11.8 16 10.8 C15.8 9.8 16.5 9 17.5 9 Z"/></svg>
-                MASKS
-              </span>
-            </div>
-          </div>
-          <div class="sample-text">May declare a Trigger if the flipped card has a <span class="suit-chip suit-masks"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>MASKS</span> suit.</div>
-        </div>
-
-        <!-- Masks #2: Официальный силуэт из рулбука (Прямоугольная с рожками) -->
-        <div class="variant-card">
-          <div class="variant-header">
-            <span class="variant-id">MASKS — Вариант 2</span>
-            <span class="variant-desc">Оригинал книги правил</span>
-          </div>
-          <div class="preview-large" style="color: #d2a8ff;">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <!-- Точная геометрия глифа из книги Through the Breach: рога вверх, нижние ножки -->
-              <path fill-rule="evenodd" d="M4 6.5 L6.5 9.5 L17.5 9.5 L20 6.5 C20.8 9 20.5 14 19 16.5 L16.5 17.5 L15 14.5 L9 14.5 L7.5 17.5 L5 16.5 C3.5 14 3.2 9 4 6.5 Z M7.5 11 C8.6 11 9.5 11.7 9.5 12.5 C9.5 13.3 8.6 14 7.5 14 C6.4 14 5.5 13.3 5.5 12.5 C5.5 11.7 6.4 11 7.5 11 Z M16.5 11 C17.6 11 18.5 11.7 18.5 12.5 C18.5 13.3 17.6 14 16.5 14 C15.4 14 14.5 13.3 14.5 12.5 C14.5 11.7 15.4 11 16.5 11 Z"/>
-            </svg>
-          </div>
-          <div class="preview-chip-row">
-            <span class="preview-chip-label">В жетоне (14px):</span>
-            <div class="chip-container">
-              <span class="suit-chip suit-masks">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M4 6.5 L6.5 9.5 L17.5 9.5 L20 6.5 C20.8 9 20.5 14 19 16.5 L16.5 17.5 L15 14.5 L9 14.5 L7.5 17.5 L5 16.5 C3.5 14 3.2 9 4 6.5 Z M7.5 11 C8.6 11 9.5 11.7 9.5 12.5 C9.5 13.3 8.6 14 7.5 14 C6.4 14 5.5 13.3 5.5 12.5 C5.5 11.7 6.4 11 7.5 11 Z M16.5 11 C17.6 11 18.5 11.7 18.5 12.5 C18.5 13.3 17.6 14 16.5 14 C15.4 14 14.5 13.3 14.5 12.5 C14.5 11.7 15.4 11 16.5 11 Z"/></svg>
-                MASKS
-              </span>
-            </div>
-          </div>
-          <div class="sample-text">May declare a Trigger if the flipped card has a <span class="suit-chip suit-masks"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>MASKS</span> suit.</div>
-        </div>
-
-        <!-- Masks #3: Венецианская острая полумаска (#3/#6 из концепта) -->
-        <div class="variant-card">
-          <div class="variant-header">
-            <span class="variant-id">MASKS — Вариант 3</span>
-            <span class="variant-desc">Венецианская граненая</span>
-          </div>
-          <div class="preview-large" style="color: #d2a8ff;">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <!-- Острые стреловидные скулы и выраженный викторианский стиль -->
-              <path fill-rule="evenodd" d="M12 7.5 L15.5 5 L21.5 6.5 L19.5 11.5 L21 15 L16.5 16.5 L12 14 L7.5 16.5 L3 15 L4.5 11.5 L2.5 6.5 L8.5 5 Z M7 9.5 C8 9.5 9 10.5 8.5 11.8 C8 12.8 6.8 13 6 12.2 C5.2 11.5 5.8 9.5 7 9.5 Z M17 9.5 C18.2 9.5 18.8 11.5 18 12.2 C17.2 13 16 12.8 15.5 11.8 C15 10.5 16 9.5 17 9.5 Z"/>
-            </svg>
-          </div>
-          <div class="preview-chip-row">
-            <span class="preview-chip-label">В жетоне (14px):</span>
-            <div class="chip-container">
-              <span class="suit-chip suit-masks">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 7.5 L15.5 5 L21.5 6.5 L19.5 11.5 L21 15 L16.5 16.5 L12 14 L7.5 16.5 L3 15 L4.5 11.5 L2.5 6.5 L8.5 5 Z M7 9.5 C8 9.5 9 10.5 8.5 11.8 C8 12.8 6.8 13 6 12.2 C5.2 11.5 5.8 9.5 7 9.5 Z M17 9.5 C18.2 9.5 18.8 11.5 18 12.2 C17.2 13 16 12.8 15.5 11.8 C15 10.5 16 9.5 17 9.5 Z"/></svg>
-                MASKS
-              </span>
-            </div>
-          </div>
-          <div class="sample-text">May declare a Trigger if the flipped card has a <span class="suit-chip suit-masks"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>MASKS</span> suit.</div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ==================== CROWS ==================== -->
-    <div class="suit-section">
-      <div class="section-title-row">
-        <span class="section-title title-crows">🦅 CROWS (Вороны / Перья)</span>
-      </div>
-
-      <div class="variants-grid">
-        
-        <!-- Crows #1: Скрещенные острые перья 'X' из книги -->
-        <div class="variant-card">
-          <div class="variant-header">
-            <span class="variant-id">CROWS — Вариант 1</span>
-            <span class="variant-desc">Оригинал книги (Перья 'X')</span>
-          </div>
-          <div class="preview-large" style="color: #56d364;">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <!-- Стилизованный каноничный знак Wyrd: два перекрещенных вороньих пера с резкими гранями -->
-              <path d="M3 4 C5 7 9.5 11 12 12 C9.5 13 5 17 3 20 C4.8 20.8 7.2 19.8 9 17.5 L12 13.8 L15 17.5 C16.8 19.8 19.2 20.8 21 20 C19 17 14.5 13 12 12 C14.5 11 19 7 21 4 C19.2 3.2 16.8 4.2 15 6.5 L12 10.2 L9 6.5 C7.2 4.2 4.8 3.2 3 4 Z"/>
-            </svg>
-          </div>
-          <div class="preview-chip-row">
-            <span class="preview-chip-label">В жетоне (14px):</span>
-            <div class="chip-container">
+            <span class="preview-chip-label">В боевом жетоне:</span>
+            <div>
               <span class="suit-chip suit-crows">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 4 C5 7 9.5 11 12 12 C9.5 13 5 17 3 20 C4.8 20.8 7.2 19.8 9 17.5 L12 13.8 L15 17.5 C16.8 19.8 19.2 20.8 21 20 C19 17 14.5 13 12 12 C14.5 11 19 7 21 4 C19.2 3.2 16.8 4.2 15 6.5 L12 10.2 L9 6.5 C7.2 4.2 4.8 3.2 3 4 Z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 3 C5.5 6.5 9.5 10.5 12 11.8 C14.5 10.5 18.5 6.5 21.5 3 C19.5 7.5 16.8 10.8 14.5 12 C16.8 13.2 19.5 16.5 21.5 21 C18.5 17.5 14.5 13.5 12 12.2 C9.5 13.5 5.5 17.5 2.5 21 C4.5 16.5 7.2 13.2 9.5 12 C7.2 10.8 4.5 7.5 2.5 3 Z"/></svg>
                 CROWS
               </span>
             </div>
           </div>
-          <div class="sample-text">Target suffers +1 Damage per <span class="suit-chip suit-crows"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>CROWS</span> in the final duel total.</div>
+          <div class="sample-text">When hitting, target suffers +1 Damage per <span class="suit-chip suit-crows"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 3 C5.5 6.5 9.5 10.5 12 11.8 C14.5 10.5 18.5 6.5 21.5 3 C19.5 7.5 16.8 10.8 14.5 12 C16.8 13.2 19.5 16.5 21.5 21 C18.5 17.5 14.5 13.5 12 12.2 C9.5 13.5 5.5 17.5 2.5 21 C4.5 16.5 7.2 13.2 9.5 12 C7.2 10.8 4.5 7.5 2.5 3 Z"/></svg>CROWS</span> in duel total.</div>
         </div>
 
-        <!-- Crows #2: Хищный ворон с расправленными крыльями -->
+        <!-- 2. Геральдическое перо-наконечник (Spearhead Feather) -->
         <div class="variant-card">
           <div class="variant-header">
-            <span class="variant-id">CROWS — Вариант 2</span>
-            <span class="variant-desc">Парящий ворон (Птица)</span>
+            <span class="variant-id">CROWS #2</span>
+            <span class="variant-desc">Перо-наконечник (Стрела)</span>
           </div>
-          <div class="preview-large" style="color: #56d364;">
+          <div class="preview-large">
             <svg viewBox="0 0 24 24" fill="currentColor">
-              <!-- Силуэт пикирующего ворона -->
-              <path d="M12 4.5 C12.8 5.5 14.2 6.5 16 6 C18.5 5.5 21.5 7 22 8.5 C20 9 17.5 8.5 15.5 9.5 C14 10.2 13.5 12 13 15 L14 19 L12 17.5 L10 19 L11 15 C10.5 12 10 10.2 8.5 9.5 C6.5 8.5 4 9 2 8.5 C2.5 7 5.5 5.5 8 6 C9.8 6.5 11.2 5.5 12 4.5 Z"/>
+              <!-- Симметричное, мощное вертикальное перо с резким острием -->
+              <path fill-rule="evenodd" d="M12 2 C8 7 5.5 12 6.5 17 L10.5 17.5 L10 22 L14 22 L13.5 17.5 L17.5 17 C18.5 12 16 7 12 2 Z M11 7 L9 10 L11 11 Z M13 7 L15 10 L13 11 Z M11 12.5 L8.5 15 L11 15.5 Z M13 12.5 L15.5 15 L13 15.5 Z"/>
             </svg>
           </div>
           <div class="preview-chip-row">
-            <span class="preview-chip-label">В жетоне (14px):</span>
-            <div class="chip-container">
+            <span class="preview-chip-label">В боевом жетоне:</span>
+            <div>
               <span class="suit-chip suit-crows">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5 C12.8 5.5 14.2 6.5 16 6 C18.5 5.5 21.5 7 22 8.5 C20 9 17.5 8.5 15.5 9.5 C14 10.2 13.5 12 13 15 L14 19 L12 17.5 L10 19 L11 15 C10.5 12 10 10.2 8.5 9.5 C6.5 8.5 4 9 2 8.5 C2.5 7 5.5 5.5 8 6 C9.8 6.5 11.2 5.5 12 4.5 Z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2 C8 7 5.5 12 6.5 17 L10.5 17.5 L10 22 L14 22 L13.5 17.5 L17.5 17 C18.5 12 16 7 12 2 Z M11 7 L9 10 L11 11 Z M13 7 L15 10 L13 11 Z M11 12.5 L8.5 15 L11 15.5 Z M13 12.5 L15.5 15 L13 15.5 Z"/></svg>
                 CROWS
               </span>
             </div>
           </div>
-          <div class="sample-text">Target suffers +1 Damage per <span class="suit-chip suit-crows"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>CROWS</span> in the final duel total.</div>
+          <div class="sample-text">When hitting, target suffers +1 Damage per <span class="suit-chip suit-crows"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2 C8 7 5.5 12 6.5 17 L10.5 17.5 L10 22 L14 22 L13.5 17.5 L17.5 17 C18.5 12 16 7 12 2 Z M11 7 L9 10 L11 11 Z M13 7 L15 10 L13 11 Z M11 12.5 L8.5 15 L11 15.5 Z M13 12.5 L15.5 15 L13 15.5 Z"/></svg>CROWS</span> in duel total.</div>
         </div>
 
-        <!-- Crows #3: Одиночное стилизованное перо масти -->
+        <!-- 3. Широкое изогнутое перо ворона (Quill Blade) -->
         <div class="variant-card">
           <div class="variant-header">
-            <span class="variant-id">CROWS — Вариант 3</span>
-            <span class="variant-desc">Перо ворона (Перо)</span>
+            <span class="variant-id">CROWS #3</span>
+            <span class="variant-desc">Хищное изогнутое перо</span>
           </div>
-          <div class="preview-large" style="color: #56d364;">
+          <div class="preview-large">
             <svg viewBox="0 0 24 24" fill="currentColor">
-              <!-- Изогнутое острое воронье перо -->
-              <path d="M19 4 C15 5 9 10 7 15 L5 21 L10 19 C15 16 19.5 9.5 19 4 Z M13.5 12.5 L8.5 16.5 M15.5 9.5 L11 13.5 M17.5 6.8 L14 10.2" stroke="#120e0a" stroke-width="1.2"/>
+              <!-- Плотное изогнутое перо со штрихами-прорезями -->
+              <path fill-rule="evenodd" d="M21 3 C16 4 9 9 6 15 L4 21 L10 19.5 C16 16.5 20.5 10 21 3 Z M14 9 L10 13 L11.5 13.5 L15.5 9.5 Z M12 14.5 L8 17.5 L9.5 18 L13.5 15 Z"/>
             </svg>
           </div>
           <div class="preview-chip-row">
-            <span class="preview-chip-label">В жетоне (14px):</span>
-            <div class="chip-container">
+            <span class="preview-chip-label">В боевом жетоне:</span>
+            <div>
               <span class="suit-chip suit-crows">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 4 C15 5 9 10 7 15 L5 21 L10 19 C15 16 19.5 9.5 19 4 Z M13.5 12.5 L8.5 16.5 M15.5 9.5 L11 13.5 M17.5 6.8 L14 10.2" stroke="#120e0a" stroke-width="1.2"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M21 3 C16 4 9 9 6 15 L4 21 L10 19.5 C16 16.5 20.5 10 21 3 Z M14 9 L10 13 L11.5 13.5 L15.5 9.5 Z M12 14.5 L8 17.5 L9.5 18 L13.5 15 Z"/></svg>
                 CROWS
               </span>
             </div>
           </div>
-          <div class="sample-text">Target suffers +1 Damage per <span class="suit-chip suit-crows"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>CROWS</span> in the final duel total.</div>
+          <div class="sample-text">When hitting, target suffers +1 Damage per <span class="suit-chip suit-crows"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M21 3 C16 4 9 9 6 15 L4 21 L10 19.5 C16 16.5 20.5 10 21 3 Z M14 9 L10 13 L11.5 13.5 L15.5 9.5 Z M12 14.5 L8 17.5 L9.5 18 L13.5 15 Z"/></svg>CROWS</span> in duel total.</div>
         </div>
 
-      </div>
-    </div>
-
-    <!-- ==================== TOMES ==================== -->
-    <div class="suit-section">
-      <div class="section-title-row">
-        <span class="section-title title-tomes">📖 TOMES (Тома)</span>
-      </div>
-
-      <div class="variants-grid">
-        
-        <!-- Tomes #1: Оригинал книги правил с полосками строк -->
+        <!-- 4. Череп ворона с острым хищным клювом (Raven Skull) -->
         <div class="variant-card">
           <div class="variant-header">
-            <span class="variant-id">TOMES — Вариант 1</span>
-            <span class="variant-desc">Оригинал книги (Строки)</span>
+            <span class="variant-id">CROWS #4</span>
+            <span class="variant-desc">Череп ворона (Готика)</span>
           </div>
-          <div class="preview-large" style="color: #79b8ff;">
+          <div class="preview-large">
             <svg viewBox="0 0 24 24" fill="currentColor">
-              <!-- Раскрытый фолиант в точности как на скриншоте из книги правил с горизонтальными страницами -->
-              <path fill-rule="evenodd" d="M3 5 C3 4.2 3.8 3.5 4.8 3.8 L11.5 5.5 C11.8 5.6 12 5.9 12 6.5 L12 19.5 C12 20 11.4 20.3 10.8 20.1 L4.5 18.2 C3.6 17.9 3 17.2 3 16.3 L3 5 Z M12 6.5 C12 5.9 12.2 5.6 12.5 5.5 L19.2 3.8 C20.2 3.5 21 4.2 21 5 L21 16.3 C21 17.2 20.4 17.9 19.5 18.2 L13.2 20.1 C12.6 20.3 12 20 12 19.5 L12 6.5 Z M5.5 7.5 L10 8.7 M5.5 10.5 L10 11.7 M5.5 13.5 L10 14.7 M5.5 16.5 L10 17.7 M14 8.7 L18.5 7.5 M14 11.7 L18.5 10.5 M14 14.7 L18.5 13.5 M14 17.7 L18.5 16.5" stroke="#120e0a" stroke-width="1.3" stroke-linecap="round"/>
+              <!-- Череп птицы в профиль: круглая черепная коробка, глазница и длинный острый клюв вниз -->
+              <path fill-rule="evenodd" d="M14 4 C18 4 21 7 21 11 C21 13.5 19.5 15.5 17 16.5 L7 22 C6 21.5 7 19.5 8.5 17.5 L10.5 15 C10 14 9.5 12.5 10 11 C10.8 7 12 4 14 4 Z M15 9.5 C16 9.5 16.8 10.3 16.8 11.2 C16.8 12.2 16 13 15 13 C14 13 13.2 12.2 13.2 11.2 C13.2 10.3 14 9.5 15 9.5 Z"/>
             </svg>
           </div>
           <div class="preview-chip-row">
-            <span class="preview-chip-label">В жетоне (14px):</span>
-            <div class="chip-container">
-              <span class="suit-chip suit-tomes">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M3 5 C3 4.2 3.8 3.5 4.8 3.8 L11.5 5.5 C11.8 5.6 12 5.9 12 6.5 L12 19.5 C12 20 11.4 20.3 10.8 20.1 L4.5 18.2 C3.6 17.9 3 17.2 3 16.3 L3 5 Z M12 6.5 C12 5.9 12.2 5.6 12.5 5.5 L19.2 3.8 C20.2 3.5 21 4.2 21 5 L21 16.3 C21 17.2 20.4 17.9 19.5 18.2 L13.2 20.1 C12.6 20.3 12 20 12 19.5 L12 6.5 Z M5.5 7.5 L10 8.7 M5.5 10.5 L10 11.7 M5.5 13.5 L10 14.7 M5.5 16.5 L10 17.7 M14 8.7 L18.5 7.5 M14 11.7 L18.5 10.5 M14 14.7 L18.5 13.5 M14 17.7 L18.5 16.5" stroke="#120e0a" stroke-width="1.3" stroke-linecap="round"/></svg>
-                TOMES
+            <span class="preview-chip-label">В боевом жетоне:</span>
+            <div>
+              <span class="suit-chip suit-crows">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M14 4 C18 4 21 7 21 11 C21 13.5 19.5 15.5 17 16.5 L7 22 C6 21.5 7 19.5 8.5 17.5 L10.5 15 C10 14 9.5 12.5 10 11 C10.8 7 12 4 14 4 Z M15 9.5 C16 9.5 16.8 10.3 16.8 11.2 C16.8 12.2 16 13 15 13 C14 13 13.2 12.2 13.2 11.2 C13.2 10.3 14 9.5 15 9.5 Z"/></svg>
+                CROWS
               </span>
             </div>
           </div>
-          <div class="sample-text">Add <span class="suit-chip suit-tomes"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>TOMES</span> to the duel total when casting Grimoire spells.</div>
+          <div class="sample-text">When hitting, target suffers +1 Damage per <span class="suit-chip suit-crows"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M14 4 C18 4 21 7 21 11 C21 13.5 19.5 15.5 17 16.5 L7 22 C6 21.5 7 19.5 8.5 17.5 L10.5 15 C10 14 9.5 12.5 10 11 C10.8 7 12 4 14 4 Z M15 9.5 C16 9.5 16.8 10.3 16.8 11.2 C16.8 12.2 16 13 15 13 C14 13 13.2 12.2 13.2 11.2 C13.2 10.3 14 9.5 15 9.5 Z"/></svg>CROWS</span> in duel total.</div>
         </div>
 
-        <!-- Tomes #2: Старинный фолиант с закладкой -->
+        <!-- 5. Расправленное крыло ворона (Raven Wing) -->
         <div class="variant-card">
           <div class="variant-header">
-            <span class="variant-id">TOMES — Вариант 2</span>
-            <span class="variant-desc">Гримуар с лентой</span>
+            <span class="variant-id">CROWS #5</span>
+            <span class="variant-desc">Крыло ворона (Маховые перья)</span>
           </div>
-          <div class="preview-large" style="color: #79b8ff;">
+          <div class="preview-large">
             <svg viewBox="0 0 24 24" fill="currentColor">
-              <!-- Раскрытая старинная книга с закладкой-лентой по центру -->
-              <path d="M4 6 C4 4.5 5.5 4 7 4.5 L11.5 6 L11.5 18.5 L6.5 17 C5 16.5 4 17 4 18.5 Z M20 6 C20 4.5 18.5 4 17 4.5 L12.5 6 L12.5 18.5 L17.5 17 C19 16.5 20 17 20 18.5 Z"/>
-              <path d="M11 6 L13 6 L13 21 L12 19.5 L11 21 Z" fill="#ff7b72"/>
+              <!-- Массивное крыло хищной птицы с острыми ступенчатыми перьями -->
+              <path d="M4 17 C6 17 9 16 12 13 C15 10 19 6 22 4 C21 7 19 10 17 12 L20 12 C18 14 15 16 13 17 L16 17 C13 19 10 20.5 5 20.5 C3.5 20.5 3 19 4 17 Z"/>
             </svg>
           </div>
           <div class="preview-chip-row">
-            <span class="preview-chip-label">В жетоне (14px):</span>
-            <div class="chip-container">
-              <span class="suit-chip suit-tomes">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6 C4 4.5 5.5 4 7 4.5 L11.5 6 L11.5 18.5 L6.5 17 C5 16.5 4 17 4 18.5 Z M20 6 C20 4.5 18.5 4 17 4.5 L12.5 6 L12.5 18.5 L17.5 17 C19 16.5 20 17 20 18.5 Z"/><path d="M11 6 L13 6 L13 21 L12 19.5 L11 21 Z" fill="#ff7b72"/></svg>
-                TOMES
+            <span class="preview-chip-label">В боевом жетоне:</span>
+            <div>
+              <span class="suit-chip suit-crows">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 17 C6 17 9 16 12 13 C15 10 19 6 22 4 C21 7 19 10 17 12 L20 12 C18 14 15 16 13 17 L16 17 C13 19 10 20.5 5 20.5 C3.5 20.5 3 19 4 17 Z"/></svg>
+                CROWS
               </span>
             </div>
           </div>
-          <div class="sample-text">Add <span class="suit-chip suit-tomes"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>TOMES</span> to the duel total when casting Grimoire spells.</div>
+          <div class="sample-text">When hitting, target suffers +1 Damage per <span class="suit-chip suit-crows"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 17 C6 17 9 16 12 13 C15 10 19 6 22 4 C21 7 19 10 17 12 L20 12 C18 14 15 16 13 17 L16 17 C13 19 10 20.5 5 20.5 C3.5 20.5 3 19 4 17 Z"/></svg>CROWS</span> in duel total.</div>
         </div>
 
-        <!-- Tomes #3: Массивный закрытый гримуар с замком -->
+        <!-- 6. Веер из трех перьев (Feather Crest / Tri-Feather) -->
         <div class="variant-card">
           <div class="variant-header">
-            <span class="variant-id">TOMES — Вариант 3</span>
-            <span class="variant-desc">Закрытая книга / Гримуар</span>
+            <span class="variant-id">CROWS #6</span>
+            <span class="variant-desc">Тройное перо (Геральдика)</span>
           </div>
-          <div class="preview-large" style="color: #79b8ff;">
+          <div class="preview-large">
             <svg viewBox="0 0 24 24" fill="currentColor">
-              <!-- Фолиант с массивным переплетом и угловыми накладками -->
-              <path d="M5 4 C5 3 6 2 7 2 L18 2 C19 2 20 3 20 4 L20 20 C20 21 19 22 18 22 L7 22 C6 22 5 21 5 20 Z M7 4 L7 20 M16 10 L19 10 L19 14 L16 14 Z" stroke="#120e0a" stroke-width="1.5"/>
+              <!-- Три плотных пера веером из одного основания -->
+              <path d="M12 3 C10.5 7 10 12 11 18 L13 18 C14 12 13.5 7 12 3 Z"/>
+              <path d="M7 6 C6.5 9.5 7.5 13.5 10 17.5 L11.5 16.5 C9.5 13 8.8 9.5 9 6.5 Z"/>
+              <path d="M17 6 C17.5 9.5 16.5 13.5 14 17.5 L12.5 16.5 C14.5 13 15.2 9.5 15 6.5 Z"/>
             </svg>
           </div>
           <div class="preview-chip-row">
-            <span class="preview-chip-label">В жетоне (14px):</span>
-            <div class="chip-container">
-              <span class="suit-chip suit-tomes">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 4 C5 3 6 2 7 2 L18 2 C19 2 20 3 20 4 L20 20 C20 21 19 22 18 22 L7 22 C6 22 5 21 5 20 Z M7 4 L7 20 M16 10 L19 10 L19 14 L16 14 Z" stroke="#120e0a" stroke-width="1.5"/></svg>
-                TOMES
+            <span class="preview-chip-label">В боевом жетоне:</span>
+            <div>
+              <span class="suit-chip suit-crows">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 C10.5 7 10 12 11 18 L13 18 C14 12 13.5 7 12 3 Z"/><path d="M7 6 C6.5 9.5 7.5 13.5 10 17.5 L11.5 16.5 C9.5 13 8.8 9.5 9 6.5 Z"/><path d="M17 6 C17.5 9.5 16.5 13.5 14 17.5 L12.5 16.5 C14.5 13 15.2 9.5 15 6.5 Z"/></svg>
+                CROWS
               </span>
             </div>
           </div>
-          <div class="sample-text">Add <span class="suit-chip suit-tomes"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>TOMES</span> to the duel total when casting Grimoire spells.</div>
+          <div class="sample-text">When hitting, target suffers +1 Damage per <span class="suit-chip suit-crows"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 C10.5 7 10 12 11 18 L13 18 C14 12 13.5 7 12 3 Z"/><path d="M7 6 C6.5 9.5 7.5 13.5 10 17.5 L11.5 16.5 C9.5 13 8.8 9.5 9 6.5 Z"/><path d="M17 6 C17.5 9.5 16.5 13.5 14 17.5 L12.5 16.5 C14.5 13 15.2 9.5 15 6.5 Z"/></svg>CROWS</span> in duel total.</div>
+        </div>
+
+        <!-- 7. Профиль ворона с открытым клювом (Raven Head) -->
+        <div class="variant-card">
+          <div class="variant-header">
+            <span class="variant-id">CROWS #7</span>
+            <span class="variant-desc">Голова ворона (Профиль)</span>
+          </div>
+          <div class="preview-large">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <!-- Четкий силуэт головы ворона с глазом и взъерошенным затылком -->
+              <path fill-rule="evenodd" d="M13 4 C17 4 20 6.5 21 10 C21 12 19.5 14 18 15 L20 18 L16 18 C14 20 11 21 8 20 C9 18 8 16.5 7 15 L3 12 L7 11.5 L10 10 C10.5 7 11.5 4 13 4 Z M14.5 8.5 C15.3 8.5 16 9.2 16 10 C16 10.8 15.3 11.5 14.5 11.5 C13.7 11.5 13 10.8 13 10 C13 9.2 13.7 8.5 14.5 8.5 Z"/>
+            </svg>
+          </div>
+          <div class="preview-chip-row">
+            <span class="preview-chip-label">В боевом жетоне:</span>
+            <div>
+              <span class="suit-chip suit-crows">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M13 4 C17 4 20 6.5 21 10 C21 12 19.5 14 18 15 L20 18 L16 18 C14 20 11 21 8 20 C9 18 8 16.5 7 15 L3 12 L7 11.5 L10 10 C10.5 7 11.5 4 13 4 Z M14.5 8.5 C15.3 8.5 16 9.2 16 10 C16 10.8 15.3 11.5 14.5 11.5 C13.7 11.5 13 10.8 13 10 C13 9.2 13.7 8.5 14.5 8.5 Z"/></svg>
+                CROWS
+              </span>
+            </div>
+          </div>
+          <div class="sample-text">When hitting, target suffers +1 Damage per <span class="suit-chip suit-crows"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M13 4 C17 4 20 6.5 21 10 C21 12 19.5 14 18 15 L20 18 L16 18 C14 20 11 21 8 20 C9 18 8 16.5 7 15 L3 12 L7 11.5 L10 10 C10.5 7 11.5 4 13 4 Z M14.5 8.5 C15.3 8.5 16 9.2 16 10 C16 10.8 15.3 11.5 14.5 11.5 C13.7 11.5 13 10.8 13 10 C13 9.2 13.7 8.5 14.5 8.5 Z"/></svg>CROWS</span> in duel total.</div>
         </div>
 
       </div>
