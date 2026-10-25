@@ -2798,6 +2798,10 @@ function formatPursuitText(text) {
             : (s) => `[${s.toUpperCase()}]`;
 
         return text
+            .replace(/\bRAMS\b/g, getChip('rams'))
+            .replace(/\bMASKS\b/g, getChip('masks'))
+            .replace(/\bCROWS\b/g, getChip('crows'))
+            .replace(/\bTOMES\b/g, getChip('tomes'))
             .replace(/:r:/g, getChip('rams'))
             .replace(/:m:/g, getChip('masks'))
             .replace(/:c:/g, getChip('crows'))
@@ -3560,6 +3564,7 @@ function addNewTalentCard(selectedVal = "") {
                 </div>
                 <div class="talent-body">
                     <div class="talent-meta-info">Требования: <span class="talent-req">—</span> | Книга: <span class="talent-book">—</span></div>
+                    <div class="talent-desc-display" style="line-height: 1.5; font-size: 14px; color: #e8dfd0; white-space: pre-line; display: none;"></div>
                     <textarea class="talent-desc-area" placeholder="Описание таланта..."></textarea>
                 </div>
             `;
@@ -3574,12 +3579,13 @@ function addNewTalentCard(selectedVal = "") {
             btn.textContent = isOpen ? "▼" : "▲";
         }
 
-        function onTalentSelectChange(select) {
+function onTalentSelectChange(select) {
             const card = select.closest(".talent-card");
             const customInput = card.querySelector(".custom-name-input");
             const reqSpan = card.querySelector(".talent-req");
             const bookSpan = card.querySelector(".talent-book");
             const descArea = card.querySelector(".talent-desc-area");
+            const descDisplay = card.querySelector(".talent-desc-display");
             const val = select.value;
 
             if (val === "__custom__") {
@@ -3588,17 +3594,32 @@ function addNewTalentCard(selectedVal = "") {
                 reqSpan.textContent = "Любые";
                 bookSpan.textContent = "Custom";
                 descArea.value = "";
+                descArea.style.display = "block";
+                if (descDisplay) {
+                    descDisplay.style.display = "none";
+                    descDisplay.innerHTML = "";
+                }
             } else if (val && typeof GENERAL_TALENTS !== 'undefined') {
                 const found = GENERAL_TALENTS.find(t => t.name === val);
                 if (found) {
                     reqSpan.textContent = found.req || "None";
                     bookSpan.textContent = found.book || "—";
                     descArea.value = found.desc || "";
+                    descArea.style.display = "none";
+                    if (descDisplay) {
+                        descDisplay.style.display = "block";
+                        descDisplay.innerHTML = formatPursuitText(found.desc || "");
+                    }
                 }
             } else {
                 reqSpan.textContent = "—";
                 bookSpan.textContent = "—";
                 descArea.value = "";
+                descArea.style.display = "none";
+                if (descDisplay) {
+                    descDisplay.style.display = "none";
+                    descDisplay.innerHTML = "";
+                }
             }
         }
 
@@ -3735,10 +3756,13 @@ const tContainer = document.getElementById("talentsContainer");
                     const bookSpan = lastCard.querySelector(".talent-book");
                     const descArea = lastCard.querySelector(".talent-desc-area");
 
+const descDisplay = lastCard.querySelector(".talent-desc-display");
                     if (t.isCustom) {
                         select.style.display = "none";
                         customInput.style.display = "block";
                         customInput.value = t.name;
+                        descArea.style.display = "block";
+                        if (descDisplay) descDisplay.style.display = "none";
                     } else {
                         select.value = t.name;
                         onTalentSelectChange(select);
@@ -3746,7 +3770,12 @@ const tContainer = document.getElementById("talentsContainer");
                     
                     if (t.req) reqSpan.textContent = t.req;
                     if (t.book) bookSpan.textContent = t.book;
-                    if (t.desc) descArea.value = t.desc;
+                    if (t.desc) {
+                        descArea.value = t.desc;
+                        if (!t.isCustom && descDisplay) {
+                            descDisplay.innerHTML = formatPursuitText(t.desc);
+                        }
+                    }
                 });
             } else {
                 addNewTalentCard();
