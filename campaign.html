@@ -824,21 +824,50 @@ body {
             overflow: hidden; /* Шапка и описание зафиксированы и не уезжают влево */
         }
 
-        /* Оборачиваем только саму таблицу в скролл */
-        .pursuit-table-scroll {
+.pursuit-table-scroll {
             width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+            overflow: visible; /* Отключаем свайп */
         }
 
         .pursuit-weapon-table {
-            width: 100%;
-            min-width: 320px; /* Таблица сохраняет читаемость колонок при скролле */
+            width: 100% !important;
+            min-width: 0 !important; /* Больше не распирает экран */
+            table-layout: fixed;
             border-collapse: collapse;
             font-size: 11px;
             text-align: center;
             background: #1b1510;
             border-bottom: 1px solid #382b1d;
+        }
+
+        /* Адаптация колонок под экран смартфона */
+        @media (max-width: 768px) {
+            .box {
+                padding: 14px 10px !important; /* Освобождаем место по бокам экрана */
+            }
+            .pursuit-step-card {
+                padding: 10px 8px !important;
+            }
+            .pursuit-choice-grid > div {
+                padding: 8px 6px !important;
+            }
+            .pursuit-weapon-table {
+                font-size: 9.5px !important;
+            }
+            .pursuit-weapon-table th,
+            .pursuit-weapon-table td {
+                padding: 4px 2px !important;
+                word-break: break-word; /* Позволяет длинным словам переноситься */
+            }
+            .suit-chip {
+                padding: 1px 3px !important;
+                font-size: 9px !important;
+                gap: 2px !important;
+            }
+            .suit-chip svg {
+                width: 11px !important;
+                height: 11px !important;
+            }
         }
         /* Кнопка открытия триггеров [T] */
         .skill-trigger-btn {
@@ -2422,15 +2451,15 @@ if (talent.power) {
                         <strong style="color: #c59a5b; font-size: 13px; letter-spacing: 0.5px;">${(p.name || talent.name || "POWER").toUpperCase()}</strong>
                         <div style="font-size: 10px; color: #bfaea0; font-style: italic;">${p.typeLine || "Manifested Power"}</div>
                     </div>
-                    <div class="pursuit-table-scroll">
+<div class="pursuit-table-scroll">
                         <table class="pursuit-weapon-table">
                             <thead>
                                 <tr>
-                                    <th style="width: 32%;">ACTING VALUE</th>
-                                    <th style="width: 14%;">AP</th>
-                                    <th style="width: 18%;">TN</th>
-                                    <th style="width: 16%;">RESIST</th>
-                                    <th style="width: 20%;">RANGE</th>
+                                    <th style="width: 35%;">ACTING VALUE</th>
+                                    <th style="width: 12%;">AP</th>
+                                    <th style="width: 24%;">TN</th>
+                                    <th style="width: 13%;">RESIST</th>
+                                    <th style="width: 16%;">RANGE</th>
                                 </tr>
                             </thead>
                             <tbody>
