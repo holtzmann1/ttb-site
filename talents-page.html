@@ -13,9 +13,12 @@
 
     body {
       min-height: 100vh;
-      background: radial-gradient(circle at 50% 20%, #30251b 0%, #17130f 45%, #0b0a09 100%);
-      color: #e8dfd0;
-      font-family: Georgia, serif;
+      background: #120f0c;
+      background-image: 
+        radial-gradient(circle at 50% 20%, #1e1812 0%, #120f0c 70%, #0a0806 100%),
+        repeating-linear-gradient(0deg, rgba(40, 32, 24, 0.2) 0px, rgba(40, 32, 24, 0.2) 1px, transparent 1px, transparent 28px);
+      color: #dfd4c4;
+      font-family: Georgia, 'Times New Roman', serif;
       font-size: 14.5px;
       line-height: 1.6;
       display: flex;
@@ -23,16 +26,16 @@
       overflow-x: hidden;
     }
 
-    /* Хедер в единой атмосфере с index.html */
+    /* Хедер в книжном стиле */
     header {
       padding: 18px 36px;
-      border-bottom: 1px solid #4a3825;
-      background: rgba(12, 10, 8, 0.92);
+      border-bottom: 2px solid #3d2d1e;
+      background: rgba(18, 15, 12, 0.95);
       position: sticky;
       top: 0;
       z-index: 100;
       backdrop-filter: blur(8px);
-      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.85);
     }
 
     .header-inner {
@@ -59,7 +62,7 @@
     }
 
     .logo {
-      color: #c59a5b;
+      color: #c7a877;
       font-size: 20px;
       letter-spacing: 2.5px;
       text-decoration: none;
@@ -68,15 +71,15 @@
     }
 
     .logo:hover {
-      color: #e8dfd0;
+      color: #f2ece2;
     }
 
     .sublogo {
-      color: #a99e8d;
+      color: #8f8273;
       font-size: 14px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      border-left: 1px solid #4a3825;
+      border-left: 1px solid #3d2d1e;
       padding-left: 12px;
     }
 
@@ -91,34 +94,35 @@
       align-items: center;
       gap: 6px;
       padding: 8px 16px;
-      border: 1px solid #b88a4a;
-      background: rgba(26, 21, 16, 0.6);
-      color: #c59a5b;
+      border: 1px solid #6b5239;
+      background: #241c16;
+      color: #cbbca9;
       text-decoration: none;
       letter-spacing: 1.5px;
-      font-size: 12.5px;
+      font-size: 12px;
       font-family: Georgia, serif;
       text-transform: uppercase;
-      border-radius: 4px;
+      border-radius: 0;
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
     .nav-btn:hover, .nav-btn.active {
-      background: #b88a4a;
-      color: #0b0a09;
+      background: #36291e;
+      border-color: #a8885a;
+      color: #f2ece2;
     }
 
     .nav-btn-secondary {
-      border-color: #4a3825;
-      color: #a99e8d;
+      border-color: #423223;
+      color: #8f8273;
       background: transparent;
     }
 
     .nav-btn-secondary:hover {
-      border-color: #b88a4a;
-      color: #c59a5b;
-      background: rgba(184, 138, 74, 0.1);
+      border-color: #6b5239;
+      color: #cbbca9;
+      background: #1c1611;
     }
 
     /* Поиск */
@@ -129,22 +133,21 @@
 
     .search-input {
       width: 100%;
-      background: #14110e;
-      border: 1px solid #4a3825;
-      border-radius: 5px;
-      color: #e8dfd0;
+      background: #14100d;
+      border: 1px solid #3d2d1e;
+      border-radius: 0;
+      color: #ded3c3;
       font-family: Georgia, serif;
-      font-size: 14.5px;
+      font-size: 14px;
       padding: 11px 16px 11px 42px;
       outline: none;
       letter-spacing: 0.5px;
-      transition: all 0.2s;
+      transition: border-color 0.2s;
     }
 
     .search-input:focus {
-      border-color: #b88a4a;
-      background: #19140f;
-      box-shadow: 0 0 10px rgba(184, 138, 74, 0.15);
+      border-color: #8c714b;
+      background: #17130f;
     }
 
     .search-icon {
@@ -152,7 +155,7 @@
       left: 14px;
       top: 50%;
       transform: translateY(-50%);
-      color: #c59a5b;
+      color: #c7a877;
       pointer-events: none;
       font-size: 14px;
     }
@@ -160,8 +163,8 @@
     /* Выдвижная панель фильтров */
     .filter-drawer {
       display: none;
-      background: rgba(18, 14, 11, 0.98);
-      border-bottom: 1px solid #4a3825;
+      background: #15110e;
+      border-bottom: 2px solid #3d2d1e;
       padding: 24px 36px;
     }
 
@@ -178,13 +181,13 @@
     }
 
     .filter-col-title {
-      color: #c59a5b;
+      color: #c7a877;
       font-size: 12.5px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       padding-bottom: 6px;
       margin-bottom: 10px;
-      border-bottom: 1px solid #382c1e;
+      border-bottom: 1px solid #3d2d1e;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -192,7 +195,7 @@
 
     .toggle-link {
       font-size: 11px;
-      color: #a99e8d;
+      color: #8f8273;
       letter-spacing: 1px;
       cursor: pointer;
       text-transform: uppercase;
@@ -200,7 +203,7 @@
     }
 
     .toggle-link:hover {
-      color: #c59a5b;
+      color: #c7a877;
     }
 
     /* Теги выбора */
@@ -211,10 +214,10 @@
     }
 
     .tag-btn {
-      background: #16120e;
-      border: 1px solid #382c1e;
-      border-radius: 4px;
-      color: #a99e8d;
+      background: #181411;
+      border: 1px solid #3a2e22;
+      border-radius: 0;
+      color: #9c9183;
       font-size: 11.5px;
       font-family: Georgia, serif;
       letter-spacing: 0.8px;
@@ -226,15 +229,16 @@
     }
 
     .tag-btn:hover {
-      border-color: #b88a4a;
-      color: #e8dfd0;
-      background: #241d16;
+      border-color: #8c714b;
+      color: #e5ded3;
+      background: #241d18;
     }
 
     .tag-btn.active {
-      background: #3a2b1a;
-      border-color: #b88a4a;
-      color: #c59a5b;
+      background: #2b2219;
+      border-color: #c4a472;
+      color: #ecd7b7;
+      box-shadow: inset 0 0 0 1px #c4a472;
     }
 
     /* Аспекты */
@@ -250,13 +254,13 @@
       align-items: center;
       gap: 7px;
       font-size: 12px;
-      color: #c59a5b;
+      color: #c7a877;
       cursor: pointer;
       user-select: none;
     }
 
     .aspect-mode-toggle input {
-      accent-color: #b88a4a;
+      accent-color: #8c714b;
       cursor: pointer;
       width: 15px;
       height: 15px;
@@ -275,9 +279,9 @@
     }
 
     .aspect-box {
-      background: #16120e;
-      border: 1px solid #382c1e;
-      border-radius: 4px;
+      background: #14100d;
+      border: 1px solid #33261a;
+      border-radius: 0;
       padding: 6px 3px;
       display: flex;
       flex-direction: column;
@@ -288,7 +292,7 @@
     .aspect-title {
       font-size: 10.5px;
       letter-spacing: 1px;
-      color: #a99e8d;
+      color: #8f8273;
       text-transform: uppercase;
     }
 
@@ -299,12 +303,12 @@
     }
 
     .step-btn {
-      background: #201a14;
-      border: 1px solid #4a3825;
-      color: #c59a5b;
+      background: #1e1813;
+      border: 1px solid #4a3827;
+      color: #c7a877;
       width: 20px;
       height: 20px;
-      border-radius: 3px;
+      border-radius: 0;
       font-family: Georgia, serif;
       font-size: 12px;
       display: flex;
@@ -317,15 +321,15 @@
     }
 
     .step-btn:hover {
-      background: #b88a4a;
-      color: #0b0a09;
-      border-color: #b88a4a;
+      background: #8c714b;
+      color: #120f0c;
+      border-color: #8c714b;
     }
 
     .aspect-val {
       font-size: 13.5px;
       font-weight: bold;
-      color: #e8dfd0;
+      color: #dfd4c4;
       min-width: 18px;
       text-align: center;
     }
@@ -345,8 +349,8 @@
       align-items: center;
       padding-bottom: 10px;
       margin-bottom: 18px;
-      border-bottom: 1px solid #382c1e;
-      color: #a99e8d;
+      border-bottom: 1px solid #3d2d1e;
+      color: #8f8273;
       font-size: 13px;
       letter-spacing: 0.8px;
     }
@@ -357,23 +361,50 @@
       gap: 18px;
     }
 
-    /* Карточка таланта — чистая, яркая */
+    /* Карточка таланта — книжная страница с угловыми засечками */
     .talent-card {
-      background: rgba(22, 18, 14, 0.82);
-      border: 1px solid #3c2f21;
-      border-radius: 6px;
-      padding: 16px 18px;
+      background: #1a1511;
+      border: 1px solid #4a3827;
+      border-radius: 0;
+      box-shadow: 
+        inset 0 0 0 3px #1a1511,
+        inset 0 0 0 4px #3d2d1e,
+        0 8px 24px rgba(0, 0, 0, 0.85);
+      padding: 18px 20px;
       display: flex;
       flex-direction: column;
       gap: 10px;
       position: relative;
-      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    /* Викторианские засечки в углах карточки */
+    .talent-card::before,
+    .talent-card::after {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-color: #8c714b;
+      pointer-events: none;
+    }
+    .talent-card::before {
+      top: 5px; left: 5px;
+      border-top: 1px solid #8c714b;
+      border-left: 1px solid #8c714b;
+    }
+    .talent-card::after {
+      bottom: 5px; right: 5px;
+      border-bottom: 1px solid #8c714b;
+      border-right: 1px solid #8c714b;
     }
 
     .talent-card:hover {
-      border-color: #b88a4a;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
-      transform: translateY(-2px);
+      border-color: #8c714b;
+      box-shadow: 
+        inset 0 0 0 3px #1a1511,
+        inset 0 0 0 4px #5a422e,
+        0 10px 28px rgba(0, 0, 0, 0.95);
     }
 
     .card-head {
@@ -381,37 +412,37 @@
       justify-content: space-between;
       align-items: flex-start;
       gap: 10px;
-      border-bottom: 1px solid #2e2318;
+      border-bottom: 1px solid #38291a;
       padding-bottom: 8px;
     }
 
     .talent-name {
-      font-size: 17px;
-      color: #c59a5b;
-      letter-spacing: 0.8px;
+      font-size: 16.5px;
+      color: #c7a877;
+      letter-spacing: 1px;
       line-height: 1.25;
-      font-weight: bold;
+      font-weight: normal;
     }
 
     .book-tag-badge {
       font-size: 10.5px;
-      color: #a99e8d;
+      color: #8f8273;
       letter-spacing: 1px;
       text-transform: uppercase;
-      border: 1px solid #382c1e;
-      background: #14110e;
+      border: 1px solid #3d2d1e;
+      background: #13100d;
       padding: 2px 7px;
-      border-radius: 3px;
+      border-radius: 0;
       white-space: nowrap;
     }
 
     .card-req-row {
-      background: #14100c;
-      border-left: 2px solid #b88a4a;
+      background: #14100d;
+      border-left: 2px solid #8c714b;
       padding: 5px 10px;
-      border-radius: 0 3px 3px 0;
+      border-radius: 0;
       font-size: 12.5px;
-      color: #dcd3c4;
+      color: #bfaea0;
       display: flex;
       align-items: baseline;
       gap: 6px;
@@ -420,66 +451,65 @@
 
     .req-prefix {
       font-size: 10.5px;
-      color: #c59a5b;
+      color: #c7a877;
       letter-spacing: 1px;
       text-transform: uppercase;
       font-weight: bold;
     }
 
     .talent-body {
-      color: #dcd3c4;
-      font-size: 14px;
+      color: #ded4c5;
+      font-size: 13.5px;
       line-height: 1.65;
       white-space: pre-line;
       flex-grow: 1;
     }
 
-    /* Игровые жетоны мастей (Chips) */
+    /* Жетоны мастей Rulebook Folio (приглушенные нейтральные тона Wyrd) */
     .suit-chip {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      padding: 1px 7px 2px 6px;
-      border-radius: 4px;
-      font-size: 11.5px;
+      gap: 4px;
+      padding: 2px 7px 2px 5px;
+      border-radius: 2px;
+      font-size: 11px;
       font-weight: bold;
       letter-spacing: 0.8px;
-      line-height: 1.3;
-      vertical-align: baseline;
-      margin: 0 2px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+      line-height: 1;
+      vertical-align: middle;
       text-transform: uppercase;
+      user-select: none;
+      box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.6);
+      margin: 0 2px;
+      border: 1px solid transparent;
     }
 
-.suit-chip svg {
-      width: 15px;
-      height: 15px;
-      flex-shrink: 0;
+    .suit-chip svg {
+      width: 14px;
+      height: 14px;
       display: block;
+      flex-shrink: 0;
     }
 
-    .suit-rams {
-      color: #ff7b72;
-      background: rgba(248, 81, 73, 0.14);
-      border: 1px solid rgba(248, 81, 73, 0.45);
+    .suit-chip.suit-rams  { 
+      color: #c96b65; 
+      background: rgba(160, 60, 50, 0.16); 
+      border-color: rgba(175, 75, 65, 0.45); 
     }
-
-    .suit-crows {
-      color: #56d364;
-      background: rgba(63, 185, 80, 0.14);
-      border: 1px solid rgba(63, 185, 80, 0.45);
+    .suit-chip.suit-masks { 
+      color: #b392cf; 
+      background: rgba(120, 85, 150, 0.16); 
+      border-color: rgba(145, 105, 180, 0.45); 
     }
-
-    .suit-tomes {
-      color: #79b8ff;
-      background: rgba(88, 166, 255, 0.14);
-      border: 1px solid rgba(88, 166, 255, 0.45);
+    .suit-chip.suit-crows { 
+      color: #72ab7d; 
+      background: rgba(60, 120, 75, 0.16); 
+      border-color: rgba(75, 140, 90, 0.45); 
     }
-
-    .suit-masks {
-      color: #d2a8ff;
-      background: rgba(188, 140, 255, 0.14);
-      border: 1px solid rgba(188, 140, 255, 0.45);
+    .suit-chip.suit-tomes { 
+      color: #739bbd; 
+      background: rgba(65, 105, 140, 0.16); 
+      border-color: rgba(85, 125, 165, 0.45); 
     }
 
     /* Жетон модификатора судьбы (+) */
@@ -491,12 +521,12 @@
       height: 18px;
       padding: 0 4px;
       margin: 0 2px;
-      background: rgba(184, 138, 74, 0.18);
-      border: 1px solid rgba(184, 138, 74, 0.55);
-      color: #f0c674;
+      background: #201913;
+      border: 1px solid #4a3825;
+      color: #c7a877;
       font-weight: bold;
       font-size: 12px;
-      border-radius: 3px;
+      border-radius: 2px;
       vertical-align: middle;
       line-height: 1;
     }
@@ -509,26 +539,26 @@
     }
 
     .badge-banned {
-      background: rgba(248, 81, 73, 0.15);
-      border: 1px solid #f85149;
-      color: #ff7b72;
+      background: rgba(140, 40, 30, 0.18);
+      border: 1px solid #822e28;
+      color: #c96b65;
       font-size: 10.5px;
       letter-spacing: 1px;
       font-weight: bold;
       padding: 2px 8px;
-      border-radius: 3px;
+      border-radius: 0;
       text-transform: uppercase;
     }
 
     .badge-houserule {
-      background: rgba(184, 138, 74, 0.15);
-      border: 1px solid #b88a4a;
-      color: #d99b66;
+      background: rgba(140, 100, 50, 0.18);
+      border: 1px solid #7a582c;
+      color: #c7a877;
       font-size: 10.5px;
       letter-spacing: 1px;
       font-weight: bold;
       padding: 2px 8px;
-      border-radius: 3px;
+      border-radius: 0;
       text-transform: uppercase;
     }
 
@@ -537,8 +567,8 @@
       grid-column: 1 / -1;
       text-align: center;
       padding: 70px 20px;
-      color: #a99e8d;
-      font-size: 16px;
+      color: #8f8273;
+      font-size: 15px;
       font-style: italic;
     }
 
@@ -597,7 +627,7 @@
           <div class="tags-container" id="books-tags"></div>
         </div>
 
-        <!-- Аспекты персонажа (фильтруют только когда включены!) -->
+        <!-- Аспекты персонажа -->
         <div>
           <div class="filter-col-title">
             <span>CHARACTER ASPECTS</span>
@@ -612,7 +642,7 @@
           <div class="aspects-grid disabled" id="aspects-grid"></div>
         </div>
 
-        <!-- Теги и происхождение (без скобок и переводов) -->
+        <!-- Теги и происхождение -->
         <div>
           <div class="filter-col-title">
             <span>TRAITS & ORIGIN</span>
@@ -641,10 +671,9 @@
     <div class="cards-grid" id="cards-container"></div>
   </main>
 
-  <!-- БАЗА ДАННЫХ ТАЛАНТОВ -->
+  <!-- БАЗА ДАННЫХ ТАЛАНТОВ И МОДУЛЬ МАСТЕЙ -->
   <script src="suits.js"></script>
   <script src="talents-data.js"></script>
-  
 
   <script>
     const talents = (typeof GENERAL_TALENTS !== 'undefined') ? GENERAL_TALENTS : [];
@@ -666,7 +695,7 @@
       traits: new Set()
     };
 
-// Получение жетонов мастей из suits.js
+    // Получение жетонов мастей из suits.js
     const getChip = (typeof getSuitChip === "function") ? getSuitChip : (s) => `[${s.toUpperCase()}]`;
 
     const CHIP_RAMS = getChip('rams');
@@ -789,25 +818,19 @@
     }
 
     // Форматирование описания: масти-чипы, модификаторы судьбы (+)
-// Форматирование описания: масти-чипы, модификаторы судьбы (+)
     function formatDescription(desc) {
       if (!desc) return '';
 
       let formatted = desc
         .replace(/\[когти\]/gi, '⚔️')
-        // Поддержка текстовых названий мастей
-        .replace(/(?:\b|\()RAMS(?:\b|\))/g, CHIP_RAMS)
-        .replace(/(?:\b|\()CROWS(?:\b|\))/g, CHIP_CROWS)
-        .replace(/(?:\b|\()TOMES(?:\b|\))/g, CHIP_TOMES)
-        .replace(/(?:\b|\()MASKS(?:\b|\))/g, CHIP_MASKS)
-        // Поддержка коротких кодов (:r:, :c:, :t:, :m:)
+        .replace(/(?: |\()RAMS(?: |\))/g, CHIP_RAMS)
+        .replace(/(?: |\()CROWS(?: |\))/g, CHIP_CROWS)
+        .replace(/(?: |\()TOMES(?: |\))/g, CHIP_TOMES)
+        .replace(/(?: |\()MASKS(?: |\))/g, CHIP_MASKS)
         .replace(/:r:/g, CHIP_RAMS)
         .replace(/:c:/g, CHIP_CROWS)
         .replace(/:t:/g, CHIP_TOMES)
-        .replace(/:m:/g, CHIP_MASKS);
-
-      // Стилизация модификаторов судьбы (+)
-      formatted = formatted
+        .replace(/:m:/g, CHIP_MASKS)
         .replace(/(?<=\s)\+(?=\s)/g, '<span class="fate-chip">+</span>')
         .replace(/\[\+\]/g, '<span class="fate-chip">+</span>')
         .replace(/\[\-\]/g, '<span class="fate-chip">−</span>');
@@ -821,16 +844,13 @@
       const searchTerms = state.search.toLowerCase().trim().split(/\s+/).filter(Boolean);
 
       const filtered = talents.filter(t => {
-        // Поиск
         if (searchTerms.length > 0) {
           const full = `${t.name} ${t.desc} ${t.req} ${t.book} ${t.notes || ''}`.toLowerCase();
           if (!searchTerms.every(term => full.includes(term))) return false;
         }
 
-        // Книги
         if (state.books.size > 0 && !state.books.has(t.book)) return false;
 
-        // Теги
         if (state.traits.size > 0) {
           let matchesTrait = false;
           if (state.traits.has('Invested') && /Invested/i.test(t.req)) matchesTrait = true;
@@ -843,7 +863,6 @@
           if (!matchesTrait) return false;
         }
 
-        // Фильтрация по аспектам
         if (state.aspectsActive) {
           if (!qualifiesByAspects(t.req, state.aspects)) return false;
         }
