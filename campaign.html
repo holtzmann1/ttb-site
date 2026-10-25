@@ -792,6 +792,25 @@ body {
             .skills-table-wrap {
                 overflow-x: auto;
             }
+    /* Сетка выбора талантов пути: на ПК 2 колонки, на мобильных — 1 колонка */
+.pursuit-choice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+@media (max-width: 768px) {
+    .pursuit-choice-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Защита от распирания статблоков оружия и манифестаций */
+.pursuit-weapon-box {
+    overflow-x: auto;
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch;
+}
         }
         /* Кнопка открытия триггеров [T] */
         .skill-trigger-btn {
@@ -2651,7 +2670,7 @@ if (st.type === "choice") {
 
                 if (!hasChoice) {
                     // ПО ДЕФОЛТУ (ничего не выбрано): 2 колонки рядом
-                    html += `<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">`;
+                    html += `<div class="pursuit-choice-grid">`;
                     st.talents.forEach((t) => {
                         html += `
                             <div onclick="selectMultiPursuitTalent('${cp.id}', ${st.step}, '${t.name.replace(/'/g, "\\'")}')"
