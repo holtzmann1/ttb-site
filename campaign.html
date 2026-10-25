@@ -793,25 +793,53 @@ body {
                 overflow-x: auto;
             }
     }
-    /* Сетка выбора талантов пути: на ПК 2 колонки, на мобильных — 1 колонка */
-.pursuit-choice-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
+/* Сетка выбора талантов пути */
+        .pursuit-choice-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
 
-@media (max-width: 768px) {
-    .pursuit-choice-grid {
-        grid-template-columns: 1fr !important;
-    }
-}
+        /* Заставляем колонки и карточки сжиматься под ширину мобильного экрана */
+        .pursuit-choice-grid > div,
+        .pursuit-step-card > div {
+            min-width: 0 !important;
+            max-width: 100% !important;
+            box-sizing: border-box;
+        }
 
-/* Защита от распирания статблоков оружия и манифестаций */
-.pursuit-weapon-box {
-    overflow-x: auto;
-    max-width: 100%;
-    -webkit-overflow-scrolling: touch;
-}
+        @media (max-width: 768px) {
+            .pursuit-choice-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+        /* Карточка способности/оружия не распирает экран */
+        .pursuit-weapon-box {
+            margin-top: 8px;
+            border: 1px solid #4a3825;
+            background: #120e0b;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow: hidden; /* Шапка и описание зафиксированы и не уезжают влево */
+        }
+
+        /* Оборачиваем только саму таблицу в скролл */
+        .pursuit-table-scroll {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .pursuit-weapon-table {
+            width: 100%;
+            min-width: 320px; /* Таблица сохраняет читаемость колонок при скролле */
+            border-collapse: collapse;
+            font-size: 11px;
+            text-align: center;
+            background: #1b1510;
+            border-bottom: 1px solid #382b1d;
+        }
         /* Кнопка открытия триггеров [T] */
         .skill-trigger-btn {
             width: 24px;
@@ -2387,13 +2415,35 @@ window.addEventListener('keydown', function(event) {
                 triggersHtml += `</div>`;
             }
 
-            bodyHtml += `
+bodyHtml += `
                 <div class="pursuit-weapon-box" style="margin-top: 8px; border: 1px solid #c59a5b;">
                     <div style="background: #251d16; padding: 6px 8px; text-align: center; border-bottom: 1px solid #4a3825;">
                         <strong style="color: #c59a5b; font-size: 13px; letter-spacing: 0.5px;">${(p.name || talent.name || "POWER").toUpperCase()}</strong>
                         <div style="font-size: 10px; color: #bfaea0; font-style: italic;">${p.typeLine || "Manifested Power"}</div>
                     </div>
-                    <table class="pursuit-weapon-table">
+                    <div class="pursuit-table-scroll">
+                        <table class="pursuit-weapon-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 32%;">ACTING VALUE</th>
+                                    <th style="width: 14%;">AP</th>
+                                    <th style="width: 18%;">TN</th>
+                                    <th style="width: 16%;">RESIST</th>
+                                    <th style="width: 20%;">RANGE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>${p.av || "—"}</td>
+                                    <td>${p.ap || "1"}</td>
+                                    <td>${formatPursuitText(p.tn || "—")}</td>
+                                    <td>${p.resist || "—"}</td>
+                                    <td>${p.range || "—"}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pursuit-weapon-details">
                         <thead>
                             <tr>
                                 <th style="width: 32%;">ACTING VALUE</th>
