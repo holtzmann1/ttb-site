@@ -71,7 +71,7 @@ const GENERAL_TALENTS = [
   },
   {
     "name": "Critical Strike",
-    "desc": "Choose a Skill that meets this Talent’s requirement. All attacks with the chosen Skill gain the following Trigger:\n\nRAMS Critical Strike: When damaging, deal 1 additional damage for each RAMS in the final duel total.\n\nA character may take this Talent multiple times, but each time a different Skill must be chosen.",
+    "desc": "Choose a Skill that meets this Talent’s requirement. All attacks with the chosen Skill gain the following Trigger:\n\nCritical Strike: When damaging, deal 1 additional damage for each RAMS in the final duel total.\n\nA character may take this Talent multiple times, but each time a different Skill must be chosen.",
     "req": "Skill: Close Combat or Ranged Combat Skill 3 or higher",
     "book": "Second Edition Core",
     "notes": ""
