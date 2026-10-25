@@ -451,7 +451,9 @@
       text-transform: uppercase;
     }
 
-    .suit-chip svg {
+.suit-chip svg {
+      width: 15px;
+      height: 15px;
       flex-shrink: 0;
       display: block;
     }
@@ -640,7 +642,9 @@
   </main>
 
   <!-- БАЗА ДАННЫХ ТАЛАНТОВ -->
+  <script src="suits.js"></script>
   <script src="talents-data.js"></script>
+  
 
   <script>
     const talents = (typeof GENERAL_TALENTS !== 'undefined') ? GENERAL_TALENTS : [];
@@ -662,19 +666,13 @@
       traits: new Set()
     };
 
-    // Векторные SVG-иконки мастей Malifaux по канону Wyrd Games
-    const SVG_RAMS = `<svg class="suit-icon" viewBox="0 0 16 16" width="13" height="13" fill="currentColor"><path fill-rule="evenodd" d="M8.2 1.5 C11.5 1.5 14 3.8 14 7 C14 10 11.8 11.5 9.8 11.5 C8.2 11.5 7.2 10.4 7.2 9.2 C7.2 8 8.1 7.2 9.2 7.2 C9.9 7.2 10.5 7.7 10.5 8.4 C10.5 8.8 10.2 9.2 9.8 9.2 C9.6 9.2 9.4 9.1 9.4 8.9 C9.4 8.7 9.6 8.5 9.8 8.5 C9.6 8.3 9.2 8.3 9 8.5 C8.6 8.8 8.6 9.4 9 9.8 C9.5 10.2 10.2 10.1 10.7 9.5 C11.3 8.7 11.2 7.2 10.2 6.5 C9.1 5.7 7.5 6.1 6.8 7.2 C6.4 7.8 6.2 8.6 6.3 9.5 L4.8 12.5 C4.5 13.1 3.8 13.5 3.2 13.2 C2.8 12.9 2.7 12.2 3.1 11.6 L4.6 8.6 C4.2 7.8 4.2 6.8 4.6 5.8 C5.3 3.5 6.6 1.5 8.2 1.5 Z M5.2 7.2 C5.6 7.2 6 7.6 6 8 C6 8.4 5.6 8.8 5.2 8.8 C4.8 8.8 4.4 8.4 4.4 8 C4.4 7.6 4.8 7.2 5.2 7.2 Z"/></svg>`;
+// Получение жетонов мастей из suits.js
+    const getChip = (typeof getSuitChip === "function") ? getSuitChip : (s) => `[${s.toUpperCase()}]`;
 
-    const SVG_CROWS = `<svg class="suit-icon" viewBox="0 0 16 16" width="13" height="13" fill="currentColor"><path d="M1.5 1.8 C2.8 3.5 5.5 6.2 8 8 C5.5 9.8 2.8 12.5 1.5 14.2 C2.5 14.8 3.8 14.2 5.2 12.8 L8 9.5 L10.8 12.8 C12.2 14.2 13.5 14.8 14.5 14.2 C13.2 12.5 10.5 9.8 8 8 C10.5 6.2 13.2 3.5 14.5 1.8 C13.5 1.2 12.2 1.8 10.8 3.2 L8 6.5 L5.2 3.2 C3.8 1.8 2.5 1.2 1.5 1.8 Z"/></svg>`;
-
-    const SVG_TOMES = `<svg class="suit-icon" viewBox="0 0 16 16" width="14" height="13" fill="currentColor"><path fill-rule="evenodd" d="M1.5 3 C1.5 2.5 2 2 2.8 2.2 L7.5 3.5 C7.8 3.6 8 3.8 8 4.2 L8 13.5 C8 13.8 7.6 14 7.2 13.9 L2.5 12.4 C1.9 12.2 1.5 11.7 1.5 11.1 L1.5 3 Z M8 4.2 C8 3.8 8.2 3.6 8.5 3.5 L13.2 2.2 C14 2 14.5 2.5 14.5 3 L14.5 11.1 C14.5 11.7 14.1 12.2 13.5 12.4 L8.8 13.9 C8.4 14 8 13.8 8 13.5 L8 4.2 Z M3.2 4.5 L6.8 5.4 M3.2 6.5 L6.8 7.4 M3.2 8.5 L6.8 9.4 M3.2 10.5 L6.8 11.4 M9.2 5.4 L12.8 4.5 M9.2 7.4 L12.8 6.5 M9.2 9.4 L12.8 8.5 M9.2 11.4 L12.8 10.5" stroke="#101520" stroke-width="0.9" stroke-linecap="round"/></svg>`;
-
-    const SVG_MASKS = `<svg class="suit-icon" viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path fill-rule="evenodd" d="M1 4.5 C2 2 3.8 2 5.5 3.5 C6.8 4.2 7.5 4.2 8 4.2 C8.5 4.2 9.2 4.2 10.5 3.5 C12.2 2 14 2 15 4.5 C15.5 6.8 14.5 10 11.5 10.5 C9.5 10.8 8.7 8.5 8 8.5 C7.3 8.5 6.5 10.8 4.5 10.5 C1.5 10 0.5 6.8 1 4.5 Z M3.5 5.8 C4.2 5.8 5 6.5 4.8 7.3 C4.6 8 3.8 8.2 3.2 7.7 C2.8 7.3 2.8 6.5 3.5 5.8 Z M12.5 5.8 C13.2 6.5 13.2 7.3 12.8 7.7 C12.2 8.2 11.4 8 11.2 7.3 C11 6.5 11.8 5.8 12.5 5.8 Z"/></svg>`;
-
-    const CHIP_RAMS = `<span class="suit-chip suit-rams">${SVG_RAMS}RAMS</span>`;
-    const CHIP_CROWS = `<span class="suit-chip suit-crows">${SVG_CROWS}CROWS</span>`;
-    const CHIP_TOMES = `<span class="suit-chip suit-tomes">${SVG_TOMES}TOMES</span>`;
-    const CHIP_MASKS = `<span class="suit-chip suit-masks">${SVG_MASKS}MASKS</span>`;
+    const CHIP_RAMS = getChip('rams');
+    const CHIP_CROWS = getChip('crows');
+    const CHIP_TOMES = getChip('tomes');
+    const CHIP_MASKS = getChip('masks');
 
     // Книги
     function initBooks() {
@@ -791,15 +789,22 @@
     }
 
     // Форматирование описания: масти-чипы, модификаторы судьбы (+)
+// Форматирование описания: масти-чипы, модификаторы судьбы (+)
     function formatDescription(desc) {
       if (!desc) return '';
 
       let formatted = desc
         .replace(/\[когти\]/gi, '⚔️')
+        // Поддержка текстовых названий мастей
         .replace(/(?:\b|\()RAMS(?:\b|\))/g, CHIP_RAMS)
         .replace(/(?:\b|\()CROWS(?:\b|\))/g, CHIP_CROWS)
         .replace(/(?:\b|\()TOMES(?:\b|\))/g, CHIP_TOMES)
-        .replace(/(?:\b|\()MASKS(?:\b|\))/g, CHIP_MASKS);
+        .replace(/(?:\b|\()MASKS(?:\b|\))/g, CHIP_MASKS)
+        // Поддержка коротких кодов (:r:, :c:, :t:, :m:)
+        .replace(/:r:/g, CHIP_RAMS)
+        .replace(/:c:/g, CHIP_CROWS)
+        .replace(/:t:/g, CHIP_TOMES)
+        .replace(/:m:/g, CHIP_MASKS);
 
       // Стилизация модификаторов судьбы (+)
       formatted = formatted
