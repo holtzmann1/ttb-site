@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Текущая кампания — Through the Breach</title>
-    <!-- ПОДКЛЮЧАЕМ БАЗУ ТАЛАНТОВ -->
+    <script src="suits.js"></script>
     <script src="talents-data.js?v=3"></script>
-    <!-- ПОДКЛЮЧАЕМ БАЗУ ТРИГГЕРОВ -->
     <script src="skill-triggers-data.js?v=1"></script>
     <script src="pursuits-data.js?v=2"></script>
     <script src="pursuits-above-the-law.js?v=1"></script>
@@ -1368,6 +1367,36 @@
     overflow-x: hidden;
     max-width: 100%;
 }
+        /* ==================== СТИЛИ ЖЕТОНОВ МАСТЕЙ ==================== */
+        .suit-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 7px 2px 5px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 0.8px;
+            line-height: 1;
+            vertical-align: middle;
+            text-transform: uppercase;
+            user-select: none;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+            margin: 0 2px;
+        }
+
+        .suit-chip svg {
+            width: 15px;
+            height: 15px;
+            display: block;
+            flex-shrink: 0;
+        }
+
+        .suit-chip.suit-rams  { color: #ff7b72; background: rgba(248, 81, 73, 0.15); border: 1px solid rgba(248, 81, 73, 0.5); }
+        .suit-chip.suit-masks { color: #d2a8ff; background: rgba(188, 140, 255, 0.15); border: 1px solid rgba(188, 140, 255, 0.5); }
+        .suit-chip.suit-crows { color: #56d364; background: rgba(63, 185, 80, 0.15); border: 1px solid rgba(63, 185, 80, 0.5); }
+        .suit-chip.suit-tomes { color: #79b8ff; background: rgba(88, 166, 255, 0.15); border: 1px solid rgba(88, 166, 255, 0.5); }
+        
     </style>
 </head>
 <body>
@@ -2760,13 +2789,19 @@ if (st.type === "choice") {
             }
         }
     }
-        function formatPursuitText(text) {
+function formatPursuitText(text) {
         if (!text) return "";
+
+        // Если функция getSuitChip загружена из suits.js — используем живые векторные жетоны
+        const getChip = (typeof getSuitChip === "function") 
+            ? getSuitChip 
+            : (s) => `[${s.toUpperCase()}]`;
+
         return text
-            .replace(/:c:/g, '<span style="color: #3fb950; font-weight: bold; display: inline-block; margin-right: 2px;">[Crow]</span>')
-            .replace(/:m:/g, '<span style="color: #bc8cff; font-weight: bold; display: inline-block; margin-right: 2px;">[Mask]</span>')
-            .replace(/:r:/g, '<span style="color: #f85149; font-weight: bold; display: inline-block; margin-right: 2px;">[Ram]</span>')
-            .replace(/:t:/g, '<span style="color: #58a6ff; font-weight: bold; display: inline-block; margin-right: 2px;">[Tome]</span>')
+            .replace(/:r:/g, getChip('rams'))
+            .replace(/:m:/g, getChip('masks'))
+            .replace(/:c:/g, getChip('crows'))
+            .replace(/:t:/g, getChip('tomes'))
             .replace(/\(y\)/g, '<svg viewBox="0 0 24 24" style="width: 1.1em; height: 1.1em; vertical-align: -0.2em; fill: #c59a5b; display: inline-block;"><path d="M7 2l-4 6 5 3-3 7 8-10-4-3 4-3-6-2z"/></svg>')
             .replace(/Rg: y/g, 'Rg: <svg viewBox="0 0 24 24" style="width: 1.1em; height: 1.1em; vertical-align: -0.2em; fill: #c59a5b; display: inline-block;"><path d="M7 2l-4 6 5 3-3 7 8-10-4-3 4-3-6-2z"/></svg>')
             .replace(/:\+:/g, '<span style="color: #56d364; font-weight: bold; font-family: monospace;">[+]</span>')
