@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Through the Breach — Лаборатория 5 стилей Малифо</title>
-  <!-- Модуль мастей -->
+  <title>Through the Breach — Лаборатория стилей Wyrd Games</title>
   <script src="suits.js"></script>
   <style>
     /* ==========================================================================
-       Базовые сбросы и общая разметка
+       Базовые сбросы и типографика Wyrd Games
        ========================================================================== */
     *, *::before, *::after {
       box-sizing: border-box;
@@ -19,25 +18,24 @@
     body {
       min-height: 100vh;
       font-family: Georgia, 'Times New Roman', serif;
-      font-size: 14.5px;
+      font-size: 14px;
       line-height: 1.6;
-      transition: background 0.4s ease, color 0.4s ease;
+      transition: background 0.35s ease, color 0.35s ease;
       overflow-x: hidden;
-      padding-bottom: 80px;
+      padding-bottom: 90px;
     }
 
     /* ==========================================================================
-       Верхняя панель переключения 5 стилей (закреплена)
+       Верхняя панель переключения стилей (нейтральная, закрепленная)
        ========================================================================== */
     #theme-selector-bar {
       position: sticky;
       top: 0;
       z-index: 10000;
-      background: rgba(10, 8, 7, 0.95);
-      backdrop-filter: blur(12px);
-      border-bottom: 2px solid #543d26;
+      background: #0f0d0b;
+      border-bottom: 2px solid #3d3124;
       padding: 12px 24px;
-      box-shadow: 0 4px 25px rgba(0,0,0,0.85);
+      box-shadow: 0 4px 25px rgba(0,0,0,0.9);
     }
 
     .selector-inner {
@@ -45,7 +43,7 @@
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .selector-header {
@@ -53,23 +51,23 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
     }
 
     .selector-title {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: bold;
-      color: #c59a5b;
+      color: #bfa378;
       letter-spacing: 2px;
       text-transform: uppercase;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .selector-title span {
-      color: #887b6d;
-      font-size: 12px;
+      color: #7a6e60;
+      font-size: 11px;
       font-weight: normal;
       letter-spacing: 0.5px;
     }
@@ -77,84 +75,82 @@
     .theme-buttons-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
+      gap: 8px;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 960px) {
       .theme-buttons-grid {
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
       }
     }
 
     .btn-theme {
-      background: #181410;
-      border: 1px solid #4a3825;
-      color: #a89f92;
-      padding: 10px 12px;
+      background: #181411;
+      border: 1px solid #3a2e22;
+      color: #9c9183;
+      padding: 9px 10px;
       font-family: Georgia, serif;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: bold;
       letter-spacing: 1px;
       text-transform: uppercase;
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 2px;
       text-align: center;
-      transition: all 0.25s ease;
+      transition: all 0.2s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
     }
 
     .btn-theme small {
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: normal;
-      opacity: 0.75;
+      opacity: 0.7;
       text-transform: none;
     }
 
     .btn-theme:hover {
-      background: #2b2015;
-      color: #f0e4d0;
-      border-color: #b88a4a;
-      transform: translateY(-1px);
+      background: #241d18;
+      color: #e5ded3;
+      border-color: #8c714b;
     }
 
     .btn-theme.active {
-      background: #c59a5b;
-      color: #120e0a;
-      border-color: #ffd88a;
-      box-shadow: 0 0 14px rgba(197, 154, 91, 0.5);
+      background: #2b2219;
+      color: #ecd7b7;
+      border-color: #c4a472;
+      box-shadow: inset 0 0 0 1px #c4a472, 0 2px 8px rgba(0,0,0,0.6);
     }
 
     .theme-desc-banner {
-      background: rgba(20, 16, 12, 0.7);
-      border-left: 4px solid #c59a5b;
-      padding: 8px 14px;
-      border-radius: 2px;
-      font-size: 13px;
-      color: #a99e8d;
+      background: #13100d;
+      border-left: 3px solid #8c714b;
+      padding: 7px 12px;
+      font-size: 12.5px;
+      color: #8f8273;
     }
 
     .theme-desc-banner strong {
-      color: #c59a5b;
+      color: #c4a472;
       margin-right: 6px;
     }
 
-    /* Контейнер страницы витрины */
+    /* Основной контейнер витрины */
     .showcase-container {
       max-width: 1400px;
-      margin: 30px auto 0 auto;
+      margin: 28px auto 0 auto;
       padding: 0 24px;
       display: flex;
       flex-direction: column;
-      gap: 26px;
+      gap: 24px;
     }
 
     .demo-grid-two {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 26px;
+      gap: 24px;
     }
 
     @media (max-width: 960px) {
@@ -165,439 +161,305 @@
 
 
     /* ==========================================================================
-       ТЕМА 1: M&SU FOUNDRY (Индустриальный клёпаный стимпанк)
-       Скошенные углы 45°, 3D-болты по углам, рифлёная сталь, массивная латунь
+       СТИЛЬ 1: RULEBOOK FOLIO (Книга правил Through the Breach / Wyrd Books)
+       Состаренный пергамент, книжный кожаный переплет, волосяные двойные рамки
        ========================================================================== */
-    body.theme-msu {
-      background: #141210;
+    body.theme-rulebook {
+      background: #120f0c;
       background-image: 
-        radial-gradient(circle at 50% 10%, rgba(220, 140, 50, 0.12) 0%, transparent 60%),
-        repeating-linear-gradient(45deg, rgba(30, 24, 18, 0.4) 0px, rgba(30, 24, 18, 0.4) 2px, transparent 2px, transparent 10px),
-        repeating-linear-gradient(-45deg, rgba(20, 16, 12, 0.6) 0px, rgba(20, 16, 12, 0.6) 2px, transparent 2px, transparent 10px);
-      color: #ecd9b8;
+        radial-gradient(circle at 50% 20%, #1e1812 0%, #120f0c 70%, #0a0806 100%),
+        repeating-linear-gradient(0deg, rgba(40, 32, 24, 0.2) 0px, rgba(40, 32, 24, 0.2) 1px, transparent 1px, transparent 28px);
+      color: #dfd4c4;
     }
 
-    body.theme-msu .theme-box {
-      background: linear-gradient(145deg, #251e18, #191410);
-      border: 2px solid #5a4228;
-      box-shadow: inset 0 0 0 1px #15110d, inset 0 1px 0 rgba(255,200,100,0.15), 0 12px 30px rgba(0,0,0,0.9);
-      clip-path: polygon(14px 0%, calc(100% - 14px) 0%, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0% calc(100% - 14px), 0% 14px);
-      padding: 22px 24px;
+    body.theme-rulebook .theme-box {
+      background: #1a1511;
+      border: 1px solid #4a3827;
+      border-radius: 0;
+      box-shadow: 
+        inset 0 0 0 3px #1a1511,
+        inset 0 0 0 4px #3d2d1e,
+        0 8px 24px rgba(0,0,0,0.85);
+      padding: 24px;
       position: relative;
     }
 
-    /* 3D-болты по углам пластины */
-    body.theme-msu .theme-box::before,
-    body.theme-msu .theme-box::after {
+    /* Угловые викторианские засечки книжного макета Wyrd */
+    body.theme-rulebook .theme-box::before,
+    body.theme-rulebook .theme-box::after {
       content: '';
       position: absolute;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #e6a756 0%, #4a341e 70%, #150f09 100%);
-      box-shadow: inset 0 0 1px #000, 1px 1px 2px rgba(0,0,0,0.8);
+      width: 10px;
+      height: 10px;
+      border-color: #8c714b;
       pointer-events: none;
     }
-    body.theme-msu .theme-box::before { top: 6px; left: 16px; }
-    body.theme-msu .theme-box::after  { bottom: 6px; right: 16px; }
+    body.theme-rulebook .theme-box::before {
+      top: 6px; left: 6px;
+      border-top: 1px solid #8c714b;
+      border-left: 1px solid #8c714b;
+    }
+    body.theme-rulebook .theme-box::after {
+      bottom: 6px; right: 6px;
+      border-bottom: 1px solid #8c714b;
+      border-right: 1px solid #8c714b;
+    }
 
-    body.theme-msu .theme-box-header {
-      font-size: 16px;
-      font-weight: bold;
-      letter-spacing: 2px;
+    body.theme-rulebook .theme-box-header {
+      font-size: 15px;
+      font-weight: normal;
+      letter-spacing: 2.5px;
       text-transform: uppercase;
-      color: #d49a43;
-      border-bottom: 2px solid #4a3622;
-      padding-bottom: 10px;
+      color: #c7a877;
+      border-bottom: 1px solid #423223;
+      padding-bottom: 8px;
       margin-bottom: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    body.theme-msu .theme-btn {
-      background: linear-gradient(180deg, #443220 0%, #261c12 100%);
-      border: 1px solid #c58d45;
-      color: #ffd894;
-      padding: 9px 20px;
+    body.theme-rulebook .theme-btn {
+      background: #241c16;
+      border: 1px solid #6b5239;
+      color: #cbbca9;
+      padding: 8px 18px;
       font-family: Georgia, serif;
-      font-size: 12px;
-      font-weight: bold;
+      font-size: 11.5px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       cursor: pointer;
-      clip-path: polygon(7px 0%, calc(100% - 7px) 0%, 100% 7px, 100% calc(100% - 7px), calc(100% - 7px) 100%, 7px 100%, 0% calc(100% - 7px), 0% 7px);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,220,150,0.3);
-      transition: all 0.15s ease;
+      border-radius: 0;
+      transition: all 0.2s ease;
     }
-    body.theme-msu .theme-btn:hover {
-      background: linear-gradient(180deg, #d49a43 0%, #875518 100%);
-      color: #120e0a;
-      border-color: #ffe6b0;
-      box-shadow: 0 0 14px rgba(212, 154, 67, 0.5);
+    body.theme-rulebook .theme-btn:hover {
+      background: #36291e;
+      border-color: #a8885a;
+      color: #f2ece2;
     }
-    body.theme-msu .theme-btn:active {
-      transform: translateY(2px);
-      box-shadow: inset 0 2px 5px rgba(0,0,0,0.9);
+    body.theme-rulebook .theme-btn-danger {
+      background: #2a1616;
+      border-color: #5c2a2a;
+      color: #b58282;
     }
-    body.theme-msu .theme-btn-danger {
-      background: linear-gradient(180deg, #5c1e19 0%, #30100d 100%);
-      border-color: #e55347;
-      color: #ff9b91;
-    }
-    body.theme-msu .theme-btn-danger:hover {
-      background: #e55347;
-      color: #fff;
+    body.theme-rulebook .theme-btn-danger:hover {
+      background: #4a1d1d;
+      border-color: #8a3c3c;
+      color: #e8c5c5;
     }
 
-    body.theme-msu .theme-input,
-    body.theme-msu .theme-select {
-      background: #120f0c;
-      border: 1px solid #4a3622;
-      color: #ecd9b8;
-      padding: 9px 12px;
-      font-family: monospace, Georgia;
-      font-size: 13.5px;
-      border-radius: 0px;
-      clip-path: polygon(5px 0%, calc(100% - 5px) 0%, 100% 5px, 100% calc(100% - 5px), calc(100% - 5px) 100%, 5px 100%, 0% calc(100% - 5px), 0% 5px);
-    }
-    body.theme-msu .theme-input:focus,
-    body.theme-msu .theme-select:focus {
-      border-color: #d49a43;
-      outline: none;
-    }
-
-    body.theme-msu .theme-panel-cell {
-      background: #1c1612;
-      border: 1px solid #3d2d1c;
+    body.theme-rulebook .theme-panel-cell {
+      background: #14100d;
+      border: 1px solid #33261a;
       padding: 12px;
       margin-bottom: 8px;
     }
-    body.theme-msu .theme-table th {
-      background: #2b2017;
-      color: #d49a43;
-      padding: 7px;
-      border-bottom: 2px solid #4a3622;
+
+    body.theme-rulebook .theme-table th {
+      background: #201913;
+      color: #bfa378;
+      border-bottom: 1px solid #3d2d1e;
+      padding: 6px 8px;
     }
-    body.theme-msu .theme-table td {
-      padding: 7px;
-      border-bottom: 1px solid #2d2015;
+    body.theme-rulebook .theme-table td {
+      border-bottom: 1px solid #221a13;
+      padding: 6px 8px;
     }
 
-    /* Жетоны мастей в стиле M&SU: Гранёные латунные шильдики */
-    body.theme-msu .suit-chip {
-      clip-path: polygon(4px 0%, calc(100% - 4px) 0%, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 0% calc(100% - 4px), 0% 4px);
-      border-radius: 0px !important;
-      padding: 3px 8px 3px 6px;
-      box-shadow: 1px 2px 4px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1);
-      border-width: 1px;
+    body.theme-rulebook .theme-input,
+    body.theme-rulebook .theme-select {
+      background: #110e0b;
+      border: 1px solid #3d2e1f;
+      color: #ded3c3;
+      padding: 8px 10px;
+      font-family: Georgia, serif;
+      font-size: 13.5px;
+    }
+    body.theme-rulebook .theme-input:focus,
+    body.theme-rulebook .theme-select:focus {
+      border-color: #8c714b;
+      outline: none;
+    }
+
+    /* Жетоны в книжном стиле: Тисненные штемпели */
+    body.theme-rulebook .suit-chip {
+      border-radius: 2px !important;
+      padding: 2px 7px 2px 5px;
+      border: 1px solid rgba(140, 113, 75, 0.45) !important;
+      box-shadow: inset 0 0 4px rgba(0,0,0,0.6);
     }
 
 
     /* ==========================================================================
-       ТЕМА 2: SOULSTONE CORE (Пульсирующий эфирный кристалл)
-       Бездонный обсидиан, живое неоновое дыхание, лазерные фаски, стекло
-       ========================================================================== */
-    body.theme-soulstone {
-      background: #04080b;
-      background-image: 
-        radial-gradient(circle at 50% 15%, rgba(0, 240, 255, 0.15) 0%, transparent 65%),
-        radial-gradient(circle at 85% 85%, rgba(168, 85, 247, 0.12) 0%, transparent 50%),
-        repeating-linear-gradient(0deg, rgba(0, 240, 255, 0.02) 0px, rgba(0, 240, 255, 0.02) 1px, transparent 1px, transparent 32px);
-      color: #dcf8fa;
-    }
-
-    @keyframes soulGlowPulse {
-      0%, 100% {
-        box-shadow: 0 0 16px rgba(0, 240, 255, 0.15), inset 0 0 18px rgba(0, 240, 255, 0.05);
-        border-color: rgba(0, 240, 255, 0.4);
-      }
-      50% {
-        box-shadow: 0 0 28px rgba(0, 240, 255, 0.35), inset 0 0 26px rgba(0, 240, 255, 0.12);
-        border-color: rgba(0, 240, 255, 0.85);
-      }
-    }
-
-    body.theme-soulstone .theme-box {
-      background: rgba(6, 17, 22, 0.88);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(0, 240, 255, 0.5);
-      border-radius: 8px;
-      padding: 22px 24px;
-      position: relative;
-      animation: soulGlowPulse 4s infinite ease-in-out;
-    }
-
-    body.theme-soulstone .theme-box-header {
-      font-size: 16px;
-      font-weight: bold;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: #00ffd5;
-      text-shadow: 0 0 10px rgba(0, 255, 213, 0.5);
-      border-bottom: 1px solid rgba(0, 240, 255, 0.25);
-      padding-bottom: 10px;
-      margin-bottom: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    body.theme-soulstone .theme-btn {
-      background: rgba(0, 240, 255, 0.1);
-      border: 1px solid #00ffd5;
-      color: #00ffd5;
-      padding: 9px 20px;
-      font-family: Georgia, serif;
-      font-size: 12px;
-      font-weight: bold;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      cursor: pointer;
-      border-radius: 5px;
-      box-shadow: 0 0 12px rgba(0, 240, 255, 0.25), inset 0 0 8px rgba(0, 240, 255, 0.1);
-      position: relative;
-      overflow: hidden;
-      transition: all 0.25s ease;
-    }
-    body.theme-soulstone .theme-btn:hover {
-      background: #00ffd5;
-      color: #020b0e;
-      box-shadow: 0 0 24px rgba(0, 255, 213, 0.8);
-      transform: scale(1.02);
-    }
-    body.theme-soulstone .theme-btn-danger {
-      border-color: #f43f5e;
-      color: #f43f5e;
-      background: rgba(244, 63, 94, 0.12);
-      box-shadow: 0 0 12px rgba(244, 63, 94, 0.3);
-    }
-    body.theme-soulstone .theme-btn-danger:hover {
-      background: #f43f5e;
-      color: #fff;
-      box-shadow: 0 0 22px rgba(244, 63, 94, 0.8);
-    }
-
-    body.theme-soulstone .theme-input,
-    body.theme-soulstone .theme-select {
-      background: #051014;
-      border: 1px solid rgba(0, 240, 255, 0.3);
-      color: #dcf8fa;
-      padding: 9px 12px;
-      font-family: Georgia, serif;
-      font-size: 13.5px;
-      border-radius: 4px;
-      box-shadow: inset 0 0 8px rgba(0, 240, 255, 0.08);
-    }
-    body.theme-soulstone .theme-input:focus,
-    body.theme-soulstone .theme-select:focus {
-      border-color: #00ffd5;
-      box-shadow: 0 0 12px rgba(0, 255, 213, 0.4);
-      outline: none;
-    }
-
-    body.theme-soulstone .theme-panel-cell {
-      background: rgba(9, 24, 30, 0.7);
-      border: 1px solid rgba(0, 240, 255, 0.2);
-      border-radius: 5px;
-      padding: 12px;
-      margin-bottom: 8px;
-    }
-    body.theme-soulstone .theme-table th {
-      background: rgba(12, 34, 43, 0.9);
-      color: #00ffd5;
-      padding: 7px;
-      border-bottom: 1px solid rgba(0, 240, 255, 0.3);
-    }
-    body.theme-soulstone .theme-table td {
-      padding: 7px;
-      border-bottom: 1px solid rgba(0, 240, 255, 0.1);
-    }
-
-    /* Жетоны мастей в стиле Soulstone: Неоновые светящиеся кристаллы */
-    body.theme-soulstone .suit-chip {
-      border-radius: 6px !important;
-      padding: 3px 9px;
-      font-weight: 800;
-      box-shadow: 0 0 10px currentColor !important;
-      backdrop-filter: blur(4px);
-    }
-
-
-    /* ==========================================================================
-       ТЕМА 3: FATE DECK PARLOUR (Салон Гадалки и Судьбы)
-       Изумрудное сукно, золотая филигрань карт, двойные рамки Таро, тиснение
+       СТИЛЬ 2: FATE DECK CARDSTOCK (Льняная карта Судьбы Wyrd)
+       Айвори/слоновая кость, льняная текстура рубашки карт, тонкая виньетка
        ========================================================================== */
     body.theme-fatedeck {
-      background: #0a1711;
+      background: #0f1211;
       background-image: 
-        radial-gradient(circle at 50% 20%, #152d22 0%, #0a1711 75%, #040907 100%),
-        repeating-radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.03) 0, rgba(212, 175, 55, 0.03) 1px, transparent 1px, transparent 24px);
-      color: #f7f1e6;
+        radial-gradient(circle at 50% 25%, #181d1b 0%, #0e1211 65%, #080a09 100%),
+        repeating-radial-gradient(circle at 50% 50%, rgba(160, 145, 120, 0.03) 0, rgba(160, 145, 120, 0.03) 1px, transparent 1px, transparent 20px);
+      color: #e5ded3;
     }
 
     body.theme-fatedeck .theme-box {
-      background: rgba(14, 28, 20, 0.92);
-      border: 2px solid #d4af37;
-      border-radius: 12px;
+      background: #171b19;
+      border: 1px solid #3d4742;
+      border-radius: 9px;
       box-shadow: 
-        inset 0 0 0 4px #0d1e15, 
-        inset 0 0 0 5px rgba(212, 175, 55, 0.4),
-        0 14px 35px rgba(0,0,0,0.85);
-      padding: 24px 26px;
+        inset 0 0 0 3px #171b19,
+        inset 0 0 0 4px #4c5a53,
+        0 10px 28px rgba(0,0,0,0.8);
+      padding: 24px;
       position: relative;
     }
 
-    /* Угловые филигранные завитки карт Fate Deck */
+    /* Изящный знак масти/карточный маркер в углах */
     body.theme-fatedeck .theme-box::before,
     body.theme-fatedeck .theme-box::after {
-      content: '❖';
+      content: '✦';
       position: absolute;
-      color: #d4af37;
-      font-size: 14px;
+      color: #8c9c93;
+      font-size: 11px;
       line-height: 1;
-      opacity: 0.8;
-      text-shadow: 0 0 4px rgba(212, 175, 55, 0.6);
+      opacity: 0.7;
       pointer-events: none;
     }
-    body.theme-fatedeck .theme-box::before { top: 7px; left: 10px; }
-    body.theme-fatedeck .theme-box::after  { bottom: 7px; right: 10px; }
+    body.theme-fatedeck .theme-box::before { top: 8px; left: 10px; }
+    body.theme-fatedeck .theme-box::after  { bottom: 8px; right: 10px; }
 
     body.theme-fatedeck .theme-box-header {
-      font-size: 17px;
+      font-size: 15px;
       font-weight: normal;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      color: #e5c365;
+      color: #c9baa5;
       text-align: center;
-      border-bottom: 1px dashed #d4af37;
-      padding-bottom: 10px;
-      margin-bottom: 18px;
+      border-bottom: 1px solid #2e3833;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     body.theme-fatedeck .theme-btn {
-      background: #193829;
-      border: 1px solid #d4af37;
-      color: #fceecb;
-      padding: 9px 22px;
+      background: #1c2320;
+      border: 1px solid #54665d;
+      color: #d1c8bb;
+      padding: 8px 18px;
       font-family: Georgia, serif;
-      font-size: 12px;
-      font-weight: bold;
-      letter-spacing: 2px;
+      font-size: 11.5px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       cursor: pointer;
-      border-radius: 6px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.5), inset 0 0 6px rgba(212, 175, 55, 0.2);
+      border-radius: 4px;
       transition: all 0.2s ease;
     }
     body.theme-fatedeck .theme-btn:hover {
-      background: #d4af37;
-      color: #0b1a13;
-      box-shadow: 0 0 16px rgba(212, 175, 55, 0.6);
-      transform: translateY(-2px);
+      background: #2a3531;
+      border-color: #8da698;
+      color: #fff;
     }
     body.theme-fatedeck .theme-btn-danger {
-      background: #3f191b;
-      border-color: #f87171;
-      color: #fca5a5;
+      background: #241718;
+      border-color: #5c3538;
+      color: #b88689;
     }
     body.theme-fatedeck .theme-btn-danger:hover {
-      background: #f87171;
-      color: #1a0809;
+      background: #3d2325;
+      border-color: #8a484c;
+      color: #f0c7c9;
+    }
+
+    body.theme-fatedeck .theme-panel-cell {
+      background: #121614;
+      border: 1px solid #28332e;
+      border-radius: 5px;
+      padding: 12px;
+      margin-bottom: 8px;
+    }
+
+    body.theme-fatedeck .theme-table th {
+      background: #1a221e;
+      color: #b5a996;
+      border-bottom: 1px solid #2e3a34;
+      padding: 6px 8px;
+    }
+    body.theme-fatedeck .theme-table td {
+      border-bottom: 1px solid #1c2621;
+      padding: 6px 8px;
     }
 
     body.theme-fatedeck .theme-input,
     body.theme-fatedeck .theme-select {
-      background: #0f2218;
-      border: 1px solid #2e5942;
-      color: #f7f1e6;
-      padding: 9px 12px;
+      background: #0f1311;
+      border: 1px solid #2d3a34;
+      color: #ded7cc;
+      padding: 8px 10px;
       font-family: Georgia, serif;
-      font-size: 14px;
-      border-radius: 5px;
+      font-size: 13.5px;
+      border-radius: 4px;
     }
     body.theme-fatedeck .theme-input:focus,
     body.theme-fatedeck .theme-select:focus {
-      border-color: #d4af37;
-      box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+      border-color: #6d8277;
       outline: none;
     }
 
-    body.theme-fatedeck .theme-panel-cell {
-      background: rgba(18, 38, 28, 0.8);
-      border: 1px solid #28543d;
-      border-radius: 6px;
-      padding: 12px;
-      margin-bottom: 8px;
-    }
-    body.theme-fatedeck .theme-table th {
-      background: #152d21;
-      color: #e5c365;
-      padding: 8px;
-      border-bottom: 1px solid #d4af37;
-    }
-    body.theme-fatedeck .theme-table td {
-      padding: 8px;
-      border-bottom: 1px solid #1f4230;
-    }
-
-    /* Жетоны мастей в стиле Fate Deck: Картёжные печати с золотой каймой */
+    /* Жетоны в стиле Fate Deck: Благородные скругленные карты с мягкой рамкой */
     body.theme-fatedeck .suit-chip {
-      border-radius: 4px;
-      padding: 3px 8px;
-      border: 1px solid rgba(212, 175, 55, 0.6) !important;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.6);
+      border-radius: 4px !important;
+      padding: 2px 7px 2px 5px;
+      border: 1px solid rgba(140, 156, 147, 0.4) !important;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.5);
     }
 
 
     /* ==========================================================================
-       ТЕМА 4: GUILD DOSSIER (Архив Канцелярии Охотников на ведьм)
-       Папка следственного дела, стальной планшетный зажим, сургуч, штампы
+       СТИЛЬ 3: GUILD DOSSIER & BOUNTY (Следственное дело Гильдии / Розыск)
+       Манильский архивный картон, прижимная планка, машинописная строгость
        ========================================================================== */
     body.theme-guild {
-      background: #17110c;
+      background: #14110e;
       background-image: 
-        radial-gradient(circle at 50% 20%, #2e2014 0%, #150f0a 70%, #0a0705 100%),
-        repeating-linear-gradient(0deg, rgba(74, 52, 33, 0.15) 0px, rgba(74, 52, 33, 0.15) 2px, transparent 2px, transparent 8px);
-      color: #ebdcd0;
+        radial-gradient(circle at 50% 15%, #211c16 0%, #13100d 65%, #0a0806 100%),
+        repeating-linear-gradient(0deg, rgba(60, 48, 36, 0.15) 0px, rgba(60, 48, 36, 0.15) 2px, transparent 2px, transparent 12px);
+      color: #e5ded5;
     }
 
     body.theme-guild .theme-box {
-      background: #211914;
-      border: 1px solid #5a3e26;
-      border-top: 6px solid #8c262f; /* Красная папка дела Гильдии */
-      border-radius: 2px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.9), inset 0 0 15px rgba(0,0,0,0.5);
-      padding: 24px 24px;
+      background: #1c1712;
+      border: 1px solid #4a3826;
+      border-top: 4px solid #5e2621; /* Глубокий оттиск сургуча/метки Гильдии */
+      border-radius: 1px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.85);
+      padding: 24px;
       position: relative;
     }
 
-    /* Планшетный зажим архива Гильдии сверху */
+    /* Трафаретная пометка архивного бланка сверху */
     body.theme-guild .theme-box::before {
-      content: 'GUILD INVESTIGATION • CLASSIFIED';
+      content: 'MALIFAUX SPECIAL DIVISION • DOSSIER';
       position: absolute;
-      top: -12px;
-      left: 20px;
-      background: #8c262f;
-      color: #ffdca3;
-      font-size: 9px;
-      font-weight: bold;
+      top: -10px;
+      left: 18px;
+      background: #3b1714;
+      color: #c79e75;
+      font-size: 8.5px;
+      font-family: monospace, Georgia;
       letter-spacing: 1.5px;
-      padding: 2px 10px;
-      border-radius: 2px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.6);
+      padding: 1px 8px;
+      border: 1px solid #5e2621;
     }
 
     body.theme-guild .theme-box-header {
-      font-size: 16px;
+      font-size: 14.5px;
       font-weight: bold;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: #e5b358;
-      border-bottom: 2px solid #54272b;
+      color: #c49969;
+      border-bottom: 1px solid #4a3424;
       padding-bottom: 8px;
       margin-bottom: 16px;
       display: flex;
@@ -606,192 +468,313 @@
     }
 
     body.theme-guild .theme-btn {
-      background: #421619;
-      border: 1px solid #e5b358;
-      color: #ffdca3;
+      background: #2a2018;
+      border: 1px solid #6b4d31;
+      color: #d1beaa;
       padding: 8px 18px;
       font-family: Georgia, serif;
-      font-size: 12px;
-      font-weight: bold;
+      font-size: 11.5px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       cursor: pointer;
-      border-radius: 3px;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.6);
+      border-radius: 1px;
       transition: all 0.2s ease;
     }
     body.theme-guild .theme-btn:hover {
-      background: #732328;
-      color: #ffffff;
-      border-color: #ffdca3;
-      box-shadow: 0 0 12px rgba(229, 179, 88, 0.4);
+      background: #3d2d20;
+      border-color: #9e754a;
+      color: #fff;
     }
     body.theme-guild .theme-btn-danger {
-      background: #260c0e;
-      border-color: #f87171;
-      color: #fca5a5;
+      background: #2a1513;
+      border-color: #592521;
+      color: #ba7e79;
     }
     body.theme-guild .theme-btn-danger:hover {
-      background: #8c262f;
-      color: #fff;
+      background: #471b17;
+      border-color: #8c322a;
+      color: #ecd0cd;
+    }
+
+    body.theme-guild .theme-panel-cell {
+      background: #15110d;
+      border: 1px solid #332417;
+      padding: 12px;
+      margin-bottom: 8px;
+    }
+
+    body.theme-guild .theme-table th {
+      background: #221b14;
+      color: #b89267;
+      border-bottom: 1px solid #3b2b1d;
+      padding: 6px 8px;
+    }
+    body.theme-guild .theme-table td {
+      border-bottom: 1px solid #241c14;
+      padding: 6px 8px;
     }
 
     body.theme-guild .theme-input,
     body.theme-guild .theme-select {
-      background: #140e0b;
-      border: 1px solid #4a3422;
-      color: #ebdcd0;
-      padding: 8px 12px;
+      background: #110e0a;
+      border: 1px solid #3d2d1d;
+      color: #ded4c8;
+      padding: 8px 10px;
       font-family: Georgia, serif;
       font-size: 13.5px;
-      border-radius: 2px;
+      border-radius: 1px;
     }
     body.theme-guild .theme-input:focus,
     body.theme-guild .theme-select:focus {
-      border-color: #e5b358;
+      border-color: #8a643d;
       outline: none;
     }
 
-    body.theme-guild .theme-panel-cell {
-      background: #19120e;
-      border: 1px solid #3d291a;
-      padding: 12px;
-      margin-bottom: 8px;
-    }
-    body.theme-guild .theme-table th {
-      background: #2b1719;
-      color: #e5b358;
-      padding: 7px;
-      border-bottom: 1px solid #54272b;
-    }
-    body.theme-guild .theme-table td {
-      padding: 7px;
-      border-bottom: 1px solid #2d181a;
-    }
-
-    /* Жетоны мастей в стиле Guild: Сургучные круглые печати */
+    /* Жетоны в стиле Guild: Строгие прямоугольные номерные плашки */
     body.theme-guild .suit-chip {
-      border-radius: 12px !important;
-      padding: 3px 10px 3px 8px;
-      border-width: 1px;
-      box-shadow: inset 0 0 6px rgba(0,0,0,0.7), 1px 2px 4px rgba(0,0,0,0.6);
+      border-radius: 1px !important;
+      padding: 2px 7px;
+      border: 1px solid rgba(140, 100, 60, 0.45) !important;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.6);
     }
 
 
     /* ==========================================================================
-       ТЕМА 5: NEVERBORN HIVE (Первобытная тьма и искажение разума)
-       Асимметричные хитиновые сколы, ультрафиолетовое свечение, органика
+       СТИЛЬ 4: SMOKEBOX IRON & BESSEMER (Паровой Союз и Литейные цеха)
+       Тёмный чугун, срезанные углы 45°, приплюснутые шляпки заклёпок, сажа
        ========================================================================== */
-    body.theme-neverborn {
-      background: #09030e;
+    body.theme-iron {
+      background: #11100f;
       background-image: 
-        radial-gradient(circle at 50% 15%, rgba(199, 120, 245, 0.18) 0%, transparent 60%),
-        radial-gradient(circle at 10% 80%, rgba(236, 72, 153, 0.12) 0%, transparent 45%),
-        repeating-radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.03) 0, rgba(168, 85, 247, 0.03) 2px, transparent 2px, transparent 36px);
-      color: #eddcf7;
+        radial-gradient(circle at 50% 15%, #1f1b16 0%, #11100f 65%, #080707 100%),
+        repeating-linear-gradient(45deg, rgba(30, 26, 22, 0.4) 0px, rgba(30, 26, 22, 0.4) 2px, transparent 2px, transparent 12px);
+      color: #dbd2c5;
     }
 
-    body.theme-neverborn .theme-box {
-      background: linear-gradient(135deg, rgba(28, 12, 38, 0.95), rgba(15, 6, 22, 0.95));
-      border: 1px solid #7c3aed;
-      border-radius: 24px 6px 28px 8px; /* Органические асимметричные хитиновые сколы */
+    body.theme-iron .theme-box {
+      background: #181512;
+      border: 2px solid #3b3228;
       box-shadow: 
-        0 0 25px rgba(168, 85, 247, 0.18), 
-        inset 0 0 20px rgba(168, 85, 247, 0.08);
-      padding: 24px 26px;
+        inset 0 0 0 1px #100e0b, 
+        0 10px 26px rgba(0,0,0,0.9);
+      clip-path: polygon(10px 0%, calc(100% - 10px) 0%, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0% calc(100% - 10px), 0% 10px);
+      padding: 24px;
       position: relative;
     }
 
-    body.theme-neverborn .theme-box-header {
-      font-size: 16px;
+    /* Кованые шляпки заклёпок в углах пластины */
+    body.theme-iron .theme-box::before,
+    body.theme-iron .theme-box::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #473d32;
+      box-shadow: inset 1px 1px 1px rgba(255,255,255,0.2), 0 0 1px #000;
+      pointer-events: none;
+    }
+    body.theme-iron .theme-box::before { top: 6px; left: 14px; }
+    body.theme-iron .theme-box::after  { bottom: 6px; right: 14px; }
+
+    body.theme-iron .theme-box-header {
+      font-size: 15px;
       font-weight: bold;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: #d8b4fe;
-      text-shadow: 0 0 10px rgba(192, 132, 252, 0.5);
-      border-bottom: 1px solid #581c87;
-      padding-bottom: 10px;
+      color: #ba996c;
+      border-bottom: 2px solid #332a20;
+      padding-bottom: 8px;
       margin-bottom: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    body.theme-neverborn .theme-btn {
-      background: #3b1156;
-      border: 1px solid #c084fc;
-      color: #f3e8ff;
-      padding: 9px 20px;
+    body.theme-iron .theme-btn {
+      background: #241e18;
+      border: 1px solid #594734;
+      color: #cdbeab;
+      padding: 8px 18px;
       font-family: Georgia, serif;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: bold;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       cursor: pointer;
-      border-radius: 16px 4px 16px 4px;
-      box-shadow: 0 0 12px rgba(192, 132, 252, 0.3);
-      transition: all 0.25s ease;
+      clip-path: polygon(5px 0%, calc(100% - 5px) 0%, 100% 5px, 100% calc(100% - 5px), calc(100% - 5px) 100%, 5px 100%, 0% calc(100% - 5px), 0% 5px);
+      transition: all 0.15s ease;
     }
-    body.theme-neverborn .theme-btn:hover {
-      background: #a855f7;
-      color: #0d0217;
-      box-shadow: 0 0 22px rgba(168, 85, 247, 0.8);
-      transform: scale(1.03);
-    }
-    body.theme-neverborn .theme-btn-danger {
-      background: #3b0724;
-      border-color: #f43f5e;
-      color: #fecdd3;
-    }
-    body.theme-neverborn .theme-btn-danger:hover {
-      background: #f43f5e;
+    body.theme-iron .theme-btn:hover {
+      background: #3b3024;
+      border-color: #8f7250;
       color: #fff;
     }
-
-    body.theme-neverborn .theme-input,
-    body.theme-neverborn .theme-select {
-      background: #110519;
-      border: 1px solid #4c1d66;
-      color: #eddcf7;
-      padding: 9px 12px;
-      font-family: Georgia, serif;
-      font-size: 13.5px;
-      border-radius: 10px 3px 10px 3px;
+    body.theme-iron .theme-btn-danger {
+      background: #291715;
+      border-color: #542c27;
+      color: #ba7f78;
     }
-    body.theme-neverborn .theme-input:focus,
-    body.theme-neverborn .theme-select:focus {
-      border-color: #c084fc;
-      box-shadow: 0 0 10px rgba(192, 132, 252, 0.4);
-      outline: none;
+    body.theme-iron .theme-btn-danger:hover {
+      background: #421f1b;
+      border-color: #873e35;
+      color: #f2cecb;
     }
 
-    body.theme-neverborn .theme-panel-cell {
-      background: rgba(30, 14, 42, 0.8);
-      border: 1px solid #4a1d66;
-      border-radius: 12px 4px 12px 4px;
+    body.theme-iron .theme-panel-cell {
+      background: #14110e;
+      border: 1px solid #2b231a;
       padding: 12px;
       margin-bottom: 8px;
     }
-    body.theme-neverborn .theme-table th {
-      background: #250d36;
-      color: #d8b4fe;
-      padding: 8px;
-      border-bottom: 1px solid #581c87;
-    }
-    body.theme-neverborn .theme-table td {
-      padding: 8px;
-      border-bottom: 1px solid #2d1042;
-    }
 
-    /* Жетоны мастей в стиле Neverborn: Пульсирующие мистические руны */
-    body.theme-neverborn .suit-chip {
-      border-radius: 14px 4px 14px 4px !important;
-      padding: 3px 10px;
-      box-shadow: 0 0 12px currentColor !important;
+    body.theme-iron .theme-table th {
+      background: #1e1914;
+      color: #b39265;
+      border-bottom: 2px solid #2e241b;
+      padding: 6px 8px;
+    }
+    body.theme-iron .theme-table td {
+      border-bottom: 1px solid #211b14;
+      padding: 6px 8px;
     }
 
+    body.theme-iron .theme-input,
+    body.theme-iron .theme-select {
+      background: #0f0d0a;
+      border: 1px solid #33281d;
+      color: #d6ccbf;
+      padding: 8px 10px;
+      font-family: monospace, Georgia;
+      font-size: 13.5px;
+      clip-path: polygon(4px 0%, calc(100% - 4px) 0%, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 0% calc(100% - 4px), 0% 4px);
+    }
+    body.theme-iron .theme-input:focus,
+    body.theme-iron .theme-select:focus {
+      border-color: #7d6140;
+      outline: none;
+    }
 
-    /* Общие стили для таблиц, флипов и шагов */
+    /* Жетоны в стиле Iron: Граненые штампованные шильды */
+    body.theme-iron .suit-chip {
+      clip-path: polygon(3px 0%, calc(100% - 3px) 0%, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 0% calc(100% - 3px), 0% 3px);
+      border-radius: 0 !important;
+      padding: 2px 7px;
+      border: 1px solid rgba(130, 105, 75, 0.45) !important;
+    }
+
+
+    /* ==========================================================================
+       СТИЛЬ 5: BAYOU TIMBER (Дикие земли и Салун на болотах)
+       Выветренное темное дерево, грубые доски, приглушенный торф и мох
+       ========================================================================== */
+    body.theme-bayou {
+      background: #11120f;
+      background-image: 
+        radial-gradient(circle at 50% 15%, #191c15 0%, #10120e 65%, #080907 100%),
+        repeating-linear-gradient(90deg, rgba(35, 38, 30, 0.15) 0px, rgba(35, 38, 30, 0.15) 3px, transparent 3px, transparent 24px);
+      color: #dedacb;
+    }
+
+    body.theme-bayou .theme-box {
+      background: #181a14;
+      border: 1px solid #3a3f31;
+      border-radius: 3px;
+      box-shadow: 
+        inset 0 1px 0 rgba(140, 150, 120, 0.1),
+        0 8px 24px rgba(0,0,0,0.85);
+      padding: 24px;
+      position: relative;
+    }
+
+    body.theme-bayou .theme-box-header {
+      font-size: 15px;
+      font-weight: normal;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #b5ba97;
+      border-bottom: 1px dashed #383e2f;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    body.theme-bayou .theme-btn {
+      background: #22261c;
+      border: 1px solid #4a543b;
+      color: #cacfae;
+      padding: 8px 18px;
+      font-family: Georgia, serif;
+      font-size: 11.5px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s ease;
+    }
+    body.theme-bayou .theme-btn:hover {
+      background: #323828;
+      border-color: #72825a;
+      color: #fff;
+    }
+    body.theme-bayou .theme-btn-danger {
+      background: #261b17;
+      border-color: #52372c;
+      color: #ba8a77;
+    }
+    body.theme-bayou .theme-btn-danger:hover {
+      background: #3b2820;
+      border-color: #7d4e3a;
+      color: #ebd3c8;
+    }
+
+    body.theme-bayou .theme-panel-cell {
+      background: #131410;
+      border: 1px solid #2c3024;
+      padding: 12px;
+      margin-bottom: 8px;
+    }
+
+    body.theme-bayou .theme-table th {
+      background: #1c1f17;
+      color: #a8ad8a;
+      border-bottom: 1px solid #2d3324;
+      padding: 6px 8px;
+    }
+    body.theme-bayou .theme-table td {
+      border-bottom: 1px solid #1f2218;
+      padding: 6px 8px;
+    }
+
+    body.theme-bayou .theme-input,
+    body.theme-bayou .theme-select {
+      background: #0f100c;
+      border: 1px solid #2a2e21;
+      color: #d4cfbe;
+      padding: 8px 10px;
+      font-family: Georgia, serif;
+      font-size: 13.5px;
+      border-radius: 2px;
+    }
+    body.theme-bayou .theme-input:focus,
+    body.theme-bayou .theme-select:focus {
+      border-color: #5c694a;
+      outline: none;
+    }
+
+    /* Жетоны в стиле Bayou: Деревянные бирки с фаской */
+    body.theme-bayou .suit-chip {
+      border-radius: 3px !important;
+      padding: 2px 7px;
+      border: 1px solid rgba(110, 120, 95, 0.45) !important;
+    }
+
+
+    /* ==========================================================================
+       Общие элементы контента
+       ========================================================================== */
     .theme-table {
       width: 100%;
       border-collapse: collapse;
@@ -815,7 +798,7 @@
     .step-btn-demo {
       width: 24px;
       height: 24px;
-      background: rgba(0,0,0,0.4);
+      background: rgba(0,0,0,0.3);
       border: 1px solid currentColor;
       color: inherit;
       cursor: pointer;
@@ -823,38 +806,43 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 3px;
+      border-radius: 2px;
+      opacity: 0.8;
+      transition: opacity 0.15s;
+    }
+    .step-btn-demo:hover {
+      opacity: 1;
     }
 
     .condition-badge {
       display: inline-block;
-      background: rgba(248, 81, 73, 0.2);
-      border: 1px solid #f85149;
-      color: #ff9994;
+      background: rgba(140, 40, 30, 0.2);
+      border: 1px solid #732822;
+      color: #d99a94;
       padding: 1px 6px;
       font-size: 11px;
       font-weight: bold;
-      border-radius: 3px;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
       margin: 0 2px;
     }
 
     .fate-badge-plus {
       display: inline-block;
-      color: #56d364;
+      color: #6da678;
       font-weight: bold;
       font-family: monospace;
       padding: 0 2px;
     }
     .fate-badge-minus {
       display: inline-block;
-      color: #f85149;
+      color: #ba635d;
       font-weight: bold;
       font-family: monospace;
       padding: 0 2px;
     }
 
-    /* Базовые цвета мастей для совместимости */
+    /* Приглушенные викторианские цвета жетонов (строго по канону Wyrd) */
     .suit-chip {
       display: inline-flex;
       align-items: center;
@@ -866,6 +854,7 @@
       text-transform: uppercase;
       margin: 0 2px;
       transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     }
     .suit-chip svg {
       width: 14px;
@@ -873,53 +862,71 @@
       display: block;
       flex-shrink: 0;
     }
-    .suit-chip.suit-rams  { color: #ff7b72; background: rgba(248, 81, 73, 0.15); border-color: rgba(248, 81, 73, 0.5); }
-    .suit-chip.suit-masks { color: #d2a8ff; background: rgba(188, 140, 255, 0.15); border-color: rgba(188, 140, 255, 0.5); }
-    .suit-chip.suit-crows { color: #56d364; background: rgba(63, 185, 80, 0.15); border-color: rgba(63, 185, 80, 0.5); }
-    .suit-chip.suit-tomes { color: #79b8ff; background: rgba(88, 166, 255, 0.15); border-color: rgba(88, 166, 255, 0.5); }
+
+    /* Нейтральные приглушенные оттенки мастей Malifaux */
+    .suit-chip.suit-rams  { 
+      color: #c96b65; 
+      background: rgba(160, 60, 50, 0.16); 
+      border-color: rgba(175, 75, 65, 0.45); 
+    }
+    .suit-chip.suit-masks { 
+      color: #b392cf; 
+      background: rgba(120, 85, 150, 0.16); 
+      border-color: rgba(145, 105, 180, 0.45); 
+    }
+    .suit-chip.suit-crows { 
+      color: #72ab7d; 
+      background: rgba(60, 120, 75, 0.16); 
+      border-color: rgba(75, 140, 90, 0.45); 
+    }
+    .suit-chip.suit-tomes { 
+      color: #739bbd; 
+      background: rgba(65, 105, 140, 0.16); 
+      border-color: rgba(85, 125, 165, 0.45); 
+    }
   </style>
 </head>
-<body class="theme-msu">
+<body class="theme-rulebook">
 
-  <!-- ВЕРХНЯЯ ПАНЕЛЬ ПЕРЕКЛЮЧЕНИЯ 5 СТИЛЕЙ -->
+  <!-- ВЕРХНЯЯ ПАНЕЛЬ ПЕРЕКЛЮЧЕНИЯ 5 СТИЛЕЙ WYRD -->
   <aside id="theme-selector-bar">
     <div class="selector-inner">
       <div class="selector-header">
         <div class="selector-title">
-          ⚡ MALIFAUX STYLE LAB <span>(5 кардинально разных визуальных миров)</span>
+          ⚖ MALIFAUX WYRD LAB <span>(5 аутентичных стилей в нейтральных тонах)</span>
         </div>
-        <div style="font-size: 11.5px; color: #a99e8d;">
-          Кликай по кнопкам: меняется геометрия, болты, свечение, кнопки и жетоны!
+        <div style="font-size: 11.5px; color: #8f8273;">
+          Строго без кислотных цветов: пергамент, карты Таро, архивное дело, чугун и темное дерево
         </div>
       </div>
 
       <div class="theme-buttons-grid">
-        <button class="btn-theme active" data-theme="theme-msu">
-          1. M&SU Foundry
-          <small>Клёпаный стимпанк и скосы 45°</small>
-        </button>
-        <button class="btn-theme" data-theme="theme-soulstone">
-          2. Soulstone Core
-          <small>Неоновый эфир и пульсация</small>
+        <button class="btn-theme active" data-theme="theme-rulebook">
+          1. Rulebook Folio
+          <small>Книга правил и пергамент</small>
         </button>
         <button class="btn-theme" data-theme="theme-fatedeck">
-          3. Fate Parlour
-          <small>Изумрудное сукно и карты Таро</small>
+          2. Fate Deck Card
+          <small>Льняные карты Судьбы</small>
         </button>
         <button class="btn-theme" data-theme="theme-guild">
-          4. Guild Dossier
-          <small>Папка дела и сургучные печати</small>
+          3. Guild Dossier
+          <small>Архивное следственное дело</small>
         </button>
-        <button class="btn-theme" data-theme="theme-neverborn">
-          5. Neverborn
-          <small>Хитин и первобытная био-тьма</small>
+        <button class="btn-theme" data-theme="theme-iron">
+          4. Smokebox Iron
+          <small>Литейный чугун и заклёпки</small>
+        </button>
+        <button class="btn-theme" data-theme="theme-bayou">
+          5. Bayou Timber
+          <small>Выветренное темное дерево</small>
         </button>
       </div>
 
-      <!-- Баннер описания темы -->
+      <!-- Баннер описания выбранного стиля -->
       <div class="theme-desc-banner" id="theme-desc-banner">
-        <strong id="desc-title">M&SU Foundry (Паровой Союз и Рамос):</strong>
-        <span id="desc-body">Тяжёлый клёпаный чугун со скошенными на 45° углами (clip-path), объёмные 3D-болты по углам, массивная латунь и ощущение литейных цехов Малифо.</span>
+        <strong id="desc-title">Rulebook Folio (Официальная книга правил Through the Breach):</strong>
+        <span id="desc-body">Глубокие тона состаренного пергамента, тонкие двойные волосяные рамки, угловые книжные засечки и сдержанное старинное золото в духе официальных изданий Wyrd Games.</span>
       </div>
     </div>
   </aside>
@@ -930,15 +937,15 @@
     <!-- 1. ШАПКА / ПАНЕЛЬ УПРАВЛЕНИЯ -->
     <header class="theme-box" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
       <div>
-        <h1 style="font-size: 21px; letter-spacing: 2px; margin-bottom: 4px;">
+        <h1 style="font-size: 20px; letter-spacing: 2.5px; margin-bottom: 4px; font-weight: normal;">
           BALDWIN "DEADEIE" CROSS
         </h1>
-        <div style="font-size: 12px; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px;">
+        <div style="font-size: 12px; opacity: 0.75; text-transform: uppercase; letter-spacing: 1px;">
           Fated Human • Academic [Step 6] • Methodologist [Step 10]
         </div>
       </div>
 
-      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
         <button class="theme-btn">💾 СОХРАНИТЬ В ОБЛАКО</button>
         <button class="theme-btn">⬇ СКАЧАТЬ JSON</button>
         <button class="theme-btn theme-btn-danger">🗑 СБРОС</button>
@@ -955,12 +962,12 @@
         <div class="theme-box">
           <div class="theme-box-header">
             <span>ASPECTS & DERIVED</span>
-            <span style="font-size: 11px; opacity: 0.7;">STATS</span>
+            <span style="font-size: 11px; opacity: 0.65;">STATISTICS</span>
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
             <div>
-              <div style="font-size: 11px; opacity: 0.8; text-transform: uppercase; margin-bottom: 8px; font-weight: bold; letter-spacing: 1px;">
+              <div style="font-size: 11px; opacity: 0.75; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">
                 Physical
               </div>
               <div class="theme-panel-cell aspect-row-demo">
@@ -998,7 +1005,7 @@
             </div>
 
             <div>
-              <div style="font-size: 11px; opacity: 0.8; text-transform: uppercase; margin-bottom: 8px; font-weight: bold; letter-spacing: 1px;">
+              <div style="font-size: 11px; opacity: 0.75; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">
                 Mental
               </div>
               <div class="theme-panel-cell aspect-row-demo">
@@ -1041,13 +1048,13 @@
         <div class="theme-box">
           <div class="theme-box-header">
             <span>ATTACKS (WEAPON STATBLOCK)</span>
-            <span style="font-size: 11px; opacity: 0.7;">COMBAT</span>
+            <span style="font-size: 11px; opacity: 0.65;">COMBAT</span>
           </div>
 
           <div class="theme-panel-cell">
             <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
-              <strong style="font-size: 15px; letter-spacing: 1px;">PEACEBRINGER .44</strong>
-              <span style="font-size: 11px; opacity: 0.75;">Pistol (Grace)</span>
+              <strong style="font-size: 14.5px; letter-spacing: 1px;">PEACEBRINGER .44</strong>
+              <span style="font-size: 11px; opacity: 0.7;">Pistol (Grace)</span>
             </div>
 
             <table class="theme-table" style="text-align: center; margin-bottom: 10px;">
@@ -1084,11 +1091,11 @@
       <!-- ПРАВАЯ КОЛОНКА: ШАГ ПУТИ С ЖЕТОНАМИ МАСТЕЙ -->
       <div style="display: flex; flex-direction: column; gap: 24px;">
         
-        <!-- КАРТОЧКА ПУТИ (КАК НА СКРИНШОТЕ) -->
+        <!-- КАРТОЧКА ПУТИ -->
         <div class="theme-box">
           <div class="theme-box-header">
             <span>PURSUIT: METHODOLOGIST</span>
-            <span style="font-size: 11px; opacity: 0.7;">STEP 10</span>
+            <span style="font-size: 11px; opacity: 0.65;">STEP 10</span>
           </div>
 
           <!-- Верхняя плашка шага -->
@@ -1096,7 +1103,7 @@
             <span style="font-weight: bold; letter-spacing: 1px;">
               STEP 0 • AUTOMATIC
             </span>
-            <span style="font-size: 11px; opacity: 0.8; text-transform: uppercase;">
+            <span style="font-size: 11px; opacity: 0.75; text-transform: uppercase;">
               Specialization: Base
             </span>
           </div>
@@ -1135,16 +1142,16 @@
         <div class="theme-box">
           <div class="theme-box-header">
             <span>INPUT CONTROLS & DROPDOWNS</span>
-            <span style="font-size: 11px; opacity: 0.7;">UI TEST</span>
+            <span style="font-size: 11px; opacity: 0.65;">INTERFACE</span>
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
             <div>
-              <label style="display: block; font-size: 11px; opacity: 0.8; text-transform: uppercase; margin-bottom: 5px; font-weight: bold;">Fated Name</label>
+              <label style="display: block; font-size: 11px; opacity: 0.75; text-transform: uppercase; margin-bottom: 5px; font-weight: bold;">Fated Name</label>
               <input type="text" class="theme-input" value="Baldwin Cross" style="width: 100%;">
             </div>
             <div>
-              <label style="display: block; font-size: 11px; opacity: 0.8; text-transform: uppercase; margin-bottom: 5px; font-weight: bold;">Current Pursuit</label>
+              <label style="display: block; font-size: 11px; opacity: 0.75; text-transform: uppercase; margin-bottom: 5px; font-weight: bold;">Current Pursuit</label>
               <select class="theme-select" style="width: 100%;">
                 <option>Academic</option>
                 <option>Methodologist</option>
@@ -1163,25 +1170,25 @@
   <!-- ЛОГИКА ПЕРЕКЛЮЧЕНИЯ И НАПОЛНЕНИЯ ЖЕТОНОВ -->
   <script>
     const THEME_DESCRIPTIONS = {
-      'theme-msu': {
-        title: 'M&SU Foundry (Паровой Союз и Рамос):',
-        desc: 'Тяжёлый клёпаный чугун со скошенными на 45° углами (clip-path), объёмные 3D-болты по углам, массивная латунь и ощущение литейных цехов Малифо.'
-      },
-      'theme-soulstone': {
-        title: 'Soulstone Core (Неоновый кристалл и эфир):',
-        desc: 'Бездонный обсидиановый монолит шахт с живой неоновой пульсацией по граням (cyan #00ffd5), лазерные фаски и стеклянные кнопки с эффектом свечения.'
+      'theme-rulebook': {
+        title: 'Rulebook Folio (Книга правил Through the Breach):',
+        desc: 'Строгий канон официальных книг Wyrd Games: состаренный чайный пергамент, тонкие волосяные двойные рамки, викторианские угловые засечки и сдержанное старинное золото.'
       },
       'theme-fatedeck': {
-        title: 'Fate Deck Parlour (Салон Гадалки и Судьбы):',
-        desc: 'Тёмно-изумрудное сукно ломберного стола, золотая филигрань игральных карт с угловыми виньетками, двойные рамки Таро и карты Судьбы.'
+        title: 'Fate Deck Cardstock (Льняные карты Судьбы):',
+        desc: 'Благородный оттенок слоновой кости, льняная текстура рубашки карт Fate Deck, скругленные углы и аккуратные филигранные ромбовидные виньетки ✦ в углах блоков.'
       },
       'theme-guild': {
-        title: 'Guild Dossier (Архив Канцелярии Охотников на ведьм):',
-        desc: 'Папка следственного дела с красным планшетным зажимом CLASSIFIED сверху, сургучные штампы, тёмный архивный дуб и строгость закона.'
+        title: 'Guild Dossier (Архивное дело и розыскной лист):',
+        desc: 'Манильский архивный картон судебных приставов Гильдии, верхняя прижимная планка с оттиском CLASSIFIED, печатная машинопись и строгие прямоугольные шильдики.'
       },
-      'theme-neverborn': {
-        title: 'Neverborn Nightmare (Первобытная био-тьма):',
-        desc: 'Органические асимметричные хитиновые сколы (border-radius: 24px 6px), гипнотическое ультрафиолетовое свечение и первобытный ужас древнего Малифо.'
+      'theme-iron': {
+        title: 'Smokebox Iron & Bessemer (Литейный цех и Рамос):',
+        desc: 'Тёмный сажевый чугун, скошенные под 45° срезы, утопленные заклёпки и тяжелые механические плашки в стиле промышленных машин Малифо.'
+      },
+      'theme-bayou': {
+        title: 'Bayou Timber (Дикие земли и Салун на болотах):',
+        desc: 'Выветренное торфяное дерево болотных хижин, приглушенные земляные и мшистые тона, строгие неровные доски и атмосфера фронтира.'
       }
     };
 
