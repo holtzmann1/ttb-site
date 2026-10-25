@@ -3,13 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Through the Breach — Malifaux Suits Showcase</title>
+  <title>Through the Breach — Suits Laboratory</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       min-height: 100vh;
@@ -21,15 +17,12 @@
       padding: 30px 40px 60px;
     }
 
-    .container {
-      max-width: 1300px;
-      margin: 0 auto;
-    }
+    .container { max-width: 1200px; margin: 0 auto; }
 
     header {
       border-bottom: 1px solid #4a3825;
       padding-bottom: 20px;
-      margin-bottom: 24px;
+      margin-bottom: 26px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -39,51 +32,13 @@
 
     h1 {
       color: #c59a5b;
-      font-size: 24px;
+      font-size: 22px;
       letter-spacing: 2px;
       text-transform: uppercase;
       font-weight: normal;
     }
 
-    .subtitle {
-      color: #a99e8d;
-      font-size: 13.5px;
-      letter-spacing: 1px;
-    }
-
-    /* Блок утвержденных мастей */
-    .confirmed-bar {
-      background: rgba(18, 14, 11, 0.92);
-      border: 1px solid #4a3825;
-      border-radius: 6px;
-      padding: 18px 22px;
-      margin-bottom: 32px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .confirmed-title {
-      font-size: 12px;
-      color: #c59a5b;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-    }
-
-    .confirmed-chips {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .confirmed-note {
-      font-size: 12.5px;
-      color: #8c8071;
-      font-style: italic;
-    }
-
-    /* Игровой жетон (Chip) с крупными 18px иконками */
+    /* Стили боевых жетонов (Chips) */
     .suit-chip {
       display: inline-flex;
       align-items: center;
@@ -128,48 +83,53 @@
       border: 1px solid rgba(63, 185, 80, 0.5);
     }
 
-    .fate-chip {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 18px;
-      height: 18px;
-      padding: 0 4px;
-      margin: 0 2px;
-      background: rgba(184, 138, 74, 0.18);
-      border: 1px solid rgba(184, 138, 74, 0.55);
-      color: #f0c674;
-      font-weight: bold;
-      font-size: 12px;
-      border-radius: 3px;
-      vertical-align: middle;
-      line-height: 1;
+    /* Блок утвержденной тройки */
+    .confirmed-bar {
+      background: rgba(18, 14, 11, 0.92);
+      border: 1px solid #4a3825;
+      border-radius: 6px;
+      padding: 18px 22px;
+      margin-bottom: 30px;
     }
 
-    /* Секция CROWS */
+    .confirmed-title {
+      font-size: 12px;
+      color: #c59a5b;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+    }
+
+    .confirmed-chips {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* Сетка вариантов Crows */
     .crows-section {
       background: rgba(18, 14, 11, 0.75);
       border: 1px solid #382c1e;
       border-radius: 8px;
       padding: 24px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     }
 
     .section-title {
-      font-size: 19px;
+      font-size: 18px;
       font-weight: bold;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       color: #56d364;
       padding-bottom: 14px;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       border-bottom: 1px solid #2e2318;
     }
 
     .variants-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-      gap: 22px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
     }
 
     .variant-card {
@@ -180,12 +140,12 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
-      transition: all 0.2s ease;
+      transition: all 0.2s;
     }
 
     .variant-card:hover {
       border-color: #56d364;
-      box-shadow: 0 6px 20px rgba(63, 185, 80, 0.15);
+      box-shadow: 0 4px 16px rgba(63, 185, 80, 0.15);
       transform: translateY(-2px);
     }
 
@@ -198,7 +158,7 @@
     .variant-id {
       color: #56d364;
       font-weight: bold;
-      font-size: 14px;
+      font-size: 13.5px;
       letter-spacing: 1px;
     }
 
@@ -206,11 +166,10 @@
       color: #8c8071;
       font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .preview-large {
-      height: 75px;
+      height: 70px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -221,13 +180,8 @@
     }
 
     .preview-large svg {
-      width: 48px;
-      height: 48px;
-      transition: transform 0.2s;
-    }
-
-    .variant-card:hover .preview-large svg {
-      transform: scale(1.1);
+      width: 44px;
+      height: 44px;
     }
 
     .preview-chip-row {
@@ -243,20 +197,14 @@
       font-size: 11px;
       color: #a99e8d;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
     }
 
     .sample-text {
       font-size: 13px;
       color: #dcd3c4;
-      line-height: 1.55;
+      line-height: 1.5;
       padding-top: 6px;
       border-top: 1px solid #241c14;
-    }
-
-    @media (max-width: 800px) {
-      body { padding: 16px; }
-      .variants-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -266,161 +214,115 @@
     <header>
       <div>
         <h1>THROUGH THE BREACH</h1>
-        <div class="subtitle">Масти Malifaux: финальная калибровка CROWS / FEATHERS</div>
+        <div style="color: #a99e8d; font-size: 13px;">Тест модуля suits.js и выбор формы CROWS</div>
       </div>
-      <a href="talents-page.html" style="color: #c59a5b; text-decoration: none; border: 1px solid #b88a4a; padding: 8px 16px; border-radius: 4px; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;">← В каталог</a>
+      <a href="talents-page.html" style="color: #c59a5b; text-decoration: none; border: 1px solid #b88a4a; padding: 7px 14px; border-radius: 4px; text-transform: uppercase; font-size: 11.5px; letter-spacing: 1px;">← В каталог</a>
     </header>
 
-    <!-- ТВОЯ УТВЕРЖДЕННАЯ ТРОЙКА В НОВОМ МАСШТАБЕ -->
+    <!-- ТВОЯ УТВЕРЖДЕННАЯ ТРОЙКА ИЗ SUITS.JS -->
     <div class="confirmed-bar">
-      <div class="confirmed-title">✓ Твои утверждённые масти (иконки увеличены до 18px):</div>
-      <div class="confirmed-chips">
-        <!-- Rams Var 3 -->
-        <span class="suit-chip suit-rams">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 7 L15.5 9 L14.5 14.5 L12 19 L9.5 14.5 L8.5 9 Z M10.5 11.5 L11.2 12.5 L10 13 Z M13.5 11.5 L14 13 L12.8 12.5 Z"/>
-            <path d="M9 7.5 C6.5 5 2.5 6 1.5 9.5 C0.8 12 2 14.5 4.5 15 C6.5 15.5 8 14 7.5 12.5 C7 11 5.5 11.5 5 12.5 C4.5 12 4.5 11 5 10 C6 8.5 8 8.5 9.5 9.5 L10.5 8 Z"/>
-            <path d="M15 7.5 C17.5 5 21.5 6 22.5 9.5 C23.2 12 22 14.5 19.5 15 C17.5 15.5 16 14 16.5 12.5 C17 11 18.5 11.5 19 12.5 C19.5 12 19.5 11 19 10 C18 8.5 16 8.5 14.5 9.5 L13.5 8 Z"/>
-          </svg>
-          RAMS
-        </span>
-
-        <!-- Masks Var 2 -->
-        <span class="suit-chip suit-masks">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path fill-rule="evenodd" d="M4 6.5 L6.5 9.5 L17.5 9.5 L20 6.5 C20.8 9 20.5 14 19 16.5 L16.5 17.5 L15 14.5 L9 14.5 L7.5 17.5 L5 16.5 C3.5 14 3.2 9 4 6.5 Z M7.5 11 C8.6 11 9.5 11.7 9.5 12.5 C9.5 13.3 8.6 14 7.5 14 C6.4 14 5.5 13.3 5.5 12.5 C5.5 11.7 6.4 11 7.5 11 Z M16.5 11 C17.6 11 18.5 11.7 18.5 12.5 C18.5 13.3 17.6 14 16.5 14 C15.4 14 14.5 13.3 14.5 12.5 C14.5 11.7 15.4 11 16.5 11 Z"/>
-          </svg>
-          MASKS
-        </span>
-
-        <!-- Tomes Var 2 -->
-        <span class="suit-chip suit-tomes">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M4 6 C4 4.5 5.5 4 7 4.5 L11.5 6 L11.5 18.5 L6.5 17 C5 16.5 4 17 4 18.5 Z M20 6 C20 4.5 18.5 4 17 4.5 L12.5 6 L12.5 18.5 L17.5 17 C19 16.5 20 17 20 18.5 Z"/>
-            <path d="M11 6 L13 6 L13 21 L12 19.5 L11 21 Z" fill="#ff7b72"/>
-          </svg>
-          TOMES
-        </span>
-      </div>
-      <div class="confirmed-note">Подбираем Crows по плотности и весу так, чтобы он смотрелся единым комплектом с этими тремя.</div>
+      <div class="confirmed-title">✓ Утверждённые масти (генерируются модулем suits.js):</div>
+      <div class="confirmed-chips" id="confirmed-suits"></div>
     </div>
 
-    <!-- ВАРИАНТЫ CROWS ПО РЕФЕРЕНСАМ С КАРТ -->
+    <!-- ВАРИАНТЫ CROWS -->
     <div class="crows-section">
-      <div class="section-title">🦅 ВЫБОР CROWS (ПО СКРИНАМ КАРТ)</div>
+      <div class="section-title">🦅 ВЫБОР ФОРМЫ CROWS</div>
 
       <div class="variants-grid">
-
-        <!-- ВАРИАНТ А: Пиковый ворон ♠ (точь-в-точь по второму скрину с карты) -->
+        
+        <!-- Вариант 1: Перо UI -->
         <div class="variant-card">
           <div class="variant-header">
-            <span class="variant-id">CROWS — Вариант A</span>
-            <span class="variant-desc">Пиковый ворон ♠ (Карта 2)</span>
+            <span class="variant-id">Вариант 1</span>
+            <span class="variant-desc">Перо писца (UI Feather)</span>
           </div>
-          <div class="preview-large">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <!-- Крылья взмывают вверх дугой, образуя силуэт карточной пики, ворон в центре -->
-              <path d="M12 2 C12.8 4 14 7 14 9 C13.5 8.5 12.8 8.2 12 8.2 C11.2 8.2 10.5 8.5 10 9 C10 7 11.2 4 12 2 Z"/>
-              <path fill-rule="evenodd" d="M12 2 C13.5 4 18 8 19.5 12.5 C20.2 14.8 19.5 17 17.5 18 C15.5 19 13.8 18 13.5 16.5 L14.5 21 L9.5 21 L10.5 16.5 C10.2 18 8.5 19 6.5 18 C4.5 17 3.8 14.8 4.5 12.5 C6 8 10.5 4 12 2 Z M12 9 C13 9 13.8 9.8 13.8 11 C13.8 12.2 13 13 12 13 C11 13 10.2 12.2 10.2 11 C10.2 9.8 11 9 12 9 Z M12 13.5 C13.2 13.5 14 14.5 13.8 16 L10.2 16 C10 14.5 10.8 13.5 12 13.5 Z"/>
-            </svg>
-          </div>
+          <div class="preview-large" id="big-feather"></div>
           <div class="preview-chip-row">
-            <span class="preview-chip-label">В боевом жетоне:</span>
-            <div>
-              <span class="suit-chip suit-crows">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2 C12.8 4 14 7 14 9 C13.5 8.5 12.8 8.2 12 8.2 C11.2 8.2 10.5 8.5 10 9 C10 7 11.2 4 12 2 Z"/>
-                  <path fill-rule="evenodd" d="M12 2 C13.5 4 18 8 19.5 12.5 C20.2 14.8 19.5 17 17.5 18 C15.5 19 13.8 18 13.5 16.5 L14.5 21 L9.5 21 L10.5 16.5 C10.2 18 8.5 19 6.5 18 C4.5 17 3.8 14.8 4.5 12.5 C6 8 10.5 4 12 2 Z M12 9 C13 9 13.8 9.8 13.8 11 C13.8 12.2 13 13 12 13 C11 13 10.2 12.2 10.2 11 C10.2 9.8 11 9 12 9 Z M12 13.5 C13.2 13.5 14 14.5 13.8 16 L10.2 16 C10 14.5 10.8 13.5 12 13.5 Z"/>
-                </svg>
-                CROWS
-              </span>
-            </div>
+            <span class="preview-chip-label">В жетоне (suits.js):</span>
+            <div id="chip-feather"></div>
           </div>
-          <div class="sample-text">Target suffers +1 Damage per <span class="suit-chip suit-crows"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>CROWS</span> in duel total.</div>
+          <div class="sample-text">When hitting, target suffers +1 Damage per <span id="text-feather"></span> in total.</div>
         </div>
 
-        <!-- ВАРИАНТ B: Парящий ворон (по первому скрину "ONE of CROWS") -->
+        <!-- Вариант 2: Карточная пика ♠ -->
         <div class="variant-card">
           <div class="variant-header">
-            <span class="variant-id">CROWS — Вариант B</span>
-            <span class="variant-desc">Парящий ворон (Карта 1)</span>
+            <span class="variant-id">Вариант 2</span>
+            <span class="variant-desc">Гранёная пика ♠</span>
           </div>
-          <div class="preview-large">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <!-- Симметричный силуэт с широко распахнутыми маховыми крыльями и хвостом-веером -->
-              <path d="M12 4.5 C12.8 5.2 13.5 6 13.5 7 L14 7 C16.5 6.5 19.5 7 22.5 8.5 C21.5 10.2 19 11 17.5 11.2 C19.2 12 21 13.5 21.5 15 C19.5 15 17.5 14 16 13.2 L16.5 16 C14.5 15.5 13.2 14.5 12.5 13.5 L12.5 18.5 L14 21.5 L10 21.5 L11.5 18.5 L11.5 13.5 C10.8 14.5 9.5 15.5 7.5 16 L8 13.2 C6.5 14 4.5 15 2.5 15 C3 13.5 4.8 12 6.5 11.2 C5 11 2.5 10.2 1.5 8.5 C4.5 7 7.5 6.5 10 7 L10.5 7 C10.5 6 11.2 5.2 12 4.5 Z"/>
-            </svg>
-          </div>
+          <div class="preview-large" id="big-spade"></div>
           <div class="preview-chip-row">
-            <span class="preview-chip-label">В боевом жетоне:</span>
-            <div>
-              <span class="suit-chip suit-crows">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 4.5 C12.8 5.2 13.5 6 13.5 7 L14 7 C16.5 6.5 19.5 7 22.5 8.5 C21.5 10.2 19 11 17.5 11.2 C19.2 12 21 13.5 21.5 15 C19.5 15 17.5 14 16 13.2 L16.5 16 C14.5 15.5 13.2 14.5 12.5 13.5 L12.5 18.5 L14 21.5 L10 21.5 L11.5 18.5 L11.5 13.5 C10.8 14.5 9.5 15.5 7.5 16 L8 13.2 C6.5 14 4.5 15 2.5 15 C3 13.5 4.8 12 6.5 11.2 C5 11 2.5 10.2 1.5 8.5 C4.5 7 7.5 6.5 10 7 L10.5 7 C10.5 6 11.2 5.2 12 4.5 Z"/>
-                </svg>
-                CROWS
-              </span>
-            </div>
+            <span class="preview-chip-label">В жетоне (suits.js):</span>
+            <div id="chip-spade"></div>
           </div>
-          <div class="sample-text">Target suffers +1 Damage per <span class="suit-chip suit-crows"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>CROWS</span> in duel total.</div>
+          <div class="sample-text">When hitting, target suffers +1 Damage per <span id="text-spade"></span> in total.</div>
         </div>
 
-        <!-- ВАРИАНТ C: Граненая пика-ворон (в едином стиле с Бараном #3) -->
+        <!-- Вариант 3: Ворон с крыльями (Карта 1) -->
         <div class="variant-card">
           <div class="variant-header">
-            <span class="variant-id">CROWS — Вариант C</span>
-            <span class="variant-desc">Граненый ворон ♠ (Резкий)</span>
+            <span class="variant-id">Вариант 3</span>
+            <span class="variant-desc">Ворон с карты 1 of Crows</span>
           </div>
-          <div class="preview-large">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <!-- Четкие прямые линии в точности под геометрию Rams #3 и Masks #2 -->
-              <path d="M12 2 L14 6 L18.5 10.5 L19.5 15 L16.5 16.5 L14 15 L14.5 21 L9.5 21 L10 15 L7.5 16.5 L4.5 15 L5.5 10.5 L10 6 Z M12 7 L13.5 9.5 L12 12 L10.5 9.5 Z"/>
-            </svg>
-          </div>
+          <div class="preview-large" id="big-wings"></div>
           <div class="preview-chip-row">
-            <span class="preview-chip-label">В боевом жетоне:</span>
-            <div>
-              <span class="suit-chip suit-crows">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2 L14 6 L18.5 10.5 L19.5 15 L16.5 16.5 L14 15 L14.5 21 L9.5 21 L10 15 L7.5 16.5 L4.5 15 L5.5 10.5 L10 6 Z M12 7 L13.5 9.5 L12 12 L10.5 9.5 Z"/>
-                </svg>
-                CROWS
-              </span>
-            </div>
+            <span class="preview-chip-label">В жетоне (suits.js):</span>
+            <div id="chip-wings"></div>
           </div>
-          <div class="sample-text">Target suffers +1 Damage per <span class="suit-chip suit-crows"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>CROWS</span> in duel total.</div>
+          <div class="sample-text">When hitting, target suffers +1 Damage per <span id="text-wings"></span> in total.</div>
         </div>
 
-        <!-- ВАРИАНТ D: Монолитная геральдическая птица (максимальная плотность) -->
+        <!-- Вариант 4: Ворон-пика (Карта 2) -->
         <div class="variant-card">
           <div class="variant-header">
-            <span class="variant-id">CROWS — Вариант D</span>
-            <span class="variant-desc">Геральдический монолит</span>
+            <span class="variant-id">Вариант 4</span>
+            <span class="variant-desc">Ворон-пика (Карта 2)</span>
           </div>
-          <div class="preview-large">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <!-- Плотный монолитный силуэт, не теряющий ни одного пикселя на мелком экране -->
-              <path d="M12 3 C13 4.5 14 5.5 15 5.5 C18 5.5 21.5 7.5 22 9.5 C20 10.5 17.5 10.5 15.5 11 C17 12 18.5 13.5 19 15 C17 15 15 14 13.5 13 L13.5 18 L15.5 21 L8.5 21 L10.5 18 L10.5 13 C9 14 7 15 5 15 C5.5 13.5 7 12 8.5 11 C6.5 10.5 4 10.5 2 9.5 C2.5 7.5 6 5.5 9 5.5 C10 5.5 11 4.5 12 3 Z"/>
-            </svg>
-          </div>
+          <div class="preview-large" id="big-spade-raven"></div>
           <div class="preview-chip-row">
-            <span class="preview-chip-label">В боевом жетоне:</span>
-            <div>
-              <span class="suit-chip suit-crows">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 3 C13 4.5 14 5.5 15 5.5 C18 5.5 21.5 7.5 22 9.5 C20 10.5 17.5 10.5 15.5 11 C17 12 18.5 13.5 19 15 C17 15 15 14 13.5 13 L13.5 18 L15.5 21 L8.5 21 L10.5 18 L10.5 13 C9 14 7 15 5 15 C5.5 13.5 7 12 8.5 11 C6.5 10.5 4 10.5 2 9.5 C2.5 7.5 6 5.5 9 5.5 C10 5.5 11 4.5 12 3 Z"/>
-                </svg>
-                CROWS
-              </span>
-            </div>
+            <span class="preview-chip-label">В жетоне (suits.js):</span>
+            <div id="chip-spade-raven"></div>
           </div>
-          <div class="sample-text">Target suffers +1 Damage per <span class="suit-chip suit-crows"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>CROWS</span> in duel total.</div>
+          <div class="sample-text">When hitting, target suffers +1 Damage per <span id="text-spade-raven"></span> in total.</div>
         </div>
 
       </div>
     </div>
-
   </div>
 
+  <!-- ПОДКЛЮЧАЕМ НАШ МОДУЛЬ МАСТЕЙ -->
+  <script src="suits.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Рендерим утвержденную тройку через suits.js
+      const confirmedBox = document.getElementById('confirmed-suits');
+      confirmedBox.innerHTML = `
+        ${getSuitChip('rams')}
+        ${getSuitChip('masks')}
+        ${getSuitChip('tomes')}
+      `;
+
+      // 2. Рендерим 4 варианта Crows
+      const crows = SUITS_DATA.crows_variants;
+
+      document.getElementById('big-feather').innerHTML = crows.feather;
+      document.getElementById('chip-feather').innerHTML = getSuitChip('crows', 'feather');
+      document.getElementById('text-feather').innerHTML = getSuitChip('crows', 'feather');
+
+      document.getElementById('big-spade').innerHTML = crows.spade;
+      document.getElementById('chip-spade').innerHTML = getSuitChip('crows', 'spade');
+      document.getElementById('text-spade').innerHTML = getSuitChip('crows', 'spade');
+
+      document.getElementById('big-wings').innerHTML = crows.raven_wings;
+      document.getElementById('chip-wings').innerHTML = getSuitChip('crows', 'raven_wings');
+      document.getElementById('text-wings').innerHTML = getSuitChip('crows', 'raven_wings');
+
+      document.getElementById('big-spade-raven').innerHTML = crows.spade_raven;
+      document.getElementById('chip-spade-raven').innerHTML = getSuitChip('crows', 'spade_raven');
+      document.getElementById('text-spade-raven').innerHTML = getSuitChip('crows', 'spade_raven');
+    });
+  </script>
 </body>
 </html>
