@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Through the Breach — Suits Laboratory</title>
+  <title>Through the Breach — Suits Final Showcase</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -17,12 +17,12 @@
       padding: 30px 40px 60px;
     }
 
-    .container { max-width: 1200px; margin: 0 auto; }
+    .container { max-width: 1100px; margin: 0 auto; }
 
     header {
       border-bottom: 1px solid #4a3825;
       padding-bottom: 20px;
-      margin-bottom: 26px;
+      margin-bottom: 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -38,7 +38,7 @@
       font-weight: normal;
     }
 
-    /* Стили боевых жетонов (Chips) */
+    /* Стили жетонов с крупными 18px иконками */
     .suit-chip {
       display: inline-flex;
       align-items: center;
@@ -83,92 +83,42 @@
       border: 1px solid rgba(63, 185, 80, 0.5);
     }
 
-    /* Блок утвержденной тройки */
-    .confirmed-bar {
-      background: rgba(18, 14, 11, 0.92);
-      border: 1px solid #4a3825;
-      border-radius: 6px;
-      padding: 18px 22px;
-      margin-bottom: 30px;
-    }
-
-    .confirmed-title {
-      font-size: 12px;
-      color: #c59a5b;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 12px;
-    }
-
-    .confirmed-chips {
-      display: flex;
-      flex-wrap: wrap;
+    .fate-chip {
+      display: inline-flex;
       align-items: center;
-      gap: 16px;
-    }
-
-    /* Сетка вариантов Crows */
-    .crows-section {
-      background: rgba(18, 14, 11, 0.75);
-      border: 1px solid #382c1e;
-      border-radius: 8px;
-      padding: 24px;
-    }
-
-    .section-title {
-      font-size: 18px;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 4px;
+      margin: 0 2px;
+      background: rgba(184, 138, 74, 0.18);
+      border: 1px solid rgba(184, 138, 74, 0.55);
+      color: #f0c674;
       font-weight: bold;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: #56d364;
-      padding-bottom: 14px;
-      margin-bottom: 22px;
-      border-bottom: 1px solid #2e2318;
+      font-size: 12px;
+      border-radius: 3px;
+      vertical-align: middle;
+      line-height: 1;
     }
 
-    .variants-grid {
+    .suits-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 20px;
+      margin-bottom: 35px;
     }
 
-    .variant-card {
+    .suit-card {
       background: #14100c;
       border: 1px solid #382c1e;
       border-radius: 6px;
-      padding: 18px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      transition: all 0.2s;
+      gap: 16px;
     }
 
-    .variant-card:hover {
-      border-color: #56d364;
-      box-shadow: 0 4px 16px rgba(63, 185, 80, 0.15);
-      transform: translateY(-2px);
-    }
-
-    .variant-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .variant-id {
-      color: #56d364;
-      font-weight: bold;
-      font-size: 13.5px;
-      letter-spacing: 1px;
-    }
-
-    .variant-desc {
-      color: #8c8071;
-      font-size: 11px;
-      text-transform: uppercase;
-    }
-
-    .preview-large {
+    .preview-box {
       height: 70px;
       display: flex;
       align-items: center;
@@ -176,35 +126,27 @@
       background: rgba(0, 0, 0, 0.35);
       border-radius: 5px;
       border: 1px dashed #2e2318;
-      color: #56d364;
     }
 
-    .preview-large svg {
+    .preview-box svg {
       width: 44px;
       height: 44px;
     }
 
-    .preview-chip-row {
+    .sample-box {
+      background: rgba(18, 14, 11, 0.85);
+      border: 1px solid #382c1e;
+      border-radius: 6px;
+      padding: 22px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      background: #1a1511;
-      border-radius: 5px;
-      padding: 12px;
+      gap: 14px;
     }
 
-    .preview-chip-label {
-      font-size: 11px;
-      color: #a99e8d;
-      text-transform: uppercase;
-    }
-
-    .sample-text {
-      font-size: 13px;
+    .sample-line {
+      font-size: 13.5px;
       color: #dcd3c4;
-      line-height: 1.5;
-      padding-top: 6px;
-      border-top: 1px solid #241c14;
+      line-height: 1.6;
     }
   </style>
 </head>
@@ -214,114 +156,65 @@
     <header>
       <div>
         <h1>THROUGH THE BREACH</h1>
-        <div style="color: #a99e8d; font-size: 13px;">Тест модуля suits.js и выбор формы CROWS</div>
+        <div style="color: #a99e8d; font-size: 13px;">Финальный комплект четырёх мастей Malifaux</div>
       </div>
       <a href="talents-page.html" style="color: #c59a5b; text-decoration: none; border: 1px solid #b88a4a; padding: 7px 14px; border-radius: 4px; text-transform: uppercase; font-size: 11.5px; letter-spacing: 1px;">← В каталог</a>
     </header>
 
-    <!-- ТВОЯ УТВЕРЖДЕННАЯ ТРОЙКА ИЗ SUITS.JS -->
-    <div class="confirmed-bar">
-      <div class="confirmed-title">✓ Утверждённые масти (генерируются модулем suits.js):</div>
-      <div class="confirmed-chips" id="confirmed-suits"></div>
-    </div>
+    <!-- СЕТКА ВСЕХ 4 МАСТЕЙ -->
+    <div class="suits-grid" id="suits-showcase"></div>
 
-    <!-- ВАРИАНТЫ CROWS -->
-    <div class="crows-section">
-      <div class="section-title">🦅 ВЫБОР ФОРМЫ CROWS</div>
-
-      <div class="variants-grid">
-        
-        <!-- Вариант 1: Перо UI -->
-        <div class="variant-card">
-          <div class="variant-header">
-            <span class="variant-id">Вариант 1</span>
-            <span class="variant-desc">Перо писца (UI Feather)</span>
-          </div>
-          <div class="preview-large" id="big-feather"></div>
-          <div class="preview-chip-row">
-            <span class="preview-chip-label">В жетоне (suits.js):</span>
-            <div id="chip-feather"></div>
-          </div>
-          <div class="sample-text">When hitting, target suffers +1 Damage per <span id="text-feather"></span> in total.</div>
-        </div>
-
-        <!-- Вариант 2: Карточная пика ♠ -->
-        <div class="variant-card">
-          <div class="variant-header">
-            <span class="variant-id">Вариант 2</span>
-            <span class="variant-desc">Гранёная пика ♠</span>
-          </div>
-          <div class="preview-large" id="big-spade"></div>
-          <div class="preview-chip-row">
-            <span class="preview-chip-label">В жетоне (suits.js):</span>
-            <div id="chip-spade"></div>
-          </div>
-          <div class="sample-text">When hitting, target suffers +1 Damage per <span id="text-spade"></span> in total.</div>
-        </div>
-
-        <!-- Вариант 3: Ворон с крыльями (Карта 1) -->
-        <div class="variant-card">
-          <div class="variant-header">
-            <span class="variant-id">Вариант 3</span>
-            <span class="variant-desc">Ворон с карты 1 of Crows</span>
-          </div>
-          <div class="preview-large" id="big-wings"></div>
-          <div class="preview-chip-row">
-            <span class="preview-chip-label">В жетоне (suits.js):</span>
-            <div id="chip-wings"></div>
-          </div>
-          <div class="sample-text">When hitting, target suffers +1 Damage per <span id="text-wings"></span> in total.</div>
-        </div>
-
-        <!-- Вариант 4: Ворон-пика (Карта 2) -->
-        <div class="variant-card">
-          <div class="variant-header">
-            <span class="variant-id">Вариант 4</span>
-            <span class="variant-desc">Ворон-пика (Карта 2)</span>
-          </div>
-          <div class="preview-large" id="big-spade-raven"></div>
-          <div class="preview-chip-row">
-            <span class="preview-chip-label">В жетоне (suits.js):</span>
-            <div id="chip-spade-raven"></div>
-          </div>
-          <div class="sample-text">When hitting, target suffers +1 Damage per <span id="text-spade-raven"></span> in total.</div>
-        </div>
-
+    <!-- ТЕСТ В СТРОКЕ ПРАВИЛ -->
+    <div class="sample-box">
+      <div style="font-size: 12px; color: #c59a5b; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px;">Пример отображения в тексте талантов и заклинаний:</div>
+      <div class="sample-line">
+        • <strong>Flurry:</strong> Discard a <span id="chip-rams"></span> card to make two additional close combat attacks with a <span class="fate-chip">+</span> fate modifier.
+      </div>
+      <div class="sample-line">
+        • <strong>Subterfuge:</strong> When defending against a duel, declare a Trigger if the flipped card has a <span id="chip-masks"></span> suit.
+      </div>
+      <div class="sample-line">
+        • <strong>Blood Offering:</strong> The target suffers +1 severe damage per <span id="chip-crows"></span> in the final total.
+      </div>
+      <div class="sample-line">
+        • <strong>Grimoire Focus:</strong> Add a <span id="chip-tomes"></span> to the final duel total when channeling magical theories.
       </div>
     </div>
   </div>
 
-  <!-- ПОДКЛЮЧАЕМ НАШ МОДУЛЬ МАСТЕЙ -->
+  <!-- ПОДКЛЮЧЕНИЕ МОДУЛЯ -->
   <script src="suits.js"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // 1. Рендерим утвержденную тройку через suits.js
-      const confirmedBox = document.getElementById('confirmed-suits');
-      confirmedBox.innerHTML = `
-        ${getSuitChip('rams')}
-        ${getSuitChip('masks')}
-        ${getSuitChip('tomes')}
-      `;
+      const showcase = document.getElementById('suits-showcase');
+      const suits = ['rams', 'masks', 'crows', 'tomes'];
 
-      // 2. Рендерим 4 варианта Crows
-      const crows = SUITS_DATA.crows_variants;
+      suits.forEach(key => {
+        const item = SUITS_DATA[key];
+        const card = document.createElement('div');
+        card.className = 'suit-card';
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-weight:bold; color:${item.color}; letter-spacing:1px;">${item.name}</span>
+            <span style="font-size:11px; color:#8c8071; text-transform:uppercase;">18px Icon</span>
+          </div>
+          <div class="preview-box" style="color:${item.color};">
+            ${item.svg}
+          </div>
+          <div style="background:#1a1511; padding:10px; border-radius:4px; display:flex; flex-direction:column; gap:6px;">
+            <span style="font-size:10.5px; color:#a99e8d; text-transform:uppercase;">Жетон:</span>
+            <div>${getSuitChip(key)}</div>
+          </div>
+        `;
+        showcase.appendChild(card);
+      });
 
-      document.getElementById('big-feather').innerHTML = crows.feather;
-      document.getElementById('chip-feather').innerHTML = getSuitChip('crows', 'feather');
-      document.getElementById('text-feather').innerHTML = getSuitChip('crows', 'feather');
-
-      document.getElementById('big-spade').innerHTML = crows.spade;
-      document.getElementById('chip-spade').innerHTML = getSuitChip('crows', 'spade');
-      document.getElementById('text-spade').innerHTML = getSuitChip('crows', 'spade');
-
-      document.getElementById('big-wings').innerHTML = crows.raven_wings;
-      document.getElementById('chip-wings').innerHTML = getSuitChip('crows', 'raven_wings');
-      document.getElementById('text-wings').innerHTML = getSuitChip('crows', 'raven_wings');
-
-      document.getElementById('big-spade-raven').innerHTML = crows.spade_raven;
-      document.getElementById('chip-spade-raven').innerHTML = getSuitChip('crows', 'spade_raven');
-      document.getElementById('text-spade-raven').innerHTML = getSuitChip('crows', 'spade_raven');
+      // Жетоны в строках
+      document.getElementById('chip-rams').innerHTML = getSuitChip('rams');
+      document.getElementById('chip-masks').innerHTML = getSuitChip('masks');
+      document.getElementById('chip-crows').innerHTML = getSuitChip('crows');
+      document.getElementById('chip-tomes').innerHTML = getSuitChip('tomes');
     });
   </script>
 </body>
