@@ -823,10 +823,10 @@
 
       let formatted = desc
         .replace(/\[когти\]/gi, '⚔️')
-        .replace(/(?: |\()RAMS(?: |\))/g, CHIP_RAMS)
-        .replace(/(?: |\()CROWS(?: |\))/g, CHIP_CROWS)
-        .replace(/(?: |\()TOMES(?: |\))/g, CHIP_TOMES)
-        .replace(/(?: |\()MASKS(?: |\))/g, CHIP_MASKS)
+        .replace(/\bRAMS\b/g, CHIP_RAMS)
+        .replace(/\bCROWS\b/g, CHIP_CROWS)
+        .replace(/\bTOMES\b/g, CHIP_TOMES)
+        .replace(/\bMASKS\b/g, CHIP_MASKS)
         .replace(/:r:/g, CHIP_RAMS)
         .replace(/:c:/g, CHIP_CROWS)
         .replace(/:t:/g, CHIP_TOMES)
