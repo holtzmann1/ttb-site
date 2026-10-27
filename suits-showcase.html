@@ -139,10 +139,10 @@
             vertical-align: middle;
         }
 
-        /* Сетка для карточек напротив друг друга */
+        /* Сетка: фиксированная ширина карточки (не распирает одну карточку на весь экран) */
         #allies-site-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(380px, 520px));
             gap: 20px;
             align-items: start;
             width: 100%;
@@ -150,6 +150,7 @@
 
         .ally-site-card {
             width: 100%;
+            max-width: 520px;
             margin: 0;
             border: 1px solid #4a3825;
             background: #14100c;
@@ -488,10 +489,10 @@
         function formatBookText(text) {
             if (!text) return "";
             return text
-                .replace(/\bRAMS\b/g, getSuitBadge('rams'))
-                .replace(/\bMASKS\b/g, getSuitBadge('masks'))
-                .replace(/\bCROWS\b/g, getSuitBadge('crows'))
-                .replace(/\bTOMES\b/g, getSuitBadge('tomes'))
+                .replace(/ RAMS /g, getSuitBadge('rams'))
+                .replace(/ MASKS /g, getSuitBadge('masks'))
+                .replace(/ CROWS /g, getSuitBadge('crows'))
+                .replace(/ TOMES /g, getSuitBadge('tomes'))
                 .replace(/:r:/g, getSuitBadge('rams'))
                 .replace(/:m:/g, getSuitBadge('masks'))
                 .replace(/:c:/g, getSuitBadge('crows'))
@@ -567,11 +568,12 @@
             }).join('');
         }
 
-        function renderSiteAllyCard(data, isEditInitially = false) {
+        function renderSiteAllyCard(data, isEditInitially = false, isNewCard = false) {
             const cardId = 'ally_' + Math.random().toString(36).substr(2, 9);
             const wrapper = document.createElement('div');
             wrapper.className = 'ally-site-card';
             wrapper.id = cardId;
+            if (isNewCard) wrapper.dataset.isNew = 'true';
 
             wrapper.innerHTML = `
                 <!-- РЕЖИМ ПРОСМОТРА -->
@@ -673,7 +675,7 @@
                 <div class="ally-site-edit">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #382b1d; padding-bottom: 8px;">
                         <span style="font-size: 12px; font-weight: bold; color: #c59a5b; letter-spacing: 1px;">EDIT ALLY / SUBORDINATE</span>
-                        <button type="button" class="action-btn" onclick="saveAllyEdit('${cardId}')" style="font-size: 11px; padding: 4px 12px;">✓ СОХРАНИТЬ</button>
+                        <button type="button" class="btn-site-ctrl" onclick="cancelAllyEdit('${cardId}')" title="Отмена">✕</button>
                     </div>
 
                     <div class="edit-row">
@@ -743,7 +745,7 @@
                     </div>
 
                     <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px;">
-                        <button type="button" class="btn-site-ctrl" onclick="toggleEditMode('${cardId}')">ОТМЕНА</button>
+                        <button type="button" class="btn-site-ctrl" onclick="cancelAllyEdit('${cardId}')">ОТМЕНА</button>
                         <button type="button" class="action-btn" onclick="saveAllyEdit('${cardId}')">✓ СОХРАНИТЬ</button>
                     </div>
                 </div>
@@ -752,7 +754,19 @@
             document.getElementById('allies-site-list').appendChild(wrapper);
 
             if (isEditInitially) {
-                toggleEditMode(cardId);
+                card.dataset.isNew = 'false';
+            toggleEditMode(cardId);
+            }
+        }
+
+                function cancelAllyEdit(cardId) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+            if (card.dataset.isNew === 'true') {
+                card.remove();
+            } else {
+                card.dataset.isNew = 'false';
+            toggleEditMode(cardId);
             }
         }
 
@@ -822,6 +836,7 @@
             card.querySelector('.view-val-abilities').innerHTML = renderAbilitiesHtml(abilities);
             card.querySelector('.view-val-actions').innerHTML = renderActionsHtml(actions);
 
+            card.dataset.isNew = 'false';
             toggleEditMode(cardId);
         }
 
@@ -850,7 +865,7 @@
                 skills: "",
                 abilities: "",
                 actions: ""
-            }, true);
+            }, true, true);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
