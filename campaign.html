@@ -1506,173 +1506,336 @@ body {
         .suit-chip.suit-tomes { color: #739bbd; background: rgba(65, 105, 140, 0.16); border-color: rgba(85, 125, 165, 0.45); }
 
 /* ==========================================================================
-   ALLIES: PURSUIT-STYLE ACCORDION CARDS
+   ALLIES: БЕЖЕВЫЕ КНИЖНЫЕ КАРТОЧКИ БЕСТИАРИЯ (EMPYREAN EAGLE STYLE)
    ========================================================================== */
-.ally-v1-card {
+#allies-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 520px));
+  gap: 24px;
+  align-items: start;
   width: 100%;
-  background: rgba(14, 11, 9, 0.95);
-  border: 1px solid #3d2f21;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.85);
-  font-family: Georgia, serif;
 }
 
-/* Шапка аккордеона */
-.ally-v1-header {
-  background: #201914;
-  border-bottom: 1px solid #382b1d;
-  padding: 8px 12px;
+.ally-site-card {
+  width: 100%;
+  max-width: 520px;
+  margin: 0;
+  border: 1px solid #735d46;
+  background: #f7f1e5;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85), 0 2px 6px rgba(0, 0, 0, 0.4);
+  font-family: Georgia, 'Times New Roman', serif;
+  box-sizing: border-box;
+  color: #261c14;
+}
+
+.ally-site-header {
+  background: #1e1610;
+  padding: 12px 16px 10px 16px;
+  border-bottom: 3px solid #8c6a43;
   display: flex;
-  align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
-.ally-toggle-btn {
-  background: transparent;
-  border: 1px solid #4a3825;
-  color: #c59a5b;
-  cursor: pointer;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  flex-shrink: 0;
-  transition: all 0.2s ease;
-}
-.ally-toggle-btn:hover {
-  border-color: #c59a5b;
-  background: #2b2118;
-}
-
-.ally-input-title {
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid transparent;
-  font-size: 16px;
+.ally-site-title {
+  color: #ffffff;
+  font-size: 20px;
   font-weight: bold;
-  color: #e8dfd0;
   letter-spacing: 0.5px;
-  font-family: Georgia, serif;
-  width: 100%;
-}
-.ally-input-title:focus {
-  outline: none;
-  border-bottom-color: #8c714b;
+  margin: 0;
+  line-height: 1.2;
 }
 
-.ally-input-sub {
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid transparent;
-  font-size: 11.5px;
+.ally-site-subtitle {
+  font-size: 13px;
+  color: #dfd2be;
   font-style: italic;
-  color: #8f8679;
-  font-family: Georgia, serif;
-  width: 100%;
-}
-.ally-input-sub:focus {
-  outline: none;
-  border-bottom-color: #8c714b;
+  margin-top: 3px;
+  line-height: 1.3;
 }
 
-.ally-v1-btn-del {
-  background: transparent;
-  border: 1px solid #382b1d;
-  color: #8f8679;
-  cursor: pointer;
-  width: 28px;
-  height: 28px;
+.ally-site-ctrls {
   display: flex;
+  gap: 6px;
   align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  flex-shrink: 0;
-  transition: all 0.2s ease;
-}
-.ally-v1-btn-del:hover {
-  background: rgba(229, 115, 115, 0.15);
-  border-color: #e57373;
-  color: #e57373;
 }
 
-/* Раскрывающееся тело карточки */
-.ally-card-body {
-  padding: 12px 14px;
+.btn-site-ctrl {
+  background: #2a2018;
+  border: 1px solid #73583e;
+  color: #d6ab6f;
+  cursor: pointer;
+  padding: 4px 9px;
+  font-size: 11px;
+  font-family: Georgia, serif;
+  letter-spacing: 0.5px;
+  transition: all 0.15s ease;
+}
+.btn-site-ctrl:hover {
+  border-color: #d6ab6f;
+  color: #ffffff;
+  background: #473525;
 }
 
-/* Таблицы статов в стиле .pursuit-weapon-table */
-.ally-v1-table {
+.btn-site-del {
+  color: #b59f8c;
+}
+.btn-site-del:hover {
+  color: #ff9e9e;
+  border-color: #d9534f;
+  background: rgba(217, 83, 79, 0.25);
+}
+
+.beige-stat-table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
   text-align: center;
-  background: #14110e;
-  border: 1px solid #382b1d;
-  margin-bottom: 8px;
+  background: #fcf9f2;
+  border-bottom: 3px solid #8c6a43;
 }
-.ally-v1-table th, .ally-v1-table td {
-  border: 1px solid #382b1d;
-  padding: 3px 2px;
+
+.beige-stat-table td {
+  border: 1px solid #947e65;
+  padding: 7px 4px 8px 4px;
+  vertical-align: top;
 }
-.ally-v1-table th {
+
+.stat-name {
+  font-size: 12.5px;
+  font-style: italic;
+  font-weight: normal;
+  color: #4a3422;
+  line-height: 1.25;
+  margin-top: 1px;
+}
+
+.stat-val {
+  font-size: 16.5px;
   font-weight: bold;
-  color: #c59a5b;
+  color: #1a120b;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.stat-val-last {
+  margin-bottom: 1px;
+}
+
+.stat-row-derived td {
+  border-top: 2px solid #735a40 !important;
+  background: #f7f1e5;
+}
+
+.ally-site-body {
+  padding: 13px 16px 18px 16px;
+  font-size: 12.5px;
+  color: #261b12;
+  line-height: 1.48;
+  background: #f7f1e5;
+}
+
+.ally-skills-block {
+  margin-bottom: 11px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #99836c;
+}
+.ally-skills-block strong {
+  color: #1a120c;
+  font-size: 13px;
+}
+
+.ally-abilities-block {
+  margin-bottom: 13px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid #99836c;
+}
+
+.ally-site-item {
+  margin-bottom: 8px;
+  line-height: 1.45;
+  color: #261b12;
+}
+.ally-site-item strong {
+  color: #140d07;
+  font-size: 13px;
+}
+
+.ally-attack-box {
+  margin-top: 11px;
+  border: 1px solid #947e65;
+  background: #fcf9f2;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+.ally-attack-box:first-child {
+  margin-top: 4px;
+}
+
+.ally-attack-head {
+  background: #e8dcce;
+  padding: 5px 10px;
+  border-bottom: 1px solid #947e65;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ally-attack-title {
+  color: #1f140b;
+  font-weight: bold;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+}
+
+.ally-attack-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
   font-size: 11px;
-  background: #251d16;
+  text-align: center;
+  background: #fffdf9;
+  border-bottom: 1px solid #947e65;
+}
+.ally-attack-table th {
+  padding: 4px 2px;
+  color: #4a3422;
+  font-weight: bold;
+  border-right: 1px solid #ab977e;
+  background: #efe5d6;
+  font-size: 10.5px;
   letter-spacing: 0.5px;
 }
-.ally-input-stat {
-  width: 100%;
-  background: transparent;
-  border: none;
-  text-align: center;
-  font-size: 13.5px;
+.ally-attack-table td {
+  padding: 5px 2px;
+  color: #140d07;
   font-weight: bold;
-  color: #e8dfd0;
-  font-family: Georgia, serif;
+  font-size: 13.5px;
+  border-right: 1px solid #ab977e;
 }
-.ally-input-stat:focus {
-  outline: none;
-  background: rgba(140, 113, 75, 0.15);
-}
-
-.ally-v1-row {
-  border-top: 1px dashed #2d2216;
-  padding-top: 8px;
-  margin-top: 8px;
+.ally-attack-table th:last-child,
+.ally-attack-table td:last-child {
+  border-right: none;
 }
 
-.ally-input-text {
-  width: 100%;
-  background: #14110e;
-  border: 1px solid #382b1d;
-  color: #e8dfd0;
-  font-family: Georgia, serif;
-  font-size: 12px;
-  padding: 4px 8px;
-}
-.ally-input-text:focus {
-  outline: none;
-  border-color: #8c714b;
-}
-
-.ally-textarea {
-  width: 100%;
-  min-height: 60px;
-  background: #120e0b;
-  border: 1px solid #382b1d;
-  color: #ded3c3;
-  font-family: Georgia, serif;
+.ally-attack-triggers {
+  padding: 7px 10px;
   font-size: 12px;
   line-height: 1.45;
+  background: #f7f1e5;
+}
+
+.ally-trigger-row {
+  color: #2b1d14;
+  border-top: 1px dashed #b5a088;
+  padding-top: 4px;
+  margin-top: 4px;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+.ally-trigger-row:first-child {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.ally-site-edit {
+  display: none;
+  padding: 14px;
+  background: #f0e6d6;
+  border-top: 1px solid #8c6a43;
+  color: #261c14;
+}
+
+.edit-row {
+  margin-bottom: 10px;
+}
+.edit-row label {
+  display: block;
+  font-size: 11px;
+  color: #523820;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+.edit-input {
+  width: 100%;
+  background: #fcfaf6;
+  border: 1px solid #9e866e;
+  color: #1a120b;
   padding: 6px 8px;
-  resize: vertical;
-}
-.ally-textarea:focus {
+  font-size: 12.5px;
+  font-family: Georgia, serif;
   outline: none;
-  border-color: #8c714b;
 }
+.edit-input:focus {
+  border-color: #5c3c1e;
+}
+
+.edit-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-bottom: 6px;
+  text-align: center;
+}
+.edit-grid-4 label {
+  font-size: 9.5px;
+  color: #634730;
+  margin-bottom: 2px;
+}
+.edit-grid-4 input {
+  text-align: center;
+  font-weight: bold;
+  padding: 4px 2px;
+}
+
+.edit-textarea {
+  width: 100%;
+  min-height: 70px;
+  background: #fcfaf6;
+  border: 1px solid #9e866e;
+  color: #1a120b;
+  padding: 6px 8px;
+  font-size: 12px;
+  font-family: Georgia, serif;
+  line-height: 1.45;
+  resize: vertical;
+  outline: none;
+}
+.edit-textarea:focus {
+  border-color: #5c3c1e;
+}
+
+.suit-quick-bar {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+  align-items: center;
+}
+.btn-quick-suit {
+  background: #e2d3c0;
+  border: 1px solid #8c7258;
+  color: #3b2817;
+  padding: 2px 6px;
+  font-size: 10px;
+  cursor: pointer;
+  font-family: monospace;
+  font-weight: bold;
+}
+.btn-quick-suit:hover {
+  border-color: #3b2817;
+  background: #cfbeaa;
+}
+
+.ally-site-card .suit-chip.suit-rams  { color: #9c231d; background: rgba(160, 40, 30, 0.12); border-color: rgba(160, 40, 30, 0.45); }
+.ally-site-card .suit-chip.suit-masks { color: #692d84; background: rgba(105, 45, 132, 0.12); border-color: rgba(105, 45, 132, 0.45); }
+.ally-site-card .suit-chip.suit-crows { color: #1c6b2e; background: rgba(28, 107, 46, 0.12); border-color: rgba(28, 107, 46, 0.45); }
+.ally-site-card .suit-chip.suit-tomes { color: #1f5780; background: rgba(31, 87, 128, 0.12); border-color: rgba(31, 87, 128, 0.45); }
+        
     </style>
 </head>
 <body>
@@ -2036,21 +2199,20 @@ body {
                 </div>
             </div>
 <!-- ==========================================
-     ТАБ: ALLIES
+     ТАБ: ALLIES (БЕЖЕВЫЕ КНИЖНЫЕ КАРТОЧКИ)
      ========================================== -->
-<div id="tab-allies" class="tab-content" style="max-width: 900px; margin: 0 auto;">
-  <!-- Верхняя строка управления без рамки .box -->
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #382b1d; padding-bottom: 10px;">
+<div id="tab-allies" class="tab-content" style="max-width: 1150px; margin: 0 auto;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #382b1d; padding-bottom: 12px;">
     <h3 style="margin: 0; font-size: 15px; letter-spacing: 2px; text-transform: uppercase; color: #c59a5b; font-weight: normal;">
       SUBORDINATES & ALLIES
     </h3>
-    <button type="button" class="action-btn" onclick="addAllyCard()" style="font-size: 11px; padding: 6px 14px;">
+    <button type="button" class="action-btn" onclick="addAllyCard({}, true, true)" style="font-size: 11px; padding: 6px 14px;">
       + ADD ALLY
     </button>
   </div>
 
-  <!-- Список карточек-аккордеонов -->
-  <div id="allies-list" style="display: flex; flex-direction: column; gap: 12px;"></div>
+  <!-- Список карточек союзников (сетка напротив друг друга) -->
+  <div id="allies-list"></div>
 </div>
 <!-- ВКЛАДКА 4: BIO -->
             <div id="tab-bio" class="tab-content">
@@ -3861,150 +4023,371 @@ function getTalentOptionsHtml(selectedVal = "") {
             `;
             container.appendChild(row);
         }
-// Шаблон карточки в стиле вкладки Pursuit
-function createAllyCardHtml(data = {}) {
-  const name = data.name || '';
-  const sub = data.sub || '';
-  
-  const might = data.might ?? '';
-  const grace = data.grace ?? '';
-  const speed = data.speed ?? '';
-  const resilience = data.resilience ?? '';
-  const charm = data.charm ?? '';
-  const intellect = data.intellect ?? '';
-  const cunning = data.cunning ?? '';
-  const tenacity = data.tenacity ?? '';
+// ==========================================
+// ЛОГИКА ВКЛАДКИ ALLIES (БЕЖЕВЫЕ КАРТОЧКИ БЕСТИАРИЯ)
+// ==========================================
+function formatAllyText(text) {
+    if (!text) return "";
+    const getChip = (typeof getSuitChip === "function") 
+        ? getSuitChip 
+        : (s) => `[${s.toUpperCase()}]`;
 
-  const defense = data.defense || '';
-  const walk = data.walk || '';
-  const height = data.height || '';
-  const initiative = data.initiative || '';
-  const willpower = data.willpower || '';
-  const charge = data.charge || '';
-  const wounds = data.wounds || '';
-
-  const skills = data.skills || '';
-  const abilities = data.abilities || '';
-  const actions = data.actions || '';
-
-  return `
-    <div class="ally-v1-card">
-      <!-- Шапка аккордеона -->
-      <div class="ally-v1-header">
-        <button type="button" class="ally-toggle-btn" onclick="toggleAllyAccordion(this)" title="Свернуть / Развернуть">▲</button>
-        <div style="flex: 1; display: flex; flex-direction: column; gap: 2px;">
-          <input type="text" class="ally-input-title ally-val-name" placeholder="Ally Name..." value="${name}">
-          <input type="text" class="ally-input-sub ally-val-sub" placeholder="Keywords (e.g. Minion (6), Living, Beast)..." value="${sub}">
-        </div>
-        <button type="button" class="ally-v1-btn-del" onclick="removeAllyCard(this)" title="Удалить">✕</button>
-      </div>
-
-      <!-- Раскрывающееся тело -->
-      <div class="ally-card-body">
-        <!-- Аспекты 4x2 -->
-        <table class="ally-v1-table">
-          <thead>
-            <tr>
-              <th>Might</th><th>Grace</th><th>Speed</th><th>Resilience</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><input type="text" class="ally-input-stat ally-val-might" placeholder="0" value="${might}"></td>
-              <td><input type="text" class="ally-input-stat ally-val-grace" placeholder="0" value="${grace}"></td>
-              <td><input type="text" class="ally-input-stat ally-val-speed" placeholder="0" value="${speed}"></td>
-              <td><input type="text" class="ally-input-stat ally-val-resilience" placeholder="0" value="${resilience}"></td>
-            </tr>
-          </tbody>
-          <thead>
-            <tr>
-              <th>Charm</th><th>Intellect</th><th>Cunning</th><th>Tenacity</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><input type="text" class="ally-input-stat ally-val-charm" placeholder="0" value="${charm}"></td>
-              <td><input type="text" class="ally-input-stat ally-val-intellect" placeholder="0" value="${intellect}"></td>
-              <td><input type="text" class="ally-input-stat ally-val-cunning" placeholder="0" value="${cunning}"></td>
-              <td><input type="text" class="ally-input-stat ally-val-tenacity" placeholder="0" value="${tenacity}"></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- Производные 4x2 -->
-        <table class="ally-v1-table">
-          <thead>
-            <tr>
-              <th>Defense</th><th>Walk</th><th>Height</th><th>Initiative</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><input type="text" class="ally-input-stat ally-val-defense" placeholder="0" value="${defense}"></td>
-              <td><input type="text" class="ally-input-stat ally-val-walk" placeholder="0" value="${walk}"></td>
-              <td><input type="text" class="ally-input-stat ally-val-height" placeholder="0" value="${height}"></td>
-              <td><input type="text" class="ally-input-stat ally-val-initiative" placeholder="0" value="${initiative}"></td>
-            </tr>
-          </tbody>
-          <thead>
-            <tr>
-              <th>Willpower</th><th>Charge</th><th>Wounds</th><th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><input type="text" class="ally-input-stat ally-val-willpower" placeholder="0" value="${willpower}"></td>
-              <td><input type="text" class="ally-input-stat ally-val-charge" placeholder="0" value="${charge}"></td>
-              <td><input type="text" class="ally-input-stat ally-val-wounds" placeholder="0" value="${wounds}"></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- Навыки -->
-        <div class="ally-v1-row" style="border-top: none; margin-top: 4px; padding-top: 0;">
-          <strong style="color: #c59a5b; font-size: 11px; text-transform: uppercase; display: block; margin-bottom: 3px;">Skills:</strong>
-          <input type="text" class="ally-input-text ally-val-skills" placeholder="e.g. Acrobatics 2, Pugilism 3..." value="${skills}">
-        </div>
-
-        <!-- Особенности -->
-        <div class="ally-v1-row">
-          <strong style="color: #c59a5b; font-size: 11px; text-transform: uppercase; display: block; margin-bottom: 3px;">Special Abilities:</strong>
-          <textarea class="ally-textarea ally-val-abilities" placeholder="Abilities...">${abilities}</textarea>
-        </div>
-
-        <!-- Атаки -->
-        <div class="ally-v1-row">
-          <strong style="color: #c59a5b; font-size: 11px; text-transform: uppercase; display: block; margin-bottom: 3px;">Actions & Attacks:</strong>
-          <textarea class="ally-textarea ally-val-actions" placeholder="Actions & Attacks...">${actions}</textarea>
-        </div>
-      </div>
-    </div>
-  `;
+    return text
+        .replace(/\bRAMS\b/g, getChip('rams'))
+        .replace(/\bMASKS\b/g, getChip('masks'))
+        .replace(/\bCROWS\b/g, getChip('crows'))
+        .replace(/\bTOMES\b/g, getChip('tomes'))
+        .replace(/:r:/g, getChip('rams'))
+        .replace(/:m:/g, getChip('masks'))
+        .replace(/:c:/g, getChip('crows'))
+        .replace(/:t:/g, getChip('tomes'))
+        .replace(/\[\+\]|:\+:/g, '<span style="color: #196628; font-weight: bold; font-family: monospace;">[+]</span>');
 }
 
-// Функция переключения аккордеона
-function toggleAllyAccordion(btn) {
-  const card = btn.closest('.ally-v1-card');
-  const body = card.querySelector('.ally-card-body');
-  const isClosed = body.style.display === 'none';
-  body.style.display = isClosed ? 'block' : 'none';
-  btn.textContent = isClosed ? '▲' : '▼';
+function renderAllyAbilitiesHtml(text) {
+    if (!text) return "";
+    const lines = text.split("\n").filter(l => l.trim().length > 0);
+    return lines.map(line => {
+        const colonIdx = line.indexOf(':');
+        if (colonIdx !== -1) {
+            const title = line.substring(0, colonIdx).trim();
+            const desc = line.substring(colonIdx + 1).trim();
+            return '<div class="ally-site-item"><strong>' + title + ':</strong> ' + formatAllyText(desc) + '</div>';
+        }
+        return '<div class="ally-site-item">' + formatAllyText(line) + '</div>';
+    }).join('');
 }
 
-// Добавление новой карточки по кнопке + ADD ALLY
-function addAllyCard(data = {}) {
-  const container = document.getElementById('allies-list');
-  if (!container) return;
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = createAllyCardHtml(data);
-  container.appendChild(wrapper.firstElementChild);
+function renderAllyActionsHtml(text) {
+    if (!text) return "";
+    const blocks = text.split(/\n\s*\n/);
+    return blocks.map(block => {
+        const lines = block.split("\n").map(l => l.trim()).filter(Boolean);
+        if (lines.length === 0) return '';
+        
+        let title = lines[0];
+        let av = '—', rg = '—', resist = '—', dmg = '—';
+        let triggers = [];
+
+        for (let i = 1; i < lines.length; i++) {
+            const l = lines[i];
+            if (l.includes('AV:') || l.includes('Rg:') || l.includes('Resist:')) {
+                const mAv = l.match(/AV:\s*([^|]+)/i);
+                const mRg = l.match(/Rg:\s*([^|]+)/i);
+                const mRes = l.match(/Resist:\s*([^|]+)/i);
+                const mDmg = l.match(/Dmg:\s*([^|]+)|Damage:\s*([^|]+)/i);
+
+                if (mAv) av = mAv[1].trim();
+                if (mRg) rg = mRg[1].trim();
+                if (mRes) resist = mRes[1].trim();
+                if (mDmg) dmg = (mDmg[1] || mDmg[2]).trim();
+            } else if (l.toLowerCase().startsWith('target suffers') || l.toLowerCase().startsWith('damage:')) {
+                dmg = l.replace(/^target suffers\s*/i, '').replace(/^damage:\s*/i, '').replace(/\s*damage\.?/i, '').trim();
+            } else {
+                triggers.push(l);
+            }
+        }
+
+        const hasStats = (av !== '—' || rg !== '—' || resist !== '—' || dmg !== '—');
+
+        let statsTable = '';
+        if (hasStats) {
+            statsTable = '<table class="ally-attack-table">' +
+                '<thead><tr><th>AV</th><th>RANGE</th><th>RESIST</th><th>DAMAGE</th></tr></thead>' +
+                '<tbody><tr><td>' + av + '</td><td>' + rg + '</td><td>' + resist + '</td><td>' + dmg + '</td></tr></tbody>' +
+                '</table>';
+        }
+
+        let triggersHtml = '';
+        if (triggers.length > 0) {
+            triggersHtml = '<div class="ally-attack-triggers">' +
+                triggers.map(t => '<div class="ally-trigger-row">' + formatAllyText(t) + '</div>').join('') +
+                '</div>';
+        }
+
+        return '<div class="ally-attack-box">' +
+            '<div class="ally-attack-head"><span class="ally-attack-title">' + title + '</span></div>' +
+            statsTable + triggersHtml +
+            '</div>';
+    }).join('');
 }
 
-// Удаление карточки
-function removeAllyCard(btn) {
-  const card = btn.closest('.ally-v1-card');
-  if (card) card.remove();
+function addAllyCard(data = {}, isEditInitially = false, isNewCard = false) {
+    const cardId = 'ally_' + Math.random().toString(36).substr(2, 9);
+    const container = document.getElementById('allies-list');
+    if (!container) return;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'ally-site-card';
+    wrapper.id = cardId;
+    if (isNewCard) wrapper.dataset.isNew = 'true';
+
+    wrapper.innerHTML = `
+        <!-- РЕЖИМ ПРОСМОТРА -->
+        <div class="ally-site-view">
+            <div class="ally-site-header">
+                <div>
+                    <div class="ally-site-title view-val-name">${(data.name || 'UNNAMED ALLY').toUpperCase()}</div>
+                    <div class="ally-site-subtitle view-val-sub">${data.sub || 'Minion'}</div>
+                </div>
+                <div class="ally-site-ctrls">
+                    <button type="button" class="btn-site-ctrl" onclick="toggleEditMode('${cardId}')">✎ EDIT</button>
+                    <button type="button" class="btn-site-ctrl btn-site-del" onclick="document.getElementById('${cardId}').remove()">✕</button>
+                </div>
+            </div>
+
+            <!-- СТАТБЛОК 1В1 СО СКРИНШОТА -->
+            <table class="beige-stat-table">
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="stat-name">Might</div>
+                            <div class="stat-val view-val-might">${data.might ?? '0'}</div>
+                            <div class="stat-name">Charm</div>
+                            <div class="stat-val stat-val-last view-val-charm">${data.charm ?? '0'}</div>
+                        </td>
+                        <td>
+                            <div class="stat-name">Grace</div>
+                            <div class="stat-val view-val-grace">${data.grace ?? '0'}</div>
+                            <div class="stat-name">Intellect</div>
+                            <div class="stat-val stat-val-last view-val-intellect">${data.intellect ?? '0'}</div>
+                        </td>
+                        <td>
+                            <div class="stat-name">Speed</div>
+                            <div class="stat-val view-val-speed">${data.speed ?? '0'}</div>
+                            <div class="stat-name">Cunning</div>
+                            <div class="stat-val stat-val-last view-val-cunning">${data.cunning ?? '0'}</div>
+                        </td>
+                        <td>
+                            <div class="stat-name">Resilience</div>
+                            <div class="stat-val view-val-resilience">${data.resilience ?? '0'}</div>
+                            <div class="stat-name">Tenacity</div>
+                            <div class="stat-val stat-val-last view-val-tenacity">${data.tenacity ?? '0'}</div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody class="stat-row-derived">
+                    <tr>
+                        <td>
+                            <div class="stat-name">Defense</div>
+                            <div class="stat-val view-val-defense">${data.defense || '2'}</div>
+                            <div class="stat-name">Willpower</div>
+                            <div class="stat-val stat-val-last view-val-willpower">${data.willpower || '2'}</div>
+                        </td>
+                        <td>
+                            <div class="stat-name">Walk</div>
+                            <div class="stat-val view-val-walk">${data.walk || '4'}</div>
+                            <div class="stat-name">Charge</div>
+                            <div class="stat-val stat-val-last view-val-charge">${data.charge || '4'}</div>
+                        </td>
+                        <td>
+                            <div class="stat-name">Height</div>
+                            <div class="stat-val view-val-height">${data.height || '2'}</div>
+                            <div class="stat-name">Wounds</div>
+                            <div class="stat-val stat-val-last view-val-wounds" style="color: #9c231d;">${data.wounds || '4'}</div>
+                        </td>
+                        <td>
+                            <div class="stat-name">Initiative</div>
+                            <div class="stat-val view-val-initiative">${data.initiative || '0'}</div>
+                            <div class="stat-name" style="visibility: hidden;">&nbsp;</div>
+                            <div class="stat-val stat-val-last" style="visibility: hidden;">&nbsp;</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ally-site-body">
+                <div class="ally-skills-block">
+                    <strong>Skills:</strong> <span class="view-val-skills">${data.skills || '—'}</span>
+                </div>
+                <div class="ally-abilities-block view-val-abilities">
+                    ${renderAllyAbilitiesHtml(data.abilities)}
+                </div>
+                <div class="view-val-actions">
+                    ${renderAllyActionsHtml(data.actions)}
+                </div>
+            </div>
+        </div>
+
+        <!-- ФОРМА РЕДАКТИРОВАНИЯ -->
+        <div class="ally-site-edit">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #8c6a43; padding-bottom: 8px;">
+                <span style="font-size: 12px; font-weight: bold; color: #523820; letter-spacing: 1px;">EDIT ALLY / SUBORDINATE</span>
+                <button type="button" class="btn-site-ctrl" onclick="cancelAllyEdit('${cardId}')" title="Отмена">✕</button>
+            </div>
+
+            <div class="edit-row">
+                <label>Имя союзника</label>
+                <input type="text" class="edit-input inp-name" value="${data.name || ''}" placeholder="Silurid Hunter">
+            </div>
+
+            <div class="edit-row">
+                <label>Keywords & Type</label>
+                <input type="text" class="edit-input inp-sub" value="${data.sub || ''}" placeholder="Minion (6), Living, Beast, Swampfiend">
+            </div>
+
+            <div class="edit-row">
+                <label>Аспекты</label>
+                <div class="edit-grid-4">
+                    <div><label>Might</label><input type="text" class="edit-input inp-might" value="${data.might ?? '0'}"></div>
+                    <div><label>Grace</label><input type="text" class="edit-input inp-grace" value="${data.grace ?? '0'}"></div>
+                    <div><label>Speed</label><input type="text" class="edit-input inp-speed" value="${data.speed ?? '0'}"></div>
+                    <div><label>Resilience</label><input type="text" class="edit-input inp-resilience" value="${data.resilience ?? '0'}"></div>
+                </div>
+                <div class="edit-grid-4">
+                    <div><label>Charm</label><input type="text" class="edit-input inp-charm" value="${data.charm ?? '0'}"></div>
+                    <div><label>Intellect</label><input type="text" class="edit-input inp-intellect" value="${data.intellect ?? '0'}"></div>
+                    <div><label>Cunning</label><input type="text" class="edit-input inp-cunning" value="${data.cunning ?? '0'}"></div>
+                    <div><label>Tenacity</label><input type="text" class="edit-input inp-tenacity" value="${data.tenacity ?? '0'}"></div>
+                </div>
+            </div>
+
+            <div class="edit-row">
+                <label>Производные</label>
+                <div class="edit-grid-4">
+                    <div><label>Defense</label><input type="text" class="edit-input inp-defense" value="${data.defense || '2'}"></div>
+                    <div><label>Walk</label><input type="text" class="edit-input inp-walk" value="${data.walk || '4'}"></div>
+                    <div><label>Height</label><input type="text" class="edit-input inp-height" value="${data.height || '2'}"></div>
+                    <div><label>Initiative</label><input type="text" class="edit-input inp-initiative" value="${data.initiative || '0'}"></div>
+                </div>
+                <div class="edit-grid-4">
+                    <div><label>Willpower</label><input type="text" class="edit-input inp-willpower" value="${data.willpower || '2'}"></div>
+                    <div><label>Charge</label><input type="text" class="edit-input inp-charge" value="${data.charge || '4'}"></div>
+                    <div><label>Wounds</label><input type="text" class="edit-input inp-wounds" value="${data.wounds || '4'}"></div>
+                    <div></div>
+                </div>
+            </div>
+
+            <div class="edit-row">
+                <label>Skills</label>
+                <input type="text" class="edit-input inp-skills" value="${data.skills || ''}" placeholder="Acrobatics 2, Pugilism 3...">
+            </div>
+
+            <div class="edit-row">
+                <label>Abilities (по строкам "Название: Описание")</label>
+                <textarea class="edit-textarea inp-abilities">${data.abilities || ''}</textarea>
+            </div>
+
+            <div class="edit-row">
+                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                    <label>Attacks & Actions</label>
+                    <div class="suit-quick-bar">
+                        <button type="button" class="btn-quick-suit" onclick="insertAllyCode('${cardId}', ':r:')">:r: Ram</button>
+                        <button type="button" class="btn-quick-suit" onclick="insertAllyCode('${cardId}', ':c:')">:c: Crow</button>
+                        <button type="button" class="btn-quick-suit" onclick="insertAllyCode('${cardId}', ':m:')">:m: Mask</button>
+                        <button type="button" class="btn-quick-suit" onclick="insertAllyCode('${cardId}', ':t:')">:t: Tome</button>
+                        <button type="button" class="btn-quick-suit" onclick="insertAllyCode('${cardId}', ':+:')">[+]</button>
+                    </div>
+                </div>
+                <textarea class="edit-textarea inp-actions">${data.actions || ''}</textarea>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px;">
+                <button type="button" class="btn-site-ctrl" onclick="cancelAllyEdit('${cardId}')">ОТМЕНА</button>
+                <button type="button" class="action-btn" onclick="saveAllyEdit('${cardId}')">✓ СОХРАНИТЬ</button>
+            </div>
+        </div>
+    `;
+
+    container.appendChild(wrapper);
+
+    if (isEditInitially) {
+        toggleEditMode(cardId);
+    }
+}
+
+function cancelAllyEdit(cardId) {
+    const card = document.getElementById(cardId);
+    if (!card) return;
+    if (card.dataset.isNew === 'true') {
+        card.remove();
+    } else {
+        toggleEditMode(cardId);
+    }
+}
+
+function toggleEditMode(cardId) {
+    const card = document.getElementById(cardId);
+    if (!card) return;
+    const viewPanel = card.querySelector('.ally-site-view');
+    const editPanel = card.querySelector('.ally-site-edit');
+    const isEditing = editPanel.style.display === 'block';
+
+    if (isEditing) {
+        editPanel.style.display = 'none';
+        viewPanel.style.display = 'block';
+    } else {
+        editPanel.style.display = 'block';
+        viewPanel.style.display = 'none';
+    }
+}
+
+function saveAllyEdit(cardId) {
+    const card = document.getElementById(cardId);
+    if (!card) return;
+
+    const name = card.querySelector('.inp-name').value || 'UNNAMED ALLY';
+    const sub = card.querySelector('.inp-sub').value || 'Minion';
+    const might = card.querySelector('.inp-might').value;
+    const grace = card.querySelector('.inp-grace').value;
+    const speed = card.querySelector('.inp-speed').value;
+    const resilience = card.querySelector('.inp-resilience').value;
+    const charm = card.querySelector('.inp-charm').value;
+    const intellect = card.querySelector('.inp-intellect').value;
+    const cunning = card.querySelector('.inp-cunning').value;
+    const tenacity = card.querySelector('.inp-tenacity').value;
+
+    const defense = card.querySelector('.inp-defense').value;
+    const walk = card.querySelector('.inp-walk').value;
+    const height = card.querySelector('.inp-height').value;
+    const initiative = card.querySelector('.inp-initiative').value;
+    const willpower = card.querySelector('.inp-willpower').value;
+    const charge = card.querySelector('.inp-charge').value;
+    const wounds = card.querySelector('.inp-wounds').value;
+
+    const skills = card.querySelector('.inp-skills').value;
+    const abilities = card.querySelector('.inp-abilities').value;
+    const actions = card.querySelector('.inp-actions').value;
+
+    card.querySelector('.view-val-name').textContent = name.toUpperCase();
+    card.querySelector('.view-val-sub').textContent = sub;
+    card.querySelector('.view-val-might').textContent = might;
+    card.querySelector('.view-val-grace').textContent = grace;
+    card.querySelector('.view-val-speed').textContent = speed;
+    card.querySelector('.view-val-resilience').textContent = resilience;
+    card.querySelector('.view-val-charm').textContent = charm;
+    card.querySelector('.view-val-intellect').textContent = intellect;
+    card.querySelector('.view-val-cunning').textContent = cunning;
+    card.querySelector('.view-val-tenacity').textContent = tenacity;
+
+    card.querySelector('.view-val-defense').textContent = defense;
+    card.querySelector('.view-val-walk').textContent = walk;
+    card.querySelector('.view-val-height').textContent = height;
+    card.querySelector('.view-val-initiative').textContent = initiative;
+    card.querySelector('.view-val-willpower').textContent = willpower;
+    card.querySelector('.view-val-charge').textContent = charge;
+    card.querySelector('.view-val-wounds').textContent = wounds;
+
+    card.querySelector('.view-val-skills').textContent = skills || '—';
+    card.querySelector('.view-val-abilities').innerHTML = renderAllyAbilitiesHtml(abilities);
+    card.querySelector('.view-val-actions').innerHTML = renderAllyActionsHtml(actions);
+
+    card.dataset.isNew = 'false';
+    toggleEditMode(cardId);
+}
+
+function insertAllyCode(cardId, code) {
+    const card = document.getElementById(cardId);
+    if (!card) return;
+    const textarea = card.querySelector('.inp-actions');
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const val = textarea.value;
+    textarea.value = val.substring(0, start) + code + ' ' + val.substring(end);
+    textarea.focus();
+    textarea.selectionStart = textarea.selectionEnd = start + code.length + 1;
 }
 function addNewTalentCard(selectedVal = "") {
             const container = document.getElementById("talentsContainer");
@@ -4288,30 +4671,30 @@ const descDisplay = lastCard.querySelector(".talent-desc-display");
             }
         };
         window.collectCurrentSheetData = function() {
-            // Сбор данных союзников
+// Сбор данных союзников
   const allies = [];
-  document.querySelectorAll('#allies-list .ally-v1-card').forEach(card => {
+  document.querySelectorAll('#allies-list .ally-site-card').forEach(card => {
     allies.push({
-      name: card.querySelector('.ally-val-name')?.value || '',
-      sub: card.querySelector('.ally-val-sub')?.value || '',
-      might: card.querySelector('.ally-val-might')?.value || '',
-      grace: card.querySelector('.ally-val-grace')?.value || '',
-      speed: card.querySelector('.ally-val-speed')?.value || '',
-      resilience: card.querySelector('.ally-val-resilience')?.value || '',
-      charm: card.querySelector('.ally-val-charm')?.value || '',
-      intellect: card.querySelector('.ally-val-intellect')?.value || '',
-      cunning: card.querySelector('.ally-val-cunning')?.value || '',
-      tenacity: card.querySelector('.ally-val-tenacity')?.value || '',
-      defense: card.querySelector('.ally-val-defense')?.value || '',
-      walk: card.querySelector('.ally-val-walk')?.value || '',
-      height: card.querySelector('.ally-val-height')?.value || '',
-      initiative: card.querySelector('.ally-val-initiative')?.value || '',
-      willpower: card.querySelector('.ally-val-willpower')?.value || '',
-      charge: card.querySelector('.ally-val-charge')?.value || '',
-      wounds: card.querySelector('.ally-val-wounds')?.value || '',
-      skills: card.querySelector('.ally-val-skills')?.value || '',
-      abilities: card.querySelector('.ally-val-abilities')?.value || '',
-      actions: card.querySelector('.ally-val-actions')?.value || ''
+      name: card.querySelector('.inp-name')?.value || '',
+      sub: card.querySelector('.inp-sub')?.value || '',
+      might: card.querySelector('.inp-might')?.value || '',
+      grace: card.querySelector('.inp-grace')?.value || '',
+      speed: card.querySelector('.inp-speed')?.value || '',
+      resilience: card.querySelector('.inp-resilience')?.value || '',
+      charm: card.querySelector('.inp-charm')?.value || '',
+      intellect: card.querySelector('.inp-intellect')?.value || '',
+      cunning: card.querySelector('.inp-cunning')?.value || '',
+      tenacity: card.querySelector('.inp-tenacity')?.value || '',
+      defense: card.querySelector('.inp-defense')?.value || '',
+      walk: card.querySelector('.inp-walk')?.value || '',
+      height: card.querySelector('.inp-height')?.value || '',
+      initiative: card.querySelector('.inp-initiative')?.value || '',
+      willpower: card.querySelector('.inp-willpower')?.value || '',
+      charge: card.querySelector('.inp-charge')?.value || '',
+      wounds: card.querySelector('.inp-wounds')?.value || '',
+      skills: card.querySelector('.inp-skills')?.value || '',
+      abilities: card.querySelector('.inp-abilities')?.value || '',
+      actions: card.querySelector('.inp-actions')?.value || ''
     });
   });
             // Чекбоксы Destiny Steps
