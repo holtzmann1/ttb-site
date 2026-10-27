@@ -1504,7 +1504,164 @@ body {
         .suit-chip.suit-masks { color: #b392cf; background: rgba(120, 85, 150, 0.16); border-color: rgba(145, 105, 180, 0.45); }
         .suit-chip.suit-crows { color: #72ab7d; background: rgba(60, 120, 75, 0.16); border-color: rgba(75, 140, 90, 0.45); }
         .suit-chip.suit-tomes { color: #739bbd; background: rgba(65, 105, 140, 0.16); border-color: rgba(85, 125, 165, 0.45); }
-        
+
+        /* ==========================================================================
+   ALLIES: КНИЖНЫЙ СТАТБЛОК (ВАРИАНТ 1)
+   ========================================================================== */
+.ally-v1-card {
+  background: #15120e;
+  border: 1px solid #4a3928;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85);
+  font-family: Georgia, serif;
+  position: relative;
+}
+
+.ally-v1-header {
+  background: #090807;
+  border-bottom: 3px solid #785596;
+  padding: 10px 14px 8px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.ally-v1-btn-del {
+  background: transparent;
+  border: 1px solid #5a2e2e;
+  color: #c97a7a;
+  cursor: pointer;
+  padding: 2px 7px;
+  font-size: 11px;
+  line-height: 1;
+  transition: all 0.15s ease;
+}
+.ally-v1-btn-del:hover {
+  background: #732222;
+  color: #fff;
+  border-color: #a33838;
+}
+
+.ally-input-title {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+  font-size: 18px;
+  font-weight: bold;
+  color: #e8dfd0;
+  letter-spacing: 0.5px;
+  font-family: Georgia, serif;
+}
+.ally-input-title:focus {
+  outline: none;
+  border-bottom-color: #8c714b;
+}
+
+.ally-input-sub {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+  font-size: 12px;
+  font-style: italic;
+  color: #bfaea0;
+  font-family: Georgia, serif;
+  margin-top: 3px;
+}
+.ally-input-sub:focus {
+  outline: none;
+  border-bottom-color: #8c714b;
+}
+
+.ally-v1-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  text-align: center;
+  background: #1a1612;
+  border-bottom: 2px solid #785596;
+}
+.ally-v1-table th, .ally-v1-table td {
+  border: 1px solid #33271b;
+  padding: 4px 2px;
+}
+.ally-v1-table th {
+  font-weight: normal;
+  font-style: italic;
+  color: #c59a5b;
+  font-size: 11px;
+  background: #14110e;
+}
+.ally-v1-table td {
+  padding: 2px;
+}
+
+.ally-input-stat {
+  width: 100%;
+  background: transparent;
+  border: none;
+  text-align: center;
+  font-size: 13.5px;
+  font-weight: bold;
+  color: #f0e6d6;
+  font-family: Georgia, serif;
+}
+.ally-input-stat:focus {
+  outline: none;
+  background: rgba(140, 113, 75, 0.15);
+}
+
+.ally-v1-body {
+  padding: 12px 14px;
+  font-size: 12px;
+  color: #cbbca9;
+  line-height: 1.45;
+}
+
+.ally-v1-row {
+  border-bottom: 1px dashed #382c1f;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+.ally-v1-row:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.ally-input-text {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed #382c1f;
+  color: #dfd4c4;
+  font-family: Georgia, serif;
+  font-size: 12px;
+  padding: 3px 0;
+}
+.ally-input-text:focus {
+  outline: none;
+  border-bottom-color: #8c714b;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.ally-textarea {
+  width: 100%;
+  min-height: 80px;
+  background: rgba(18, 14, 11, 0.6);
+  border: 1px solid #2d2217;
+  color: #ded3c3;
+  font-family: Georgia, serif;
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 6px 8px;
+  resize: vertical;
+}
+.ally-textarea:focus {
+  outline: none;
+  border-color: #8c714b;
+}
     </style>
 </head>
 <body>
@@ -1867,6 +2024,24 @@ body {
                     <button type="button" class="add-row-btn" onclick="addNewEquipmentRow()">+ ДОБАВИТЬ СТРОКУ</button>
                 </div>
             </div>
+            <!-- ==========================================
+     ТАБ: ALLIES
+     ========================================== -->
+<div id="tab-allies" class="tab-content">
+  <div class="box" style="margin-bottom: 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <h3 style="margin: 0; font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold, #c7a877);">
+        SUBORDINATES & ALLIES
+      </h3>
+      <button type="button" class="btn" onclick="addAllyCard()" style="font-size: 11px; padding: 6px 14px;">
+        + ADD ALLY
+      </button>
+    </div>
+
+    <!-- Сюда динамически добавляются карточки -->
+    <div id="allies-list" style="display: flex; flex-direction: column; gap: 24px;"></div>
+  </div>
+</div>
 <!-- ВКЛАДКА 4: BIO -->
             <div id="tab-bio" class="tab-content">
                 <div class="bio-grid">
@@ -3676,6 +3851,146 @@ function getTalentOptionsHtml(selectedVal = "") {
             `;
             container.appendChild(row);
         }
+        /* ==========================================================================
+   ALLIES: ЛОГИКА КАРТОЧКИ СОЮЗНИКА (ВАРИАНТ 1)
+   ========================================================================== */
+
+// Шаблон HTML для одной карточки союзника
+function createAllyCardHtml(data = {}) {
+  const name = data.name || '';
+  const sub = data.sub || '';
+  
+  // Аспекты
+  const might = data.might ?? '';
+  const grace = data.grace ?? '';
+  const speed = data.speed ?? '';
+  const resilience = data.resilience ?? '';
+  const charm = data.charm ?? '';
+  const intellect = data.intellect ?? '';
+  const cunning = data.cunning ?? '';
+  const tenacity = data.tenacity ?? '';
+
+  // Производные параметры
+  const defense = data.defense || '';
+  const walk = data.walk || '';
+  const height = data.height || '';
+  const initiative = data.initiative || '';
+  const willpower = data.willpower || '';
+  const charge = data.charge || '';
+  const wounds = data.wounds || '';
+
+  // Свободные текстовые поля
+  const skills = data.skills || '';
+  const abilities = data.abilities || '';
+  const actions = data.actions || '';
+
+  return `
+    <div class="ally-v1-card">
+      <div class="ally-v1-header">
+        <div style="flex: 1;">
+          <input type="text" class="ally-input-title ally-val-name" placeholder="Ally / Minion Name..." value="${name}">
+          <input type="text" class="ally-input-sub ally-val-sub" placeholder="Type & Keywords (e.g. Minion (6), Living, Beast)..." value="${sub}">
+        </div>
+        <button type="button" class="ally-v1-btn-del" onclick="removeAllyCard(this)" title="Delete Ally">✕</button>
+      </div>
+
+      <!-- Таблица 1: Аспекты 4x2 -->
+      <table class="ally-v1-table">
+        <thead>
+          <tr>
+            <th>Might</th><th>Grace</th><th>Speed</th><th>Resilience</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="text" class="ally-input-stat ally-val-might" placeholder="0" value="${might}"></td>
+            <td><input type="text" class="ally-input-stat ally-val-grace" placeholder="0" value="${grace}"></td>
+            <td><input type="text" class="ally-input-stat ally-val-speed" placeholder="0" value="${speed}"></td>
+            <td><input type="text" class="ally-input-stat ally-val-resilience" placeholder="0" value="${resilience}"></td>
+          </tr>
+        </tbody>
+        <thead>
+          <tr>
+            <th>Charm</th><th>Intellect</th><th>Cunning</th><th>Tenacity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="text" class="ally-input-stat ally-val-charm" placeholder="0" value="${charm}"></td>
+            <td><input type="text" class="ally-input-stat ally-val-intellect" placeholder="0" value="${intellect}"></td>
+            <td><input type="text" class="ally-input-stat ally-val-cunning" placeholder="0" value="${cunning}"></td>
+            <td><input type="text" class="ally-input-stat ally-val-tenacity" placeholder="0" value="${tenacity}"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Таблица 2: Производные статы 4x2 -->
+      <table class="ally-v1-table">
+        <thead>
+          <tr>
+            <th>Defense</th><th>Walk</th><th>Height</th><th>Initiative</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="text" class="ally-input-stat ally-val-defense" placeholder="0" value="${defense}"></td>
+            <td><input type="text" class="ally-input-stat ally-val-walk" placeholder="0" value="${walk}"></td>
+            <td><input type="text" class="ally-input-stat ally-val-height" placeholder="0" value="${height}"></td>
+            <td><input type="text" class="ally-input-stat ally-val-initiative" placeholder="0" value="${initiative}"></td>
+          </tr>
+        </tbody>
+        <thead>
+          <tr>
+            <th>Willpower</th><th>Charge</th><th>Wounds</th><th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="text" class="ally-input-stat ally-val-willpower" placeholder="0" value="${willpower}"></td>
+            <td><input type="text" class="ally-input-stat ally-val-charge" placeholder="0" value="${charge}"></td>
+            <td><input type="text" class="ally-input-stat ally-val-wounds" placeholder="0" value="${wounds}"></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="ally-v1-body">
+        <!-- Навыки -->
+        <div class="ally-v1-row">
+          <strong style="color: #c59a5b; font-size: 11px; text-transform: uppercase;">Skills:</strong>
+          <input type="text" class="ally-input-text ally-val-skills" placeholder="e.g. Acrobatics 2, Pugilism 3, Stealth 4..." value="${skills}">
+        </div>
+
+        <!-- Особенности -->
+        <div class="ally-v1-row">
+          <strong style="color: #c59a5b; font-size: 11px; text-transform: uppercase; display: block; margin-bottom: 4px;">Special Abilities:</strong>
+          <textarea class="ally-textarea ally-val-abilities" placeholder="Aquatic: Speed is not reduced while swimming...&#10;Perfect Camouflage: Each time this character takes a Pass Action...">${abilities}</textarea>
+        </div>
+
+        <!-- Атаки и действия -->
+        <div class="ally-v1-row">
+          <strong style="color: #c59a5b; font-size: 11px; text-transform: uppercase; display: block; margin-bottom: 4px;">Actions & Attacks:</strong>
+          <textarea class="ally-textarea ally-val-actions" placeholder="(1) Deadly Talons (Pugilism)&#10;AV: 6 | Rg: 1 | Resist: Df | Damage: 2/3/4&#10;:c: Hobble: Target gains Hobbled Condition...">${actions}</textarea>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Добавление новой карточки по кнопке + ADD ALLY
+function addAllyCard(data = {}) {
+  const container = document.getElementById('allies-list');
+  if (!container) return;
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = createAllyCardHtml(data);
+  container.appendChild(wrapper.firstElementChild);
+}
+
+// Удаление карточки
+function removeAllyCard(btn) {
+  const card = btn.closest('.ally-v1-card');
+  if (card) card.remove();
+}
 function addNewTalentCard(selectedVal = "") {
             const container = document.getElementById("talentsContainer");
             const card = document.createElement("div");
@@ -3948,8 +4263,34 @@ const descDisplay = lastCard.querySelector(".talent-desc-display");
                     renderAdvancedPursuit();
                 }
             }
-        }; // <--- ЕДИНСТВЕННАЯ И ПРАВИЛЬНАЯ ТОЧКА ЗАКРЫТИЯ ФУНКЦИИ
+        };
         window.collectCurrentSheetData = function() {
+            // Сбор данных союзников
+  const allies = [];
+  document.querySelectorAll('#allies-list .ally-v1-card').forEach(card => {
+    allies.push({
+      name: card.querySelector('.ally-val-name')?.value || '',
+      sub: card.querySelector('.ally-val-sub')?.value || '',
+      might: card.querySelector('.ally-val-might')?.value || '',
+      grace: card.querySelector('.ally-val-grace')?.value || '',
+      speed: card.querySelector('.ally-val-speed')?.value || '',
+      resilience: card.querySelector('.ally-val-resilience')?.value || '',
+      charm: card.querySelector('.ally-val-charm')?.value || '',
+      intellect: card.querySelector('.ally-val-intellect')?.value || '',
+      cunning: card.querySelector('.ally-val-cunning')?.value || '',
+      tenacity: card.querySelector('.ally-val-tenacity')?.value || '',
+      defense: card.querySelector('.ally-val-defense')?.value || '',
+      walk: card.querySelector('.ally-val-walk')?.value || '',
+      height: card.querySelector('.ally-val-height')?.value || '',
+      initiative: card.querySelector('.ally-val-initiative')?.value || '',
+      willpower: card.querySelector('.ally-val-willpower')?.value || '',
+      charge: card.querySelector('.ally-val-charge')?.value || '',
+      wounds: card.querySelector('.ally-val-wounds')?.value || '',
+      skills: card.querySelector('.ally-val-skills')?.value || '',
+      abilities: card.querySelector('.ally-val-abilities')?.value || '',
+      actions: card.querySelector('.ally-val-actions')?.value || ''
+    });
+  });
             // Чекбоксы Destiny Steps
             const destinySteps = [
                 document.getElementById("destiny-1")?.checked || false,
@@ -4051,6 +4392,7 @@ const descDisplay = lastCard.querySelector(".talent-desc-display");
                 attacks: attacks,
                 equipment: equipment,
                 talents: talents,
+                allies: allies,
 bioPortraitUrl: document.getElementById("bioPortraitUrl")?.value || "",
                 bioNotes: document.getElementById("bioNotes")?.value || "",
                 characterPursuits: JSON.parse(JSON.stringify(characterPursuits)),
