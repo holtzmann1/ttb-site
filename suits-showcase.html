@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Allies Sandbox — Through the Breach</title>
-    <script src="suits.js"></script>
+    <title>Allies Lab — Through the Breach</title>
     <style>
         * {
             box-sizing: border-box;
@@ -19,7 +18,7 @@
                 repeating-linear-gradient(0deg, rgba(40, 32, 24, 0.2) 0px, rgba(40, 32, 24, 0.2) 1px, transparent 1px, transparent 28px);
             color: #dfd4c4;
             font-family: Georgia, 'Times New Roman', serif;
-            padding-bottom: 60px;
+            padding-bottom: 80px;
         }
 
         header {
@@ -97,196 +96,16 @@
             flex-wrap: wrap;
         }
 
-        /* Поля ввода и базовые стили */
-        input[type="text"], input[type="number"], select, textarea {
-            background: #14110e;
-            border: 1px solid #4a3825;
-            color: #e8dfd0;
-            font-family: Georgia, serif;
-            font-size: 15px;
-            padding: 8px 10px;
-            outline: none;
-            width: 100%;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            border-color: #b88a4a;
-        }
-
         /* ==========================================================================
-           ALLIES: ТОЧНЫЕ СТИЛИ ИЗ CAMPAIGN.HTML
+           СТИЛИ ЖЕТОНОВ МАСТЕЙ (MALIFAUX / TTB)
            ========================================================================== */
-        .ally-v1-card {
-            width: 100%;
-            background: rgba(14, 11, 9, 0.95);
-            border: 1px solid #3d2f21;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.85);
-            font-family: Georgia, serif;
-        }
-
-        .ally-v1-header {
-            background: #201914;
-            border-bottom: 1px solid #382b1d;
-            padding: 8px 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .ally-toggle-btn {
-            background: transparent;
-            border: 1px solid #4a3825;
-            color: #c59a5b;
-            cursor: pointer;
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            flex-shrink: 0;
-            transition: all 0.2s ease;
-        }
-        .ally-toggle-btn:hover {
-            border-color: #c59a5b;
-            background: #2b2118;
-        }
-
-        .ally-input-title {
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid transparent;
-            font-size: 16px;
-            font-weight: bold;
-            color: #e8dfd0;
-            letter-spacing: 0.5px;
-            font-family: Georgia, serif;
-            width: 100%;
-        }
-        .ally-input-title:focus {
-            outline: none;
-            border-bottom-color: #8c714b;
-        }
-
-        .ally-input-sub {
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid transparent;
-            font-size: 11.5px;
-            font-style: italic;
-            color: #8f8679;
-            font-family: Georgia, serif;
-            width: 100%;
-        }
-        .ally-input-sub:focus {
-            outline: none;
-            border-bottom-color: #8c714b;
-        }
-
-        .ally-v1-btn-del {
-            background: transparent;
-            border: 1px solid #382b1d;
-            color: #8f8679;
-            cursor: pointer;
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            flex-shrink: 0;
-            transition: all 0.2s ease;
-        }
-        .ally-v1-btn-del:hover {
-            background: rgba(229, 115, 115, 0.15);
-            border-color: #e57373;
-            color: #e57373;
-        }
-
-        .ally-card-body {
-            padding: 12px 14px;
-        }
-
-        .ally-v1-table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
-            text-align: center;
-            background: #14110e;
-            border: 1px solid #382b1d;
-            margin-bottom: 8px;
-        }
-        .ally-v1-table th, .ally-v1-table td {
-            border: 1px solid #382b1d;
-            padding: 3px 2px;
-        }
-        .ally-v1-table th {
-            font-weight: bold;
-            color: #c59a5b;
-            font-size: 11px;
-            background: #251d16;
-            letter-spacing: 0.5px;
-        }
-        .ally-input-stat {
-            width: 100%;
-            background: transparent;
-            border: none;
-            text-align: center;
-            font-size: 13.5px;
-            font-weight: bold;
-            color: #e8dfd0;
-            font-family: Georgia, serif;
-        }
-        .ally-input-stat:focus {
-            outline: none;
-            background: rgba(140, 113, 75, 0.15);
-        }
-
-        .ally-v1-row {
-            border-top: 1px dashed #2d2216;
-            padding-top: 8px;
-            margin-top: 8px;
-        }
-
-        .ally-input-text {
-            width: 100%;
-            background: #14110e;
-            border: 1px solid #382b1d;
-            color: #e8dfd0;
-            font-family: Georgia, serif;
-            font-size: 12px;
-            padding: 4px 8px;
-        }
-        .ally-input-text:focus {
-            outline: none;
-            border-color: #8c714b;
-        }
-
-        .ally-textarea {
-            width: 100%;
-            min-height: 60px;
-            background: #120e0b;
-            border: 1px solid #382b1d;
-            color: #ded3c3;
-            font-family: Georgia, serif;
-            font-size: 12px;
-            line-height: 1.45;
-            padding: 6px 8px;
-            resize: vertical;
-        }
-        .ally-textarea:focus {
-            outline: none;
-            border-color: #8c714b;
-        }
-
-        /* Жетоны мастей */
         .suit-chip {
             display: inline-flex;
             align-items: center;
             gap: 4px;
             padding: 2px 7px 2px 5px;
             border-radius: 2px;
-            font-size: 11px;
+            font-size: 10.5px;
             font-weight: bold;
             letter-spacing: 0.8px;
             line-height: 1;
@@ -294,19 +113,315 @@
             text-transform: uppercase;
             user-select: none;
             box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.6);
-            margin: 0 2px;
+            margin: 0 3px 0 0;
             border: 1px solid transparent;
         }
         .suit-chip svg {
-            width: 14px;
-            height: 14px;
+            width: 13px;
+            height: 13px;
             display: block;
             flex-shrink: 0;
         }
-        .suit-chip.suit-rams  { color: #c96b65; background: rgba(160, 60, 50, 0.16); border-color: rgba(175, 75, 65, 0.45); }
-        .suit-chip.suit-masks { color: #b392cf; background: rgba(120, 85, 150, 0.16); border-color: rgba(145, 105, 180, 0.45); }
-        .suit-chip.suit-crows { color: #72ab7d; background: rgba(60, 120, 75, 0.16); border-color: rgba(75, 140, 90, 0.45); }
-        .suit-chip.suit-tomes { color: #739bbd; background: rgba(65, 105, 140, 0.16); border-color: rgba(85, 125, 165, 0.45); }
+        .suit-chip.suit-rams  { color: #c96b65; background: rgba(160, 60, 50, 0.18); border-color: rgba(175, 75, 65, 0.5); }
+        .suit-chip.suit-masks { color: #b392cf; background: rgba(120, 85, 150, 0.18); border-color: rgba(145, 105, 180, 0.5); }
+        .suit-chip.suit-crows { color: #72ab7d; background: rgba(60, 120, 75, 0.18); border-color: rgba(75, 140, 90, 0.5); }
+        .suit-chip.suit-tomes { color: #739bbd; background: rgba(65, 105, 140, 0.18); border-color: rgba(85, 125, 165, 0.5); }
+
+        .badge-flip-pos {
+            color: #56d364;
+            font-weight: bold;
+            font-family: monospace;
+            border: 1px solid rgba(86, 211, 100, 0.4);
+            background: rgba(86, 211, 100, 0.1);
+            padding: 0 4px;
+            border-radius: 2px;
+            font-size: 11px;
+            display: inline-block;
+            line-height: 1.2;
+            vertical-align: middle;
+        }
+        .badge-flip-neg {
+            color: #f85149;
+            font-weight: bold;
+            font-family: monospace;
+            border: 1px solid rgba(248, 81, 73, 0.4);
+            background: rgba(248, 81, 73, 0.1);
+            padding: 0 4px;
+            border-radius: 2px;
+            font-size: 11px;
+            display: inline-block;
+            line-height: 1.2;
+            vertical-align: middle;
+        }
+
+        /* ==========================================================================
+           КАНОНИЧНАЯ КАРТОЧКА БЕСТИАРИЯ (КНИЖНЫЙ РЕЖИМ — ВАРИАНТ 1)
+           ========================================================================== */
+        .bestiary-card {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 24px auto;
+            background: #110d0a;
+            border: 1px solid #4a3928;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9);
+            font-family: Georgia, serif;
+            position: relative;
+        }
+
+        /* Шапка с кнопками управления */
+        .bestiary-header {
+            padding: 14px 16px 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        .bestiary-title {
+            font-size: 23px;
+            font-weight: bold;
+            color: #f2ece2;
+            margin: 0 0 4px 0;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+
+        .bestiary-subtitle {
+            font-size: 13px;
+            font-style: italic;
+            color: #bfaea0;
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        .bestiary-actions {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .btn-card-ctrl {
+            background: #1b1612;
+            border: 1px solid #4a3825;
+            color: #c59a5b;
+            cursor: pointer;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-family: Georgia, serif;
+            transition: all 0.15s ease;
+            line-height: 1;
+        }
+        .btn-card-ctrl:hover {
+            background: #36291e;
+            border-color: #c59a5b;
+            color: #fff;
+        }
+        .btn-card-del {
+            color: #9e7373;
+            border-color: #4a2828;
+        }
+        .btn-card-del:hover {
+            background: #5a1c1c;
+            border-color: #c94b4b;
+            color: #fff;
+        }
+
+        /* Таблицы статов бестиария */
+        .bestiary-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            text-align: center;
+            background: #15110d;
+        }
+        .bestiary-table-top {
+            border-top: 2px solid #785596;
+            border-bottom: 2px solid #785596;
+        }
+        .bestiary-table-bot {
+            border-bottom: 2px solid #785596;
+        }
+
+        .bestiary-table th, .bestiary-table td {
+            border: 1px solid #33271b;
+            padding: 4px 2px;
+        }
+        .bestiary-table th {
+            font-weight: normal;
+            font-style: italic;
+            color: #c59a5b;
+            font-size: 12.5px;
+            padding-top: 6px;
+            padding-bottom: 2px;
+        }
+        .bestiary-table td {
+            font-weight: bold;
+            font-size: 18.5px;
+            color: #f2ece2;
+            padding-top: 2px;
+            padding-bottom: 7px;
+        }
+
+        /* Тело карточки */
+        .bestiary-body {
+            padding: 14px 16px 18px 16px;
+            font-size: 12.5px;
+            color: #cfc5b6;
+            line-height: 1.55;
+        }
+
+        .bestiary-skills {
+            margin-bottom: 12px;
+        }
+        .bestiary-skills strong {
+            color: #c59a5b;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bestiary-divider {
+            border-bottom: 1px dashed #3a2e20;
+            margin: 12px 0;
+        }
+
+        .bestiary-section-title {
+            color: #c59a5b;
+            font-size: 11.5px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+        }
+
+        .bestiary-item {
+            margin-bottom: 8px;
+        }
+        .bestiary-item strong {
+            color: #f2ece2;
+        }
+
+        .bestiary-attack {
+            margin-bottom: 12px;
+        }
+        .bestiary-attack-header {
+            font-weight: bold;
+            font-size: 13.5px;
+            color: #f2ece2;
+            margin-bottom: 2px;
+        }
+        .bestiary-attack-meta {
+            font-size: 11.5px;
+            color: #a89f91;
+            margin-bottom: 2px;
+        }
+        .bestiary-attack-dmg {
+            font-style: italic;
+            color: #dfd4c4;
+            margin-bottom: 4px;
+        }
+        .bestiary-trigger-line {
+            padding-left: 8px;
+            margin-top: 3px;
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 2px;
+        }
+
+        /* ==========================================================================
+           ФОРМА РЕДАКТИРОВАНИЯ (СПРЯТАНА В VIEW-РЕЖИМЕ)
+           ========================================================================== */
+        .bestiary-edit-panel {
+            display: none;
+            background: #18130f;
+            border-top: 1px solid #4a3825;
+            padding: 16px;
+        }
+
+        .edit-row {
+            margin-bottom: 12px;
+        }
+        .edit-row label {
+            display: block;
+            font-size: 11px;
+            color: #c59a5b;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
+        .edit-input {
+            width: 100%;
+            background: #100d0a;
+            border: 1px solid #4a3825;
+            color: #f2ece2;
+            padding: 6px 10px;
+            font-size: 13px;
+            font-family: Georgia, serif;
+            outline: none;
+        }
+        .edit-input:focus {
+            border-color: #c59a5b;
+        }
+
+        .edit-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 6px;
+            text-align: center;
+        }
+        .edit-grid-4 label {
+            font-size: 10px;
+            font-style: italic;
+            color: #c59a5b;
+            margin-bottom: 2px;
+        }
+        .edit-grid-4 input {
+            text-align: center;
+            font-weight: bold;
+            padding: 4px 2px;
+        }
+
+        .edit-textarea {
+            width: 100%;
+            min-height: 90px;
+            background: #100d0a;
+            border: 1px solid #4a3825;
+            color: #f2ece2;
+            padding: 8px 10px;
+            font-size: 12.5px;
+            font-family: Georgia, serif;
+            line-height: 1.5;
+            resize: vertical;
+            outline: none;
+        }
+        .edit-textarea:focus {
+            border-color: #c59a5b;
+        }
+
+        .suit-quick-bar {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 6px;
+            align-items: center;
+        }
+        .btn-quick-suit {
+            background: #1f1812;
+            border: 1px solid #4a3825;
+            color: #dfd4c4;
+            padding: 3px 8px;
+            font-size: 10.5px;
+            cursor: pointer;
+            font-family: monospace;
+            border-radius: 2px;
+        }
+        .btn-quick-suit:hover {
+            border-color: #c59a5b;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -322,7 +437,6 @@
     </header>
 
     <main>
-        <!-- ТАБ-БАР (ТОЧНО КАК В CAMPAIGN.HTML) -->
         <div class="tab-bar">
             <button class="tab-btn">CHARACTER</button>
             <button class="tab-btn">GENERAL TALENTS</button>
@@ -332,182 +446,420 @@
             <button class="tab-btn">BIO</button>
         </div>
 
-        <!-- ==========================================
-             ТАБ: ALLIES (1В1 ИЗ CAMPAIGN.HTML)
-             ========================================== -->
-        <div id="tab-allies" class="tab-content" style="max-width: 900px; margin: 0 auto;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #382b1d; padding-bottom: 10px;">
+        <div style="max-width: 900px; margin: 0 auto;">
+            <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #382b1d; padding-bottom: 12px;">
                 <h3 style="margin: 0; font-size: 15px; letter-spacing: 2px; text-transform: uppercase; color: #c59a5b; font-weight: normal;">
                     SUBORDINATES & ALLIES
                 </h3>
-                <button type="button" class="action-btn" onclick="addAllyCard()" style="font-size: 11px; padding: 6px 14px;">
+                <button type="button" class="action-btn" onclick="addNewAllyFromTemplate()" style="font-size: 11px; padding: 6px 14px;">
                     + ADD ALLY
                 </button>
             </div>
 
-            <!-- Список карточек-аккордеонов -->
-            <div id="allies-list" style="display: flex; flex-direction: column; gap: 12px;"></div>
+            <!-- СПИСОК КАРТОЧЕК БЕСТИАРИЯ -->
+            <div id="bestiary-list"></div>
         </div>
     </main>
 
     <script>
-        // Функция создания HTML карточки союзника
-        function createAllyCardHtml(data = {}) {
-            const name = data.name || '';
-            const sub = data.sub || '';
-            
-            const might = data.might ?? '';
-            const grace = data.grace ?? '';
-            const speed = data.speed ?? '';
-            const resilience = data.resilience ?? '';
-            const charm = data.charm ?? '';
-            const intellect = data.intellect ?? '';
-            const cunning = data.cunning ?? '';
-            const tenacity = data.tenacity ?? '';
+        // Векторные символы мастей
+        const SUIT_SVGS = {
+            rams: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4C8 4 4 6 2 10c-1 2-1 4 0 6 1 1 3 1 4 0 1-1 1-3 0-5 2-1 4-1 6 1 2-2 4-2 6-1-1 2-1 4 0 5 1 1 3 1 4 0 1-2 1-4 0-6-2-4-6-6-10-6zm0 5c1.66 0 3 1.34 3 3l-1.5 5h-3L9 12c0-1.66 1.34-3 3-3z"/></svg>',
+            crows: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.5 9c-.3-.5-1-.7-1.5-.4L16 11l-3-6c-.3-.6-1-.8-1.6-.5L7 7 3.5 5.5C3 5.3 2.4 5.5 2.2 6c-.2.5 0 1.1.5 1.3L6 9l-3 4c-.4.5-.3 1.2.2 1.6l4 3 1 4.5c.1.6.7 1 1.3.8.6-.1 1-.7.8-1.3L9.5 18l5-3 5.5 1.5c.6.2 1.2-.2 1.3-.8.2-.6-.2-1.2-.8-1.3L16 13l5-3c.6-.3.8-.9.5-1z"/></svg>',
+            masks: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12c0 4.5 3 8.3 7.2 9.5.5.1 1-.2 1.1-.7l.7-3.3c.7.3 1.5.5 2.3.5.8 0 1.6-.2 2.3-.5l.7 3.3c.1.5.6.8 1.1.7C21.7 20.3 22 16.5 22 12c0-5.5-4.5-10-10-10zm-4 8c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm8 0c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm-4 6c-1.5 0-2.8-.8-3.5-2h7c-.7 1.2-2 2-3.5 2z"/></svg>',
+            tomes: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4zm12 16H6v-2h12v2zm0-4H6V6h12v10z"/></svg>'
+        };
 
-            const defense = data.defense || '';
-            const walk = data.walk || '';
-            const height = data.height || '';
-            const initiative = data.initiative || '';
-            const willpower = data.willpower || '';
-            const charge = data.charge || '';
-            const wounds = data.wounds || '';
+        function getSuitBadge(suit) {
+            const s = suit.toLowerCase();
+            const label = s.toUpperCase();
+            return `<span class="suit-chip suit-${s}">${SUIT_SVGS[s] || ''} ${label}</span>`;
+        }
 
-            const skills = data.skills || '';
-            const abilities = data.abilities || '';
-            const actions = data.actions || '';
+        // Парсинг текста в книжный визуал
+        function formatBookText(text) {
+            if (!text) return "";
+            return text
+                .replace(/ RAMS /g, getSuitBadge('rams'))
+                .replace(/ MASKS /g, getSuitBadge('masks'))
+                .replace(/ CROWS /g, getSuitBadge('crows'))
+                .replace(/ TOMES /g, getSuitBadge('tomes'))
+                .replace(/:r:/g, getSuitBadge('rams'))
+                .replace(/:m:/g, getSuitBadge('masks'))
+                .replace(/:c:/g, getSuitBadge('crows'))
+                .replace(/:t:/g, getSuitBadge('tomes'))
+                .replace(/\[\+\]|:\+:/g, '<span class="badge-flip-pos">[+]</span>')
+                .replace(/\[\-\]|:\-:|:--:/g, '<span class="badge-flip-neg">[-]</span>');
+        }
 
-            return `
-                <div class="ally-v1-card">
-                    <!-- Шапка аккордеона -->
-                    <div class="ally-v1-header">
-                        <button type="button" class="ally-toggle-btn" onclick="toggleAllyAccordion(this)" title="Свернуть / Развернуть">▲</button>
-                        <div style="flex: 1; display: flex; flex-direction: column; gap: 2px;">
-                            <input type="text" class="ally-input-title ally-val-name" placeholder="Ally Name..." value="${name}">
-                            <input type="text" class="ally-input-sub ally-val-sub" placeholder="Keywords (e.g. Minion (6), Living, Beast)..." value="${sub}">
+        // Форматирование способностей
+        function renderAbilitiesHtml(text) {
+            if (!text) return "";
+            const lines = text.split('\n').filter(l => l.trim().length > 0);
+            return lines.map(line => {
+                const colonIdx = line.indexOf(':');
+                if (colonIdx !== -1) {
+                    const title = line.substring(0, colonIdx).trim();
+                    const desc = line.substring(colonIdx + 1).trim();
+                    return `<div class="bestiary-item"><strong>${title}:</strong> ${formatBookText(desc)}</div>`;
+                }
+                return `<div class="bestiary-item">${formatBookText(line)}</div>`;
+            }).join('');
+        }
+
+        // Форматирование атак
+        function renderActionsHtml(text) {
+            if (!text) return "";
+            const blocks = text.split(/\n\s*\n/); // разделение по пустым строкам
+            return blocks.map(block => {
+                const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+                if (lines.length === 0) return '';
+                
+                let header = lines[0];
+                let meta = '';
+                let dmg = '';
+                let triggers = [];
+
+                for (let i = 1; i < lines.length; i++) {
+                    const l = lines[i];
+                    if (l.startsWith(':c:') || l.startsWith(':r:') || l.startsWith(':m:') || l.startsWith(':t:') || 
+                        l.startsWith('CROWS') || l.startsWith('RAMS') || l.startsWith('MASKS') || l.startsWith('TOMES')) {
+                        triggers.push(l);
+                    } else if (l.toLowerCase().startsWith('target suffers') || l.toLowerCase().startsWith('damage:')) {
+                        dmg = l;
+                    } else if (l.includes('AV:') || l.includes('Rg:')) {
+                        meta = l;
+                    } else {
+                        // прочие строки
+                        triggers.push(l);
+                    }
+                }
+
+                let triggersHtml = triggers.map(t => {
+                    return `<div class="bestiary-trigger-line">${formatBookText(t)}</div>`;
+                }).join('');
+
+                return `
+                    <div class="bestiary-attack">
+                        <div class="bestiary-attack-header">${header}</div>
+                        ${meta ? `<div class="bestiary-attack-meta">${meta}</div>` : ''}
+                        ${dmg ? `<div class="bestiary-attack-dmg"><em>${dmg}</em></div>` : ''}
+                        ${triggersHtml}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Создание полной карточки (View + Edit)
+        function renderAllyCard(data, isEditInitially = false) {
+            const cardId = 'ally_' + Math.random().toString(36).substr(2, 9);
+            const wrapper = document.createElement('div');
+            wrapper.className = 'bestiary-card';
+            wrapper.id = cardId;
+
+            wrapper.innerHTML = `
+                <!-- ================= КНИЖНЫЙ РЕЖИМ (VIEW) ================= -->
+                <div class="bestiary-view-panel">
+                    <div class="bestiary-header">
+                        <div>
+                            <h2 class="bestiary-title view-val-name">${data.name || 'Unnamed Ally'}</h2>
+                            <p class="bestiary-subtitle view-val-sub">${data.sub || 'Minion'}</p>
                         </div>
-                        <button type="button" class="ally-v1-btn-del" onclick="removeAllyCard(this)" title="Удалить">✕</button>
+                        <div class="bestiary-actions">
+                            <button type="button" class="btn-card-ctrl" onclick="toggleEditMode('${cardId}')" title="Редактировать">✎ EDIT</button>
+                            <button type="button" class="btn-card-ctrl btn-card-del" onclick="document.getElementById('${cardId}').remove()" title="Удалить">✕</button>
+                        </div>
                     </div>
 
-                    <!-- Раскрывающееся тело -->
-                    <div class="ally-card-body">
-                        <!-- Аспекты 4x2 -->
-                        <table class="ally-v1-table">
-                            <thead>
-                                <tr>
-                                    <th>Might</th><th>Grace</th><th>Speed</th><th>Resilience</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input type="text" class="ally-input-stat ally-val-might" placeholder="0" value="${might}"></td>
-                                    <td><input type="text" class="ally-input-stat ally-val-grace" placeholder="0" value="${grace}"></td>
-                                    <td><input type="text" class="ally-input-stat ally-val-speed" placeholder="0" value="${speed}"></td>
-                                    <td><input type="text" class="ally-input-stat ally-val-resilience" placeholder="0" value="${resilience}"></td>
-                                </tr>
-                            </tbody>
-                            <thead>
-                                <tr>
-                                    <th>Charm</th><th>Intellect</th><th>Cunning</th><th>Tenacity</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input type="text" class="ally-input-stat ally-val-charm" placeholder="0" value="${charm}"></td>
-                                    <td><input type="text" class="ally-input-stat ally-val-intellect" placeholder="0" value="${intellect}"></td>
-                                    <td><input type="text" class="ally-input-stat ally-val-cunning" placeholder="0" value="${cunning}"></td>
-                                    <td><input type="text" class="ally-input-stat ally-val-tenacity" placeholder="0" value="${tenacity}"></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <!-- Таблица 1: Аспекты -->
+                    <table class="bestiary-table bestiary-table-top">
+                        <thead>
+                            <tr>
+                                <th>Might</th><th>Grace</th><th>Speed</th><th>Resilience</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="view-val-might">${data.might ?? '0'}</td>
+                                <td class="view-val-grace">${data.grace ?? '0'}</td>
+                                <td class="view-val-speed">${data.speed ?? '0'}</td>
+                                <td class="view-val-resilience">${data.resilience ?? '0'}</td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th>Charm</th><th>Intellect</th><th>Cunning</th><th>Tenacity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="view-val-charm">${data.charm ?? '0'}</td>
+                                <td class="view-val-intellect">${data.intellect ?? '0'}</td>
+                                <td class="view-val-cunning">${data.cunning ?? '0'}</td>
+                                <td class="view-val-tenacity">${data.tenacity ?? '0'}</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                        <!-- Производные 4x2 -->
-                        <table class="ally-v1-table">
-                            <thead>
-                                <tr>
-                                    <th>Defense</th><th>Walk</th><th>Height</th><th>Initiative</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input type="text" class="ally-input-stat ally-val-defense" placeholder="0" value="${defense}"></td>
-                                    <td><input type="text" class="ally-input-stat ally-val-walk" placeholder="0" value="${walk}"></td>
-                                    <td><input type="text" class="ally-input-stat ally-val-height" placeholder="0" value="${height}"></td>
-                                    <td><input type="text" class="ally-input-stat ally-val-initiative" placeholder="0" value="${initiative}"></td>
-                                </tr>
-                            </tbody>
-                            <thead>
-                                <tr>
-                                    <th>Willpower</th><th>Charge</th><th>Wounds</th><th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input type="text" class="ally-input-stat ally-val-willpower" placeholder="0" value="${willpower}"></td>
-                                    <td><input type="text" class="ally-input-stat ally-val-charge" placeholder="0" value="${charge}"></td>
-                                    <td><input type="text" class="ally-input-stat ally-val-wounds" placeholder="0" value="${wounds}"></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <!-- Таблица 2: Производные статы -->
+                    <table class="bestiary-table bestiary-table-bot">
+                        <thead>
+                            <tr>
+                                <th>Defense</th><th>Walk</th><th>Height</th><th>Initiative</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="view-val-defense">${data.defense || '2'}</td>
+                                <td class="view-val-walk">${data.walk || '4'}</td>
+                                <td class="view-val-height">${data.height || '2'}</td>
+                                <td class="view-val-initiative">${data.initiative || '0'}</td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th>Willpower</th><th>Charge</th><th>Wounds</th><th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="view-val-willpower">${data.willpower || '2'}</td>
+                                <td class="view-val-charge">${data.charge || '4'}</td>
+                                <td class="view-val-wounds">${data.wounds || '4'}</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                        <!-- Навыки -->
-                        <div class="ally-v1-row" style="border-top: none; margin-top: 4px; padding-top: 0;">
-                            <strong style="color: #c59a5b; font-size: 11px; text-transform: uppercase; display: block; margin-bottom: 3px;">Skills:</strong>
-                            <input type="text" class="ally-input-text ally-val-skills" placeholder="e.g. Acrobatics 2, Pugilism 3..." value="${skills}">
+                    <!-- Текстовое тело -->
+                    <div class="bestiary-body">
+                        <div class="bestiary-skills view-val-skills-block">
+                            <strong>Skills:</strong> <span class="view-val-skills">${data.skills || '—'}</span>
+                        </div>
+                        
+                        <div class="bestiary-divider"></div>
+
+                        <div class="bestiary-abilities-block">
+                            <div class="view-val-abilities">${renderAbilitiesHtml(data.abilities)}</div>
                         </div>
 
-                        <!-- Особенности -->
-                        <div class="ally-v1-row">
-                            <strong style="color: #c59a5b; font-size: 11px; text-transform: uppercase; display: block; margin-bottom: 3px;">Special Abilities:</strong>
-                            <textarea class="ally-textarea ally-val-abilities" placeholder="Abilities...">${abilities}</textarea>
-                        </div>
+                        <div class="bestiary-divider"></div>
 
-                        <!-- Атаки -->
-                        <div class="ally-v1-row">
-                            <strong style="color: #c59a5b; font-size: 11px; text-transform: uppercase; display: block; margin-bottom: 3px;">Actions & Attacks:</strong>
-                            <textarea class="ally-textarea ally-val-actions" placeholder="Actions & Attacks...">${actions}</textarea>
+                        <div class="bestiary-actions-block">
+                            <div class="view-val-actions">${renderActionsHtml(data.actions)}</div>
                         </div>
                     </div>
                 </div>
+
+                <!-- ================= ФОРМА РЕДАКТИРОВАНИЯ (EDIT) ================= -->
+                <div class="bestiary-edit-panel">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid #382b1d; padding-bottom: 8px;">
+                        <span style="font-size: 13px; font-weight: bold; color: #c59a5b; letter-spacing: 1px;">РЕДАКТИРОВАНИЕ СОЮЗНИКА</span>
+                        <button type="button" class="action-btn" onclick="saveAllyEdit('${cardId}')" style="font-size: 11px; padding: 4px 12px;">✓ СОХРАНИТЬ</button>
+                    </div>
+
+                    <div class="edit-row">
+                        <label>Имя союзника / миньона</label>
+                        <input type="text" class="edit-input inp-name" value="${data.name || ''}" placeholder="Silurid Hunter">
+                    </div>
+
+                    <div class="edit-row">
+                        <label>Keywords & Type</label>
+                        <input type="text" class="edit-input inp-sub" value="${data.sub || ''}" placeholder="Minion (6), Living, Beast, Swampfiend">
+                    </div>
+
+                    <div class="edit-row">
+                        <label>Аспекты (Physical & Mental)</label>
+                        <div class="edit-grid-4">
+                            <div><label>Might</label><input type="text" class="edit-input inp-might" value="${data.might ?? '0'}"></div>
+                            <div><label>Grace</label><input type="text" class="edit-input inp-grace" value="${data.grace ?? '0'}"></div>
+                            <div><label>Speed</label><input type="text" class="edit-input inp-speed" value="${data.speed ?? '0'}"></div>
+                            <div><label>Resilience</label><input type="text" class="edit-input inp-resilience" value="${data.resilience ?? '0'}"></div>
+                        </div>
+                        <div class="edit-grid-4">
+                            <div><label>Charm</label><input type="text" class="edit-input inp-charm" value="${data.charm ?? '0'}"></div>
+                            <div><label>Intellect</label><input type="text" class="edit-input inp-intellect" value="${data.intellect ?? '0'}"></div>
+                            <div><label>Cunning</label><input type="text" class="edit-input inp-cunning" value="${data.cunning ?? '0'}"></div>
+                            <div><label>Tenacity</label><input type="text" class="edit-input inp-tenacity" value="${data.tenacity ?? '0'}"></div>
+                        </div>
+                    </div>
+
+                    <div class="edit-row">
+                        <label>Производные параметры</label>
+                        <div class="edit-grid-4">
+                            <div><label>Defense</label><input type="text" class="edit-input inp-defense" value="${data.defense || '2'}"></div>
+                            <div><label>Walk</label><input type="text" class="edit-input inp-walk" value="${data.walk || '4'}"></div>
+                            <div><label>Height</label><input type="text" class="edit-input inp-height" value="${data.height || '2'}"></div>
+                            <div><label>Initiative</label><input type="text" class="edit-input inp-initiative" value="${data.initiative || '0'}"></div>
+                        </div>
+                        <div class="edit-grid-4">
+                            <div><label>Willpower</label><input type="text" class="edit-input inp-willpower" value="${data.willpower || '2'}"></div>
+                            <div><label>Charge</label><input type="text" class="edit-input inp-charge" value="${data.charge || '4'}"></div>
+                            <div><label>Wounds</label><input type="text" class="edit-input inp-wounds" value="${data.wounds || '4'}"></div>
+                            <div></div>
+                        </div>
+                    </div>
+
+                    <div class="edit-row">
+                        <label>Skills</label>
+                        <input type="text" class="edit-input inp-skills" value="${data.skills || ''}" placeholder="Acrobatics 2, Pugilism 3...">
+                    </div>
+
+                    <div class="edit-row">
+                        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                            <label>Special Abilities</label>
+                            <span style="font-size: 10px; color: #8f8679;">(Каждая с новой строки "Название: Описание")</span>
+                        </div>
+                        <textarea class="edit-textarea inp-abilities" placeholder="Aquatic: This character's speed is not reduced...&#10;Perfect Camouflage: Each time this character takes a Pass Action...">${data.abilities || ''}</textarea>
+                    </div>
+
+                    <div class="edit-row">
+                        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                            <label>Actions & Attacks</label>
+                            <div class="suit-quick-bar">
+                                <span style="font-size: 10.5px; color: #8f8679;">Вставить:</span>
+                                <button type="button" class="btn-quick-suit" onclick="insertCode('${cardId}', ':r:')">:r: Ram</button>
+                                <button type="button" class="btn-quick-suit" onclick="insertCode('${cardId}', ':c:')">:c: Crow</button>
+                                <button type="button" class="btn-quick-suit" onclick="insertCode('${cardId}', ':m:')">:m: Mask</button>
+                                <button type="button" class="btn-quick-suit" onclick="insertCode('${cardId}', ':t:')">:t: Tome</button>
+                                <button type="button" class="btn-quick-suit" onclick="insertCode('${cardId}', ':+:')">[+]</button>
+                            </div>
+                        </div>
+                        <textarea class="edit-textarea inp-actions" placeholder="(1) Deadly Talons (Pugilism)&#10;AV: 6 (12) | Rg: 1 | Resist: Df&#10;Target suffers 2/3/4 damage.&#10;:c: Hobble: Target gains Hobbled Condition.&#10;:r: Bite: Target gains Poison +1.">${data.actions || ''}</textarea>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px;">
+                        <button type="button" class="btn-card-ctrl" onclick="toggleEditMode('${cardId}')">ОТМЕНА</button>
+                        <button type="button" class="action-btn" onclick="saveAllyEdit('${cardId}')">✓ СОХРАНИТЬ ИЗМЕНЕНИЯ</button>
+                    </div>
+                </div>
             `;
+
+            document.getElementById('bestiary-list').appendChild(wrapper);
+
+            if (isEditInitially) {
+                toggleEditMode(cardId);
+            }
         }
 
-        function addAllyCard(data = {}) {
-            const container = document.getElementById('allies-list');
-            if (!container) return;
-            const wrapper = document.createElement('div');
-            wrapper.innerHTML = createAllyCardHtml(data);
-            container.appendChild(wrapper.firstElementChild);
+        // Переключение между Книгой и Редактором
+        function toggleEditMode(cardId) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+            const viewPanel = card.querySelector('.bestiary-view-panel');
+            const editPanel = card.querySelector('.bestiary-edit-panel');
+            const isEditing = editPanel.style.display === 'block';
+
+            if (isEditing) {
+                editPanel.style.display = 'none';
+                viewPanel.style.display = 'block';
+            } else {
+                editPanel.style.display = 'block';
+                viewPanel.style.display = 'none';
+            }
         }
 
-        function removeAllyCard(btn) {
-            const card = btn.closest('.ally-v1-card');
-            if (card) card.remove();
+        // Сохранение отредактированных данных в визуал
+        function saveAllyEdit(cardId) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+
+            // Считываем значения из инпутов
+            const name = card.querySelector('.inp-name').value || 'Unnamed Ally';
+            const sub = card.querySelector('.inp-sub').value || 'Minion';
+            const might = card.querySelector('.inp-might').value;
+            const grace = card.querySelector('.inp-grace').value;
+            const speed = card.querySelector('.inp-speed').value;
+            const resilience = card.querySelector('.inp-resilience').value;
+            const charm = card.querySelector('.inp-charm').value;
+            const intellect = card.querySelector('.inp-intellect').value;
+            const cunning = card.querySelector('.inp-cunning').value;
+            const tenacity = card.querySelector('.inp-tenacity').value;
+
+            const defense = card.querySelector('.inp-defense').value;
+            const walk = card.querySelector('.inp-walk').value;
+            const height = card.querySelector('.inp-height').value;
+            const initiative = card.querySelector('.inp-initiative').value;
+            const willpower = card.querySelector('.inp-willpower').value;
+            const charge = card.querySelector('.inp-charge').value;
+            const wounds = card.querySelector('.inp-wounds').value;
+
+            const skills = card.querySelector('.inp-skills').value;
+            const abilities = card.querySelector('.inp-abilities').value;
+            const actions = card.querySelector('.inp-actions').value;
+
+            // Обновляем витрину книги
+            card.querySelector('.view-val-name').textContent = name;
+            card.querySelector('.view-val-sub').textContent = sub;
+            card.querySelector('.view-val-might').textContent = might;
+            card.querySelector('.view-val-grace').textContent = grace;
+            card.querySelector('.view-val-speed').textContent = speed;
+            card.querySelector('.view-val-resilience').textContent = resilience;
+            card.querySelector('.view-val-charm').textContent = charm;
+            card.querySelector('.view-val-intellect').textContent = intellect;
+            card.querySelector('.view-val-cunning').textContent = cunning;
+            card.querySelector('.view-val-tenacity').textContent = tenacity;
+
+            card.querySelector('.view-val-defense').textContent = defense;
+            card.querySelector('.view-val-walk').textContent = walk;
+            card.querySelector('.view-val-height').textContent = height;
+            card.querySelector('.view-val-initiative').textContent = initiative;
+            card.querySelector('.view-val-willpower').textContent = willpower;
+            card.querySelector('.view-val-charge').textContent = charge;
+            card.querySelector('.view-val-wounds').textContent = wounds;
+
+            card.querySelector('.view-val-skills').textContent = skills || '—';
+            card.querySelector('.view-val-abilities').innerHTML = renderAbilitiesHtml(abilities);
+            card.querySelector('.view-val-actions').innerHTML = renderActionsHtml(actions);
+
+            // Закрываем редактор
+            toggleEditMode(cardId);
         }
 
-        function toggleAllyAccordion(btn) {
-            const card = btn.closest('.ally-v1-card');
-            const body = card.querySelector('.ally-card-body');
-            const isClosed = body.style.display === 'none';
-            body.style.display = isClosed ? 'block' : 'none';
-            btn.textContent = isClosed ? '▲' : '▼';
+        // Быстрая вставка шорткода масти в поле атак
+        function insertCode(cardId, code) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+            const textarea = card.querySelector('.inp-actions');
+            if (!textarea) return;
+
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const val = textarea.value;
+            textarea.value = val.substring(0, start) + code + ' ' + val.substring(end);
+            textarea.focus();
+            textarea.selectionStart = textarea.selectionEnd = start + code.length + 1;
         }
 
-        // При открытии страницы добавляем одну заполненную карточку и одну пустую для теста
+        // Создание нового пустого союзника
+        function addNewAllyFromTemplate() {
+            renderAllyCard({
+                name: "New Ally",
+                sub: "Minion (5), Living",
+                might: "0", grace: "0", speed: "0", resilience: "0",
+                charm: "0", intellect: "0", cunning: "0", tenacity: "0",
+                defense: "2", walk: "4", height: "2", initiative: "0",
+                willpower: "2", charge: "4", wounds: "4",
+                skills: "",
+                abilities: "",
+                actions: ""
+            }, true); // сразу открываем в режиме редактирования
+        }
+
+        // Загрузка эталонного Силурида из твоего скриншота при старте
         document.addEventListener('DOMContentLoaded', () => {
-            // Тестовый Силурид
-            addAllyCard({
+            renderAllyCard({
                 name: "Silurid Hunter",
                 sub: "Minion (6), Living, Beast, Swampfiend",
                 might: "3", grace: "2", speed: "2", resilience: "2",
                 charm: "-3", intellect: "-2", cunning: "2", tenacity: "2",
                 defense: "4 (10)", walk: "5", height: "2", initiative: "3 (9)",
                 willpower: "4 (10)", charge: "6", wounds: "7",
-                skills: "Acrobatics 2, Athletics 3, Flexible 3, Notice 1, Pugilism 3, Stealth 4, Toughness 2, Track 2, Wilderness 3",
-                abilities: "Aquatic: Speed is not reduced while swimming. Can Charge underwater.\nPerfect Camouflage: On Pass Action, gains [+] to Stealth and Defense vs Ranged.\nSlink Away: Gains [+] to Df vs disengaging strikes.\nUnimpeded: Ignores penalties for severe terrain.",
-                actions: "(1) Deadly Talons (Pugilism) | AV: 6 (12) | Rg: 1 | Dmg: 2/3/4 | Resist: Df\n:c: Hobble: Target gains Hobbled Condition.\n:r: Bite: Target gains Poison +1.\n\n(1) Sticky Tongue (Flexible) | AV: 5 (11) | Rg: 6 | Dmg: 1/1/2 | Resist: Df\n:c: Pull and Drag: Push target toward this character.\n\n(0) Quick Leap: Discard a card to move distance equal to Charge (6 yards)."
-            });
+                skills: "Acrobatics 2, Athletics 3, Flexible 3, Notice 1, Pugilism 3, Stealth 4, Toughness 2, Track 2, Wilderness 3.",
+                abilities: "Aquatic: This character's speed is not reduced while swimming. It can take the Charge Action while underwater.\nPerfect Camouflage: Each time this character takes a Pass Action, it gains [+] to Stealth Challenges and to Defense flips against Ranged Combat attacks until the start of its next turn.\nSlink Away: This character gains [+] to its Defense flips against disengaging strikes. If at least one friendly character is engaged with an enemy, that enemy may not make disengaging strikes against this character.\nUnimpeded: This character ignores penalties for terrain while taking Movement Actions.",
+                actions: "(1) Deadly Talons (Pugilism)\nAV: 6 (12) | Rg: 1 | Resist: Df\nTarget suffers 2/3/4 damage.\n:c: Hobble: After succeeding, target gains Hobbled Condition for remainder of Dramatic Time.\n:r: Bite: After damaging, the target gains Poison +1.\n\n(1) Sticky Tongue (Flexible)\nAV: 5 (11) | Rg: 6 | Resist: Df\nTarget suffers 1/1/2 damage.\n:c: Pull and Drag: After damaging, push target toward this character equal to Might Aspect (min 1 yard).\n\n(0) Quick Leap\nDiscard a card to move this character a distance equal to its Charge Aspect in yards."
+            }, false);
         });
     </script>
 </body>
