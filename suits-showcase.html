@@ -19,7 +19,9 @@
             overflow-x: hidden;
         }
 
-        /* ШАПКА */
+        /* ==========================================================================
+           ШАПКА
+           ========================================================================== */
         header {
             padding: 14px 35px;
             border-bottom: 1px solid #3d2d1e;
@@ -87,7 +89,9 @@
             box-shadow: inset 0 0 0 1px #c7a877;
         }
 
-        /* ЭКРАН 1: ТЕКУЩАЯ КАМПАНИЯ НА ВЕСЬ ЭКРАН */
+        /* ==========================================================================
+           ЭКРАН 1: ТЕКУЩАЯ КАМПАНИЯ НА ВЕСЬ ЭКРАН
+           ========================================================================== */
         #view-campaign {
             position: relative;
             width: 100vw;
@@ -99,6 +103,7 @@
             align-items: center;
         }
 
+        /* Плашка отряда в верхнем левом углу */
         .campaign-roster-badge {
             position: absolute;
             top: 18px;
@@ -114,6 +119,7 @@
             backdrop-filter: blur(6px);
         }
 
+        /* Полноэкранный контейнер сцены */
         .roster-stage {
             position: relative;
             width: 100%;
@@ -123,6 +129,7 @@
             align-items: center;
         }
 
+        /* Задний фоновый арт на весь экран */
         .stage-bg {
             position: absolute;
             top: 0;
@@ -136,6 +143,7 @@
             pointer-events: none;
         }
 
+        /* Затемнение/виньетка по краям для кинематографичности */
         .stage-vignette {
             position: absolute;
             top: 0;
@@ -147,6 +155,7 @@
             pointer-events: none;
         }
 
+        /* Интерактивный контейнер персонажа (выравнивается строго по пропорциям арта) */
         .character-container {
             position: relative;
             height: 100%;
@@ -158,6 +167,7 @@
             align-items: flex-end;
         }
 
+        /* Интерактивный блок персонажа (зона клика) */
         .char-interactive-wrap {
             position: relative;
             width: 100%;
@@ -165,6 +175,7 @@
             cursor: pointer;
         }
 
+        /* Слой вырезанного персонажа (char.png) */
         .char-cutout {
             position: absolute;
             top: 0;
@@ -174,20 +185,23 @@
             object-fit: contain;
             object-position: center bottom;
             z-index: 6;
-            opacity: 0.001;
+            opacity: 0.001; /* В покое почти невидим, так как снизу лежит оригинальный фон */
             transition: opacity 0.25s ease, filter 0.25s ease;
             pointer-events: auto;
         }
 
+        /* Золотое свечение контура персонажа при наведении */
         .char-interactive-wrap:hover .char-cutout {
             opacity: 1;
             filter: drop-shadow(0 0 12px rgba(229, 185, 108, 0.95)) drop-shadow(0 0 25px rgba(199, 168, 119, 0.6));
         }
 
-        /* ТАБЛИЧКА НАД ГОЛОВОЙ */
+        /* ==========================================================================
+           ТАБЛИЧКА НАД ГОЛОВОЙ (АККУРАТНАЯ, МАТОВАЯ, ПОЛУПРОЗРАЧНАЯ)
+           ========================================================================== */
         .char-floating-plate {
             position: absolute;
-            top: 5.5%;
+            top: 5.5%; /* Закреплена прямо над головой персонажа */
             left: 50%;
             transform: translate(-50%, -100%);
             width: 260px;
@@ -281,7 +295,9 @@
             background: rgba(168, 50, 50, 0.3);
         }
 
-        /* ЭКРАН 2: ЛИСТ ПЕРСОНАЖА */
+        /* ==========================================================================
+           ЭКРАН 2: ЛИСТ ПЕРСОНАЖА (ЧАРНИК С 6 ВКЛАДКАМИ)
+           ========================================================================== */
         #view-sheet {
             display: none;
             max-width: 1200px;
@@ -296,6 +312,7 @@
             flex-wrap: wrap;
         }
 
+        /* Стили жетонов мастей */
         .suit-chip {
             display: inline-flex;
             align-items: center;
@@ -338,6 +355,7 @@
             vertical-align: middle;
         }
 
+        /* Карточка союзника: 4-колоночный бежевый книжный статблок */
         #allies-site-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(380px, 520px));
@@ -634,6 +652,7 @@
 </head>
 <body>
 
+    <!-- ВЕРХНЯЯ НАВИГАЦИЯ -->
     <header>
         <button type="button" class="nav-back" id="btn-back-stage" onclick="showCampaignRoster()">← НА ГЛАВНУЮ</button>
         <h1 class="page-title" id="header-title">ТЕКУЩАЯ КАМПАНИЯ</h1>
@@ -642,17 +661,24 @@
         </div>
     </header>
 
-    <!-- ВИД 1: ПОЛНОЭКРАННЫЙ РОСТЕР КАМПАНИИ (СЛОИ testfon.png + char.png) -->
+    <!-- =====================================================================
+         ВИД 1: ПОЛНОЭКРАННЫЙ РОСТЕР КАМПАНИИ (СЛОИ testfon.png + char.png)
+         ===================================================================== -->
     <main id="view-campaign">
         <div class="campaign-roster-badge">Отряд: 1 персонаж(ей)</div>
 
         <div class="roster-stage">
-            <img class="stage-bg" src="testfon.png" alt="Campaign Background">
+            <!-- 1. Фоновый арт на весь экран -->
+            <img class="stage-bg" src="testfon.jpg" alt="Campaign Background">
+            
+            <!-- 2. Мягкая виньетка по краям сцены -->
             <div class="stage-vignette"></div>
 
+            <!-- 3. Интерактивная зона персонажа с вырезанным PNG слоем -->
             <div class="character-container">
                 <div class="char-interactive-wrap" onclick="showCharacterSheet()">
                     
+                    <!-- Табличка строго над головой персонажа -->
                     <div class="char-floating-plate" onclick="event.stopPropagation(); showCharacterSheet();">
                         <div class="plate-header">
                             <span class="plate-title">Генриетта фон Ширах</span>
@@ -669,14 +695,17 @@
                         </div>
                     </div>
 
-                    <img class="char-cutout" src="char.png" alt="Henrietta von Schirach">
+                    <!-- Вырезанный PNG персонажа (char.png) для идеального золотого свечения -->
+                    <img class="char-cutout" src="testfon.png" alt="Henrietta von Schirach">
 
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- ВИД 2: ЛИСТ ПЕРСОНАЖА -->
+    <!-- =====================================================================
+         ВИД 2: ЛИСТ ПЕРСОНАЖА (6 ВКЛАДОК, ВКЛЮЧАЯ ALLIES)
+         ===================================================================== -->
     <main id="view-sheet">
         <div class="tab-bar">
             <button class="tab-btn" onclick="alert('Вкладка Character')">CHARACTER</button>
@@ -702,6 +731,7 @@
     </main>
 
     <script>
+        /* Переключение между экраном кампании и чарником */
         function showCampaignRoster() {
             document.getElementById('view-campaign').style.display = 'flex';
             document.getElementById('view-sheet').style.display = 'none';
@@ -720,6 +750,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        /* Масти Malifaux */
         const SUIT_SVGS = {
             rams: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4C8 4 4 6 2 10c-1 2-1 4 0 6 1 1 3 1 4 0 1-1 1-3 0-5 2-1 4-1 6 1 2-2 4-2 6-1-1 2-1 4 0 5 1 1 3 1 4 0 1-2 1-4 0-6-2-4-6-6-10-6zm0 5c1.66 0 3 1.34 3 3l-1.5 5h-3L9 12c0-1.66 1.34-3 3-3z"/></svg>',
             crows: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.5 9c-.3-.5-1-.7-1.5-.4L16 11l-3-6c-.3-.6-1-.8-1.6-.5L7 7 3.5 5.5C3 5.3 2.4 5.5 2.2 6c-.2.5 0 1.1.5 1.3L6 9l-3 4c-.4.5-.3 1.2.2 1.6l4 3 1 4.5c.1.6.7 1 1.3.8.6-.1 1-.7.8-1.3L9.5 18l5-3 5.5 1.5c.6.2 1.2-.2 1.3-.8.2-.6-.2-1.2-.8-1.3L16 13l5-3c.6-.3.8-.9.5-1z"/></svg>',
