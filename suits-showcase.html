@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Allies Lab — Through the Breach</title>
+    <title>Текущая кампания — Through the Breach</title>
     <style>
         * {
             box-sizing: border-box;
@@ -18,17 +18,23 @@
                 repeating-linear-gradient(0deg, rgba(40, 32, 24, 0.2) 0px, rgba(40, 32, 24, 0.2) 1px, transparent 1px, transparent 28px);
             color: #dfd4c4;
             font-family: Georgia, 'Times New Roman', serif;
-            padding-bottom: 80px;
+            padding-bottom: 60px;
         }
 
+        /* ==========================================================================
+           ШАПКА
+           ========================================================================== */
         header {
-            padding: 18px 40px;
+            padding: 16px 40px;
             border-bottom: 2px solid #3d2d1e;
-            background: rgba(18, 15, 12, 0.95);
+            background: rgba(18, 15, 12, 0.96);
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 25px rgba(0, 0, 0, 0.85);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .nav-back {
@@ -48,18 +54,19 @@
 
         .page-title {
             color: #c7a877;
-            font-size: 19px;
-            letter-spacing: 2.5px;
+            font-size: 18px;
+            letter-spacing: 3px;
             margin: 0;
             font-weight: normal;
             text-align: center;
+            text-transform: uppercase;
         }
 
         .action-btn, .tab-btn {
             background: #241c16;
             border: 1px solid #6b5239;
             color: #cbbca9;
-            padding: 8px 16px;
+            padding: 7px 15px;
             font-family: Georgia, serif;
             font-size: 11.5px;
             letter-spacing: 1.5px;
@@ -83,22 +90,179 @@
             box-shadow: inset 0 0 0 1px #c7a877;
         }
 
-        main {
+        /* ==========================================================================
+           ЭКРАН 1: ТЕКУЩАЯ КАМПАНИЯ (РОСТЕР С ФОНОВЫМ АРТОМ)
+           ========================================================================== */
+        #view-campaign {
+            display: block;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px 20px;
+        }
+
+        .campaign-subbar {
+            color: #8f8171;
+            font-size: 12.5px;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #2a2017;
+            padding-bottom: 8px;
+        }
+
+        /* Сцена с фоновой картинкой testfon.jpg */
+        .roster-stage {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        /* Холст персонажа строго под пропорции арта */
+        .roster-art-canvas {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            aspect-ratio: 1024 / 1536;
+            background-image: url('testfon.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.95), 0 0 80px rgba(0, 0, 0, 0.8) inset;
+            border: 1px solid #3d2d1e;
+        }
+
+        /* Интерактивный хитбокс по силуэту персонажа */
+        .char-hitbox {
+            position: absolute;
+            left: 20%;
+            top: 6%;
+            width: 60%;
+            height: 92%;
+            cursor: pointer;
+            z-index: 10;
+            transition: background 0.3s ease;
+        }
+
+        /* Лёгкое викторианское свечение при наведении на персонажа */
+        .char-hitbox:hover {
+            background: radial-gradient(ellipse at 50% 40%, rgba(199, 168, 119, 0.12) 0%, transparent 75%);
+        }
+
+        /* Табличка персонажа (над головой) */
+        .char-plate {
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translate(-50%, -100%);
+            width: 290px;
+            background: rgba(24, 18, 13, 0.94);
+            border: 1px solid #6b5239;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9);
+            padding: 10px 14px;
+            box-sizing: border-box;
+            transition: all 0.25s ease;
+            pointer-events: auto;
+            text-align: left;
+        }
+
+        .char-hitbox:hover .char-plate {
+            border-color: #c7a877;
+            box-shadow: 0 0 20px rgba(199, 168, 119, 0.35), 0 8px 30px rgba(0, 0, 0, 0.95);
+            background: rgba(32, 24, 18, 0.98);
+        }
+
+        .plate-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 6px;
+            border-bottom: 1px solid #3d2d1e;
+            padding-bottom: 4px;
+        }
+
+        .plate-title {
+            color: #c7a877;
+            font-size: 13.5px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .plate-player {
+            color: #8f8171;
+            font-size: 11px;
+            font-style: italic;
+        }
+
+        .plate-info {
+            font-size: 11.5px;
+            color: #cfc2b0;
+            line-height: 1.45;
+            margin-bottom: 8px;
+        }
+
+        .plate-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-plate-open {
+            flex-grow: 1;
+            background: #241c16;
+            border: 1px solid #6b5239;
+            color: #c7a877;
+            padding: 6px 10px;
+            font-family: Georgia, serif;
+            font-size: 10.5px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-plate-open:hover, .char-hitbox:hover .btn-plate-open {
+            background: #36291e;
+            border-color: #c7a877;
+            color: #ffffff;
+        }
+
+        .btn-plate-del {
+            background: #241c16;
+            border: 1px solid #6b5239;
+            color: #8f8171;
+            width: 28px;
+            padding: 0;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-plate-del:hover {
+            border-color: #a83232;
+            color: #ff8080;
+            background: rgba(168, 50, 50, 0.2);
+        }
+
+        /* ==========================================================================
+           ЭКРАН 2: ЛИСТ ПЕРСОНАЖА (ЧАРНИК С 6 ВКЛАДКАМИ)
+           ========================================================================== */
+        #view-sheet {
+            display: none;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 30px 20px 40px 20px;
+            padding: 25px 20px 40px 20px;
         }
 
         .tab-bar {
             margin: 0 auto 25px auto;
             display: flex;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
-        /* ==========================================================================
-           СТИЛИ ЖЕТОНОВ МАСТЕЙ (MALIFAUX / TTB)
-           ========================================================================== */
+        /* Стили жетонов мастей */
         .suit-chip {
             display: inline-flex;
             align-items: center;
@@ -141,10 +305,7 @@
             vertical-align: middle;
         }
 
-        /* ==========================================================================
-           КАРТОЧКА СОЮЗНИКА: БЕЖЕВАЯ КНИЖНАЯ ГАММА (ПАПКА / ПЕРГАМЕНТ)
-           Сетка 1в1 со скриншотом книги (4 колонки, Might/Charm, Defense/Willpower)
-           ========================================================================== */
+        /* Карточка союзника: 4-колоночный бежевый книжный статблок */
         #allies-site-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(380px, 520px));
@@ -158,18 +319,17 @@
             max-width: 520px;
             margin: 0;
             border: 1px solid #735d46;
-            background: #f7f1e5; /* Благородный тёплый бежевый пергамент */
+            background: #f7f1e5;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85), 0 2px 6px rgba(0, 0, 0, 0.4);
             font-family: Georgia, 'Times New Roman', serif;
             box-sizing: border-box;
             color: #261c14;
         }
 
-        /* Шапка карточки: глубокий контрастный тёмно-шоколадный баннер */
         .ally-site-header {
             background: #1e1610;
             padding: 12px 16px 10px 16px;
-            border-bottom: 3px solid #8c6a43; /* Бронзово-коричневая разделительная полоса */
+            border-bottom: 3px solid #8c6a43;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
@@ -182,7 +342,6 @@
             letter-spacing: 0.5px;
             margin: 0;
             line-height: 1.2;
-            font-family: Georgia, serif;
         }
 
         .ally-site-subtitle {
@@ -216,29 +375,24 @@
             background: #473525;
         }
 
-        .btn-site-del {
-            color: #b59f8c;
-        }
+        .btn-site-del { color: #b59f8c; }
         .btn-site-del:hover {
             color: #ff9e9e;
             border-color: #d9534f;
             background: rgba(217, 83, 79, 0.25);
         }
 
-        /* ==========================================================================
-           СТАТБЛОК 1В1 СО СКРИНШОТА: БЕЖЕВАЯ ТАБЛИЦА (4 КОЛОНКИ С ЧИСТЫМ ПОТОКОМ)
-           ========================================================================== */
         .beige-stat-table {
             width: 100%;
             border-collapse: collapse;
             table-layout: fixed;
             text-align: center;
-            background: #fcf9f2; /* Очень светлый тёплый кремовый фон таблицы */
-            border-bottom: 3px solid #8c6a43; /* Акцентная линия внизу статблока как в книге */
+            background: #fcf9f2;
+            border-bottom: 3px solid #8c6a43;
         }
 
         .beige-stat-table td {
-            border: 1px solid #947e65; /* Чёткие коричневые границы колонок */
+            border: 1px solid #947e65;
             padding: 7px 4px 8px 4px;
             vertical-align: top;
         }
@@ -246,8 +400,7 @@
         .stat-name {
             font-size: 12.5px;
             font-style: italic;
-            font-weight: normal;
-            color: #4a3422; /* Тёмно-коричневый курсив */
+            color: #4a3422;
             line-height: 1.25;
             margin-top: 1px;
         }
@@ -255,24 +408,18 @@
         .stat-val {
             font-size: 16.5px;
             font-weight: bold;
-            color: #1a120b; /* Чёткий глубокий чёрно-коричневый цвет цифр */
+            color: #1a120b;
             line-height: 1.2;
             margin-bottom: 6px;
         }
 
-        .stat-val-last {
-            margin-bottom: 1px;
-        }
+        .stat-val-last { margin-bottom: 1px; }
 
-        /* Разделитель между аспектами и боевыми параметрами */
         .stat-row-derived td {
             border-top: 2px solid #735a40 !important;
             background: #f7f1e5;
         }
 
-        /* ==========================================================================
-           ТЕЛО КАРТОЧКИ: НАВЫКИ, СПОСОБНОСТИ, АТАКИ
-           ========================================================================== */
         .ally-site-body {
             padding: 13px 16px 18px 16px;
             font-size: 12.5px;
@@ -286,10 +433,7 @@
             padding-bottom: 10px;
             border-bottom: 1px solid #99836c;
         }
-        .ally-skills-block strong {
-            color: #1a120c;
-            font-size: 13px;
-        }
+        .ally-skills-block strong { color: #1a120c; font-size: 13px; }
 
         .ally-abilities-block {
             margin-bottom: 13px;
@@ -302,21 +446,15 @@
             line-height: 1.45;
             color: #261b12;
         }
-        .ally-site-item strong {
-            color: #140d07;
-            font-size: 13px;
-        }
+        .ally-site-item strong { color: #140d07; font-size: 13px; }
 
-        /* Таблицы оружия и атак в бежевом книжном стиле */
         .ally-attack-box {
             margin-top: 11px;
             border: 1px solid #947e65;
             background: #fcf9f2;
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
         }
-        .ally-attack-box:first-child {
-            margin-top: 4px;
-        }
+        .ally-attack-box:first-child { margin-top: 4px; }
 
         .ally-attack-head {
             background: #e8dcce;
@@ -331,7 +469,6 @@
             color: #1f140b;
             font-weight: bold;
             font-size: 13px;
-            letter-spacing: 0.3px;
         }
 
         .ally-attack-table {
@@ -350,7 +487,6 @@
             border-right: 1px solid #ab977e;
             background: #efe5d6;
             font-size: 10.5px;
-            letter-spacing: 0.5px;
         }
         .ally-attack-table td {
             padding: 5px 2px;
@@ -359,10 +495,7 @@
             font-size: 13.5px;
             border-right: 1px solid #ab977e;
         }
-        .ally-attack-table th:last-child,
-        .ally-attack-table td:last-child {
-            border-right: none;
-        }
+        .ally-attack-table th:last-child, .ally-attack-table td:last-child { border-right: none; }
 
         .ally-attack-triggers {
             padding: 7px 10px;
@@ -381,15 +514,8 @@
             flex-wrap: wrap;
             gap: 3px;
         }
-        .ally-trigger-row:first-child {
-            border-top: none;
-            padding-top: 0;
-            margin-top: 0;
-        }
+        .ally-trigger-row:first-child { border-top: none; padding-top: 0; margin-top: 0; }
 
-        /* ==========================================================================
-           ФОРМА РЕДАКТИРОВАНИЯ В БЕЖЕВО-КОЖАНОМ СТИЛЕ
-           ========================================================================== */
         .ally-site-edit {
             display: none;
             padding: 14px;
@@ -398,9 +524,7 @@
             color: #261c14;
         }
 
-        .edit-row {
-            margin-bottom: 10px;
-        }
+        .edit-row { margin-bottom: 10px; }
         .edit-row label {
             display: block;
             font-size: 11px;
@@ -433,16 +557,8 @@
             margin-bottom: 6px;
             text-align: center;
         }
-        .edit-grid-4 label {
-            font-size: 9.5px;
-            color: #634730;
-            margin-bottom: 2px;
-        }
-        .edit-grid-4 input {
-            text-align: center;
-            font-weight: bold;
-            padding: 4px 2px;
-        }
+        .edit-grid-4 label { font-size: 9.5px; color: #634730; margin-bottom: 2px; }
+        .edit-grid-4 input { text-align: center; font-weight: bold; padding: 4px 2px; }
 
         .ally-site-edit textarea.edit-textarea {
             width: 100%;
@@ -486,24 +602,62 @@
 </head>
 <body>
 
+    <!-- ВЕРХНЯЯ НАВИГАЦИЯ -->
     <header>
-        <button type="button" class="nav-back">← Назад к отряду</button>
-        <h1 class="page-title">ГЕНРИЕТТА ФОН ШИРАХ — ALLIES LAB</h1>
+        <button type="button" class="nav-back" id="btn-back-stage" onclick="showCampaignRoster()">← НА ГЛАВНУЮ</button>
+        <h1 class="page-title" id="header-title">ТЕКУЩАЯ КАМПАНИЯ</h1>
         <div style="display: flex; gap: 8px;">
-            <button type="button" class="action-btn">💾 СОХРАНИТЬ В ОБЛАКО</button>
-            <button type="button" class="tab-btn">⬇ СКАЧАТЬ JSON</button>
-            <button type="button" class="tab-btn">🖨 ПЕЧАТЬ</button>
+            <button type="button" class="action-btn" id="btn-header-action">+ ДОБАВИТЬ ПЕРСОНАЖА (.JSON)</button>
         </div>
     </header>
 
-    <main>
+    <!-- =====================================================================
+         ВИД 1: ЭКРАН ТЕКУЩЕЙ КАМПАНИИ (С АРТОМ testfon.jpg И ТАБЛИЧКОЙ НАД ГОЛОВОЙ)
+         ===================================================================== -->
+    <main id="view-campaign">
+        <div class="campaign-subbar">Отряд: 1 персонаж(ей)</div>
+
+        <div class="roster-stage">
+            <!-- Холст с фоном testfon.jpg -->
+            <div class="roster-art-canvas">
+                
+                <!-- Хитбокс силуэта персонажа -->
+                <div class="char-hitbox" onclick="showCharacterSheet()">
+                    
+                    <!-- Табличка строго над головой -->
+                    <div class="char-plate" onclick="event.stopPropagation(); showCharacterSheet();">
+                        <div class="plate-header">
+                            <span class="plate-title">Генриетта фон Ширах</span>
+                            <span class="plate-player">Player: Крис</span>
+                        </div>
+                        <div class="plate-info">
+                            <div>Pursuit: Roastmaster/Gunner</div>
+                            <div>Species: Fated, Human</div>
+                            <div>Exp: 3 | Scrip: 65.5</div>
+                        </div>
+                        <div class="plate-actions">
+                            <button type="button" class="btn-plate-open" onclick="showCharacterSheet()">ОТКРЫТЬ ЧАРНИК</button>
+                            <button type="button" class="btn-plate-del" onclick="event.stopPropagation(); alert('Удаление персонажа')">✕</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- =====================================================================
+         ВИД 2: ЛИСТ ПЕРСОНАЖА (6 ВКЛАДОК, ВКЛЮЧАЯ ALLIES)
+         ===================================================================== -->
+    <main id="view-sheet">
         <div class="tab-bar">
-            <button class="tab-btn">CHARACTER</button>
-            <button class="tab-btn">GENERAL TALENTS</button>
-            <button class="tab-btn">PURSUIT</button>
-            <button class="tab-btn">EQUIPMENT</button>
+            <button class="tab-btn" onclick="alert('Вкладка Character')">CHARACTER</button>
+            <button class="tab-btn" onclick="alert('Вкладка General Talents')">GENERAL TALENTS</button>
+            <button class="tab-btn" onclick="alert('Вкладка Pursuit')">PURSUIT</button>
+            <button class="tab-btn" onclick="alert('Вкладка Equipment')">EQUIPMENT</button>
             <button class="tab-btn active">ALLIES</button>
-            <button class="tab-btn">BIO</button>
+            <button class="tab-btn" onclick="alert('Вкладка Bio')">BIO</button>
         </div>
 
         <div style="max-width: 1150px; margin: 0 auto;">
@@ -521,6 +675,26 @@
     </main>
 
     <script>
+        /* Переключение между экраном кампании и чарником */
+        function showCampaignRoster() {
+            document.getElementById('view-campaign').style.display = 'block';
+            document.getElementById('view-sheet').style.display = 'none';
+            document.getElementById('header-title').textContent = 'ТЕКУЩАЯ КАМПАНИЯ';
+            document.getElementById('btn-back-stage').textContent = '← НА ГЛАВНУЮ';
+            document.getElementById('btn-header-action').textContent = '+ ДОБАВИТЬ ПЕРСОНАЖА (.JSON)';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showCharacterSheet() {
+            document.getElementById('view-campaign').style.display = 'none';
+            document.getElementById('view-sheet').style.display = 'block';
+            document.getElementById('header-title').textContent = 'ГЕНРИЕТТА ФОН ШИРАХ';
+            document.getElementById('btn-back-stage').textContent = '← НАЗАД К ОТРЯДУ';
+            document.getElementById('btn-header-action').textContent = '💾 СОХРАНИТЬ В ОБЛАКО';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* Масти Malifaux */
         const SUIT_SVGS = {
             rams: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4C8 4 4 6 2 10c-1 2-1 4 0 6 1 1 3 1 4 0 1-1 1-3 0-5 2-1 4-1 6 1 2-2 4-2 6-1-1 2-1 4 0 5 1 1 3 1 4 0 1-2 1-4 0-6-2-4-6-6-10-6zm0 5c1.66 0 3 1.34 3 3l-1.5 5h-3L9 12c0-1.66 1.34-3 3-3z"/></svg>',
             crows: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.5 9c-.3-.5-1-.7-1.5-.4L16 11l-3-6c-.3-.6-1-.8-1.6-.5L7 7 3.5 5.5C3 5.3 2.4 5.5 2.2 6c-.2.5 0 1.1.5 1.3L6 9l-3 4c-.4.5-.3 1.2.2 1.6l4 3 1 4.5c.1.6.7 1 1.3.8.6-.1 1-.7.8-1.3L9.5 18l5-3 5.5 1.5c.6.2 1.2-.2 1.3-.8.2-.6-.2-1.2-.8-1.3L16 13l5-3c.6-.3.8-.9.5-1z"/></svg>',
@@ -562,7 +736,7 @@
             }).join('');
         }
 
-                        function renderActionsHtml(text) {
+        function renderActionsHtml(text) {
             if (!text) return "";
             const blocks = text.split(/\n\s*\n/);
             return blocks.map(block => {
@@ -624,7 +798,6 @@
             if (isNewCard) wrapper.dataset.isNew = 'true';
 
             wrapper.innerHTML = `
-                                                <!-- РЕЖИМ ПРОСМОТРА (1В1 СО СКРИНШОТА SILURID HUNTER, БЕЖЕВАЯ ГАММА) -->
                 <div class="ally-site-view">
                     <div class="ally-site-header">
                         <div>
@@ -637,9 +810,7 @@
                         </div>
                     </div>
 
-                    <!-- СТАТБЛОК 1В1 СО СКРИНШОТА (БЕЖЕВЫЙ, 4 КОЛОНКИ С ПАРАМИ) -->
                     <table class="beige-stat-table">
-                        <!-- АСПЕКТЫ: Might/Charm, Grace/Intellect, Speed/Cunning, Resilience/Tenacity -->
                         <tbody>
                             <tr>
                                 <td>
@@ -669,7 +840,6 @@
                             </tr>
                         </tbody>
 
-                        <!-- ПРОИЗВОДНЫЕ СТАТЫ: Df/Wp, Wk/Cg, Ht/Wd, Init -->
                         <tbody class="stat-row-derived">
                             <tr>
                                 <td>
@@ -700,7 +870,6 @@
                         </tbody>
                     </table>
 
-                    <!-- ТЕЛО КАРТОЧКИ: SKILLS, ABILITIES, ACTIONS -->
                     <div class="ally-site-body">
                         <div class="ally-skills-block">
                             <strong>Skills:</strong> <span class="view-val-skills">${data.skills || '—'}</span>
@@ -716,7 +885,6 @@
                     </div>
                 </div>
 
-                <!-- ФОРМА РЕДАКТИРОВАНИЯ -->
                 <div class="ally-site-edit">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #382b1d; padding-bottom: 8px;">
                         <span style="font-size: 12px; font-weight: bold; color: #c59a5b; letter-spacing: 1px;">EDIT ALLY / SUBORDINATE</span>
@@ -725,12 +893,12 @@
 
                     <div class="edit-row">
                         <label>Имя союзника</label>
-                        <input type="text" class="edit-input inp-name" value="${data.name || ''}" placeholder="Silurid Hunter">
+                        <input type="text" class="edit-input inp-name" value="${data.name || ''}" placeholder="Guard Dog">
                     </div>
 
                     <div class="edit-row">
                         <label>Keywords & Type</label>
-                        <input type="text" class="edit-input inp-sub" value="${data.sub || ''}" placeholder="Minion (6), Living, Beast, Swampfiend">
+                        <input type="text" class="edit-input inp-sub" value="${data.sub || ''}" placeholder="Peon (4), Living, Beast, Hound">
                     </div>
 
                     <div class="edit-row">
@@ -767,7 +935,7 @@
 
                     <div class="edit-row">
                         <label>Skills</label>
-                        <input type="text" class="edit-input inp-skills" value="${data.skills || ''}" placeholder="Acrobatics 2, Pugilism 3...">
+                        <input type="text" class="edit-input inp-skills" value="${data.skills || ''}">
                     </div>
 
                     <div class="edit-row">
@@ -799,12 +967,12 @@
             document.getElementById('allies-site-list').appendChild(wrapper);
 
             if (isEditInitially) {
-                card.dataset.isNew = 'false';
-            toggleEditMode(cardId);
+                wrapper.dataset.isNew = 'false';
+                toggleEditMode(cardId);
             }
         }
 
-                        function confirmDeleteAlly(cardId) {
+        function confirmDeleteAlly(cardId) {
             const card = document.getElementById(cardId);
             if (!card) return;
             const name = card.querySelector('.view-val-name')?.textContent?.trim() || 'этого союзника';
@@ -819,8 +987,8 @@
             if (card.dataset.isNew === 'true') {
                 card.remove();
             } else {
-                card.dataset.isNew = 'false';
-            toggleEditMode(cardId);
+                wrapper.dataset.isNew = 'false';
+                toggleEditMode(cardId);
             }
         }
 
@@ -910,39 +1078,29 @@
 
         function addNewAllyFromTemplate() {
             renderSiteAllyCard({
-                name: "New Ally",
-                sub: "Minion (5), Living",
-                might: "0", grace: "0", speed: "0", resilience: "0",
-                charm: "0", intellect: "0", cunning: "0", tenacity: "0",
-                defense: "2", walk: "4", height: "2", initiative: "0",
-                willpower: "2", charge: "4", wounds: "4",
-                skills: "",
-                abilities: "",
-                actions: ""
+                name: "Guard Dog",
+                sub: "Peon (4), Living, Beast, Hound",
+                might: "1", grace: "0", speed: "2", resilience: "0",
+                charm: "0", intellect: "-2", cunning: "-2", tenacity: "0",
+                defense: "5 (9)", walk: "5", height: "1", initiative: "4 (8)",
+                willpower: "2 (6)", charge: "6", wounds: "4",
+                skills: "Evade 3, Intimidate 1, Notice 2, Pugilism 3, Track 3, Wilderness 2.",
+                abilities: "Hunting Dogs: Enemy characters receive -1 Df while within (y) 1 of this character.\nUnimpeded: This character ignores penalties for terrain while taking Movement Actions.",
+                actions: "(1) Snapping Jaws (Pugilism)\nAV: 4 (8) | Rg: (y) 1 | Resist: Df | Damage: 1/3/4\nThis attack gains +2 AV when taken as part of a disengaging strike."
             }, true, true);
         }
 
-        
-        function openCharacterSheetFromRoster() {
-            // Переключаем на вид чарника
-            const roster = document.getElementById('view-roster');
-            const sheet = document.getElementById('view-character-sheet');
-            if (roster) roster.style.display = 'none';
-            if (sheet) sheet.style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', () => {
             renderSiteAllyCard({
-                name: "Silurid Hunter",
-                sub: "Minion (6), Living, Beast, Swampfiend",
-                might: "3", grace: "2", speed: "2", resilience: "2",
-                charm: "-3", intellect: "-2", cunning: "2", tenacity: "2",
-                defense: "4 (10)", walk: "5", height: "2", initiative: "3 (9)",
-                willpower: "4 (10)", charge: "6", wounds: "7",
-                skills: "Acrobatics 2, Athletics 3, Flexible 3, Notice 1, Pugilism 3, Stealth 4, Toughness 2, Track 2, Wilderness 3.",
-                abilities: "Aquatic: This character's speed is not reduced while swimming. It can take the Charge Action while underwater.\nPerfect Camouflage: Each time this character takes a Pass Action, it gains [+] to Stealth Challenges and to Defense flips against Ranged Combat attacks until the start of its next turn.\nSlink Away: This character gains [+] to its Defense flips against disengaging strikes.\nUnimpeded: This character ignores penalties for terrain while taking Movement Actions.",
-                actions: "(1) Deadly Talons (Pugilism)\nAV: 6 (12) | Rg: 1 | Resist: Df | Damage: 2/3/4\n:c: Hobble: After succeeding, target gains Hobbled Condition for remainder of Dramatic Time.\n:r: Bite: After damaging, the target gains Poison +1.\n\n(1) Sticky Tongue (Flexible)\nAV: 5 (11) | Rg: 6 | Resist: Df | Damage: 1/1/2\n:c: Pull and Drag: After damaging, push target toward this character equal to Might Aspect (min 1 yard).\n\n(0) Quick Leap\nDiscard a card to move this character a distance equal to its Charge Aspect in yards."
+                name: "Guard Dog",
+                sub: "Peon (4), Living, Beast, Hound",
+                might: "1", grace: "0", speed: "2", resilience: "0",
+                charm: "0", intellect: "-2", cunning: "-2", tenacity: "0",
+                defense: "5 (9)", walk: "5", height: "1", initiative: "4 (8)",
+                willpower: "2 (6)", charge: "6", wounds: "4",
+                skills: "Evade 3, Intimidate 1, Notice 2, Pugilism 3, Track 3, Wilderness 2.",
+                abilities: "Hunting Dogs: Enemy characters receive -1 Df while within (y) 1 of this character.\nUnimpeded: This character ignores penalties for terrain while taking Movement Actions.",
+                actions: "(1) Snapping Jaws (Pugilism)\nAV: 4 (8) | Rg: (y) 1 | Resist: Df | Damage: 1/3/4\nThis attack gains +2 AV when taken as part of a disengaging strike."
             }, false);
         });
     </script>
