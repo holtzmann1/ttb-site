@@ -96,9 +96,7 @@
             flex-wrap: wrap;
         }
 
-        /* ==========================================================================
-           СТИЛИ ЖЕТОНОВ МАСТЕЙ (MALIFAUX / TTB)
-           ========================================================================== */
+        /* Жетоны мастей */
         .suit-chip {
             display: inline-flex;
             align-items: center;
@@ -141,13 +139,18 @@
             vertical-align: middle;
         }
 
-        /* ==========================================================================
-           КАРТОЧКА СОЮЗНИКА В СТИЛЕ PURSUIT WEAPON / TALENT MINION
-           ========================================================================== */
+        /* Сетка для карточек напротив друг друга */
+        #allies-site-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+            gap: 20px;
+            align-items: start;
+            width: 100%;
+        }
+
         .ally-site-card {
             width: 100%;
-            max-width: 520px;
-            margin: 0 auto 20px auto;
+            margin: 0;
             border: 1px solid #4a3825;
             background: #14100c;
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.85);
@@ -166,7 +169,7 @@
 
         .ally-site-title {
             color: #c59a5b;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: bold;
             letter-spacing: 1px;
             text-transform: uppercase;
@@ -175,7 +178,7 @@
         }
 
         .ally-site-subtitle {
-            font-size: 11px;
+            font-size: 12px;
             color: #bfaea0;
             font-style: italic;
             margin-top: 3px;
@@ -213,47 +216,38 @@
             background: rgba(229, 115, 115, 0.1);
         }
 
+        /* Таблица статов в едином книжном стиле */
         .ally-site-table {
             width: 100%;
             border-collapse: collapse;
             table-layout: fixed;
-            font-size: 11px;
             text-align: center;
             background: #1b1510;
-            border-bottom: 1px solid #382b1d;
         }
 
         .ally-site-table th {
-            padding: 4px 4px;
+            padding: 6px 2px 2px 2px;
             color: #c59a5b;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            border-right: 1px solid #382b1d;
-            border-bottom: 1px solid #382b1d;
-            background: #251d16;
-            font-size: 10.5px;
-            font-style: normal;
+            font-weight: normal;
+            font-style: italic;
+            font-size: 12.5px;
+            border: 1px solid #382b1d;
+            background: #201913;
         }
 
         .ally-site-table td {
-            padding: 5px 3px;
-            color: #e8dfd0;
+            padding: 2px 2px 7px 2px;
+            color: #f2ece2;
             font-weight: bold;
-            border-right: 1px solid #382b1d;
-            border-bottom: 1px solid #382b1d;
-            font-size: 14.5px;
-        }
-
-        .ally-site-table th:last-child,
-        .ally-site-table td:last-child {
-            border-right: none;
+            font-size: 18.5px;
+            border: 1px solid #382b1d;
         }
 
         .ally-site-body {
-            padding: 10px 14px 14px 14px;
-            font-size: 11.5px;
+            padding: 12px 14px 16px 14px;
+            font-size: 12px;
             color: #bfaea0;
-            line-height: 1.45;
+            line-height: 1.5;
         }
 
         .ally-site-row {
@@ -261,18 +255,21 @@
         }
         .ally-site-row strong {
             color: #c59a5b;
+            font-size: 11.5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .ally-site-divider {
             border-top: 1px dashed #2d2216;
-            margin: 8px 0;
+            margin: 10px 0;
             padding-top: 4px;
         }
 
         .ally-site-item {
             margin-bottom: 6px;
             color: #dfd4c4;
-            line-height: 1.4;
+            line-height: 1.45;
         }
         .ally-site-item strong {
             color: #c59a5b;
@@ -460,7 +457,7 @@
             <button class="tab-btn">BIO</button>
         </div>
 
-        <div style="max-width: 900px; margin: 0 auto;">
+        <div style="max-width: 1150px; margin: 0 auto;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #382b1d; padding-bottom: 12px;">
                 <h3 style="margin: 0; font-size: 15px; letter-spacing: 2px; text-transform: uppercase; color: #c59a5b; font-weight: normal;">
                     SUBORDINATES & ALLIES
@@ -577,7 +574,7 @@
             wrapper.id = cardId;
 
             wrapper.innerHTML = `
-                <!-- РЕЖИМ ПРОСМОТРА (В СТИЛЕ САЙТА И ПУТЕЙ) -->
+                <!-- РЕЖИМ ПРОСМОТРА -->
                 <div class="ally-site-view">
                     <div class="ally-site-header">
                         <div>
@@ -659,20 +656,20 @@
                         <div class="ally-site-divider"></div>
 
                         <div class="ally-site-row">
-                            <strong style="text-transform: uppercase; font-size: 11px; display: block; margin-bottom: 4px;">Abilities:</strong>
-                            <div class="view-val-abilities">${renderAbilitiesHtml(data.abilities)}</div>
+                            <strong>Abilities:</strong>
+                            <div class="view-val-abilities" style="margin-top: 4px;">${renderAbilitiesHtml(data.abilities)}</div>
                         </div>
 
                         <div class="ally-site-divider"></div>
 
                         <div class="ally-site-row">
-                            <strong style="text-transform: uppercase; font-size: 11px; display: block; margin-bottom: 4px;">Attacks & Actions:</strong>
-                            <div class="view-val-actions">${renderActionsHtml(data.actions)}</div>
+                            <strong>Attacks & Actions:</strong>
+                            <div class="view-val-actions" style="margin-top: 4px;">${renderActionsHtml(data.actions)}</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ФОРМА РЕДАКТИРОВАНИЯ (ОТКРЫВАЕТСЯ ПО КНОПКЕ EDIT) -->
+                <!-- ФОРМА РЕДАКТИРОВАНИЯ -->
                 <div class="ally-site-edit">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #382b1d; padding-bottom: 8px;">
                         <span style="font-size: 12px; font-weight: bold; color: #c59a5b; letter-spacing: 1px;">EDIT ALLY / SUBORDINATE</span>
