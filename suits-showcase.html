@@ -155,7 +155,6 @@
             box-sizing: border-box;
         }
 
-        /* Шапка в стиле pursuit minion header */
         .ally-site-header {
             background: #251d16;
             padding: 10px 14px;
@@ -214,7 +213,6 @@
             background: rgba(229, 115, 115, 0.1);
         }
 
-        /* Таблица статов 1в1 как pursuit-weapon-table */
         .ally-site-table {
             width: 100%;
             border-collapse: collapse;
@@ -251,7 +249,6 @@
             border-right: none;
         }
 
-        /* Тело карточки (детали как в pursuit-weapon-details) */
         .ally-site-body {
             padding: 10px 14px 14px 14px;
             font-size: 11.5px;
@@ -281,7 +278,6 @@
             color: #c59a5b;
         }
 
-        /* Блок атаки в стиле оружия пути */
         .ally-attack-box {
             margin-top: 8px;
             border: 1px solid #382b1d;
@@ -353,9 +349,6 @@
             margin-top: 0;
         }
 
-        /* ==========================================================================
-           ФОРМА РЕДАКТИРОВАНИЯ (ТОЛЬКО КОГДА НАЖАТ EDIT)
-           ========================================================================== */
         .ally-site-edit {
             display: none;
             padding: 14px;
@@ -492,16 +485,16 @@
         function getSuitBadge(suit) {
             const s = suit.toLowerCase();
             const label = s.toUpperCase();
-            return `<span class="suit-chip suit-${s}">${SUIT_SVGS[s] || ''} ${label}</span>`;
+            return '<span class="suit-chip suit-' + s + '">' + (SUIT_SVGS[s] || '') + ' ' + label + '</span>';
         }
 
         function formatBookText(text) {
             if (!text) return "";
             return text
-                .replace(/ RAMS /g, getSuitBadge('rams'))
-                .replace(/ MASKS /g, getSuitBadge('masks'))
-                .replace(/ CROWS /g, getSuitBadge('crows'))
-                .replace(/ TOMES /g, getSuitBadge('tomes'))
+                .replace(/\bRAMS\b/g, getSuitBadge('rams'))
+                .replace(/\bMASKS\b/g, getSuitBadge('masks'))
+                .replace(/\bCROWS\b/g, getSuitBadge('crows'))
+                .replace(/\bTOMES\b/g, getSuitBadge('tomes'))
                 .replace(/:r:/g, getSuitBadge('rams'))
                 .replace(/:m:/g, getSuitBadge('masks'))
                 .replace(/:c:/g, getSuitBadge('crows'))
@@ -511,28 +504,23 @@
 
         function renderAbilitiesHtml(text) {
             if (!text) return "";
-            const lines = text.split('
-').filter(l => l.trim().length > 0);
+            const lines = text.split("\n").filter(l => l.trim().length > 0);
             return lines.map(line => {
                 const colonIdx = line.indexOf(':');
                 if (colonIdx !== -1) {
                     const title = line.substring(0, colonIdx).trim();
                     const desc = line.substring(colonIdx + 1).trim();
-                    return `<div class="ally-site-item"><strong>${title}:</strong> ${formatBookText(desc)}</div>`;
+                    return '<div class="ally-site-item"><strong>' + title + ':</strong> ' + formatBookText(desc) + '</div>';
                 }
-                return `<div class="ally-site-item">${formatBookText(line)}</div>`;
+                return '<div class="ally-site-item">' + formatBookText(line) + '</div>';
             }).join('');
         }
 
-        // Рендер атак с компактными плашками оружия как в Pursuit
         function renderActionsHtml(text) {
             if (!text) return "";
-            const blocks = text.split(/
-\s*
-/);
+            const blocks = text.split(/\n\s*\n/);
             return blocks.map(block => {
-                const lines = block.split('
-').map(l => l.trim()).filter(Boolean);
+                const lines = block.split("\n").map(l => l.trim()).filter(Boolean);
                 if (lines.length === 0) return '';
                 
                 let title = lines[0];
@@ -562,40 +550,23 @@
 
                 let statsTable = '';
                 if (hasStats) {
-                    statsTable = `
-                        <table class="ally-attack-table">
-                            <thead>
-                                <tr>
-                                    <th>AV</th><th>RANGE</th><th>RESIST</th><th>DAMAGE</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>${av}</td><td>${rg}</td><td>${resist}</td><td>${dmg}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    `;
+                    statsTable = '<table class="ally-attack-table">' +
+                        '<thead><tr><th>AV</th><th>RANGE</th><th>RESIST</th><th>DAMAGE</th></tr></thead>' +
+                        '<tbody><tr><td>' + av + '</td><td>' + rg + '</td><td>' + resist + '</td><td>' + dmg + '</td></tr></tbody>' +
+                        '</table>';
                 }
 
                 let triggersHtml = '';
                 if (triggers.length > 0) {
-                    triggersHtml = `
-                        <div class="ally-attack-triggers">
-                            ${triggers.map(t => `<div class="ally-trigger-row">${formatBookText(t)}</div>`).join('')}
-                        </div>
-                    `;
+                    triggersHtml = '<div class="ally-attack-triggers">' +
+                        triggers.map(t => '<div class="ally-trigger-row">' + formatBookText(t) + '</div>').join('') +
+                        '</div>';
                 }
 
-                return `
-                    <div class="ally-attack-box">
-                        <div class="ally-attack-head">
-                            <span class="ally-attack-title">${title}</span>
-                        </div>
-                        ${statsTable}
-                        ${triggersHtml}
-                    </div>
-                `;
+                return '<div class="ally-attack-box">' +
+                    '<div class="ally-attack-head"><span class="ally-attack-title">' + title + '</span></div>' +
+                    statsTable + triggersHtml +
+                    '</div>';
             }).join('');
         }
 
@@ -894,21 +865,8 @@
                 defense: "4 (10)", walk: "5", height: "2", initiative: "3 (9)",
                 willpower: "4 (10)", charge: "6", wounds: "7",
                 skills: "Acrobatics 2, Athletics 3, Flexible 3, Notice 1, Pugilism 3, Stealth 4, Toughness 2, Track 2, Wilderness 3.",
-                abilities: "Aquatic: This character's speed is not reduced while swimming. It can take the Charge Action while underwater.
-Perfect Camouflage: Each time this character takes a Pass Action, it gains [+] to Stealth Challenges and to Defense flips against Ranged Combat attacks until the start of its next turn.
-Slink Away: This character gains [+] to its Defense flips against disengaging strikes.
-Unimpeded: This character ignores penalties for terrain while taking Movement Actions.",
-                actions: "(1) Deadly Talons (Pugilism)
-AV: 6 (12) | Rg: 1 | Resist: Df | Damage: 2/3/4
-:c: Hobble: After succeeding, target gains Hobbled Condition for remainder of Dramatic Time.
-:r: Bite: After damaging, the target gains Poison +1.
-
-(1) Sticky Tongue (Flexible)
-AV: 5 (11) | Rg: 6 | Resist: Df | Damage: 1/1/2
-:c: Pull and Drag: After damaging, push target toward this character equal to Might Aspect (min 1 yard).
-
-(0) Quick Leap
-Discard a card to move this character a distance equal to its Charge Aspect in yards."
+                abilities: "Aquatic: This character's speed is not reduced while swimming. It can take the Charge Action while underwater.\nPerfect Camouflage: Each time this character takes a Pass Action, it gains [+] to Stealth Challenges and to Defense flips against Ranged Combat attacks until the start of its next turn.\nSlink Away: This character gains [+] to its Defense flips against disengaging strikes.\nUnimpeded: This character ignores penalties for terrain while taking Movement Actions.",
+                actions: "(1) Deadly Talons (Pugilism)\nAV: 6 (12) | Rg: 1 | Resist: Df | Damage: 2/3/4\n:c: Hobble: After succeeding, target gains Hobbled Condition for remainder of Dramatic Time.\n:r: Bite: After damaging, the target gains Poison +1.\n\n(1) Sticky Tongue (Flexible)\nAV: 5 (11) | Rg: 6 | Resist: Df | Damage: 1/1/2\n:c: Pull and Drag: After damaging, push target toward this character equal to Might Aspect (min 1 yard).\n\n(0) Quick Leap\nDiscard a card to move this character a distance equal to its Charge Aspect in yards."
             }, false);
         });
     </script>
