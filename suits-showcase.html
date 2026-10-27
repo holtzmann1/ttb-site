@@ -140,10 +140,14 @@
         }
 
         /* Сетка: фиксированная ширина карточки (не распирает одну карточку на весь экран) */
+                /* ==========================================================================
+           КАРТОЧКА СОЮЗНИКА В СТИЛЕ КНИГИ WYRD (EMPYREAN EAGLE)
+           Сделана заметно ярче фона сайта, с чётким контрастом и чистыми границами
+           ========================================================================== */
         #allies-site-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(380px, 520px));
-            gap: 20px;
+            gap: 24px;
             align-items: start;
             width: 100%;
         }
@@ -152,37 +156,38 @@
             width: 100%;
             max-width: 520px;
             margin: 0;
-            border: 1px solid #4a3825;
-            background: #14100c;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.85);
+            border: 1px solid #5c4530;
+            background: #231b15; /* Заметно ярче фона страницы (#120f0c) */
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.95), inset 0 0 0 1px rgba(197, 154, 91, 0.12);
             font-family: Georgia, serif;
             box-sizing: border-box;
         }
 
+        /* Шапка карточки */
         .ally-site-header {
-            background: #251d16;
-            padding: 10px 14px;
-            border-bottom: 1px solid #4a3825;
+            background: #31251c;
+            padding: 12px 16px 10px 16px;
+            border-bottom: 3px solid #c59a5b; /* Акцентная полоса под шапкой как в оригинале */
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
         }
 
         .ally-site-title {
-            color: #c59a5b;
-            font-size: 16px;
+            color: #ffffff;
+            font-size: 22px;
             font-weight: bold;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            letter-spacing: 0.5px;
             margin: 0;
             line-height: 1.2;
         }
 
         .ally-site-subtitle {
-            font-size: 12px;
-            color: #bfaea0;
+            font-size: 13px;
+            color: #dcd0bf;
             font-style: italic;
             margin-top: 3px;
+            line-height: 1.3;
         }
 
         .ally-site-ctrls {
@@ -192,278 +197,168 @@
         }
 
         .btn-site-ctrl {
-            background: transparent;
-            border: 1px solid #4a3825;
+            background: #201711;
+            border: 1px solid #634b34;
             color: #c59a5b;
             cursor: pointer;
-            padding: 4px 8px;
+            padding: 4px 9px;
             font-size: 11px;
             font-family: Georgia, serif;
             letter-spacing: 0.5px;
             transition: all 0.15s ease;
         }
         .btn-site-ctrl:hover {
-            border-color: #b88a4a;
-            color: #e8dfd0;
-            background: rgba(184, 138, 74, 0.15);
+            border-color: #c59a5b;
+            color: #fff;
+            background: #3d2d1e;
         }
 
         .btn-site-del {
-            color: #8f8679;
+            color: #a89482;
         }
         .btn-site-del:hover {
-            color: #e57373;
-            border-color: #e57373;
-            background: rgba(229, 115, 115, 0.1);
+            color: #ff9e9e;
+            border-color: #d9534f;
+            background: rgba(217, 83, 79, 0.2);
         }
 
-                /* ==========================================================================
-           СТАТБЛОК СОЮЗНИКА: ЧЁТКИЙ, КОНТРАСТНЫЙ И ЧИТАЕМЫЙ
+        /* ==========================================================================
+           СТАТБЛОК 1В1 ИЗ КНИГИ (EMPYREAN EAGLE): 4 КОЛОНКИ С ПАРАМИ СТАТОВ
            ========================================================================== */
-        .ally-stats-container {
-            background: #16120d;
-            border-bottom: 1px solid #382b1d;
-        }
-
-        /* 1. Главные боевые параметры: Defense, Willpower, Wounds */
-        .ally-vitals-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            background: #1e1711;
-            border-bottom: 1px solid #382b1d;
-        }
-        .vital-box {
-            padding: 8px 6px 7px 6px;
-            text-align: center;
-            border-right: 1px solid #382b1d;
-        }
-        .vital-box:last-child {
-            border-right: none;
-        }
-        .vital-box.vital-wounds {
-            background: rgba(160, 60, 50, 0.12);
-        }
-        .vital-label {
-            display: block;
-            font-size: 10.5px;
-            color: #c59a5b;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            margin-bottom: 3px;
-            font-weight: bold;
-        }
-        .vital-val {
-            font-size: 20px;
-            font-weight: bold;
-            color: #fff;
-            line-height: 1;
-        }
-
-        /* 2. Тактические параметры: Walk, Charge, Initiative, Height */
-        .ally-tactics-bar {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            background: #14100c;
-            border-bottom: 1px solid #382b1d;
-        }
-        .tactic-cell {
-            padding: 6px 4px;
-            text-align: center;
-            border-right: 1px solid #2d2216;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-        }
-        .tactic-cell:last-child {
-            border-right: none;
-        }
-        .tactic-label {
-            color: #9e8e7b;
-            font-size: 10px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-        }
-        .tactic-val {
-            color: #f2ece2;
-            font-size: 14.5px;
-            font-weight: bold;
-        }
-
-        /* 3. Аспекты: Physical & Mental с чёткими карточками */
-        .ally-aspects-section {
-            background: #16120d;
-        }
-        .aspect-group-header {
-            background: #211913;
-            color: #c59a5b;
-            font-size: 10px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 4px 10px;
-            border-bottom: 1px solid #33271b;
-            border-top: 1px solid #33271b;
-        }
-        .aspect-group-header:first-child {
-            border-top: none;
-        }
-        .aspect-grid-4 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            text-align: center;
-        }
-        .aspect-cell {
-            padding: 5px 3px 6px 3px;
-            border-right: 1px solid #2d2216;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-        .aspect-cell:last-child {
-            border-right: none;
-        }
-        .aspect-name {
-            font-size: 11px;
-            font-style: italic;
-            color: #c59a5b;
-        }
-        .aspect-num {
-            font-size: 16px;
-            font-weight: bold;
-            color: #f2ece2;
-            line-height: 1.1;
-        }
-
-        /* Старая таблица статов */
-        .ally-site-table {
+        .eagle-stat-table {
             width: 100%;
             border-collapse: collapse;
             table-layout: fixed;
             text-align: center;
-            background: #1b1510;
+            background: #1e1712;
+            border-bottom: 2px solid #5c4530;
         }
 
-        .ally-site-table th {
-            padding: 6px 2px 2px 2px;
-            color: #c59a5b;
-            font-weight: normal;
-            font-style: italic;
+        .eagle-stat-table td {
+            border: 1px solid #4a3726;
+            padding: 6px 3px 7px 3px;
+            vertical-align: top;
+        }
+
+        .stat-pair {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .stat-name {
             font-size: 12.5px;
-            border: 1px solid #382b1d;
-            background: #201913;
+            font-style: italic;
+            font-weight: normal;
+            color: #d6ab6f; /* Золотисто-бронзовый заголовок стата */
+            line-height: 1.2;
         }
 
-        .ally-site-table td {
-            padding: 2px 2px 7px 2px;
-            color: #f2ece2;
+        .stat-val {
+            font-size: 17.5px;
             font-weight: bold;
-            font-size: 18.5px;
-            border: 1px solid #382b1d;
+            color: #ffffff; /* Яркие белые цифры */
+            line-height: 1.2;
+            margin-bottom: 5px;
         }
 
-        .ally-site-body {
-            padding: 12px 14px 16px 14px;
-            font-size: 12px;
-            color: #bfaea0;
-            line-height: 1.5;
-        }
-
-        .ally-site-row {
-            margin-bottom: 6px;
-        }
-        .ally-site-row strong {
-            color: #c59a5b;
-            font-size: 11.5px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .ally-site-divider {
-            border-top: 1px dashed #2d2216;
-            margin: 10px 0;
+        .stat-pair-bottom {
+            margin-top: 3px;
             padding-top: 4px;
+            border-top: 1px dashed rgba(92, 69, 48, 0.7);
+        }
+
+        /* Разделитель между аспектами и боевыми параметрами */
+        .stat-divider-row td {
+            border-top: 2px solid #634b34 !important;
+            background: #251d16;
+            padding: 0;
+            height: 2px;
+        }
+
+        /* Тело карточки: Навыки, Способности, Атаки */
+        .ally-site-body {
+            padding: 14px 16px 18px 16px;
+            font-size: 12.5px;
+            color: #dfd4c4;
+            line-height: 1.5;
+            background: #231b15;
+        }
+
+        .ally-skills-block {
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #4a3726;
+        }
+        .ally-skills-block strong {
+            color: #ffffff;
+            font-size: 12.5px;
+        }
+
+        .ally-abilities-block {
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #4a3726;
         }
 
         .ally-site-item {
-            margin-bottom: 6px;
-            color: #dfd4c4;
+            margin-bottom: 8px;
             line-height: 1.45;
+            color: #dfd4c4;
         }
         .ally-site-item strong {
-            color: #c59a5b;
+            color: #ffffff;
+            font-size: 13px;
         }
 
-        .ally-attack-box {
-            margin-top: 8px;
-            border: 1px solid #382b1d;
-            background: #110e0b;
+        /* Атаки: в точности как в Empyrean Eagle (чистый книжный вид без таблиц) */
+        .eagle-attack-block {
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid #4a3726;
         }
-
-        .ally-attack-head {
-            background: #1e1711;
-            padding: 5px 8px;
-            border-bottom: 1px solid #382b1d;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .ally-attack-title {
-            color: #c59a5b;
-            font-weight: bold;
-            font-size: 11.5px;
-            letter-spacing: 0.5px;
-        }
-
-        .ally-attack-table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
-            font-size: 10.5px;
-            text-align: center;
-            background: #16120d;
-            border-bottom: 1px solid #382b1d;
-        }
-        .ally-attack-table th {
-            padding: 3px 4px;
-            color: #8f8679;
-            font-weight: bold;
-            border-right: 1px solid #2d2216;
-            background: #1c1611;
-        }
-        .ally-attack-table td {
-            padding: 3px 4px;
-            color: #e8dfd0;
-            font-weight: bold;
-            border-right: 1px solid #2d2216;
-        }
-        .ally-attack-table th:last-child,
-        .ally-attack-table td:last-child {
-            border-right: none;
-        }
-
-        .ally-attack-triggers {
-            padding: 6px 8px;
-            font-size: 11px;
-            line-height: 1.4;
-        }
-
-        .ally-trigger-row {
-            color: #e8dfd0;
-            border-top: 1px dashed #2d2216;
-            padding-top: 4px;
-            margin-top: 4px;
-            display: flex;
-            align-items: baseline;
-            flex-wrap: wrap;
-            gap: 2px;
-        }
-        .ally-trigger-row:first-child {
+        .eagle-attack-block:first-child {
             border-top: none;
             padding-top: 0;
             margin-top: 0;
+        }
+
+        .eagle-attack-header {
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 3px;
+        }
+
+        .eagle-attack-meta {
+            font-size: 12px;
+            color: #cbbca9;
+            margin-bottom: 2px;
+        }
+        .eagle-attack-meta strong {
+            color: #ffffff;
+        }
+
+        .eagle-attack-dmg {
+            font-style: italic;
+            color: #e8dfd0;
+            margin-bottom: 4px;
+            font-size: 12.5px;
+        }
+
+        .eagle-trigger-line {
+            padding-left: 8px;
+            margin-top: 4px;
+            font-size: 12px;
+            color: #f2ece2;
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 3px;
+        }
+        .eagle-trigger-line strong {
+            font-style: italic;
+            color: #ffffff;
         }
 
         .ally-site-edit {
@@ -633,7 +528,7 @@
             }).join('');
         }
 
-        function renderActionsHtml(text) {
+                function renderActionsHtml(text) {
             if (!text) return "";
             const blocks = text.split(/\n\s*\n/);
             return blocks.map(block => {
@@ -641,48 +536,33 @@
                 if (lines.length === 0) return '';
                 
                 let title = lines[0];
-                let av = '—', rg = '—', resist = '—', dmg = '—';
+                let meta = '';
+                let dmg = '';
                 let triggers = [];
 
                 for (let i = 1; i < lines.length; i++) {
                     const l = lines[i];
                     if (l.includes('AV:') || l.includes('Rg:') || l.includes('Resist:')) {
-                        const mAv = l.match(/AV:\s*([^|]+)/i);
-                        const mRg = l.match(/Rg:\s*([^|]+)/i);
-                        const mRes = l.match(/Resist:\s*([^|]+)/i);
-                        const mDmg = l.match(/Dmg:\s*([^|]+)|Damage:\s*([^|]+)/i);
-
-                        if (mAv) av = mAv[1].trim();
-                        if (mRg) rg = mRg[1].trim();
-                        if (mRes) resist = mRes[1].trim();
-                        if (mDmg) dmg = (mDmg[1] || mDmg[2]).trim();
+                        meta = l;
                     } else if (l.toLowerCase().startsWith('target suffers') || l.toLowerCase().startsWith('damage:')) {
-                        dmg = l.replace(/^target suffers\s*/i, '').replace(/^damage:\s*/i, '').replace(/\s*damage\.?/i, '').trim();
+                        dmg = l;
                     } else {
                         triggers.push(l);
                     }
                 }
 
-                const hasStats = (av !== '—' || rg !== '—' || resist !== '—' || dmg !== '—');
-
-                let statsTable = '';
-                if (hasStats) {
-                    statsTable = '<table class="ally-attack-table">' +
-                        '<thead><tr><th>AV</th><th>RANGE</th><th>RESIST</th><th>DAMAGE</th></tr></thead>' +
-                        '<tbody><tr><td>' + av + '</td><td>' + rg + '</td><td>' + resist + '</td><td>' + dmg + '</td></tr></tbody>' +
-                        '</table>';
-                }
-
                 let triggersHtml = '';
                 if (triggers.length > 0) {
-                    triggersHtml = '<div class="ally-attack-triggers">' +
-                        triggers.map(t => '<div class="ally-trigger-row">' + formatBookText(t) + '</div>').join('') +
-                        '</div>';
+                    triggersHtml = triggers.map(t => {
+                        return '<div class="eagle-trigger-line">' + formatBookText(t) + '</div>';
+                    }).join('');
                 }
 
-                return '<div class="ally-attack-box">' +
-                    '<div class="ally-attack-head"><span class="ally-attack-title">' + title + '</span></div>' +
-                    statsTable + triggersHtml +
+                return '<div class="eagle-attack-block">' +
+                    '<div class="eagle-attack-header">' + title + '</div>' +
+                    (meta ? '<div class="eagle-attack-meta">' + meta + '</div>' : '') +
+                    (dmg ? '<div class="eagle-attack-dmg">' + dmg + '</div>' : '') +
+                    triggersHtml +
                     '</div>';
             }).join('');
         }
@@ -695,11 +575,11 @@
             if (isNewCard) wrapper.dataset.isNew = 'true';
 
             wrapper.innerHTML = `
-                <!-- РЕЖИМ ПРОСМОТРА -->
+                                <!-- РЕЖИМ ПРОСМОТРА (1В1 С КАРТОЧКОЙ EMPYREAN EAGLE) -->
                 <div class="ally-site-view">
                     <div class="ally-site-header">
                         <div>
-                            <div class="ally-site-title view-val-name">${(data.name || 'UNNAMED ALLY').toUpperCase()}</div>
+                            <div class="ally-site-title view-val-name">${data.name || 'UNNAMED ALLY'}</div>
                             <div class="ally-site-subtitle view-val-sub">${data.sub || 'Minion'}</div>
                         </div>
                         <div class="ally-site-ctrls">
@@ -708,106 +588,113 @@
                         </div>
                     </div>
 
-                    <!-- ЧЁТКИЙ И КОНТРАСТНЫЙ СТАТБЛОК -->
-                    <div class="ally-stats-container">
-                        <!-- 1. Главные боевые параметры: Оборона и Раны -->
-                        <div class="ally-vitals-grid">
-                            <div class="vital-box">
-                                <span class="vital-label">DEFENSE</span>
-                                <span class="vital-val view-val-defense">${data.defense || '2'}</span>
-                            </div>
-                            <div class="vital-box">
-                                <span class="vital-label">WILLPOWER</span>
-                                <span class="vital-val view-val-willpower">${data.willpower || '2'}</span>
-                            </div>
-                            <div class="vital-box vital-wounds">
-                                <span class="vital-label">WOUNDS</span>
-                                <span class="vital-val view-val-wounds">${data.wounds || '4'}</span>
-                            </div>
-                        </div>
+                    <!-- СТАТБЛОК EMPYREAN EAGLE (4 КОЛОНКИ С ЧЁТКИМИ РАЗДЕЛАМИ) -->
+                    <table class="eagle-stat-table">
+                        <!-- РЯД 1: АСПЕКТЫ (PHYSICAL / MENTAL) -->
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="stat-pair">
+                                        <span class="stat-name">Might</span>
+                                        <span class="stat-val view-val-might">${data.might ?? '0'}</span>
+                                    </div>
+                                    <div class="stat-pair stat-pair-bottom">
+                                        <span class="stat-name">Charm</span>
+                                        <span class="stat-val view-val-charm">${data.charm ?? '0'}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="stat-pair">
+                                        <span class="stat-name">Grace</span>
+                                        <span class="stat-val view-val-grace">${data.grace ?? '0'}</span>
+                                    </div>
+                                    <div class="stat-pair stat-pair-bottom">
+                                        <span class="stat-name">Intellect</span>
+                                        <span class="stat-val view-val-intellect">${data.intellect ?? '0'}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="stat-pair">
+                                        <span class="stat-name">Speed</span>
+                                        <span class="stat-val view-val-speed">${data.speed ?? '0'}</span>
+                                    </div>
+                                    <div class="stat-pair stat-pair-bottom">
+                                        <span class="stat-name">Cunning</span>
+                                        <span class="stat-val view-val-cunning">${data.cunning ?? '0'}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="stat-pair">
+                                        <span class="stat-name">Resilience</span>
+                                        <span class="stat-val view-val-resilience">${data.resilience ?? '0'}</span>
+                                    </div>
+                                    <div class="stat-pair stat-pair-bottom">
+                                        <span class="stat-name">Tenacity</span>
+                                        <span class="stat-val view-val-tenacity">${data.tenacity ?? '0'}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
 
-                        <!-- 2. Тактические параметры: Передвижение и Инициатива -->
-                        <div class="ally-tactics-bar">
-                            <div class="tactic-cell">
-                                <span class="tactic-label">Walk</span>
-                                <span class="tactic-val view-val-walk">${data.walk || '4'}</span>
-                            </div>
-                            <div class="tactic-cell">
-                                <span class="tactic-label">Charge</span>
-                                <span class="tactic-val view-val-charge">${data.charge || '4'}</span>
-                            </div>
-                            <div class="tactic-cell">
-                                <span class="tactic-label">Initiative</span>
-                                <span class="tactic-val view-val-initiative">${data.initiative || '0'}</span>
-                            </div>
-                            <div class="tactic-cell">
-                                <span class="tactic-label">Height</span>
-                                <span class="tactic-val view-val-height">${data.height || '2'}</span>
-                            </div>
-                        </div>
+                        <!-- РЯД 2: ПРОИЗВОДНЫЕ И БОЕВЫЕ ПАРАМЕТРЫ -->
+                        <tbody style="border-top: 2px solid #5c4530;">
+                            <tr>
+                                <td>
+                                    <div class="stat-pair">
+                                        <span class="stat-name">Defense</span>
+                                        <span class="stat-val view-val-defense">${data.defense || '2'}</span>
+                                    </div>
+                                    <div class="stat-pair stat-pair-bottom">
+                                        <span class="stat-name">Willpower</span>
+                                        <span class="stat-val view-val-willpower">${data.willpower || '2'}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="stat-pair">
+                                        <span class="stat-name">Walk</span>
+                                        <span class="stat-val view-val-walk">${data.walk || '4'}</span>
+                                    </div>
+                                    <div class="stat-pair stat-pair-bottom">
+                                        <span class="stat-name">Charge</span>
+                                        <span class="stat-val view-val-charge">${data.charge || '4'}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="stat-pair">
+                                        <span class="stat-name">Height</span>
+                                        <span class="stat-val view-val-height">${data.height || '2'}</span>
+                                    </div>
+                                    <div class="stat-pair stat-pair-bottom">
+                                        <span class="stat-name">Wounds</span>
+                                        <span class="stat-val view-val-wounds" style="color: #ffcccc;">${data.wounds || '4'}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="stat-pair">
+                                        <span class="stat-name">Initiative</span>
+                                        <span class="stat-val view-val-initiative">${data.initiative || '0'}</span>
+                                    </div>
+                                    <div class="stat-pair stat-pair-bottom" style="border-top: none;">
+                                        <span class="stat-name" style="visibility: hidden;">&nbsp;</span>
+                                        <span class="stat-val" style="visibility: hidden;">&nbsp;</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                        <!-- 3. Аспекты: Physical & Mental в чётких блоках -->
-                        <div class="ally-aspects-section">
-                            <div class="aspect-group-header">Physical Aspects</div>
-                            <div class="aspect-grid-4">
-                                <div class="aspect-cell">
-                                    <span class="aspect-name">Might</span>
-                                    <span class="aspect-num view-val-might">${data.might ?? '0'}</span>
-                                </div>
-                                <div class="aspect-cell">
-                                    <span class="aspect-name">Grace</span>
-                                    <span class="aspect-num view-val-grace">${data.grace ?? '0'}</span>
-                                </div>
-                                <div class="aspect-cell">
-                                    <span class="aspect-name">Speed</span>
-                                    <span class="aspect-num view-val-speed">${data.speed ?? '0'}</span>
-                                </div>
-                                <div class="aspect-cell">
-                                    <span class="aspect-name">Resilience</span>
-                                    <span class="aspect-num view-val-resilience">${data.resilience ?? '0'}</span>
-                                </div>
-                            </div>
-
-                            <div class="aspect-group-header">Mental Aspects</div>
-                            <div class="aspect-grid-4">
-                                <div class="aspect-cell">
-                                    <span class="aspect-name">Charm</span>
-                                    <span class="aspect-num view-val-charm">${data.charm ?? '0'}</span>
-                                </div>
-                                <div class="aspect-cell">
-                                    <span class="aspect-name">Intellect</span>
-                                    <span class="aspect-num view-val-intellect">${data.intellect ?? '0'}</span>
-                                </div>
-                                <div class="aspect-cell">
-                                    <span class="aspect-name">Cunning</span>
-                                    <span class="aspect-num view-val-cunning">${data.cunning ?? '0'}</span>
-                                </div>
-                                <div class="aspect-cell">
-                                    <span class="aspect-name">Tenacity</span>
-                                    <span class="aspect-num view-val-tenacity">${data.tenacity ?? '0'}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Тело карточки -->
+                    <!-- Тело карточки: Skills, Abilities, Actions -->
                     <div class="ally-site-body">
-                        <div class="ally-site-row">
-                            <strong>Skills:</strong> <span class="view-val-skills" style="color: #dfd4c4;">${data.skills || '—'}</span>
+                        <div class="ally-skills-block">
+                            <strong>Skills:</strong> <span class="view-val-skills">${data.skills || '—'}</span>
                         </div>
 
-                        <div class="ally-site-divider"></div>
-
-                        <div class="ally-site-row">
-                            <strong>Abilities:</strong>
-                            <div class="view-val-abilities" style="margin-top: 4px;">${renderAbilitiesHtml(data.abilities)}</div>
+                        <div class="ally-abilities-block view-val-abilities">
+                            ${renderAbilitiesHtml(data.abilities)}
                         </div>
 
-                        <div class="ally-site-divider"></div>
-
-                        <div class="ally-site-row">
-                            <strong>Attacks & Actions:</strong>
-                            <div class="view-val-actions" style="margin-top: 4px;">${renderActionsHtml(data.actions)}</div>
+                        <div class="view-val-actions">
+                            ${renderActionsHtml(data.actions)}
                         </div>
                     </div>
                 </div>
