@@ -2033,7 +2033,7 @@ body {
       <h3 style="margin: 0; font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold, #c7a877);">
         SUBORDINATES & ALLIES
       </h3>
-      <button type="button" class="btn" onclick="addAllyCard()" style="font-size: 11px; padding: 6px 14px;">
+      <button type="button" class="action-btn" onclick="addAllyCard()" style="font-size: 11px; padding: 6px 14px;">
         + ADD ALLY
       </button>
     </div>
@@ -4181,6 +4181,14 @@ for (let i = 1; i <= 5; i++) {
                 list.forEach(item => addNewEquipmentRow(item));
                 for (let i = list.length; i < 14; i++) {
                     addNewEquipmentRow();
+                }
+            }
+    // Союзники и миньоны (Allies)
+            const alliesContainer = document.getElementById("allies-list");
+            if (alliesContainer) {
+                alliesContainer.innerHTML = "";
+                if (data.allies && Array.isArray(data.allies)) {
+                    data.allies.forEach(ally => addAllyCard(ally));
                 }
             }
             
