@@ -218,22 +218,22 @@
         }
 
                 /* ==========================================================================
-           СТАТБЛОК СОЮЗНИКА: ЛОГИЧЕСКИЕ СЕКЦИИ (ВМЕСТО ШАХМАТНОЙ ДОСКИ)
+           СТАТБЛОК СОЮЗНИКА: ЧЁТКИЙ, КОНТРАСТНЫЙ И ЧИТАЕМЫЙ
            ========================================================================== */
         .ally-stats-container {
-            background: #17120d;
+            background: #16120d;
             border-bottom: 1px solid #382b1d;
         }
 
-        /* 1. Главные боевые параметры: Df, Wp, Wounds */
+        /* 1. Главные боевые параметры: Defense, Willpower, Wounds */
         .ally-vitals-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            background: #1c1611;
+            background: #1e1711;
             border-bottom: 1px solid #382b1d;
         }
         .vital-box {
-            padding: 7px 4px 6px 4px;
+            padding: 8px 6px 7px 6px;
             text-align: center;
             border-right: 1px solid #382b1d;
         }
@@ -241,95 +241,99 @@
             border-right: none;
         }
         .vital-box.vital-wounds {
-            background: rgba(160, 60, 50, 0.08);
+            background: rgba(160, 60, 50, 0.12);
         }
         .vital-label {
             display: block;
-            font-size: 10px;
+            font-size: 10.5px;
             color: #c59a5b;
-            letter-spacing: 1px;
+            letter-spacing: 1.2px;
             text-transform: uppercase;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
             font-weight: bold;
         }
         .vital-val {
-            font-size: 18.5px;
+            font-size: 20px;
             font-weight: bold;
-            color: #f2ece2;
-            line-height: 1.1;
+            color: #fff;
+            line-height: 1;
         }
 
-        /* 2. Тактические параметры: Walk, Charge, Init, Height */
+        /* 2. Тактические параметры: Walk, Charge, Initiative, Height */
         .ally-tactics-bar {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             background: #14100c;
             border-bottom: 1px solid #382b1d;
-            font-size: 11.5px;
         }
         .tactic-cell {
-            padding: 5px 2px;
+            padding: 6px 4px;
             text-align: center;
             border-right: 1px solid #2d2216;
-            color: #bfaea0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
         }
         .tactic-cell:last-child {
             border-right: none;
         }
-        .tactic-cell span {
-            color: #8f8679;
-            font-size: 10px;
-            margin-right: 3px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .tactic-cell strong {
-            color: #dfd4c4;
-            font-size: 12.5px;
-        }
-
-        /* 3. Аспекты: Physical & Mental */
-        .ally-aspects-group {
-            padding: 7px 12px;
-            background: #18130e;
-        }
-        .aspects-subrow {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 3px 0;
-        }
-        .aspects-subrow:first-child {
-            border-bottom: 1px dashed #2d2216;
-            padding-bottom: 4px;
-            margin-bottom: 3px;
-        }
-        .aspects-header-title {
+        .tactic-label {
+            color: #9e8e7b;
             font-size: 10px;
             font-weight: bold;
-            color: #c59a5b;
             text-transform: uppercase;
             letter-spacing: 0.8px;
-            width: 70px;
-            flex-shrink: 0;
         }
-        .aspects-items-wrap {
-            display: flex;
-            flex: 1;
-            justify-content: space-around;
-        }
-        .aspect-unit {
-            font-size: 11px;
-            color: #bfaea0;
-        }
-        .aspect-unit em {
-            font-style: italic;
-            color: #8f8679;
-            margin-right: 3px;
-        }
-        .aspect-unit strong {
+        .tactic-val {
             color: #f2ece2;
-            font-size: 12.5px;
+            font-size: 14.5px;
+            font-weight: bold;
+        }
+
+        /* 3. Аспекты: Physical & Mental с чёткими карточками */
+        .ally-aspects-section {
+            background: #16120d;
+        }
+        .aspect-group-header {
+            background: #211913;
+            color: #c59a5b;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 10px;
+            border-bottom: 1px solid #33271b;
+            border-top: 1px solid #33271b;
+        }
+        .aspect-group-header:first-child {
+            border-top: none;
+        }
+        .aspect-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            text-align: center;
+        }
+        .aspect-cell {
+            padding: 5px 3px 6px 3px;
+            border-right: 1px solid #2d2216;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .aspect-cell:last-child {
+            border-right: none;
+        }
+        .aspect-name {
+            font-size: 11px;
+            font-style: italic;
+            color: #c59a5b;
+        }
+        .aspect-num {
+            font-size: 16px;
+            font-weight: bold;
+            color: #f2ece2;
+            line-height: 1.1;
         }
 
         /* Старая таблица статов */
@@ -704,20 +708,20 @@
                         </div>
                     </div>
 
-                    <!-- ЛОГИЧЕСКИЙ СТАТБЛОК -->
+                    <!-- ЧЁТКИЙ И КОНТРАСТНЫЙ СТАТБЛОК -->
                     <div class="ally-stats-container">
                         <!-- 1. Главные боевые параметры: Оборона и Раны -->
                         <div class="ally-vitals-grid">
                             <div class="vital-box">
-                                <span class="vital-label">Defense</span>
+                                <span class="vital-label">DEFENSE</span>
                                 <span class="vital-val view-val-defense">${data.defense || '2'}</span>
                             </div>
                             <div class="vital-box">
-                                <span class="vital-label">Willpower</span>
+                                <span class="vital-label">WILLPOWER</span>
                                 <span class="vital-val view-val-willpower">${data.willpower || '2'}</span>
                             </div>
                             <div class="vital-box vital-wounds">
-                                <span class="vital-label">Wounds</span>
+                                <span class="vital-label">WOUNDS</span>
                                 <span class="vital-val view-val-wounds">${data.wounds || '4'}</span>
                             </div>
                         </div>
@@ -725,37 +729,62 @@
                         <!-- 2. Тактические параметры: Передвижение и Инициатива -->
                         <div class="ally-tactics-bar">
                             <div class="tactic-cell">
-                                <span>Walk:</span> <strong class="view-val-walk">${data.walk || '4'}</strong>
+                                <span class="tactic-label">Walk</span>
+                                <span class="tactic-val view-val-walk">${data.walk || '4'}</span>
                             </div>
                             <div class="tactic-cell">
-                                <span>Charge:</span> <strong class="view-val-charge">${data.charge || '4'}</strong>
+                                <span class="tactic-label">Charge</span>
+                                <span class="tactic-val view-val-charge">${data.charge || '4'}</span>
                             </div>
                             <div class="tactic-cell">
-                                <span>Init:</span> <strong class="view-val-initiative">${data.initiative || '0'}</strong>
+                                <span class="tactic-label">Initiative</span>
+                                <span class="tactic-val view-val-initiative">${data.initiative || '0'}</span>
                             </div>
                             <div class="tactic-cell">
-                                <span>Height:</span> <strong class="view-val-height">${data.height || '2'}</strong>
+                                <span class="tactic-label">Height</span>
+                                <span class="tactic-val view-val-height">${data.height || '2'}</span>
                             </div>
                         </div>
 
-                        <!-- 3. Характеристики (Аспекты: Физические и Ментальные) -->
-                        <div class="ally-aspects-group">
-                            <div class="aspects-subrow">
-                                <span class="aspects-header-title">Physical</span>
-                                <div class="aspects-items-wrap">
-                                    <span class="aspect-unit"><em>Might:</em> <strong class="view-val-might">${data.might ?? '0'}</strong></span>
-                                    <span class="aspect-unit"><em>Grace:</em> <strong class="view-val-grace">${data.grace ?? '0'}</strong></span>
-                                    <span class="aspect-unit"><em>Speed:</em> <strong class="view-val-speed">${data.speed ?? '0'}</strong></span>
-                                    <span class="aspect-unit"><em>Resilience:</em> <strong class="view-val-resilience">${data.resilience ?? '0'}</strong></span>
+                        <!-- 3. Аспекты: Physical & Mental в чётких блоках -->
+                        <div class="ally-aspects-section">
+                            <div class="aspect-group-header">Physical Aspects</div>
+                            <div class="aspect-grid-4">
+                                <div class="aspect-cell">
+                                    <span class="aspect-name">Might</span>
+                                    <span class="aspect-num view-val-might">${data.might ?? '0'}</span>
+                                </div>
+                                <div class="aspect-cell">
+                                    <span class="aspect-name">Grace</span>
+                                    <span class="aspect-num view-val-grace">${data.grace ?? '0'}</span>
+                                </div>
+                                <div class="aspect-cell">
+                                    <span class="aspect-name">Speed</span>
+                                    <span class="aspect-num view-val-speed">${data.speed ?? '0'}</span>
+                                </div>
+                                <div class="aspect-cell">
+                                    <span class="aspect-name">Resilience</span>
+                                    <span class="aspect-num view-val-resilience">${data.resilience ?? '0'}</span>
                                 </div>
                             </div>
-                            <div class="aspects-subrow">
-                                <span class="aspects-header-title">Mental</span>
-                                <div class="aspects-items-wrap">
-                                    <span class="aspect-unit"><em>Charm:</em> <strong class="view-val-charm">${data.charm ?? '0'}</strong></span>
-                                    <span class="aspect-unit"><em>Intellect:</em> <strong class="view-val-intellect">${data.intellect ?? '0'}</strong></span>
-                                    <span class="aspect-unit"><em>Cunning:</em> <strong class="view-val-cunning">${data.cunning ?? '0'}</strong></span>
-                                    <span class="aspect-unit"><em>Tenacity:</em> <strong class="view-val-tenacity">${data.tenacity ?? '0'}</strong></span>
+
+                            <div class="aspect-group-header">Mental Aspects</div>
+                            <div class="aspect-grid-4">
+                                <div class="aspect-cell">
+                                    <span class="aspect-name">Charm</span>
+                                    <span class="aspect-num view-val-charm">${data.charm ?? '0'}</span>
+                                </div>
+                                <div class="aspect-cell">
+                                    <span class="aspect-name">Intellect</span>
+                                    <span class="aspect-num view-val-intellect">${data.intellect ?? '0'}</span>
+                                </div>
+                                <div class="aspect-cell">
+                                    <span class="aspect-name">Cunning</span>
+                                    <span class="aspect-num view-val-cunning">${data.cunning ?? '0'}</span>
+                                </div>
+                                <div class="aspect-cell">
+                                    <span class="aspect-name">Tenacity</span>
+                                    <span class="aspect-num view-val-tenacity">${data.tenacity ?? '0'}</span>
                                 </div>
                             </div>
                         </div>
