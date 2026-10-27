@@ -1,1331 +1,514 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Allies Lab — Варианты карточки союзника</title>
-  <script src="suits.js"></script>
-  <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Allies Sandbox — Through the Breach</title>
+    <script src="suits.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    body {
-      min-height: 100vh;
-      background: #120f0c;
-      background-image: 
-        radial-gradient(circle at 50% 20%, #1e1812 0%, #120f0c 70%, #0a0806 100%),
-        repeating-linear-gradient(0deg, rgba(40, 32, 24, 0.2) 0px, rgba(40, 32, 24, 0.2) 1px, transparent 1px, transparent 28px);
-      color: #dfd4c4;
-      font-family: Georgia, 'Times New Roman', serif;
-      font-size: 14px;
-      line-height: 1.5;
-      padding-bottom: 60px;
-    }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #120f0c;
+            background-image: 
+                radial-gradient(circle at 50% 20%, #1e1812 0%, #120f0c 70%, #0a0806 100%),
+                repeating-linear-gradient(0deg, rgba(40, 32, 24, 0.2) 0px, rgba(40, 32, 24, 0.2) 1px, transparent 1px, transparent 28px);
+            color: #dfd4c4;
+            font-family: Georgia, 'Times New Roman', serif;
+            padding-bottom: 60px;
+        }
 
-    /* Верхняя панель переключения */
-    #lab-bar {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(18, 15, 12, 0.96);
-      border-bottom: 2px solid #3d2d1e;
-      padding: 12px 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.85);
-    }
+        header {
+            padding: 18px 40px;
+            border-bottom: 2px solid #3d2d1e;
+            background: rgba(18, 15, 12, 0.95);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.85);
+        }
 
-    .lab-inner {
-      max-width: 1300px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
+        .nav-back {
+            color: #c7a877;
+            text-decoration: none;
+            letter-spacing: 1.5px;
+            font-size: 12px;
+            text-transform: uppercase;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: Georgia, serif;
+            padding: 0;
+            transition: color 0.2s;
+        }
+        .nav-back:hover { color: #f2ece2; }
 
-    .lab-title {
-      color: #c7a877;
-      font-size: 15px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
+        .page-title {
+            color: #c7a877;
+            font-size: 19px;
+            letter-spacing: 2.5px;
+            margin: 0;
+            font-weight: normal;
+            text-align: center;
+        }
 
-    .lab-title span {
-      font-size: 11px;
-      color: #8f8679;
-      letter-spacing: 0.5px;
-      text-transform: none;
-      margin-left: 6px;
-    }
+        .action-btn, .tab-btn {
+            background: #241c16;
+            border: 1px solid #6b5239;
+            color: #cbbca9;
+            padding: 8px 16px;
+            font-family: Georgia, serif;
+            font-size: 11.5px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-radius: 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
 
-    .lab-buttons {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+        .action-btn { color: #c7a877; }
+        .action-btn:hover, .tab-btn:hover {
+            background: #36291e;
+            border-color: #a8885a;
+            color: #f2ece2;
+        }
 
-    .btn-variant {
-      background: #1f1813;
-      border: 1px solid #4a3825;
-      color: #a99e8d;
-      padding: 7px 14px;
-      font-family: Georgia, serif;
-      font-size: 11.5px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
+        .tab-btn.active {
+            background: #36291e;
+            border-color: #c7a877;
+            color: #f2ece2;
+            box-shadow: inset 0 0 0 1px #c7a877;
+        }
 
-    .btn-variant:hover {
-      background: #2b2118;
-      border-color: #8c714b;
-      color: #f2ece2;
-    }
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px 40px 20px;
+        }
 
-    .btn-variant.active {
-      background: #36291e;
-      border-color: #c7a877;
-      color: #f2ece2;
-      box-shadow: inset 0 0 0 1px #c7a877;
-    }
+        .tab-bar {
+            margin: 0 auto 25px auto;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
 
-    main {
-      max-width: 1300px;
-      margin: 24px auto 0 auto;
-      padding: 0 16px;
-    }
+        /* Поля ввода и базовые стили */
+        input[type="text"], input[type="number"], select, textarea {
+            background: #14110e;
+            border: 1px solid #4a3825;
+            color: #e8dfd0;
+            font-family: Georgia, serif;
+            font-size: 15px;
+            padding: 8px 10px;
+            outline: none;
+            width: 100%;
+        }
 
-    .variant-container {
-      display: none;
-    }
-    .variant-container.active {
-      display: block;
-    }
+        input:focus, select:focus, textarea:focus {
+            border-color: #b88a4a;
+        }
 
-    /* Сетка режима «Сравнить все» */
-    .compare-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-      gap: 24px;
-      align-items: start;
-    }
+        /* ==========================================================================
+           ALLIES: ТОЧНЫЕ СТИЛИ ИЗ CAMPAIGN.HTML
+           ========================================================================== */
+        .ally-v1-card {
+            width: 100%;
+            background: rgba(14, 11, 9, 0.95);
+            border: 1px solid #3d2f21;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.85);
+            font-family: Georgia, serif;
+        }
 
-    /* Рамка Folio из campaign.html */
-    .folio-box {
-      border: 1px solid #4a3827;
-      background: #1a1511;
-      box-shadow: 
-        inset 0 0 0 3px #1a1511,
-        inset 0 0 0 4px #3d2d1e,
-        0 8px 24px rgba(0, 0, 0, 0.85);
-      padding: 18px 20px;
-      position: relative;
-    }
+        .ally-v1-header {
+            background: #201914;
+            border-bottom: 1px solid #382b1d;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .folio-box::before, .folio-box::after {
-      content: '';
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      border-color: #8c714b;
-      pointer-events: none;
-    }
-    .folio-box::before {
-      top: 5px; left: 5px;
-      border-top: 1px solid #8c714b;
-      border-left: 1px solid #8c714b;
-    }
-    .folio-box::after {
-      bottom: 5px; right: 5px;
-      border-bottom: 1px solid #8c714b;
-      border-right: 1px solid #8c714b;
-    }
+        .ally-toggle-btn {
+            background: transparent;
+            border: 1px solid #4a3825;
+            color: #c59a5b;
+            cursor: pointer;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+        .ally-toggle-btn:hover {
+            border-color: #c59a5b;
+            background: #2b2118;
+        }
 
-    .variant-tag {
-      display: inline-block;
-      font-size: 11px;
-      letter-spacing: 1.5px;
-      color: #c59a5b;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-      border-bottom: 1px solid #3d2f21;
-      padding-bottom: 4px;
-      width: 100%;
-    }
+        .ally-input-title {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid transparent;
+            font-size: 16px;
+            font-weight: bold;
+            color: #e8dfd0;
+            letter-spacing: 0.5px;
+            font-family: Georgia, serif;
+            width: 100%;
+        }
+        .ally-input-title:focus {
+            outline: none;
+            border-bottom-color: #8c714b;
+        }
 
-    /* ==========================================================================
-       ВАРИАНТ 1: КНИЖНЫЙ МОНОЛИТ (КАК В ОРИГИНАЛЬНОМ БЕСТИАРИИ WYRD)
-       ========================================================================== */
-    .v1-card {
-      max-width: 440px;
-      margin: 0 auto;
-      background: #15120e;
-      border: 1px solid #4a3928;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.9);
-      font-family: Georgia, serif;
-    }
+        .ally-input-sub {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid transparent;
+            font-size: 11.5px;
+            font-style: italic;
+            color: #8f8679;
+            font-family: Georgia, serif;
+            width: 100%;
+        }
+        .ally-input-sub:focus {
+            outline: none;
+            border-bottom-color: #8c714b;
+        }
 
-    .v1-header {
-      background: #090807;
-      border-bottom: 3px solid #785596;
-      padding: 10px 14px 8px 14px;
-    }
+        .ally-v1-btn-del {
+            background: transparent;
+            border: 1px solid #382b1d;
+            color: #8f8679;
+            cursor: pointer;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+        .ally-v1-btn-del:hover {
+            background: rgba(229, 115, 115, 0.15);
+            border-color: #e57373;
+            color: #e57373;
+        }
 
-    .v1-title {
-      font-size: 19px;
-      font-weight: bold;
-      color: #e8dfd0;
-      letter-spacing: 0.5px;
-      line-height: 1.2;
-    }
+        .ally-card-body {
+            padding: 12px 14px;
+        }
 
-    .v1-sub {
-      font-size: 12px;
-      font-style: italic;
-      color: #bfaea0;
-      margin-top: 2px;
-    }
+        .ally-v1-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            text-align: center;
+            background: #14110e;
+            border: 1px solid #382b1d;
+            margin-bottom: 8px;
+        }
+        .ally-v1-table th, .ally-v1-table td {
+            border: 1px solid #382b1d;
+            padding: 3px 2px;
+        }
+        .ally-v1-table th {
+            font-weight: bold;
+            color: #c59a5b;
+            font-size: 11px;
+            background: #251d16;
+            letter-spacing: 0.5px;
+        }
+        .ally-input-stat {
+            width: 100%;
+            background: transparent;
+            border: none;
+            text-align: center;
+            font-size: 13.5px;
+            font-weight: bold;
+            color: #e8dfd0;
+            font-family: Georgia, serif;
+        }
+        .ally-input-stat:focus {
+            outline: none;
+            background: rgba(140, 113, 75, 0.15);
+        }
 
-    .v1-table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-      text-align: center;
-      background: #1a1612;
-      border-bottom: 2px solid #785596;
-    }
+        .ally-v1-row {
+            border-top: 1px dashed #2d2216;
+            padding-top: 8px;
+            margin-top: 8px;
+        }
 
-    .v1-table th, .v1-table td {
-      border: 1px solid #33271b;
-      padding: 4px 2px;
-    }
+        .ally-input-text {
+            width: 100%;
+            background: #14110e;
+            border: 1px solid #382b1d;
+            color: #e8dfd0;
+            font-family: Georgia, serif;
+            font-size: 12px;
+            padding: 4px 8px;
+        }
+        .ally-input-text:focus {
+            outline: none;
+            border-color: #8c714b;
+        }
 
-    .v1-table th {
-      font-weight: normal;
-      font-style: italic;
-      color: #c59a5b;
-      font-size: 11px;
-      background: #14110e;
-    }
+        .ally-textarea {
+            width: 100%;
+            min-height: 60px;
+            background: #120e0b;
+            border: 1px solid #382b1d;
+            color: #ded3c3;
+            font-family: Georgia, serif;
+            font-size: 12px;
+            line-height: 1.45;
+            padding: 6px 8px;
+            resize: vertical;
+        }
+        .ally-textarea:focus {
+            outline: none;
+            border-color: #8c714b;
+        }
 
-    .v1-table td {
-      font-size: 13px;
-      font-weight: bold;
-      color: #f0e6d6;
-    }
-
-    .v1-body {
-      padding: 12px 14px;
-      font-size: 12px;
-      color: #cbbca9;
-      line-height: 1.45;
-    }
-
-    .v1-section {
-      border-bottom: 1px dashed #382c1f;
-      padding-bottom: 8px;
-      margin-bottom: 8px;
-    }
-    .v1-section:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
-
-    .v1-entry {
-      margin-bottom: 6px;
-    }
-    .v1-entry strong {
-      color: #e8dfd0;
-    }
-    .v1-trigger {
-      padding-left: 14px;
-      position: relative;
-      margin-top: 3px;
-      font-size: 11.5px;
-    }
-    .v1-trigger strong {
-      color: #c59a5b;
-    }
-
-    /* ==========================================================================
-       ВАРИАНТ 2: ИНТЕРАКТИВНЫЙ FOLIO (ПОЛНОСТЬЮ В СТИЛЕ CAMPAIGN.HTML)
-       ========================================================================== */
-    .v2-card {
-      background: #1a1511;
-      border: 1px solid #4a3827;
-      padding: 14px 16px;
-    }
-
-    .v2-top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #38291a;
-      padding-bottom: 8px;
-      margin-bottom: 12px;
-    }
-
-    .v2-title-wrap {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .v2-name {
-      font-size: 17px;
-      color: #c59a5b;
-      letter-spacing: 1px;
-    }
-
-    .v2-meta {
-      font-size: 11px;
-      color: #8f8679;
-      font-style: italic;
-    }
-
-    .v2-actions-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .v2-btn-toggle {
-      background: transparent;
-      border: 1px solid #4a3825;
-      color: #c59a5b;
-      width: 28px;
-      height: 28px;
-      cursor: pointer;
-      font-size: 11px;
-    }
-
-    .v2-wound-counter {
-      display: inline-flex;
-      align-items: center;
-      background: #14110e;
-      border: 1px solid #4a3825;
-      padding: 2px 6px;
-      gap: 6px;
-    }
-
-    .v2-wound-btn {
-      background: transparent;
-      border: none;
-      color: #c59a5b;
-      font-weight: bold;
-      font-size: 15px;
-      cursor: pointer;
-      line-height: 1;
-      padding: 0 4px;
-    }
-    .v2-wound-btn:hover {
-      color: #fff;
-    }
-
-    .v2-wound-val {
-      font-size: 13px;
-      font-weight: bold;
-      color: #e8dfd0;
-      min-width: 48px;
-      text-align: center;
-    }
-
-    .v2-stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-      background: #120e0b;
-      border: 1px solid #382b1d;
-      padding: 8px;
-      text-align: center;
-      margin-bottom: 12px;
-    }
-
-    .v2-stat-cell {
-      display: flex;
-      flex-direction: column;
-      border: 1px solid #241b12;
-      background: rgba(20, 16, 12, 0.7);
-      padding: 4px;
-    }
-    .v2-stat-cell span {
-      font-size: 10px;
-      color: #8f8679;
-      text-transform: uppercase;
-    }
-    .v2-stat-cell strong {
-      font-size: 14px;
-      color: #e8dfd0;
-    }
-
-    .v2-weapon-box {
-      border: 1px solid #4a3825;
-      background: #120e0b;
-      margin-top: 10px;
-    }
-
-    .v2-weapon-head {
-      background: #251d16;
-      padding: 5px 8px;
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px solid #382b1d;
-      font-size: 12px;
-      color: #c59a5b;
-      font-weight: bold;
-    }
-
-    .v2-weapon-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: center;
-      font-size: 11px;
-    }
-    .v2-weapon-table th {
-      background: #1b1510;
-      color: #a99e8d;
-      padding: 4px;
-      border-right: 1px solid #2a2015;
-    }
-    .v2-weapon-table td {
-      color: #e8dfd0;
-      font-weight: bold;
-      padding: 5px;
-      border-right: 1px solid #2a2015;
-    }
-    .v2-weapon-table th:last-child, .v2-weapon-table td:last-child {
-      border-right: none;
-    }
-
-    .v2-weapon-body {
-      padding: 6px 8px;
-      font-size: 11.5px;
-      color: #bfaea0;
-    }
-
-    /* ==========================================================================
-       ВАРИАНТ 3: WYRD COMBAT FOLIO (ГИБРИД 1 И 2 С НОВЫМ ФУНКЦИОНАЛОМ)
-       ========================================================================== */
-    .v3-card {
-      background: #16120e;
-      border: 1px solid #4a3827;
-      box-shadow: 
-        inset 0 0 0 2px #16120e,
-        inset 0 0 0 3px #3d2d1e,
-        0 8px 26px rgba(0, 0, 0, 0.9);
-      padding: 0;
-      position: relative;
-    }
-
-    .v3-header {
-      background: #0d0a08;
-      border-bottom: 3px solid #785596;
-      padding: 12px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .v3-title-block {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .v3-name {
-      font-size: 18px;
-      font-weight: bold;
-      color: #e8dfd0;
-      letter-spacing: 1px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .v3-meta {
-      font-size: 11.5px;
-      font-style: italic;
-      color: #bfaea0;
-    }
-
-    .v3-header-controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    /* Индикатор выведения из строя */
-    .v3-incapacitated-badge {
-      display: none;
-      background: #541717;
-      border: 1px solid #b71c1c;
-      color: #ffcdd2;
-      font-size: 10px;
-      font-weight: bold;
-      letter-spacing: 1px;
-      padding: 2px 7px;
-      border-radius: 2px;
-      animation: pulse 1.2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-
-    .v3-wound-pill {
-      display: inline-flex;
-      align-items: center;
-      background: #14110e;
-      border: 1px solid #4a3825;
-      padding: 3px 8px;
-      gap: 8px;
-      transition: all 0.25s ease;
-    }
-
-    .v3-wound-btn {
-      background: transparent;
-      border: none;
-      color: #c59a5b;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      line-height: 1;
-      padding: 0 4px;
-    }
-    .v3-wound-btn:hover {
-      color: #fff;
-    }
-
-    .v3-wound-text {
-      font-size: 13.5px;
-      font-weight: bold;
-      color: #f1c40f;
-      min-width: 52px;
-      text-align: center;
-    }
-
-    .v3-btn-toggle {
-      background: #1f1813;
-      border: 1px solid #4a3825;
-      color: #c59a5b;
-      width: 30px;
-      height: 30px;
-      cursor: pointer;
-      font-size: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-    }
-    .v3-btn-toggle:hover {
-      background: #36291e;
-      color: #fff;
-      border-color: #c7a877;
-    }
-
-    /* Полоса состояний (Conditions) */
-    .v3-conditions-bar {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-      background: #120e0b;
-      border-bottom: 1px solid #2d2217;
-      padding: 6px 14px;
-    }
-    .v3-cond-label {
-      font-size: 10px;
-      color: #8f8679;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin-right: 4px;
-    }
-    .v3-cond-chip {
-      background: #1a1510;
-      border: 1px solid #3a2e21;
-      color: #8f8679;
-      padding: 2px 7px;
-      font-size: 10px;
-      font-weight: bold;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      cursor: pointer;
-      user-select: none;
-      transition: all 0.15s ease;
-    }
-    .v3-cond-chip:hover {
-      border-color: #8c714b;
-      color: #e8dfd0;
-    }
-    .v3-cond-chip.active {
-      background: rgba(140, 40, 30, 0.35);
-      border-color: #c54a4a;
-      color: #ffcdd2;
-      box-shadow: 0 0 6px rgba(197, 74, 74, 0.4);
-    }
-    .v3-cond-chip.active.buff {
-      background: rgba(40, 110, 60, 0.35);
-      border-color: #4caf50;
-      color: #c8e6c9;
-      box-shadow: 0 0 6px rgba(76, 175, 80, 0.4);
-    }
-
-    .v3-card-body {
-      padding: 14px 16px 16px 16px;
-    }
-
-    /* Двухэтажные книжные таблицы 4x2 из варианта 1 */
-    .v3-book-table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-      text-align: center;
-      background: #1a1511;
-      margin-bottom: 12px;
-      border: 1px solid #3d2d1e;
-    }
-    .v3-book-table th, .v3-book-table td {
-      border: 1px solid #33271b;
-      padding: 4px 2px;
-    }
-    .v3-book-table th {
-      font-weight: normal;
-      font-style: italic;
-      color: #c59a5b;
-      font-size: 11px;
-      background: #130f0c;
-    }
-    .v3-book-table td {
-      font-size: 13.5px;
-      font-weight: bold;
-      color: #f0e6d6;
-    }
-
-    /* Интерактивные спойлеры способностей */
-    .v3-abilities-list {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      margin-bottom: 14px;
-    }
-
-    .v3-ability-row {
-      background: #14100c;
-      border: 1px solid #2d2217;
-      padding: 6px 10px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .v3-ability-row:hover {
-      border-color: #4a3825;
-      background: #1a1510;
-    }
-    .v3-ability-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-    }
-    .v3-ability-head strong {
-      color: #e8dfd0;
-    }
-    .v3-ability-head span {
-      font-size: 10px;
-      color: #73695c;
-    }
-    .v3-ability-desc {
-      font-size: 11.5px;
-      color: #bfaea0;
-      line-height: 1.45;
-      margin-top: 5px;
-      padding-top: 5px;
-      border-top: 1px dashed #281e14;
-    }
-
-    /* Атаки в стиле .pursuit-weapon-box */
-    .v3-weapon-box {
-      border: 1px solid #4a3825;
-      background: #120e0b;
-      margin-top: 10px;
-    }
-    .v3-weapon-head {
-      background: #251d16;
-      padding: 6px 10px;
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px solid #382b1d;
-      font-size: 12px;
-      color: #c59a5b;
-      font-weight: bold;
-    }
-    .v3-weapon-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: center;
-      font-size: 11px;
-    }
-    .v3-weapon-table th {
-      background: #1b1510;
-      color: #a99e8d;
-      padding: 4px;
-      border-right: 1px solid #2a2015;
-    }
-    .v3-weapon-table td {
-      color: #e8dfd0;
-      font-weight: bold;
-      padding: 5px;
-      border-right: 1px solid #2a2015;
-    }
-    .v3-weapon-table th:last-child, .v3-weapon-table td:last-child {
-      border-right: none;
-    }
-    .v3-weapon-body {
-      padding: 7px 10px;
-      font-size: 11.5px;
-      color: #bfaea0;
-      line-height: 1.4;
-    }
-
-    /* Жетоны мастей */
-    .suit-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 2px 6px;
-      border-radius: 2px;
-      font-size: 10.5px;
-      font-weight: bold;
-      line-height: 1;
-      vertical-align: middle;
-      text-transform: uppercase;
-      border: 1px solid transparent;
-      margin: 0 1px;
-    }
-    .suit-chip svg {
-      width: 12px;
-      height: 12px;
-      display: block;
-    }
-    .suit-chip.suit-rams  { color: #c96b65; background: rgba(160, 60, 50, 0.16); border-color: rgba(175, 75, 65, 0.45); }
-    .suit-chip.suit-masks { color: #b392cf; background: rgba(120, 85, 150, 0.16); border-color: rgba(145, 105, 180, 0.45); }
-    .suit-chip.suit-crows { color: #72ab7d; background: rgba(60, 120, 75, 0.16); border-color: rgba(75, 140, 90, 0.45); }
-    .suit-chip.suit-tomes { color: #739bbd; background: rgba(65, 105, 140, 0.16); border-color: rgba(85, 125, 165, 0.45); }
-
-    .action-cost-badge {
-      background: #2b2116;
-      color: #c59a5b;
-      border: 1px solid #4a3825;
-      padding: 1px 5px;
-      font-size: 10.5px;
-      font-weight: bold;
-      border-radius: 2px;
-    }
-  </style>
+        /* Жетоны мастей */
+        .suit-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 7px 2px 5px;
+            border-radius: 2px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 0.8px;
+            line-height: 1;
+            vertical-align: middle;
+            text-transform: uppercase;
+            user-select: none;
+            box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.6);
+            margin: 0 2px;
+            border: 1px solid transparent;
+        }
+        .suit-chip svg {
+            width: 14px;
+            height: 14px;
+            display: block;
+            flex-shrink: 0;
+        }
+        .suit-chip.suit-rams  { color: #c96b65; background: rgba(160, 60, 50, 0.16); border-color: rgba(175, 75, 65, 0.45); }
+        .suit-chip.suit-masks { color: #b392cf; background: rgba(120, 85, 150, 0.16); border-color: rgba(145, 105, 180, 0.45); }
+        .suit-chip.suit-crows { color: #72ab7d; background: rgba(60, 120, 75, 0.16); border-color: rgba(75, 140, 90, 0.45); }
+        .suit-chip.suit-tomes { color: #739bbd; background: rgba(65, 105, 140, 0.16); border-color: rgba(85, 125, 165, 0.45); }
+    </style>
 </head>
 <body>
 
-  <header id="lab-bar">
-    <div class="lab-inner">
-      <div class="lab-title">
-        ALLIES LAB <span>/ Прототипы карточек союзников для campaign.html</span>
-      </div>
-      <div class="lab-buttons">
-        <button class="btn-variant" data-target="v1">1. Книжный</button>
-        <button class="btn-variant" data-target="v2">2. Интерактивный</button>
-        <button class="btn-variant active" data-target="v3">3. Книж+Интеракт</button>
-        <button class="btn-variant" data-target="all">⚡ Сравнить все 3</button>
-      </div>
-    </div>
-  </header>
-
-  <main>
-
-    <!-- РЕЖИМ 1 -->
-    <section id="pane-v1" class="variant-container">
-      <div class="folio-box" style="max-width: 500px; margin: 0 auto;">
-        <span class="variant-tag">Вариант 1: Чо дум?</span>
-        <div id="v1-mount-single"></div>
-      </div>
-    </section>
-
-    <!-- РЕЖИМ 2 -->
-    <section id="pane-v2" class="variant-container">
-      <div class="folio-box" style="max-width: 740px; margin: 0 auto;">
-        <span class="variant-tag">Вариант 2: Чо дум?2</span>
-        <div id="v2-mount-single"></div>
-      </div>
-    </section>
-
-    <!-- РЕЖИМ 3 (ДЕФОЛТ) -->
-    <section id="pane-v3" class="variant-container active">
-      <div class="folio-box" style="max-width: 740px; margin: 0 auto;">
-        <span class="variant-tag">Вариант 3: Чо дум?3</span>
-        <div id="v3-mount-single"></div>
-      </div>
-    </section>
-
-    <!-- РЕЖИМ «СРАВНИТЬ ВСЕ 3 РЯДОМ» -->
-    <section id="pane-all" class="variant-container">
-      <div class="compare-grid">
-        <div class="folio-box">
-          <span class="variant-tag">1. Книжный монолит</span>
-          <div id="v1-mount-grid"></div>
+    <header>
+        <button type="button" class="nav-back">← Назад к отряду</button>
+        <h1 class="page-title">ГЕНРИЕТТА ФОН ШИРАХ — ALLIES LAB</h1>
+        <div style="display: flex; gap: 8px;">
+            <button type="button" class="action-btn">💾 СОХРАНИТЬ В ОБЛАКО</button>
+            <button type="button" class="tab-btn">⬇ СКАЧАТЬ JSON</button>
+            <button type="button" class="tab-btn">🖨 ПЕЧАТЬ</button>
         </div>
-        <div class="folio-box">
-          <span class="variant-tag">2. Интерактивный Folio</span>
-          <div id="v2-mount-grid"></div>
-        </div>
-        <div class="folio-box">
-          <span class="variant-tag">3. Wyrd Combat Folio</span>
-          <div id="v3-mount-grid"></div>
-        </div>
-      </div>
-    </section>
+    </header>
 
-  </main>
-
-  <!-- ШАБЛОН 1 -->
-  <template id="tmpl-v1">
-    <div class="v1-card">
-      <div class="v1-header">
-        <div class="v1-title">Silurid Hunter</div>
-        <div class="v1-sub">Minion (6), Living, Beast, Swampfiend</div>
-      </div>
-
-      <table class="v1-table">
-        <thead>
-          <tr>
-            <th>Might</th><th>Grace</th><th>Speed</th><th>Resilience</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>3</td><td>2</td><td>2</td><td>2</td>
-          </tr>
-        </tbody>
-        <thead>
-          <tr>
-            <th>Charm</th><th>Intellect</th><th>Cunning</th><th>Tenacity</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>-3</td><td>-2</td><td>2</td><td>2</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table class="v1-table">
-        <thead>
-          <tr>
-            <th>Defense</th><th>Walk</th><th>Height</th><th>Initiative</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>4 (10)</td><td>5</td><td>2</td><td>3 (9)</td>
-          </tr>
-        </tbody>
-        <thead>
-          <tr>
-            <th>Willpower</th><th>Charge</th><th>Wounds</th><th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>4 (10)</td><td>6</td><td>7</td><td></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="v1-body">
-        <div class="v1-section">
-          <strong>Skills:</strong> Acrobatics 2, Athletics 3, Flexible 3, Notice 1, Pugilism 3, Stealth 4, Toughness 2, Track 2, Wilderness 3.
+    <main>
+        <!-- ТАБ-БАР (ТОЧНО КАК В CAMPAIGN.HTML) -->
+        <div class="tab-bar">
+            <button class="tab-btn">CHARACTER</button>
+            <button class="tab-btn">GENERAL TALENTS</button>
+            <button class="tab-btn">PURSUIT</button>
+            <button class="tab-btn">EQUIPMENT</button>
+            <button class="tab-btn active">ALLIES</button>
+            <button class="tab-btn">BIO</button>
         </div>
 
-        <div class="v1-section">
-          <div class="v1-entry"><strong>Aquatic:</strong> This character's speed is not reduced while swimming. It can take the Charge Action while underwater.</div>
-          <div class="v1-entry"><strong>Perfect Camouflage:</strong> Each time this character takes a Pass Action, it gains <span class="suit-chip" style="color: #6da678; background: #1c261e; border-color: #384d3d;">[+]</span> to Stealth Challenges and to Defense flips against Ranged Combat attacks until the start of its next turn.</div>
-          <div class="v1-entry"><strong>Slink Away:</strong> This character gains <span class="suit-chip" style="color: #6da678; background: #1c261e; border-color: #384d3d;">[+]</span> to its Defense flips against disengaging strikes. If at least one friendly character is engaged with an enemy, that enemy may not make disengaging strikes against this character.</div>
-          <div class="v1-entry"><strong>Unimpeded:</strong> This character ignores penalties for terrain while taking Movement Actions.</div>
-        </div>
-
-        <div class="v1-section">
-          <div class="v1-entry">
-            <strong>(1) Deadly Talons (Pugilism)</strong><br>
-            <span>AV: 6 (12) | Rg: 1 | Resist: Df</span><br>
-            <em>Target suffers 2/3/4 damage.</em>
-            <div class="v1-trigger">:c: <strong>Hobble:</strong> After succeeding, target gains Hobbled Condition for remainder of Dramatic Time.</div>
-            <div class="v1-trigger">:r: <strong>Bite:</strong> After damaging, the target gains Poison +1.</div>
-          </div>
-
-          <div class="v1-entry" style="margin-top: 8px;">
-            <strong>(1) Sticky Tongue (Flexible)</strong><br>
-            <span>AV: 5 (11) | Rg: 6 | Resist: Df</span><br>
-            <em>Target suffers 1/1/2 damage.</em>
-            <div class="v1-trigger">:c: <strong>Pull and Drag:</strong> After damaging, push target toward this character equal to Might Aspect (min 1 yard).</div>
-          </div>
-
-          <div class="v1-entry" style="margin-top: 8px;">
-            <strong>(0) Quick Leap</strong><br>
-            <span>Discard a card to move this character a distance equal to its Charge Aspect in yards.</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </template>
-
-  <!-- ШАБЛОН 2 -->
-  <template id="tmpl-v2">
-    <div class="v2-card">
-      <div class="v2-top-bar">
-        <div class="v2-title-wrap">
-          <strong class="v2-name">SILURID HUNTER</strong>
-          <span class="v2-meta">Minion (6) • Living, Beast, Swampfiend</span>
-        </div>
-        <div class="v2-actions-bar">
-          <div class="v2-wound-counter">
-            <span style="font-size: 10px; color: #8f8679; text-transform: uppercase;">WOUNDS:</span>
-            <button type="button" class="v2-wound-btn" onclick="modWounds(this, -1)">−</button>
-            <span class="v2-wound-val" data-cur="7" data-max="7">7 / 7</span>
-            <button type="button" class="v2-wound-btn" onclick="modWounds(this, 1)">+</button>
-          </div>
-          <button type="button" class="v2-btn-toggle" onclick="toggleV2Body(this)" title="Свернуть/Развернуть">▲</button>
-        </div>
-      </div>
-
-      <div class="v2-card-body">
-        <div class="v2-stats-grid">
-          <div class="v2-stat-cell"><span>Might</span><strong>3</strong></div>
-          <div class="v2-stat-cell"><span>Grace</span><strong>2</strong></div>
-          <div class="v2-stat-cell"><span>Speed</span><strong>2</strong></div>
-          <div class="v2-stat-cell"><span>Resilience</span><strong>2</strong></div>
-          <div class="v2-stat-cell"><span>Charm</span><strong>-3</strong></div>
-          <div class="v2-stat-cell"><span>Intellect</span><strong>-2</strong></div>
-          <div class="v2-stat-cell"><span>Cunning</span><strong>2</strong></div>
-          <div class="v2-stat-cell"><span>Tenacity</span><strong>2</strong></div>
-        </div>
-
-        <div class="v2-stats-grid" style="grid-template-columns: repeat(6, 1fr);">
-          <div class="v2-stat-cell"><span>Defense</span><strong>4 (10)</strong></div>
-          <div class="v2-stat-cell"><span>Willpower</span><strong>4 (10)</strong></div>
-          <div class="v2-stat-cell"><span>Walk</span><strong>5</strong></div>
-          <div class="v2-stat-cell"><span>Charge</span><strong>6</strong></div>
-          <div class="v2-stat-cell"><span>Height</span><strong>2</strong></div>
-          <div class="v2-stat-cell"><span>Init</span><strong>3 (9)</strong></div>
-        </div>
-
-        <div style="font-size: 11.5px; background: #14110e; border: 1px solid #2a2015; padding: 6px 10px; margin-bottom: 10px;">
-          <strong style="color: #c59a5b;">Skills:</strong> Acrobatics 2, Athletics 3, Flexible 3, Notice 1, Pugilism 3, Stealth 4, Toughness 2, Track 2, Wilderness 3
-        </div>
-
-        <div style="font-size: 12px; line-height: 1.45; margin-bottom: 10px;">
-          <div style="margin-bottom: 4px;"><strong style="color: #e8dfd0;">Aquatic:</strong> Speed is not reduced while swimming. Can Charge underwater.</div>
-          <div style="margin-bottom: 4px;"><strong style="color: #e8dfd0;">Perfect Camouflage:</strong> On Pass Action, gains <span class="suit-chip" style="color: #6da678; background: #1c261e; border-color: #384d3d;">[+]</span> to Stealth and Defense vs Ranged until next turn.</div>
-          <div style="margin-bottom: 4px;"><strong style="color: #e8dfd0;">Slink Away:</strong> Gains <span class="suit-chip" style="color: #6da678; background: #1c261e; border-color: #384d3d;">[+]</span> to Df vs disengaging strikes. Disengaging strikes prevented if friendly engaged.</div>
-          <div><strong style="color: #e8dfd0;">Unimpeded:</strong> Ignores penalties for severe terrain while moving.</div>
-        </div>
-
-        <div class="v2-weapon-box">
-          <div class="v2-weapon-head">
-            <span><span class="action-cost-badge">(1)</span> DEADLY TALONS (PUGILISM)</span>
-            <span>Melee</span>
-          </div>
-          <table class="v2-weapon-table">
-            <thead>
-              <tr>
-                <th style="width: 25%;">AV</th>
-                <th style="width: 25%;">RANGE</th>
-                <th style="width: 25%;">DAMAGE</th>
-                <th style="width: 25%;">RESIST</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>6 (12)</td>
-                <td>1</td>
-                <td>2 / 3 / 4</td>
-                <td>Df</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="v2-weapon-body">
-            <div>:c: <strong>Hobble:</strong> Target gains Hobbled Condition for remainder of Dramatic Time.</div>
-            <div style="margin-top: 2px;">:r: <strong>Bite:</strong> Target gains Poison +1.</div>
-          </div>
-        </div>
-
-        <div class="v2-weapon-box">
-          <div class="v2-weapon-head">
-            <span><span class="action-cost-badge">(1)</span> STICKY TONGUE (FLEXIBLE)</span>
-            <span>Ranged</span>
-          </div>
-          <table class="v2-weapon-table">
-            <thead>
-              <tr>
-                <th style="width: 25%;">AV</th>
-                <th style="width: 25%;">RANGE</th>
-                <th style="width: 25%;">DAMAGE</th>
-                <th style="width: 25%;">RESIST</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>5 (11)</td>
-                <td>6</td>
-                <td>1 / 1 / 2</td>
-                <td>Df</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="v2-weapon-body">
-            <div>:c: <strong>Pull and Drag:</strong> Push target toward this character equal to Might Aspect (min 1 yard).</div>
-          </div>
-        </div>
-
-        <div style="margin-top: 8px; padding: 6px 10px; background: #130f0c; border: 1px solid #33271b; font-size: 11.5px;">
-          <span class="action-cost-badge">(0)</span> <strong style="color: #c59a5b;">Quick Leap:</strong>
-          <span style="color: #bfaea0;">Discard a card to move this character a distance equal to its Charge Aspect (6 yards).</span>
-        </div>
-      </div>
-    </div>
-  </template>
-
-  <!-- ШАБЛОН 3: WYRD COMBAT FOLIO (ОБНОВЛЁННЫЙ ГИБРИД 1 И 2) -->
-  <template id="tmpl-v3">
-    <div class="v3-card">
-      
-      <!-- ШАПКА КАРТОЧКИ (КНИЖНЫЙ СТИЛЬ + ИНТЕРАКТИВ) -->
-      <div class="v3-header">
-        <div class="v3-title-block">
-          <div class="v3-name">
-            SILURID HUNTER
-            <span class="v3-incapacitated-badge">INCAPACITATED</span>
-          </div>
-          <div class="v3-meta">Minion (6) • Living, Beast, Swampfiend</div>
-        </div>
-
-        <div class="v3-header-controls">
-          <!-- Счётчик здоровья с цветовой индикацией -->
-          <div class="v3-wound-pill">
-            <span style="font-size: 10px; color: #8f8679; text-transform: uppercase;">WOUNDS:</span>
-            <button type="button" class="v3-wound-btn" onclick="modV3Wounds(this, -1)">−</button>
-            <span class="v3-wound-text" data-cur="7" data-max="7">7 / 7</span>
-            <button type="button" class="v3-wound-btn" onclick="modV3Wounds(this, 1)">+</button>
-          </div>
-          <button type="button" class="v3-btn-toggle" onclick="toggleV3Body(this)" title="Collapse/Expand">▲</button>
-        </div>
-      </div>
-
-      <!-- БЫСТРАЯ ПОЛОСА СОСТОЯНИЙ (CONDITIONS) -->
-      <div class="v3-conditions-bar">
-        <span class="v3-cond-label">Conditions:</span>
-        <span class="v3-cond-chip" onclick="this.classList.toggle('active')">Hobbled</span>
-        <span class="v3-cond-chip" onclick="this.classList.toggle('active')">Poison +1</span>
-        <span class="v3-cond-chip" onclick="this.classList.toggle('active')">Burning</span>
-        <span class="v3-cond-chip" onclick="this.classList.toggle('active')">Slow</span>
-        <span class="v3-cond-chip buff" onclick="this.classList.toggle('active')">Fast</span>
-        <span class="v3-cond-chip buff" onclick="this.classList.toggle('active')">Focused</span>
-      </div>
-
-      <!-- ТЕЛО КАРТОЧКИ -->
-      <div class="v3-card-body">
-        
-        <!-- Аспекты 4x2 из варианта 1 -->
-        <table class="v3-book-table">
-          <thead>
-            <tr>
-              <th>Might</th><th>Grace</th><th>Speed</th><th>Resilience</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>3</td><td>2</td><td>2</td><td>2</td>
-            </tr>
-          </tbody>
-          <thead>
-            <tr>
-              <th>Charm</th><th>Intellect</th><th>Cunning</th><th>Tenacity</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>-3</td><td>-2</td><td>2</td><td>2</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- Производные параметры 4x2 из варианта 1 -->
-        <table class="v3-book-table">
-          <thead>
-            <tr>
-              <th>Defense</th><th>Walk</th><th>Height</th><th>Initiative</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>4 (10)</td><td>5</td><td>2</td><td>3 (9)</td>
-            </tr>
-          </tbody>
-          <thead>
-            <tr>
-              <th>Willpower</th><th>Charge</th><th>Wounds</th><th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>4 (10)</td><td>6</td><td>7</td><td></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- Навыки (чистый канон) -->
-        <div style="font-size: 11.5px; background: #130f0c; border: 1px solid #2e2318; padding: 6px 10px; margin-bottom: 12px;">
-          <strong style="color: #c59a5b;">Skills:</strong> Acrobatics 2, Athletics 3, Flexible 3, Notice 1, Pugilism 3, Stealth 4, Toughness 2, Track 2, Wilderness 3.
-        </div>
-
-        <!-- Способности со сворачивающимся описанием -->
-        <div class="v3-abilities-list">
-          <div class="v3-ability-row" onclick="toggleAbilityDesc(this)">
-            <div class="v3-ability-head">
-              <strong>Aquatic</strong>
-              <span>▼ details</span>
+        <!-- ==========================================
+             ТАБ: ALLIES (1В1 ИЗ CAMPAIGN.HTML)
+             ========================================== -->
+        <div id="tab-allies" class="tab-content" style="max-width: 900px; margin: 0 auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #382b1d; padding-bottom: 10px;">
+                <h3 style="margin: 0; font-size: 15px; letter-spacing: 2px; text-transform: uppercase; color: #c59a5b; font-weight: normal;">
+                    SUBORDINATES & ALLIES
+                </h3>
+                <button type="button" class="action-btn" onclick="addAllyCard()" style="font-size: 11px; padding: 6px 14px;">
+                    + ADD ALLY
+                </button>
             </div>
-            <div class="v3-ability-desc" style="display: none;">
-              This character's speed is not reduced while swimming. It can take the Charge Action while underwater.
-            </div>
-          </div>
 
-          <div class="v3-ability-row" onclick="toggleAbilityDesc(this)">
-            <div class="v3-ability-head">
-              <strong>Perfect Camouflage</strong>
-              <span>▼ details</span>
-            </div>
-            <div class="v3-ability-desc" style="display: none;">
-              Each time this character takes a Pass Action, it gains <span class="suit-chip" style="color: #6da678; background: #1c261e; border-color: #384d3d;">[+]</span> to Stealth Challenges and to Defense flips against Ranged Combat attacks until the start of its next turn.
-            </div>
-          </div>
-
-          <div class="v3-ability-row" onclick="toggleAbilityDesc(this)">
-            <div class="v3-ability-head">
-              <strong>Slink Away</strong>
-              <span>▼ details</span>
-            </div>
-            <div class="v3-ability-desc" style="display: none;">
-              This character gains <span class="suit-chip" style="color: #6da678; background: #1c261e; border-color: #384d3d;">[+]</span> to its Defense flips against disengaging strikes. If at least one friendly character is engaged with an enemy, that enemy may not make disengaging strikes against this character.
-            </div>
-          </div>
-
-          <div class="v3-ability-row" onclick="toggleAbilityDesc(this)">
-            <div class="v3-ability-head">
-              <strong>Unimpeded</strong>
-              <span>▼ details</span>
-            </div>
-            <div class="v3-ability-desc" style="display: none;">
-              This character ignores penalties for terrain while taking Movement Actions.
-            </div>
-          </div>
+            <!-- Список карточек-аккордеонов -->
+            <div id="allies-list" style="display: flex; flex-direction: column; gap: 12px;"></div>
         </div>
+    </main>
 
-        <!-- Оружие 1 -->
-        <div class="v3-weapon-box">
-          <div class="v3-weapon-head">
-            <span><span class="action-cost-badge">(1)</span> DEADLY TALONS (PUGILISM)</span>
-            <span style="font-size: 11px; color: #8f8679; text-transform: uppercase;">Melee</span>
-          </div>
-          <table class="v3-weapon-table">
-            <thead>
-              <tr>
-                <th style="width: 25%;">AV</th>
-                <th style="width: 25%;">RANGE</th>
-                <th style="width: 25%;">DAMAGE</th>
-                <th style="width: 25%;">RESIST</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>6 (12)</td>
-                <td>1</td>
-                <td>2 / 3 / 4</td>
-                <td>Df</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="v3-weapon-body">
-            <div style="margin-bottom: 3px;">:c: <strong>Hobble:</strong> After succeeding, the target gains the Hobbled Condition for the remainder of Dramatic Time.</div>
-            <div>:r: <strong>Bite:</strong> After damaging, the target gains Poison +1.</div>
-          </div>
-        </div>
+    <script>
+        // Функция создания HTML карточки союзника
+        function createAllyCardHtml(data = {}) {
+            const name = data.name || '';
+            const sub = data.sub || '';
+            
+            const might = data.might ?? '';
+            const grace = data.grace ?? '';
+            const speed = data.speed ?? '';
+            const resilience = data.resilience ?? '';
+            const charm = data.charm ?? '';
+            const intellect = data.intellect ?? '';
+            const cunning = data.cunning ?? '';
+            const tenacity = data.tenacity ?? '';
 
-        <!-- Оружие 2 -->
-        <div class="v3-weapon-box">
-          <div class="v3-weapon-head">
-            <span><span class="action-cost-badge">(1)</span> STICKY TONGUE (FLEXIBLE)</span>
-            <span style="font-size: 11px; color: #8f8679; text-transform: uppercase;">Ranged</span>
-          </div>
-          <table class="v3-weapon-table">
-            <thead>
-              <tr>
-                <th style="width: 25%;">AV</th>
-                <th style="width: 25%;">RANGE</th>
-                <th style="width: 25%;">DAMAGE</th>
-                <th style="width: 25%;">RESIST</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>5 (11)</td>
-                <td>6</td>
-                <td>1 / 1 / 2</td>
-                <td>Df</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="v3-weapon-body">
-            <div>:c: <strong>Pull and Drag:</strong> After damaging, push the target toward this character a number of yards equal to this character's Might Aspect (minimum 1 yard).</div>
-          </div>
-        </div>
+            const defense = data.defense || '';
+            const walk = data.walk || '';
+            const height = data.height || '';
+            const initiative = data.initiative || '';
+            const willpower = data.willpower || '';
+            const charge = data.charge || '';
+            const wounds = data.wounds || '';
 
-        <!-- Тактическое действие (0) -->
-        <div style="margin-top: 10px; padding: 7px 10px; background: #14100c; border: 1px solid #33271b; font-size: 11.5px;">
-          <span class="action-cost-badge">(0)</span> <strong style="color: #c59a5b;">Quick Leap:</strong>
-          <span style="color: #bfaea0;">This character (or its controller) may discard a card to move this character a distance equal to its Charge Aspect in yards.</span>
-        </div>
+            const skills = data.skills || '';
+            const abilities = data.abilities || '';
+            const actions = data.actions || '';
 
-      </div>
-    </div>
-  </template>
+            return `
+                <div class="ally-v1-card">
+                    <!-- Шапка аккордеона -->
+                    <div class="ally-v1-header">
+                        <button type="button" class="ally-toggle-btn" onclick="toggleAllyAccordion(this)" title="Свернуть / Развернуть">▲</button>
+                        <div style="flex: 1; display: flex; flex-direction: column; gap: 2px;">
+                            <input type="text" class="ally-input-title ally-val-name" placeholder="Ally Name..." value="${name}">
+                            <input type="text" class="ally-input-sub ally-val-sub" placeholder="Keywords (e.g. Minion (6), Living, Beast)..." value="${sub}">
+                        </div>
+                        <button type="button" class="ally-v1-btn-del" onclick="removeAllyCard(this)" title="Удалить">✕</button>
+                    </div>
 
-  <script>
-    function formatPursuitText(text) {
-      if (!text) return "";
-      const getChip = (typeof getSuitChip === "function") 
-        ? getSuitChip 
-        : (s) => `<span class="suit-chip suit-${s}">[${s.toUpperCase()}]</span>`;
+                    <!-- Раскрывающееся тело -->
+                    <div class="ally-card-body">
+                        <!-- Аспекты 4x2 -->
+                        <table class="ally-v1-table">
+                            <thead>
+                                <tr>
+                                    <th>Might</th><th>Grace</th><th>Speed</th><th>Resilience</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="ally-input-stat ally-val-might" placeholder="0" value="${might}"></td>
+                                    <td><input type="text" class="ally-input-stat ally-val-grace" placeholder="0" value="${grace}"></td>
+                                    <td><input type="text" class="ally-input-stat ally-val-speed" placeholder="0" value="${speed}"></td>
+                                    <td><input type="text" class="ally-input-stat ally-val-resilience" placeholder="0" value="${resilience}"></td>
+                                </tr>
+                            </tbody>
+                            <thead>
+                                <tr>
+                                    <th>Charm</th><th>Intellect</th><th>Cunning</th><th>Tenacity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="ally-input-stat ally-val-charm" placeholder="0" value="${charm}"></td>
+                                    <td><input type="text" class="ally-input-stat ally-val-intellect" placeholder="0" value="${intellect}"></td>
+                                    <td><input type="text" class="ally-input-stat ally-val-cunning" placeholder="0" value="${cunning}"></td>
+                                    <td><input type="text" class="ally-input-stat ally-val-tenacity" placeholder="0" value="${tenacity}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-      return text
-        .replace(/\bRAMS\b/g, getChip('rams'))
-        .replace(/\bMASKS\b/g, getChip('masks'))
-        .replace(/\bCROWS\b/g, getChip('crows'))
-        .replace(/\bTOMES\b/g, getChip('tomes'))
-        .replace(/:r:/g, getChip('rams'))
-        .replace(/:m:/g, getChip('masks'))
-        .replace(/:c:/g, getChip('crows'))
-        .replace(/:t:/g, getChip('tomes'));
-    }
+                        <!-- Производные 4x2 -->
+                        <table class="ally-v1-table">
+                            <thead>
+                                <tr>
+                                    <th>Defense</th><th>Walk</th><th>Height</th><th>Initiative</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="ally-input-stat ally-val-defense" placeholder="0" value="${defense}"></td>
+                                    <td><input type="text" class="ally-input-stat ally-val-walk" placeholder="0" value="${walk}"></td>
+                                    <td><input type="text" class="ally-input-stat ally-val-height" placeholder="0" value="${height}"></td>
+                                    <td><input type="text" class="ally-input-stat ally-val-initiative" placeholder="0" value="${initiative}"></td>
+                                </tr>
+                            </tbody>
+                            <thead>
+                                <tr>
+                                    <th>Willpower</th><th>Charge</th><th>Wounds</th><th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="ally-input-stat ally-val-willpower" placeholder="0" value="${willpower}"></td>
+                                    <td><input type="text" class="ally-input-stat ally-val-charge" placeholder="0" value="${charge}"></td>
+                                    <td><input type="text" class="ally-input-stat ally-val-wounds" placeholder="0" value="${wounds}"></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-    function renderTemplate(templateId) {
-      const tmpl = document.getElementById(templateId);
-      const clone = tmpl.content.cloneNode(true);
-      const div = document.createElement('div');
-      div.appendChild(clone);
-      div.innerHTML = formatPursuitText(div.innerHTML);
-      return div.firstElementChild;
-    }
+                        <!-- Навыки -->
+                        <div class="ally-v1-row" style="border-top: none; margin-top: 4px; padding-top: 0;">
+                            <strong style="color: #c59a5b; font-size: 11px; text-transform: uppercase; display: block; margin-bottom: 3px;">Skills:</strong>
+                            <input type="text" class="ally-input-text ally-val-skills" placeholder="e.g. Acrobatics 2, Pugilism 3..." value="${skills}">
+                        </div>
 
-    function initMounts() {
-      document.getElementById('v1-mount-single').appendChild(renderTemplate('tmpl-v1'));
-      document.getElementById('v2-mount-single').appendChild(renderTemplate('tmpl-v2'));
-      document.getElementById('v3-mount-single').appendChild(renderTemplate('tmpl-v3'));
+                        <!-- Особенности -->
+                        <div class="ally-v1-row">
+                            <strong style="color: #c59a5b; font-size: 11px; text-transform: uppercase; display: block; margin-bottom: 3px;">Special Abilities:</strong>
+                            <textarea class="ally-textarea ally-val-abilities" placeholder="Abilities...">${abilities}</textarea>
+                        </div>
 
-      document.getElementById('v1-mount-grid').appendChild(renderTemplate('tmpl-v1'));
-      document.getElementById('v2-mount-grid').appendChild(renderTemplate('tmpl-v2'));
-      document.getElementById('v3-mount-grid').appendChild(renderTemplate('tmpl-v3'));
-    }
+                        <!-- Атаки -->
+                        <div class="ally-v1-row">
+                            <strong style="color: #c59a5b; font-size: 11px; text-transform: uppercase; display: block; margin-bottom: 3px;">Actions & Attacks:</strong>
+                            <textarea class="ally-textarea ally-val-actions" placeholder="Actions & Attacks...">${actions}</textarea>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
 
-    document.querySelectorAll('.btn-variant').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.btn-variant').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+        function addAllyCard(data = {}) {
+            const container = document.getElementById('allies-list');
+            if (!container) return;
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = createAllyCardHtml(data);
+            container.appendChild(wrapper.firstElementChild);
+        }
 
-        const target = btn.dataset.target;
-        document.querySelectorAll('.variant-container').forEach(c => c.classList.remove('active'));
-        document.getElementById(`pane-${target}`).classList.add('active');
-      });
-    });
+        function removeAllyCard(btn) {
+            const card = btn.closest('.ally-v1-card');
+            if (card) card.remove();
+        }
 
-    window.modWounds = function(btn, delta) {
-      const counter = btn.closest('.v2-wound-counter');
-      const valEl = counter.querySelector('.v2-wound-val');
-      let cur = parseInt(valEl.dataset.cur, 10);
-      const max = parseInt(valEl.dataset.max, 10);
+        function toggleAllyAccordion(btn) {
+            const card = btn.closest('.ally-v1-card');
+            const body = card.querySelector('.ally-card-body');
+            const isClosed = body.style.display === 'none';
+            body.style.display = isClosed ? 'block' : 'none';
+            btn.textContent = isClosed ? '▲' : '▼';
+        }
 
-      cur = Math.max(0, Math.min(max, cur + delta));
-      valEl.dataset.cur = cur;
-      valEl.textContent = `${cur} / ${max}`;
-
-      if (cur === 0) {
-        valEl.style.color = '#e57373';
-      } else if (cur < max) {
-        valEl.style.color = '#f1c40f';
-      } else {
-        valEl.style.color = '#e8dfd0';
-      }
-    };
-
-    window.toggleV2Body = function(btn) {
-      const card = btn.closest('.v2-card');
-      const body = card.querySelector('.v2-card-body');
-      const isClosed = body.style.display === 'none';
-      body.style.display = isClosed ? 'block' : 'none';
-      btn.textContent = isClosed ? '▲' : '▼';
-    };
-
-    /* Логика Варианта 3 */
-    window.modV3Wounds = function(btn, delta) {
-      const pill = btn.closest('.v3-wound-pill');
-      const card = btn.closest('.v3-card');
-      const valEl = pill.querySelector('.v3-wound-text');
-      const incapBadge = card.querySelector('.v3-incapacitated-badge');
-      let cur = parseInt(valEl.dataset.cur, 10);
-      const max = parseInt(valEl.dataset.max, 10);
-
-      cur = Math.max(0, Math.min(max, cur + delta));
-      valEl.dataset.cur = cur;
-      valEl.textContent = `${cur} / ${max}`;
-
-      if (cur === 0) {
-        valEl.style.color = '#ff5252';
-        pill.style.borderColor = '#b71c1c';
-        pill.style.background = '#2a1212';
-        if (incapBadge) incapBadge.style.display = 'inline-block';
-      } else if (cur < max) {
-        valEl.style.color = '#f1c40f';
-        pill.style.borderColor = '#8c714b';
-        pill.style.background = '#1b1510';
-        if (incapBadge) incapBadge.style.display = 'none';
-      } else {
-        valEl.style.color = '#e8dfd0';
-        pill.style.borderColor = '#4a3825';
-        pill.style.background = '#14110e';
-        if (incapBadge) incapBadge.style.display = 'none';
-      }
-    };
-
-    window.toggleV3Body = function(btn) {
-      const card = btn.closest('.v3-card');
-      const body = card.querySelector('.v3-card-body');
-      const isClosed = body.style.display === 'none';
-      body.style.display = isClosed ? 'block' : 'none';
-      btn.textContent = isClosed ? '▲' : '▼';
-    };
-
-    window.toggleAbilityDesc = function(row) {
-      const desc = row.querySelector('.v3-ability-desc');
-      const hint = row.querySelector('.v3-ability-head span');
-      const isClosed = desc.style.display === 'none';
-      desc.style.display = isClosed ? 'block' : 'none';
-      hint.textContent = isClosed ? '▲ hide' : '▼ details';
-    };
-
-    document.addEventListener('DOMContentLoaded', () => {
-      initMounts();
-    });
-  </script>
+        // При открытии страницы добавляем одну заполненную карточку и одну пустую для теста
+        document.addEventListener('DOMContentLoaded', () => {
+            // Тестовый Силурид
+            addAllyCard({
+                name: "Silurid Hunter",
+                sub: "Minion (6), Living, Beast, Swampfiend",
+                might: "3", grace: "2", speed: "2", resilience: "2",
+                charm: "-3", intellect: "-2", cunning: "2", tenacity: "2",
+                defense: "4 (10)", walk: "5", height: "2", initiative: "3 (9)",
+                willpower: "4 (10)", charge: "6", wounds: "7",
+                skills: "Acrobatics 2, Athletics 3, Flexible 3, Notice 1, Pugilism 3, Stealth 4, Toughness 2, Track 2, Wilderness 3",
+                abilities: "Aquatic: Speed is not reduced while swimming. Can Charge underwater.\nPerfect Camouflage: On Pass Action, gains [+] to Stealth and Defense vs Ranged.\nSlink Away: Gains [+] to Df vs disengaging strikes.\nUnimpeded: Ignores penalties for severe terrain.",
+                actions: "(1) Deadly Talons (Pugilism) | AV: 6 (12) | Rg: 1 | Dmg: 2/3/4 | Resist: Df\n:c: Hobble: Target gains Hobbled Condition.\n:r: Bite: Target gains Poison +1.\n\n(1) Sticky Tongue (Flexible) | AV: 5 (11) | Rg: 6 | Dmg: 1/1/2 | Resist: Df\n:c: Pull and Drag: Push target toward this character.\n\n(0) Quick Leap: Discard a card to move distance equal to Charge (6 yards)."
+            });
+        });
+    </script>
 </body>
 </html>
