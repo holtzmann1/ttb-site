@@ -4036,9 +4036,7 @@ function getTalentOptionsHtml(selectedVal = "") {
             `;
             container.appendChild(row);
         }
-// ==========================================
-// ЛОГИКА ВКЛАДКИ ALLIES (БЕЖЕВЫЕ КАРТОЧКИ БЕСТИАРИЯ)
-// ==========================================
+
 function formatAllyText(text) {
     if (!text) return "";
     const getChip = (typeof getSuitChip === "function") 
@@ -4046,18 +4044,23 @@ function formatAllyText(text) {
         : (s) => `[${s.toUpperCase()}]`;
 
     return text
-        .replace(/\bRAMS\b/g, getChip('rams'))
-        .replace(/\bMASKS\b/g, getChip('masks'))
-        .replace(/\bCROWS\b/g, getChip('crows'))
-        .replace(/\bTOMES\b/g, getChip('tomes'))
-        .replace(/:r:/g, getChip('rams'))
-        .replace(/:m:/g, getChip('masks'))
-        .replace(/:c:/g, getChip('crows'))
-        .replace(/:t:/g, getChip('tomes'))
+        // Масти Malifaux (понимает :m:, (m), MASKS)
+        .replace(/(?:\(:r:\)|\(r\)|:r:|\bRAMS\b)/gi, getChip('rams'))
+        .replace(/(?:\(:m:\)|\(m\)|:m:|\bMASKS\b)/gi, getChip('masks'))
+        .replace(/(?:\(:c:\)|\(c\)|:c:|\bCROWS\b)/gi, getChip('crows'))
+        .replace(/(?:\(:t:\)|\(t\)|:t:|\bTOMES\b)/gi, getChip('tomes'))
+        
+        // Модификаторы бросков
         .replace(/\[\+\]|:\+:/g, '<span style="color: #196628; font-weight: bold; font-family: monospace;">[+]</span>')
         .replace(/\[\-\]|:\-:|:--:/g, '<span style="color: #9c231d; font-weight: bold; font-family: monospace;">[-]</span>')
-        .replace(/\(y\)/g, '<svg viewBox="0 0 24 24" style="width: 1.1em; height: 1.1em; vertical-align: -0.2em; fill: #4a3422; display: inline-block;"><path d="M7 2l-4 6 5 3-3 7 8-10-4-3 4-3-6-2z"/></svg>')
-        .replace(/Rg:\s*y/g, 'Rg: <svg viewBox="0 0 24 24" style="width: 1.1em; height: 1.1em; vertical-align: -0.2em; fill: #4a3422; display: inline-block;"><path d="M7 2l-4 6 5 3-3 7 8-10-4-3 4-3-6-2z"/></svg>')
+        
+        // 1. БЛИЖНИЙ БОЙ: Тройной каноничный коготь (y)
+        .replace(/(?:\(y\)|Rg:\s*y)/gi, '<svg viewBox="0 0 24 24" style="width: 1.15em; height: 1.15em; vertical-align: -0.22em; fill: #261b12; display: inline-block;"><path d="M 20.82 2.50 L 19.46 3.86 L 18.79 3.86 L 17.43 5.21 L 16.75 5.21 L 15.39 6.57 L 14.71 6.57 L 7.93 13.36 L 7.93 14.04 L 4.54 18.11 L 3.18 21.50 L 5.89 18.79 L 6.57 18.79 L 7.93 17.43 L 7.93 16.75 L 9.29 15.39 L 9.96 15.39 L 13.36 11.32 L 14.04 11.32 L 14.04 10.64 L 15.39 9.29 L 15.39 8.61 L 18.79 5.21 L 18.79 4.54 L 19.46 3.86 L 20.14 3.86 L 20.14 3.18 Z M 21.50 9.29 L 18.79 11.32 L 18.11 11.32 L 13.36 16.07 L 13.36 16.75 L 12.00 18.11 L 12.00 18.79 L 11.32 19.46 L 11.32 20.82 L 10.64 21.50 L 12.00 20.14 L 12.68 20.14 L 16.07 16.75 L 16.07 16.07 L 19.46 12.68 L 20.14 10.64 Z M 14.04 2.50 L 13.36 3.18 L 11.32 3.86 L 9.96 5.21 L 7.93 5.89 L 7.25 6.57 L 7.25 7.25 L 3.86 10.64 L 3.86 11.32 L 2.50 13.36 L 3.18 12.68 L 3.86 12.68 L 5.89 10.64 L 6.57 10.64 L 7.25 9.96 L 7.25 9.29 L 7.93 8.61 L 8.61 8.61 L 9.29 7.93 L 9.29 7.25 L 9.96 6.57 L 10.64 6.57 L 11.32 5.89 L 11.32 5.21 Z"/></svg>')
+        
+        // 2. ДАЛЬНИЙ БОЙ: Револьвер Вариант 1 (g)
+        .replace(/(?:\(g\)|Rg:\s*g)/gi, '<svg viewBox="0 0 24 24" style="width: 1.15em; height: 1.15em; vertical-align: -0.22em; fill: #261b12; display: inline-block;"><path fill-rule="evenodd" clip-rule="evenodd" d="M 21.26 8.52 L 21.44 9.30 L 21.37 9.87 L 17.51 9.97 L 15.63 10.08 L 14.28 10.22 L 14.18 10.79 L 12.01 10.93 L 12.05 11.43 L 10.99 11.53 L 11.02 12.10 L 9.71 12.14 L 9.75 12.60 L 8.93 12.67 L 9.11 13.49 L 8.79 14.16 L 8.15 14.63 L 7.41 14.59 L 7.16 14.06 L 7.41 13.74 L 6.91 13.60 L 6.84 13.06 L 6.20 13.56 L 6.06 14.66 L 5.57 16.48 L 5.14 18.04 L 4.47 18.72 L 3.55 18.72 L 3.23 18.08 L 3.48 16.59 L 3.87 14.88 L 4.22 13.85 L 4.33 12.82 L 4.65 11.97 L 5.04 11.54 L 5.04 10.72 L 5.39 9.87 L 5.18 9.34 L 4.47 9.27 L 4.47 8.77 L 4.90 8.70 L 5.46 9.09 L 6.10 9.23 L 6.56 8.84 L 6.92 8.70 L 7.31 8.84 L 7.41 8.63 L 11.28 8.66 L 11.46 8.91 L 14.26 8.88 L 19.01 8.98 L 19.86 8.49 L 20.93 8.31 Z M 8.54 13.06 L 8.44 13.70 L 8.01 14.13 L 7.55 14.13 L 7.34 13.74 L 7.55 13.24 L 7.73 13.03 Z"/></svg>')
+
+        // 3. ПУЛЬС И АУРА
         .replace(/(?:\(p\)|(?<=\b)p)(?=\s*\d+)/gi, '<svg viewBox="0 0 24 24" style="width: 1.1em; height: 1.1em; vertical-align: -0.2em; fill: #1a120b; display: inline-block;"><path d="M12 2a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0V3a1 1 0 0 1 1-1zm0 16a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0v-2a1 1 0 0 1 1-1zm10-7a1 1 0 0 1-1 1h-2a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1zM5 12a1 1 0 0 1-1 1H2a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1zm14.07-7.07a1 1 0 0 1 0 1.41l-1.42 1.42a1 1 0 1 1-1.41-1.42l1.41-1.41a1 1 0 0 1 1.42 0zM6.34 16.24a1 1 0 0 1 0 1.42l-1.41 1.41a1 1 0 0 1-1.42-1.41l1.42-1.42a1 1 0 0 1 1.41 0zm12.73 1.42a1 1 0 0 1-1.42 0l-1.41-1.42a1 1 0 0 1 1.41-1.41l1.42 1.41a1 1 0 0 1 0 1.42zM7.76 4.93a1 1 0 0 1-1.42 1.41L4.93 4.93a1 1 0 0 1 1.41-1.41l1.42 1.41zM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/></svg> ')
         .replace(/(?:\(a\)|(?<=\b)a)(?=\s*\d+)/gi, '<svg viewBox="0 0 24 24" style="width: 1.1em; height: 1.1em; vertical-align: -0.2em; fill: #1a120b; display: inline-block;"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-3 8c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9v-2z" fill="#f7f1e5"/></svg> ');
 }
@@ -4066,11 +4069,15 @@ function renderAllyAbilitiesHtml(text) {
     if (!text) return "";
     const lines = text.split("\n").filter(l => l.trim().length > 0);
     return lines.map(line => {
-        const colonIdx = line.indexOf(':');
-        if (colonIdx !== -1) {
-            const title = line.substring(0, colonIdx).trim();
-            const desc = line.substring(colonIdx + 1).trim();
-            return '<div class="ally-site-item"><strong>' + title + ':</strong> ' + formatAllyText(desc) + '</div>';
+        // Автокоррекция Df: m: или Df: :m: в стандартный Df (m)
+        const norm = line.replace(/\b(Df|Wp|Ca|Tn)\s*:\s*(?::?([rcmt]):?|\(([rcmt])\))\s*:\s*/i, '$1 ($2) ');
+        
+        // Разделение заголовка и описания по двоеточию после названия
+        const match = norm.match(/^(.*?)(?<!:):(?!:)\s*(.*)$/);
+        if (match) {
+            const title = match[1].trim();
+            const desc = match[2].trim();
+            return '<div class="ally-site-item"><strong>' + formatAllyText(title) + ':</strong> ' + formatAllyText(desc) + '</div>';
         }
         return '<div class="ally-site-item">' + formatAllyText(line) + '</div>';
     }).join('');
@@ -4109,7 +4116,7 @@ function renderAllyActionsHtml(text) {
         let inTriggers = false;
 
         const isTriggerStart = (str) => {
-            return /^(:[rcmt]:|\[(RAM|CROW|MASK|TOME|RAMS|CROWS|MASKS|TOMES)\]|RAMS|CROWS|MASKS|TOMES|[X✓♠♥♣♦📖])\s+/i.test(str)
+            return /^(:[rcmt]:|\([rcmt]\)|\[(RAM|CROW|MASK|TOME|RAMS|CROWS|MASKS|TOMES)\]|RAMS|CROWS|MASKS|TOMES|[X✓♠♥♣♦📖])\s+/i.test(str)
                 || (hasStats && inTriggers && /^[A-Z][A-Za-z0-9\s\-']+:/.test(str));
         };
 
@@ -4340,6 +4347,11 @@ function addAllyCard(data = {}, isEditInitially = false, isNewCard = false) {
                         <button type="button" class="btn-quick-suit" onclick="insertAllyCode('${cardId}', ':m:')">:m: Mask</button>
                         <button type="button" class="btn-quick-suit" onclick="insertAllyCode('${cardId}', ':t:')">:t: Tome</button>
                         <button type="button" class="btn-quick-suit" onclick="insertAllyCode('${cardId}', ':+:')">[+]</button>
+                        <button type="button" class="btn-quick-suit" onclick="insertAllyCode('${cardId}', '[-]')">[-]</button>
+                        <button type="button" class="btn-quick-suit" onclick="insertAllyCode('${cardId}', '(y)')">(y) Melee</button>
+                        <button type="button" class="btn-quick-suit" onclick="insertAllyCode('${cardId}', '(g)')">(g) Ranged</button>
+                        <button type="button" class="btn-quick-suit" onclick="insertAllyCode('${cardId}', 'p')">p Pulse</button>
+                        <button type="button" class="btn-quick-suit" onclick="insertAllyCode('${cardId}', 'a')">a Aura</button>
                     </div>
                 </div>
                 <textarea class="edit-textarea inp-actions">${data.actions || ''}</textarea>
