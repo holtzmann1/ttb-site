@@ -1529,12 +1529,22 @@ body {
 }
 
 .ally-site-header {
+  cursor: pointer;
+  user-select: none;
   background: #1e1610;
   padding: 12px 16px 10px 16px;
   border-bottom: 3px solid #8c6a43;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+}
+.ally-site-card.is-collapsed .beige-stat-table,
+.ally-site-card.is-collapsed .ally-site-body {
+  display: none !important;
+}
+
+.ally-site-card.is-collapsed .ally-site-header {
+  border-bottom: none;
 }
 
 .ally-site-title {
@@ -1559,6 +1569,7 @@ body {
   gap: 6px;
   align-items: center;
 }
+        
 
 .btn-site-ctrl {
   background: #2a2018;
@@ -2396,6 +2407,7 @@ async function importToCampaign(event) {
             if (!char) return;
 
             activeCharacterDocId = docId;
+            switchSheetTab('character');
             window.loadCharacterData(char);
 
             document.getElementById("view-roster").style.display = "none";
@@ -4184,22 +4196,22 @@ function addAllyCard(data = {}, isEditInitially = false, isNewCard = false) {
     const container = document.getElementById('allies-list');
     if (!container) return;
 
-    const wrapper = document.createElement('div');
-    wrapper.className = 'ally-site-card';
+const wrapper = document.createElement('div');
+    wrapper.className = 'ally-site-card' + (data.collapsed ? ' is-collapsed' : '');
     wrapper.id = cardId;
     if (isNewCard) wrapper.dataset.isNew = 'true';
 
     wrapper.innerHTML = `
         <!-- РЕЖИМ ПРОСМОТРА -->
         <div class="ally-site-view">
-            <div class="ally-site-header">
+            <div class="ally-site-header" onclick="toggleAllyCollapse('${cardId}', event)">
                 <div>
                     <div class="ally-site-title view-val-name">${(data.name || 'UNNAMED ALLY').toUpperCase()}</div>
                     <div class="ally-site-subtitle view-val-sub">${data.sub || 'Minion'}</div>
                 </div>
                 <div class="ally-site-ctrls">
-                    <button type="button" class="btn-site-ctrl" onclick="toggleEditMode('${cardId}')">✎ EDIT</button>
-                    <button type="button" class="btn-site-ctrl btn-site-del" onclick="confirmDeleteAlly('${cardId}')" title="Удалить">✕</button>
+                    <button type="button" class="btn-site-ctrl" onclick="event.stopPropagation(); toggleEditMode('${cardId}')">✎ EDIT</button>
+                    <button type="button" class="btn-site-ctrl btn-site-del" onclick="event.stopPropagation(); confirmDeleteAlly('${cardId}')" title="Удалить">✕</button>
                 </div>
             </div>
 
@@ -4401,6 +4413,18 @@ function toggleEditMode(cardId) {
         editPanel.style.display = 'block';
         viewPanel.style.display = 'none';
     }
+}
+
+        function toggleAllyCollapse(cardId, event) {
+    if (event) event.stopPropagation();
+    const card = document.getElementById(cardId);
+    if (!card) return;
+    
+    // Если карточка находится в режиме редактирования — не сворачиваем
+    const editPanel = card.querySelector('.ally-site-edit');
+    if (editPanel && editPanel.style.display === 'block') return;
+
+    card.classList.toggle('is-collapsed');
 }
 
 function saveAllyEdit(cardId) {
@@ -4756,6 +4780,7 @@ const descDisplay = lastCard.querySelector(".talent-desc-display");
   const allies = [];
   document.querySelectorAll('#allies-list .ally-site-card').forEach(card => {
     allies.push({
+      collapsed: card.classList.contains('is-collapsed'),
       name: card.querySelector('.inp-name')?.value || '',
       sub: card.querySelector('.inp-sub')?.value || '',
       might: card.querySelector('.inp-might')?.value || '',
