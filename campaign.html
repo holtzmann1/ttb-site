@@ -3728,7 +3728,7 @@ function formatPursuitText(text) {
                 }
             }
 
-            return base;
+            return Math.max(-4, Math.min(4, base));
         }
 
         function updateChefAspectsDisplay() {
