@@ -1716,6 +1716,17 @@ body {
 .ally-attack-table td:last-child {
   border-right: none;
 }
+        .ally-attack-desc {
+  padding: 8px 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #261b12;
+  background: #f7f1e5;
+  border-bottom: 1px solid #d5c7b3;
+}
+.ally-attack-desc:last-child {
+  border-bottom: none;
+}
 
 .ally-attack-triggers {
   padding: 7px 10px;
@@ -4043,7 +4054,12 @@ function formatAllyText(text) {
         .replace(/:m:/g, getChip('masks'))
         .replace(/:c:/g, getChip('crows'))
         .replace(/:t:/g, getChip('tomes'))
-        .replace(/\[\+\]|:\+:/g, '<span style="color: #196628; font-weight: bold; font-family: monospace;">[+]</span>');
+        .replace(/\[\+\]|:\+:/g, '<span style="color: #196628; font-weight: bold; font-family: monospace;">[+]</span>')
+        .replace(/\[\-\]|:\-:|:--:/g, '<span style="color: #9c231d; font-weight: bold; font-family: monospace;">[-]</span>')
+        .replace(/\(y\)/g, '<svg viewBox="0 0 24 24" style="width: 1.1em; height: 1.1em; vertical-align: -0.2em; fill: #4a3422; display: inline-block;"><path d="M7 2l-4 6 5 3-3 7 8-10-4-3 4-3-6-2z"/></svg>')
+        .replace(/Rg:\s*y/g, 'Rg: <svg viewBox="0 0 24 24" style="width: 1.1em; height: 1.1em; vertical-align: -0.2em; fill: #4a3422; display: inline-block;"><path d="M7 2l-4 6 5 3-3 7 8-10-4-3 4-3-6-2z"/></svg>')
+        .replace(/(?:\(p\)|(?<=\b)p)(?=\s*\d+)/gi, '<svg viewBox="0 0 24 24" style="width: 1.1em; height: 1.1em; vertical-align: -0.2em; fill: #1a120b; display: inline-block;"><path d="M12 2a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0V3a1 1 0 0 1 1-1zm0 16a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0v-2a1 1 0 0 1 1-1zm10-7a1 1 0 0 1-1 1h-2a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1zM5 12a1 1 0 0 1-1 1H2a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1zm14.07-7.07a1 1 0 0 1 0 1.41l-1.42 1.42a1 1 0 1 1-1.41-1.42l1.41-1.41a1 1 0 0 1 1.42 0zM6.34 16.24a1 1 0 0 1 0 1.42l-1.41 1.41a1 1 0 0 1-1.42-1.41l1.42-1.42a1 1 0 0 1 1.41 0zm12.73 1.42a1 1 0 0 1-1.42 0l-1.41-1.42a1 1 0 0 1 1.41-1.41l1.42 1.41a1 1 0 0 1 0 1.42zM7.76 4.93a1 1 0 0 1-1.42 1.41L4.93 4.93a1 1 0 0 1 1.41-1.41l1.42 1.41zM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/></svg> ')
+        .replace(/(?:\(a\)|(?<=\b)a)(?=\s*\d+)/gi, '<svg viewBox="0 0 24 24" style="width: 1.1em; height: 1.1em; vertical-align: -0.2em; fill: #1a120b; display: inline-block;"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-3 8c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9v-2z" fill="#f7f1e5"/></svg> ');
 }
 
 function renderAllyAbilitiesHtml(text) {
@@ -4062,42 +4078,87 @@ function renderAllyAbilitiesHtml(text) {
 
 function renderAllyActionsHtml(text) {
     if (!text) return "";
-    const blocks = text.split(/\n\s*\n/);
-    return blocks.map(block => {
-        const lines = block.split("\n").map(l => l.trim()).filter(Boolean);
-        if (lines.length === 0) return '';
-        
-        let title = lines[0];
+    
+    const rawLines = text.split("\n").map(l => l.trim()).filter(Boolean);
+    if (rawLines.length === 0) return "";
+
+    const actionBlocks = [];
+    let currentBlock = [];
+    const actionHeaderRegex = /^\([0-9xX]+\)\s+\S+/;
+
+    rawLines.forEach(line => {
+        if (actionHeaderRegex.test(line)) {
+            if (currentBlock.length > 0) {
+                actionBlocks.push(currentBlock);
+                currentBlock = [];
+            }
+        }
+        currentBlock.push(line);
+    });
+    if (currentBlock.length > 0) actionBlocks.push(currentBlock);
+
+    return actionBlocks.map(block => {
+        const title = block[0];
+        const lines = block.slice(1);
+
+        let hasStats = false;
         let av = '—', rg = '—', resist = '—', dmg = '—';
         let triggers = [];
+        let currentTrigger = [];
+        let descLines = [];
+        let inTriggers = false;
 
-        for (let i = 1; i < lines.length; i++) {
+        const isTriggerStart = (str) => {
+            return /^(:[rcmt]:|\[(RAM|CROW|MASK|TOME|RAMS|CROWS|MASKS|TOMES)\]|RAMS|CROWS|MASKS|TOMES|[X✓♠♥♣♦📖])\s+/i.test(str)
+                || (hasStats && inTriggers && /^[A-Z][A-Za-z0-9\s\-']+:/.test(str));
+        };
+
+        for (let i = 0; i < lines.length; i++) {
             const l = lines[i];
-            if (l.includes('AV:') || l.includes('Rg:') || l.includes('Resist:')) {
+
+            if (/AV:|Rg:|Range:|Resist:/i.test(l)) {
+                hasStats = true;
                 const mAv = l.match(/AV:\s*([^|]+)/i);
-                const mRg = l.match(/Rg:\s*([^|]+)/i);
+                const mRg = l.match(/(?:Rg|Range):\s*([^|]+)/i);
                 const mRes = l.match(/Resist:\s*([^|]+)/i);
-                const mDmg = l.match(/Dmg:\s*([^|]+)|Damage:\s*([^|]+)/i);
+                const mDmg = l.match(/(?:Dmg|Damage):\s*([^|]+)/i);
 
                 if (mAv) av = mAv[1].trim();
                 if (mRg) rg = mRg[1].trim();
                 if (mRes) resist = mRes[1].trim();
-                if (mDmg) dmg = (mDmg[1] || mDmg[2]).trim();
-            } else if (l.toLowerCase().startsWith('target suffers') || l.toLowerCase().startsWith('damage:')) {
-                dmg = l.replace(/^target suffers\s*/i, '').replace(/^damage:\s*/i, '').replace(/\s*damage\.?/i, '').trim();
+                if (mDmg) dmg = mDmg[1].trim();
+            } else if (/^(?:target suffers|damage:)/i.test(l)) {
+                hasStats = true;
+                dmg = l.replace(/^(?:target suffers|damage:)\s*/i, '').replace(/\s*damage\.?/i, '').trim();
+            } else if (isTriggerStart(l)) {
+                inTriggers = true;
+                if (currentTrigger.length > 0) {
+                    triggers.push(currentTrigger.join(" "));
+                    currentTrigger = [];
+                }
+                currentTrigger.push(l);
+            } else if (inTriggers) {
+                currentTrigger.push(l);
             } else {
-                triggers.push(l);
+                descLines.push(l);
             }
         }
 
-        const hasStats = (av !== '—' || rg !== '—' || resist !== '—' || dmg !== '—');
+        if (currentTrigger.length > 0) {
+            triggers.push(currentTrigger.join(" "));
+        }
 
         let statsTable = '';
         if (hasStats) {
             statsTable = '<table class="ally-attack-table">' +
                 '<thead><tr><th>AV</th><th>RANGE</th><th>RESIST</th><th>DAMAGE</th></tr></thead>' +
-                '<tbody><tr><td>' + av + '</td><td>' + rg + '</td><td>' + resist + '</td><td>' + dmg + '</td></tr></tbody>' +
+                '<tbody><tr><td>' + formatAllyText(av) + '</td><td>' + formatAllyText(rg) + '</td><td>' + resist + '</td><td>' + dmg + '</td></tr></tbody>' +
                 '</table>';
+        }
+
+        let descHtml = '';
+        if (descLines.length > 0) {
+            descHtml = '<div class="ally-attack-desc">' + formatAllyText(descLines.join(" ")) + '</div>';
         }
 
         let triggersHtml = '';
@@ -4109,7 +4170,7 @@ function renderAllyActionsHtml(text) {
 
         return '<div class="ally-attack-box">' +
             '<div class="ally-attack-head"><span class="ally-attack-title">' + title + '</span></div>' +
-            statsTable + triggersHtml +
+            statsTable + descHtml + triggersHtml +
             '</div>';
     }).join('');
 }
