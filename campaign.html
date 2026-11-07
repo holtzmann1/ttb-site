@@ -3743,9 +3743,9 @@ function formatPursuitText(text) {
                 if (diff === 0 || !isIvlevActive()) {
                     el.innerHTML = `${base}`;
                 } else if (diff > 0) {
-                    el.innerHTML = `${base} <span style="color: #66bb6a; font-size: 13px; font-weight: normal;">(+${diff})</span>`;
+                    el.innerHTML = `${base} <span style="color: #66bb6a; font-size: 13px; font-weight: normal;">(${eff})</span>`;
                 } else {
-                    el.innerHTML = `${base} <span style="color: #ef5350; font-size: 13px; font-weight: normal;">(${diff})</span>`;
+                    el.innerHTML = `${base} <span style="color: #ef5350; font-size: 13px; font-weight: normal;">(${eff})</span>`;
                 }
             });
         }
