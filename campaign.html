@@ -1859,7 +1859,141 @@ body {
 .ally-site-card .suit-chip.suit-masks { color: #692d84; background: rgba(105, 45, 132, 0.12); border-color: rgba(105, 45, 132, 0.45); }
 .ally-site-card .suit-chip.suit-crows { color: #1c6b2e; background: rgba(28, 107, 46, 0.12); border-color: rgba(28, 107, 46, 0.45); }
 .ally-site-card .suit-chip.suit-tomes { color: #1f5780; background: rgba(31, 87, 128, 0.12); border-color: rgba(31, 87, 128, 0.45); }
-        
+
+        /* ==========================================
+   ПАНЕЛЬ ШЕФ-ПОВАРА (КОНСТАНТИН ИВЛЕВ)
+   ========================================== */
+#chefStatusBox {
+    background: #17130f;
+    border: 1px solid #4a3827;
+    padding: 10px 14px;
+    margin-bottom: 18px;
+    box-shadow: inset 0 0 0 1px #2a2016, 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+.chef-row-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #2d2218;
+}
+
+.chef-hunger-btn {
+    background: transparent;
+    border: 1px solid #4a3825;
+    color: #8f8679;
+    padding: 4px 10px;
+    font-family: Georgia, serif;
+    font-size: 11.5px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.chef-hunger-btn:hover {
+    border-color: #c59a5b;
+    color: #dfd4c4;
+}
+
+.chef-hunger-btn.active {
+    background: rgba(160, 40, 30, 0.2);
+    border-color: #c96b65;
+    color: #e57373;
+}
+
+.chef-wellfed-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.chef-label {
+    font-size: 11px;
+    color: #a99e8d;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.chef-wf-pills {
+    display: flex;
+    gap: 3px;
+}
+
+.chef-wf-pill {
+    background: #100d0a;
+    border: 1px solid #382b1d;
+    color: #8f8679;
+    font-size: 11px;
+    font-weight: bold;
+    font-family: monospace;
+    width: 26px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.chef-wf-pill:hover {
+    border-color: #8c714b;
+    color: #e8dfd0;
+}
+
+.chef-wf-pill.active {
+    background: #2b2116;
+    border-color: #f1c40f;
+    color: #f1c40f;
+    box-shadow: inset 0 0 4px rgba(241, 196, 15, 0.3);
+}
+
+.chef-row-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    padding-top: 8px;
+    flex-wrap: wrap;
+}
+
+.chef-suits-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.chef-suit-btn {
+    background: #120e0b;
+    border: 1px solid #382b1d;
+    cursor: pointer;
+    padding: 3px 6px;
+    opacity: 0.45;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.chef-suit-btn:hover {
+    opacity: 0.8;
+}
+
+.chef-suit-btn.active {
+    opacity: 1;
+    box-shadow: 0 0 6px rgba(197, 154, 91, 0.3);
+}
+
+.chef-skill-select {
+    font-size: 11.5px;
+    height: 24px;
+    padding: 2px 6px;
+    background: #100d0a;
+    border: 1px solid #382b1d;
+    color: #c59a5b;
+    max-width: 170px;
+    outline: none;
+}
     </style>
 </head>
 <body>
@@ -1978,6 +2112,38 @@ body {
 
                 <div class="sheet-body">
                     <div>
+                        <!-- ПАНЕЛЬ ШЕФ-ПОВАРА (АКТИВНА ТОЛЬКО ДЛЯ ИВЛЕВА) -->
+                        <div id="chefStatusBox" style="display: none;">
+                            <div class="chef-row-top">
+                                <button type="button" class="chef-hunger-btn" id="chefHungerBtn" onclick="toggleChefHunger()">
+                                    🍖 Не ел >1ч (-1 Mental)
+                                </button>
+
+                                <div class="chef-wellfed-group">
+                                    <span class="chef-label">Well Fed:</span>
+                                    <div class="chef-wf-pills">
+                                        <button type="button" class="chef-wf-pill active" onclick="setChefWellFed(0)">0</button>
+                                        <button type="button" class="chef-wf-pill" onclick="setChefWellFed(1)">+1</button>
+                                        <button type="button" class="chef-wf-pill" onclick="setChefWellFed(2)">+2</button>
+                                        <button type="button" class="chef-wf-pill" onclick="setChefWellFed(3)">+3</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="chef-row-bottom">
+                                <div class="chef-suits-row">
+                                    <span class="chef-label" style="margin-right: 4px;">Menu:</span>
+                                    <button type="button" class="chef-suit-btn" id="chefSuitRams" onclick="toggleChefMenuSuit('rams')" title="Appetizers: 1/1/2 healing flip"></button>
+                                    <button type="button" class="chef-suit-btn" id="chefSuitMasks" onclick="toggleChefMenuSuit('masks')" title="Brain Food: Well Fed goes to Mental Aspects"></button>
+                                    <button type="button" class="chef-suit-btn" id="chefSuitCrows" onclick="toggleChefMenuSuit('crows')" title="Hit the Spot: Well Fed applies to chosen Skill"></button>
+                                    <button type="button" class="chef-suit-btn" id="chefSuitTomes" onclick="toggleChefMenuSuit('tomes')" title="Dinner Rush: +1 to Initiative flip value"></button>
+                                </div>
+
+                                <select id="chefCrowSkillSelect" class="chef-skill-select" style="display: none;" onchange="onChefSkillChange()">
+                                    <option value="">-- Выбрать навык --</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="box">
                             <div class="box-header">ASPECTS</div>
                             <div class="aspects-grid">
@@ -3451,10 +3617,142 @@ function formatPursuitText(text) {
             html += `</select>`;
             return html;
         }
+// Состояние шеф-повара
+        const chefState = {
+            isHungry: false,
+            wellFed: 0,
+            suits: { rams: false, masks: false, crows: false, tomes: false },
+            crowSkill: ""
+        };
 
+        function isIvlevActive() {
+            const name = document.getElementById("charName")?.value || "";
+            return name.trim().toLowerCase() === "константин ивлев";
+        }
+
+        function checkChefPanelVisibility() {
+            const box = document.getElementById("chefStatusBox");
+            if (!box) return;
+            const active = isIvlevActive();
+            box.style.display = active ? "block" : "none";
+            if (active) renderChefPanelUI();
+        }
+
+        function renderChefPanelUI() {
+            const getChip = (typeof getSuitChip === "function") ? getSuitChip : (s) => `[${s.toUpperCase()}]`;
+
+            // Наполняем иконками мастей
+            const rBtn = document.getElementById("chefSuitRams");
+            const mBtn = document.getElementById("chefSuitMasks");
+            const cBtn = document.getElementById("chefSuitCrows");
+            const tBtn = document.getElementById("chefSuitTomes");
+
+            if (rBtn) { rBtn.innerHTML = getChip('rams'); rBtn.classList.toggle("active", chefState.suits.rams); }
+            if (mBtn) { mBtn.innerHTML = getChip('masks'); mBtn.classList.toggle("active", chefState.suits.masks); }
+            if (cBtn) { cBtn.innerHTML = getChip('crows'); cBtn.classList.toggle("active", chefState.suits.crows); }
+            if (tBtn) { tBtn.innerHTML = getChip('tomes'); tBtn.classList.toggle("active", chefState.suits.tomes); }
+
+            const hBtn = document.getElementById("chefHungerBtn");
+            if (hBtn) hBtn.classList.toggle("active", chefState.isHungry);
+
+            const pills = document.querySelectorAll(".chef-wf-pill");
+            pills.forEach((p, idx) => p.classList.toggle("active", idx === chefState.wellFed));
+
+            // Список навыков для Crows
+            const skillSel = document.getElementById("chefCrowSkillSelect");
+            if (skillSel) {
+                skillSel.style.display = chefState.suits.crows ? "inline-block" : "none";
+                const cur = chefState.crowSkill;
+                skillSel.innerHTML = `<option value="">-- Навык для Crows --</option>`;
+                document.querySelectorAll("#skillsList tr.skill-main-row").forEach(tr => {
+                    const sk = tr.querySelector(".skill-select")?.value;
+                    if (sk) {
+                        const opt = document.createElement("option");
+                        opt.value = sk;
+                        opt.textContent = sk;
+                        if (sk === cur) opt.selected = true;
+                        skillSel.appendChild(opt);
+                    }
+                });
+            }
+        }
+
+        function toggleChefHunger() {
+            chefState.isHungry = !chefState.isHungry;
+            renderChefPanelUI();
+            updateChefAspectsDisplay();
+            updateDerived();
+            updateAllSkillAVs();
+        }
+
+        function setChefWellFed(val) {
+            chefState.wellFed = val;
+            renderChefPanelUI();
+            updateChefAspectsDisplay();
+            updateDerived();
+            updateAllSkillAVs();
+        }
+
+        function toggleChefMenuSuit(suit) {
+            chefState.suits[suit] = !chefState.suits[suit];
+            renderChefPanelUI();
+            updateChefAspectsDisplay();
+            updateDerived();
+            updateAllSkillAVs();
+        }
+
+        function onChefSkillChange() {
+            const skillSel = document.getElementById("chefCrowSkillSelect");
+            chefState.crowSkill = skillSel?.value || "";
+            updateAllSkillAVs();
+        }
+
+        // Расчет эффективного стата с модификаторами
+        function getEffectiveAspect(stat) {
+            let base = aspects[stat] || 0;
+            if (!isIvlevActive()) return base;
+
+            const isPhysical = ["might", "grace", "speed", "resilience"].includes(stat);
+            const isMental = ["intellect", "charm", "cunning", "tenacity"].includes(stat);
+
+            if (isMental && chefState.isHungry) {
+                base -= 1;
+            }
+
+            const wf = chefState.wellFed;
+            if (wf > 0) {
+                if (!chefState.suits.masks && isPhysical) {
+                    base += wf;
+                } else if (chefState.suits.masks && isMental) {
+                    base += wf;
+                }
+            }
+
+            return base;
+        }
+
+        function updateChefAspectsDisplay() {
+            const list = ["might", "grace", "speed", "resilience", "intellect", "charm", "cunning", "tenacity"];
+            list.forEach(k => {
+                const el = document.getElementById(k);
+                if (!el) return;
+                const base = aspects[k] || 0;
+                const eff = getEffectiveAspect(k);
+                const diff = eff - base;
+
+                if (diff === 0 || !isIvlevActive()) {
+                    el.innerHTML = `${base}`;
+                } else if (diff > 0) {
+                    el.innerHTML = `${base} <span style="color: #66bb6a; font-size: 13px; font-weight: normal;">(+${diff})</span>`;
+                } else {
+                    el.innerHTML = `${base} <span style="color: #ef5350; font-size: 13px; font-weight: normal;">(${diff})</span>`;
+                }
+            });
+        }
+        
 function modAspect(stat, delta) {
             aspects[stat] += delta;
-            document.getElementById(stat).textContent = aspects[stat];
+            updateChefAspectsDisplay();
             updateDerived();
             updateAllSkillAVs();
             refreshAllTalentSelects();
@@ -3472,13 +3770,17 @@ function modAspect(stat, delta) {
             return maxRank;
         }
 
-        function updateDerived() {
+function updateDerived() {
             const evade = getSkillRank("Evade");
             const centering = getSkillRank("Centering");
             const notice = getSkillRank("Notice");
             const toughness = getSkillRank("Toughness");
 
-            const defBonus = Math.max(0, evade, aspects.speed);
+            const effSpeed = getEffectiveAspect("speed");
+            const effTenacity = getEffectiveAspect("tenacity");
+            const effResilience = getEffectiveAspect("resilience");
+
+            const defBonus = Math.max(0, evade, effSpeed);
             const baseDef = 2 + defBonus;
             const defBaseEl = document.getElementById("defenseBase");
             if (defBaseEl) defBaseEl.value = baseDef;
@@ -3488,23 +3790,25 @@ function modAspect(stat, delta) {
             const defTotEl = document.getElementById("defenseTotal");
             if (defTotEl) defTotEl.value = Math.max(1, baseDef - armorPenalty);
 
-            const wpBonus = Math.max(0, centering, aspects.tenacity);
+            const wpBonus = Math.max(0, centering, effTenacity);
             const wpEl = document.getElementById("willpower");
             if (wpEl) wpEl.value = 2 + wpBonus;
 
+            // Инициатива: Speed + Notice + бонус Tomes (+1)
+            let tomesBonus = (isIvlevActive() && chefState.suits.tomes) ? 1 : 0;
             const initEl = document.getElementById("initiative");
-            if (initEl) initEl.value = aspects.speed + notice;
+            if (initEl) initEl.value = effSpeed + notice + tomesBonus;
 
             let resBonus = 0;
-            if (aspects.resilience > 0) resBonus = Math.ceil(aspects.resilience / 2);
+            if (effResilience > 0) resBonus = Math.ceil(effResilience / 2);
             const wEl = document.getElementById("wounds");
             if (wEl) wEl.value = 4 + toughness + resBonus;
 
-            const walkVal = 4 + Math.ceil(aspects.speed / 2);
+            const walkVal = 4 + Math.ceil(effSpeed / 2);
             const walkEl = document.getElementById("walk");
             if (walkEl) walkEl.value = walkVal;
 
-            const rawCharge = 4 + aspects.speed;
+            const rawCharge = 4 + effSpeed;
             const chEl = document.getElementById("charge");
             if (chEl) chEl.value = Math.max(rawCharge, walkVal);
         }
@@ -3805,17 +4109,24 @@ function deleteSkillRow(tr) {
                 refreshSkillTriggerRow(trMain);
             });
         }
-        function updateRowAV(tr) {
+function updateRowAV(tr) {
+            const skillName = tr.querySelector(".skill-select")?.value || "";
             const rating = parseInt(tr.querySelector(".skill-rating")?.value) || 0;
             const avCells = tr.querySelectorAll(".av-val");
             const aspectSelects = tr.querySelectorAll(".skill-aspect");
+
+            let crowsBonus = 0;
+            if (isIvlevActive() && chefState.suits.crows && chefState.crowSkill && skillName.toLowerCase() === chefState.crowSkill.toLowerCase()) {
+                crowsBonus = chefState.wellFed;
+            }
 
             aspectSelects.forEach((sel, idx) => {
                 const aspectKey = sel.value;
                 if (!aspectKey) {
                     if (avCells[idx]) avCells[idx].textContent = "—";
                 } else {
-                    if (avCells[idx]) avCells[idx].textContent = rating + (aspects[aspectKey] || 0);
+                    const eff = getEffectiveAspect(aspectKey);
+                    if (avCells[idx]) avCells[idx].textContent = rating + eff + crowsBonus;
                 }
             });
         }
@@ -4774,6 +5085,20 @@ const descDisplay = lastCard.querySelector(".talent-desc-display");
                     renderAdvancedPursuit();
                 }
             }
+    // Восстановление состояния шеф-повара
+            if (data.chefState) {
+                chefState.isHungry = Boolean(data.chefState.isHungry);
+                chefState.wellFed = Number(data.chefState.wellFed) || 0;
+                chefState.suits = data.chefState.suits || { rams: false, masks: false, crows: false, tomes: false };
+                chefState.crowSkill = data.chefState.crowSkill || "";
+            } else {
+                chefState.isHungry = false;
+                chefState.wellFed = 0;
+                chefState.suits = { rams: false, masks: false, crows: false, tomes: false };
+                chefState.crowSkill = "";
+            }
+            checkChefPanelVisibility();
+            updateChefAspectsDisplay();
         };
         window.collectCurrentSheetData = function() {
 // Сбор данных союзников
@@ -4910,10 +5235,18 @@ bioPortraitUrl: document.getElementById("bioPortraitUrl")?.value || "",
                 characterPursuits: JSON.parse(JSON.stringify(characterPursuits)),
                 activePursuitId: activePursuitId,
                 selectedAdvancedPursuitId: document.getElementById("advancedPursuitSelect")?.value || ""
+                chefState: JSON.parse(JSON.stringify(chefState)),
             };
         };
         document.addEventListener("DOMContentLoaded", () => {
             initPursuitsSelect();
+            
+        document.getElementById("charName")?.addEventListener("input", () => {
+                checkChefPanelVisibility();
+                updateChefAspectsDisplay();
+                updateDerived();
+                updateAllSkillAVs();
+            });
         });
     </script>
 <!-- ОКНО 1: НАГРАДЫ (СТАРЫЙ ВАРИАНТ) -->
